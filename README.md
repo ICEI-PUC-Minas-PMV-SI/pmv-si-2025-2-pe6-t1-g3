@@ -1,4 +1,5 @@
-# TÍTULO DO PROJETO
+<h1 align="center">ConectaShop</h1> 
+<img width="1080" height="772" alt="Image" src="https://github.com/user-attachments/assets/56b2e0b8-cda8-4511-af00-2d3923147529" />
 
 `CURSO: Sistemas de Informação`
 
