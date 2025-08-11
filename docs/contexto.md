@@ -1,38 +1,62 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+Nos últimos anos, o **comércio eletrônico** tem se consolidado como um dos principais canais de compra e venda de produtos, impulsionado pela popularização da internet e pela facilidade de acesso a dispositivos móveis. Plataformas como *Mercado Livre*, *Amazon* e *Shopee* demonstram que consumidores buscam cada vez mais **praticidade**, **variedade de produtos** e **segurança nas transações**.
+Paralelamente, **pequenos e médios fornecedores** enfrentam desafios para competir com grandes marcas, especialmente no que diz respeito à:  
+- 📢 **Divulgação**  
+- 📦 **Gestão de estoque**  
+- 📊 **Análise de vendas**  
+Nesse cenário, **soluções tecnológicas** que conectem vendedores e compradores de forma **simples**, **escalável** e **segura** tornam-se cada vez mais necessárias.
+
 
 ## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
+Apesar do crescimento do **e-commerce**, muitos fornecedores  principalmente pequenos empreendedores e comerciantes locais  encontram dificuldades para ingressar ou se manter no mercado digital [(CARTA CAPITAL, 2023)](../docs/references.md).  
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
+Entre os principais desafios estão:  
+- Falta de infraestrutura tecnológica para gerenciar produtos e vendas.  
+- Baixa visibilidade de seus produtos frente a grandes marcas.  
+- Ausência de ferramentas de análise que auxiliem na tomada de decisão.  
+- Dificuldade em integrar múltiplos canais de venda de forma centralizada.  
 
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
+Por outro lado, compradores muitas vezes enfrentam a limitação de encontrar produtos diversificados e competitivos em uma única plataforma, o que os leva a utilizar diversos aplicativos e sites, aumentando o tempo e o esforço para realizar uma compra.
 
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
+### Objetivo Geral
+Desenvolver uma plataforma de e-commerce, chamada **ConectaShop**, que conecte fornecedores e compradores, oferecendo um ambiente digital seguro, escalável e com recursos de análise de vendas para fornecedores.
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
- 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+### Objetivos Específicos
+- Permitir o cadastro de fornecedores e seus produtos de forma simples e intuitiva.  
+- Disponibilizar um painel (dashboard) para acompanhamento e análise das vendas.  
+- Oferecer um ambiente de compra eficiente, com filtragem e busca de produtos.  
+- Garantir segurança nas transações e proteção dos dados dos usuários.  
+- Suportar acesso via web e dispositivos móveis.
+
 
 ## Justificativa
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
+A criação da ConectaShop busca atender a uma necessidade crescente do mercado digital: proporcionar oportunidades para pequenos e médios fornecedores competirem em condições mais equilibradas com grandes empresas. As Micro, Pequenas e Médias Empresas (MPMEs) têm um papel relevante na economia, sendo responsáveis por grande parte do emprego e da produção local, o que fortalece o impacto social e produtivo do projeto [(BRASIL, 2021)](../docs/references.md).
 
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
+Além disso, o e-commerce surge como uma solução acessível e eficiente, especialmente para empreendedores que enfrentam barreiras financeiras ou logísticas para expandir seus negócios de forma tradicional. Esse modelo digital permite superar limitações físicas e alcançar novos mercados com menores custos [(SILVA; PEREIRA, 2020)](../docs/references.md).
 
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+O potencial de expansão e internacionalização das plataformas digitais já foi demonstrado por diversos empreendedores e estudos, como o relatório da FedEx, que evidencia o crescimento de negócios que adotam o comércio eletrônico para ampliar suas operações globalmente [(FEDEX, 2023)](../docs/references.md).
+
+A importância dessas soluções digitais se torna ainda mais crítica em contextos de crise ou isolamento físico, como observado durante a pandemia, quando o comércio tradicional foi fortemente impactado, evidenciando a necessidade de alternativas robustas e seguras para manter a atividade econômica [(OLIVEIRA, 2021)](../docs/references.md).
+
+A ConectaShop também contribui para a inclusão digital e a capacitação tecnológica dos pequenos e médios empreendedores, ajudando a reduzir a disparidade no uso das Tecnologias da Informação e Comunicação (TICs) por MPMEs, fator essencial para a competitividade no mercado atual [(MINISTÉRIO DA ECONOMIA, 2022)](../docs/references.md).
+
+Finalmente, a plataforma se apoia nas estratégias de marketing digital, que oferecem baixo custo e alto retorno, potencializando a visibilidade dos fornecedores e o alcance de novos clientes [(GONÇALVES; MARTINS, 2020)](../docs/references.md).
+
+Assim, o projeto ConectaShop se posiciona como uma iniciativa que fortalece o ecossistema do comércio eletrônico e promove a inclusão digital, contribuindo para o desenvolvimento econômico e social dos empreendedores.
+
 
 ## Público-Alvo
+
+O público-alvo do projeto é composto por:  
+
+- **Fornecedores:** pequenos e médios empreendedores, comerciantes locais e marcas que desejam ampliar seu alcance no comércio digital.  
+- **Compradores:** consumidores finais que buscam praticidade, variedade e segurança ao realizar compras online.
+
 
 Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
 hierárquicas, etc.
