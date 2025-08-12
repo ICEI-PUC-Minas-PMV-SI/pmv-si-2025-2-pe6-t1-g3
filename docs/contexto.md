@@ -79,30 +79,36 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+|RF-001| Permitir o cadastro de fornecedores com dados empresariais, endereço e informações de pagamento. | ALTA | 
+|RF-002| Permitir o cadastro de compradores com dados pessoais, endereço de entrega e informações de contato. | ALTA | 
+|RF-003| Permitir que os usuários se loguem em suas contas. | ALTA |
+|RF-004| Permitir que os fornecedore atualizem, editar e excluir informações do seu perfil, como endereço  e informações de pagamento. | ALTA | 
+|RF-005| Permitir que os compradores atualizem, editar e excluir informações do seu perfil, como endereço de entrega e informações de contato. | ALTA | 
+|RF-006| Permitir o cadastro, edição e exclusão de produtos e modalidade de pagamento pelos fornecedores. | ALTA | 
+|RF-007| Gerenciar pedidos com status (em processamento, enviado, entregue). | ALTA | 
+|RF-008| Disponibilizar dashboard para fornecedores com métricas de vendas, produtos mais vendidos e histórico de pedidos. | ALTA | 
+|RF-009| Permitir que fornecedores gerenciem estoque e recebam alertas de baixa quantidade.  | ALTA | 
+|RF-010| Permitir que fornecedores criem promoções e descontos nos produtos. | ALTA | 
+|RF-011| Permitir que compradores realizem buscas por produtos usando filtros (categoria, preço, avaliação, etc.). | ALTA | 
+|RF-012| Permitir que cada fornecedor tenha um usuário principal (administrador) e adicione até 2 usuários adicionais vinculados à sua conta, com permissões de uso definidas. O administrador também deve poder remover esses usuários adicionais a qualquer momento.| ALTA | 
+|RF-013| Permitir que compradores adicionem produtos ao carrinho de compras.  | ALTA | 
+|RF-014| Permitir que compradores realizem pagamento seguro através de diferentes métodos (cartão de crédito, PIX, boleto, etc.). | ALTA | 
+|RF-015| Gerar confirmação de pedido para o comprador e notificação para o fornecedor.  | ALTA | 
+|RF-016| Disponibilizar histórico de compras para o comprador.  | ALTA | 
+|RF-017| Exibir página de detalhes de produto com fotos, descrições, preço, avaliações e informações do vendedor. | MÉDIA | 
+|RF-018| Permitir que compradores avaliem produtos e vendedores após a compra. | MÉDIA |
 
 ### Requisitos não Funcionais
 
 |ID     | Descrição do Requisito  |Prioridade |
 |-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | MÉDIA | 
-|RNF-002| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
+|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | ALTA | 
+|RNF-002| O sistema deve restringir o acesso de sua conta por meio de autenticação via senha. | ALTA | 
+|RNF-003| O sistema deve ser compatível com os principais navegadores modernos (Chrome, Firefox, Edge, Safari) |  MÉDIA | 
+|RNF-004| O sistema deve cumprir todas as leis e regulamentos relevantes, incluindo leis de proteção ao consumidor, leis de privacidade de dados e leis de comércio eletrônico. |  MÉDIA |
+|RNF-005| O sistema deve ser facilmente mantido e atualizado, com código limpo e documentação abrangente para facilitar o trabalho dos desenvolvedores. |  MÉDIA |
+|RNF-006| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
 
-Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
-
-- [Requisitos Funcionais
- (RF)](https://pt.wikipedia.org/wiki/Requisito_funcional):
- correspondem a uma funcionalidade que deve estar presente na
-  plataforma (ex: cadastro de usuário).
-- [Requisitos Não Funcionais
-  (RNF)](https://pt.wikipedia.org/wiki/Requisito_n%C3%A3o_funcional):
-  correspondem a uma característica técnica, seja de usabilidade,
-  desempenho, confiabilidade, segurança ou outro (ex: suporte a
-  dispositivos iOS e Android).
-Lembre-se que cada requisito deve corresponder à uma e somente uma
-característica alvo da sua solução. Além disso, certifique-se de que
-todos os aspectos capturados nas Histórias de Usuário foram cobertos.
 
 ## Restrições
 
@@ -112,12 +118,12 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |--|-------------------------------------------------------|
 |01| O projeto deverá ser entregue até o final do semestre |
 |02| Não pode ser desenvolvido um módulo de backend        |
-
-Enumere as restrições à sua solução. Lembre-se de que as restrições geralmente limitam a solução candidata.
-
-> **Links Úteis**:
-> - [O que são Requisitos Funcionais e Requisitos Não Funcionais?](https://codificar.com.br/requisitos-funcionais-nao-funcionais/)
-> - [O que são requisitos funcionais e requisitos não funcionais?](https://analisederequisitos.com.br/requisitos-funcionais-e-requisitos-nao-funcionais-o-que-sao/)
+|03| O orçamento disponível é limitado, priorizando tecnologias de baixo custo ou gratuitas |
+|04| O prazo de desenvolvimento não pode ultrapassar 5 meses |
+|05| Todas as funcionalidades devem estar disponíveis tanto na versão web quanto na versão mobile |
+|06| O design da interface deve seguir padrões responsivos para múltiplos dispositivos |
+|07| Cada comprador poderá possuir apenas uma conta por endereço de e-mail |
+|08| Cada fornecedor poderá ter apenas uma conta com perfil administrador e até duas contas de usuário associadas |
 
 # Catálogo de Serviços
 
@@ -148,14 +154,22 @@ Explique como a hospedagem e o lançamento da plataforma foi feita.
 
 ### Semana 1
 
-Atualizado em: 21/04/2024
+Atualizado em: 12/08/2025
 
 | Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| AlunaX        | Introdução | 01/02/2024     | 07/02/2024 | ✔️    | 05/02/2024      |
-| AlunaZ        | Objetivos    | 03/02/2024     | 10/02/2024 | 📝    |                 |
-| AlunoY        | Histórias de usuário  | 01/01/2024     | 07/01/2005 | ⌛     |                 |
-| AlunoK        | Personas 1  |    01/01/2024        | 12/02/2005 | ❌    |       |
+| July          | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025     |
+| Jully         | Introdução       | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
+| July          | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025     |
+| July          | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
+| July          | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
+| July          | Requisitos FN/NF Restrições  | 01/08/2025    | 17/08/2025 |  📝  |    |
+| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  📝  |                |
+| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | 📝   |                |
+| Vinicius      | Catálogo de Serviços       |    01/08/2025  |  |  📝   |                |
+| Pedro         | Arquitetura da Solução       |    01/08/2025  |  |  📝   |                |
+| Lucas         | Tecnologias Utilizadas       |    01/08/2025  |  | 📝   |                |
+| Italo         | Hospedagem       |    01/08/2025  |  |  📝   |                |
 
 #### Semana 2
 
