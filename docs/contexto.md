@@ -57,6 +57,8 @@ O público-alvo do projeto é composto por:
 - **Fornecedores:** pequenos e médios empreendedores, comerciantes locais e marcas que desejam ampliar seu alcance no comércio digital.  
 - **Compradores:** consumidores finais que buscam praticidade, variedade e segurança ao realizar compras online.
 
+  <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8fc8b031-4be4-4391-b466-89f91668e564" />
+
 
 Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
 hierárquicas, etc.
@@ -133,7 +135,7 @@ Descreva aqui todos os serviços que serão disponibilizados pelo seu projeto, d
 
 Definição de como o software é estruturado em termos dos componentes que fazem parte da solução e do ambiente de hospedagem da aplicação.
 
-![arq](https://github.com/user-attachments/assets/b9402e05-8445-47c3-9d47-f11696e38a3d)
+![Image](https://github.com/user-attachments/assets/a09c6f87-ff7c-4108-b7eb-85ca52888d46)
 
 
 ## Tecnologias Utilizadas
