@@ -59,17 +59,144 @@ O público-alvo do projeto é composto por:
 
   <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8fc8b031-4be4-4391-b466-89f91668e564" />
 
+### Personas
+#### Persona 1 – Laura Andrade
+![Laura - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Laura)
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
+**Profissão:** Proprietária de loja de roupas  
+**Mini-biografia:** Laura, 35 anos, administra uma pequena boutique especializada em moda feminina e peças personalizadas. É apaixonada por tendências e busca sempre trazer novidades para suas clientes.  
+**Detalhes pessoais:**  
+- Localização: São Paulo/SP  
+- Renda familiar: R$ 6.800,00  
+- Nível educacional: Ensino Superior Completo (Moda)  
+- Status relacionamento: Casada  
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
+**Carreira:**  
+- Empresa: Elegância Feminina  
+- Tamanho da empresa: Pequena (3 funcionários)  
+- Responsabilidades profissionais: Gerenciar estoque, atendimento ao cliente, marketing digital e compras de novas coleções.  
+- Objetivos: Ampliar o alcance da loja por meio do e-commerce e fidelizar clientes.  
+- Desafios: Concorrer com grandes marcas e lidar com custos de logística.
 
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+**Mapa de Empatia:**  
+- O que vê: Concorrentes bem estabelecidos no digital.  
+- O que ouve: Clientes pedindo mais praticidade nas compras.  
+- O que pensa e sente: Ansiosa para expandir mas receosa com a adaptação ao online.  
+- O que fala e faz: Investe em fotos de qualidade e atendimento personalizado.  
+- Dores: Baixa visibilidade e falta de integração de sistemas.  
+- Ganhos: Mais vendas e reconhecimento da marca.  
+
+---
+
+#### Persona 2 – Patrícia Nogueira
+![Patrícia - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Patricia)
+
+**Profissão:** Artista independente  
+**Mini-biografia:** Patrícia, 29 anos, cria e vende ilustrações autorais e artesanato. Já possui uma clientela fiel, mas ainda depende muito de eventos presenciais para vender.  
+**Detalhes pessoais:**  
+- Localização: Fortaleza/CE  
+- Renda familiar: R$ 8.000,00  
+- Nível educacional: Ensino Superior Completo (Design)  
+- Status relacionamento: Solteira  
+
+**Carreira:**  
+- Empresa: Estúdio Próprio  
+- Tamanho da empresa: Microempreendedora individual  
+- Responsabilidades profissionais: Produção de artes, atendimento a clientes, divulgação online e logística de envio.  
+- Objetivos: Expandir a base de clientes nacionalmente.  
+- Desafios: Baixo alcance digital e pouco conhecimento em marketing.
+
+**Mapa de Empatia:**  
+- O que vê: Plataformas grandes dominando as buscas.  
+- O que ouve: Feedback de clientes sobre dificuldades de compra online.  
+- O que pensa e sente: Quer autonomia e controle sobre seu canal de vendas.  
+- O que fala e faz: Busca cursos de marketing digital e redes sociais.  
+- Dores: Falta de tempo e recursos para gestão.  
+- Ganhos: Vendas constantes sem depender de eventos presenciais.
+
+---
+
+#### Persona 3 – Carlos Menezes
+![Carlos - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Carlos)
+
+**Profissão:** Gerente de vendas  
+**Mini-biografia:** Carlos, 42 anos, atua no setor de eletrodomésticos e busca digitalizar parte das operações da loja física.  
+**Detalhes pessoais:**  
+- Localização: Porto Alegre/RS  
+- Renda familiar: R$ 12.000,00  
+- Nível educacional: Ensino Médio Completo  
+- Status relacionamento: Casado  
+
+**Carreira:**  
+- Empresa: Móveis & Eletros Sul  
+- Tamanho da empresa: Média (25 funcionários)  
+- Responsabilidades profissionais: Gestão de equipe, definição de metas, relacionamento com fornecedores e análise de vendas.  
+- Objetivos: Aumentar as vendas online e integrar estoque físico e digital.  
+- Desafios: Treinar a equipe e adaptar processos ao e-commerce.
+
+**Mapa de Empatia:**  
+- O que vê: Concorrentes investindo pesado em e-commerce.  
+- O que ouve: Clientes pedindo mais opções de compra online.  
+- O que pensa e sente: Preocupado com a curva de aprendizado da equipe.  
+- O que fala e faz: Participa de reuniões de tecnologia e novos negócios.  
+- Dores: Perder clientes para lojas 100% digitais.  
+- Ganhos: Melhor aproveitamento de estoque e novos canais de vendas.
+
+---
+
+#### Persona 4 – Sara Lima
+![Sara - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Sara)
+
+**Profissão:** Analista de marketing  
+**Mini-biografia:** Sara, 31 anos, atua no setor de cosméticos e busca otimizar campanhas digitais para aumentar conversões no e-commerce.  
+**Detalhes pessoais:**  
+- Localização: Rio de Janeiro/RJ  
+- Renda familiar: R$ 9.500,00  
+- Nível educacional: Ensino Superior Completo (Publicidade e Propaganda)  
+- Status relacionamento: Namorando  
+
+**Carreira:**  
+- Empresa: Beleza Natural  
+- Tamanho da empresa: Grande (150 funcionários)  
+- Responsabilidades profissionais: Gestão de campanhas digitais, análise de métricas, relacionamento com influenciadores e redes sociais.  
+- Objetivos: Aumentar o ROI de campanhas e melhorar a jornada do cliente.  
+- Desafios: Concorrer em um mercado saturado e com alto custo de mídia.
+
+**Mapa de Empatia:**  
+- O que vê: Alta concorrência em anúncios online.  
+- O que ouve: Feedback de vendas sobre baixa conversão.  
+- O que pensa e sente: Pressionada por resultados rápidos.  
+- O que fala e faz: Testa novas estratégias e ferramentas de marketing.  
+- Dores: Custos crescentes e retorno instável.  
+- Ganhos: Aumento de conversões e reconhecimento profissional.
+
+---
+
+#### Persona 5 – João Ferreira
+![João - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Joao)
+
+**Profissão:** Pequeno produtor rural  
+**Mini-biografia:** João, 50 anos, cultiva e vende produtos orgânicos diretamente para consumidores e pequenos mercados. Quer alcançar mais clientes pela internet.  
+**Detalhes pessoais:**  
+- Localização: Uberlândia/MG  
+- Renda familiar: R$ 5.500,00  
+- Nível educacional: Ensino Médio Completo  
+- Status relacionamento: Casado  
+
+**Carreira:**  
+- Empresa: Sítio Boa Terra  
+- Tamanho da empresa: Microempresa familiar  
+- Responsabilidades profissionais: Produção, colheita, empacotamento e vendas diretas.  
+- Objetivos: Criar um canal de vendas online para entrega direta ao consumidor.  
+- Desafios: Pouca familiaridade com tecnologia e logística de entregas.
+
+**Mapa de Empatia:**  
+- O que vê: Crescimento da demanda por orgânicos.  
+- O que ouve: Clientes querendo entrega em casa.  
+- O que pensa e sente: Motivado, mas inseguro quanto à tecnologia.  
+- O que fala e faz: Busca apoio de familiares mais jovens para usar redes sociais.  
+- Dores: Dificuldade de gerenciamento de pedidos online.  
+- Ganhos: Expansão da base de clientes e aumento de renda.
 
 # Especificações do Projeto
 
