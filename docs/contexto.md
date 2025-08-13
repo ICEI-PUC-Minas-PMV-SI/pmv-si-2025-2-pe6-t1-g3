@@ -81,25 +81,21 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir o cadastro de fornecedores com dados empresariais, endereço e informações de pagamento. | ALTA | 
+|RF-001| Permitir o cadastro de fornecedores com dados empresariais. | ALTA | 
 |RF-002| Permitir o cadastro de compradores com dados pessoais, endereço de entrega e informações de contato. | ALTA | 
 |RF-003| Permitir que os usuários se loguem em suas contas. | ALTA |
-|RF-004| Permitir que os fornecedore atualizem, editar e excluir informações do seu perfil, como endereço  e informações de pagamento. | ALTA | 
+|RF-004| Permitir que os fornecedores atualizem, editar e excluir informações do seu perfil. | ALTA | 
 |RF-005| Permitir que os compradores atualizem, editar e excluir informações do seu perfil, como endereço de entrega e informações de contato. | ALTA | 
 |RF-006| Permitir o cadastro, edição e exclusão de produtos e modalidade de pagamento pelos fornecedores. | ALTA | 
-|RF-007| Gerenciar pedidos com status (em processamento, enviado, entregue). | ALTA | 
-|RF-008| Disponibilizar dashboard para fornecedores com métricas de vendas, produtos mais vendidos e histórico de pedidos. | ALTA | 
-|RF-009| Permitir que fornecedores gerenciem estoque e recebam alertas de baixa quantidade.  | ALTA | 
-|RF-010| Permitir que fornecedores criem promoções e descontos nos produtos. | ALTA | 
-|RF-011| Permitir que compradores realizem buscas por produtos usando filtros (categoria, preço, avaliação, etc.). | ALTA | 
-|RF-012| Permitir que cada fornecedor tenha um usuário principal (administrador) e adicione até 2 usuários adicionais vinculados à sua conta, com permissões de uso definidas. O administrador também deve poder remover esses usuários adicionais a qualquer momento.| ALTA | 
-|RF-013| Permitir que compradores adicionem produtos ao carrinho de compras.  | ALTA | 
-|RF-014| Permitir que compradores realizem pagamento seguro através de diferentes métodos (cartão de crédito, PIX, boleto, etc.). | ALTA | 
-|RF-015| Gerar confirmação de pedido para o comprador e notificação para o fornecedor.  | ALTA | 
-|RF-016| Disponibilizar histórico de compras para o comprador.  | ALTA | 
-|RF-017| Exibir página de detalhes de produto com fotos, descrições, preço, avaliações e informações do vendedor. | MÉDIA | 
-|RF-018| Permitir que compradores avaliem produtos e vendedores após a compra. | MÉDIA |
-
+|RF-007| Disponibilizar dashboard para fornecedores com métricas de vendas. | ALTA | 
+|RF-008| Permitir que compradores realizem buscas por produtos usando filtros (categoria, preço, avaliação, etc.). | ALTA | 
+|RF-009| Permitir que compradores adicionem produtos ao carrinho de compras.  | ALTA | 
+|RF-010| Gerar confirmação de pedido para o comprador e notificação para o fornecedor.  | ALTA | 
+|RF-011| Disponibilizar histórico de compras para o comprador.  | ALTA | 
+|RF-012| Exibir página de detalhes de produto com fotos, descrições, preço, avaliações e informações do vendedor. | MÉDIA | 
+|RF-013| Permitir que compradores avaliem produtos e vendedores após a compra. | MÉDIA |
+|RF-014| Permitir que fornecedores gerenciem estoque e recebam alertas de baixa quantidade.  | BAIXA | 
+        
 ### Requisitos não Funcionais
 
 |ID     | Descrição do Requisito  |Prioridade |
@@ -135,7 +131,7 @@ Descreva aqui todos os serviços que serão disponibilizados pelo seu projeto, d
 
 Definição de como o software é estruturado em termos dos componentes que fazem parte da solução e do ambiente de hospedagem da aplicação.
 
-![Image](https://github.com/user-attachments/assets/a09c6f87-ff7c-4108-b7eb-85ca52888d46)
+
 
 
 ## Tecnologias Utilizadas
