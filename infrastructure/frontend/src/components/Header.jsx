@@ -1,129 +1,196 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FiShoppingCart, FiUser, FiLogOut } from "react-icons/fi";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX } from "react-icons/fi";
 import { MdShoppingBasket, MdAdminPanelSettings } from "react-icons/md";
+import { useAuth } from "../contexts/AuthContext";
+import Button from "./UI/Button";
 
 function Header() {
-  const [lastScrollTop, setLastScrollTop] = useState(0);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [token, setToken] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
-  const storedToken = localStorage.getItem("token");
-  useEffect(() => {
-    if (storedToken) {
-      setToken(storedToken);
-    }
-
-    function handleScroll() {
-      const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      setIsHeaderVisible(currentScrollTop < lastScrollTop || currentScrollTop === 0);
-
-      setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
-    }
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastScrollTop]);
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+    navigate('/');
   };
 
-  const closeHeader = () => {
-    setIsCollapsed(true);
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
-
-  const logout = () => {
-    setIsCollapsed(true);
-
-    localStorage.removeItem("token");
-    setToken(null);
-  };
-
-  useEffect(() => {
-    if (token) {
-      try {
-        const decodedToken = JSON.parse(atob(token.split(".")[1]));
-        const expirationTime = decodedToken.exp * 1000;
-        if (Date.now() > expirationTime) {
-          localStorage.removeItem("token");
-          setToken(null);
-        }
-        setIsAdmin(decodedToken.PERMISSAO === "ADMINISTRADOR");
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  }, [token]);
 
   return (
-    <header className={`sticky top-0 left-0 z-10 w-full bg-white text-sm py-4 dark:bg-white-800 ${isHeaderVisible ? "header-visible" : "header-hidden"}`}>
-      <nav className="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between" aria-label="Global">
-        <div className="flex items-center justify-between w-full">
-          <a className="flex-none text-xl font-semibold dark:text-black" href="/">
-            <Link to="/" onClick={closeHeader}>
-              Zabbix Store
-            </Link>
-          </a>
-          <div className="sm:hidden">
-            <button type="button" className="" onClick={toggleCollapse} aria-expanded={!isCollapsed} aria-label="Toggle navigation">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div className={`sm:flex flex-col p-2 display flex sm:flex-row sm:items-center sm:justify-end w-full ${isCollapsed ? "hidden" : "sm:flex"}`}>
-          <a className="font-medium font-medium text-black-600 mr-5 link-mobile-margin link-with-underline" onClick={closeHeader}>
-            <Link to="/">
-              <MdShoppingBasket className="inline mr-1" /> Produtos
-            </Link>
-          </a>
-          <a className="font-medium text-black-600 mr-5 link-mobile-margin link-with-underline" onClick={closeHeader}>
-            <Link to="/aboutus">
-              <FiUser className="inline mr-1" /> Sobre nós
-            </Link>
-          </a>
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link 
+            to="/" 
+            className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
+            onClick={closeMenu}
+          >
+            STORE
+          </Link>
 
-          {token ? (
-            <>
-              <a className="font-medium text-black-600 mr-5 link-mobile-margin link-with-underline" onClick={closeHeader}>
-                <Link to="/cart">
-                  <FiShoppingCart className="inline mr-1" /> Carrinho
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link 
+              to="/" 
+              className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+            >
+              <MdShoppingBasket className="mr-1" size={18} />
+              Produtos
+            </Link>
+            
+            <Link 
+              to="/aboutus" 
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
+              Sobre
+            </Link>
+
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <Link 
+                  to="/cart" 
+                  className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+                >
+                  <FiShoppingCart className="mr-1" size={18} />
+                  Carrinho
                 </Link>
-              </a>
-              <a className="font-medium text-black-600 mr-5 link-mobile-margin link-with-underline" onClick={closeHeader}>
-                <Link to="/account">
-                  <FiUser className="inline mr-1" /> Conta
+
+                <Link 
+                  to="/account" 
+                  className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+                >
+                  <FiUser className="mr-1" size={18} />
+                  Perfil
                 </Link>
-              </a>
-              {isAdmin && (
-                <a className="font-medium text-black-600 mr-5 link-mobile-margin link-with-underline" onClick={closeHeader}>
-                  <Link to="/admin">
-                    <MdAdminPanelSettings className="inline mr-1" /> Admin
+
+                {user?.isAdmin && (
+                  <Link 
+                    to="/admin" 
+                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+                  >
+                    <MdAdminPanelSettings className="mr-1" size={18} />
+                    Admin
                   </Link>
-                </a>
-              )}
-              <a href="/" className="font-medium text-black-600 mr-5 link-mobile-margin link-with-underline" onClick={logout}>
-                <FiLogOut className="inline mr-1" /> Sair
-              </a>
-            </>
-          ) : (
-            <>
-              <a className="font-medium text-white bg-black mr-5 px-4 py-2 link-no-hover link-mobile-margin" onClick={closeHeader}>
-                <Link to="/register">Cadastrar</Link>
-              </a>
-              <a className="font-medium text-white bg-black mr-5 px-4 py-2 link-no-hover link-mobile-margin" onClick={closeHeader}>
-                <Link to="/login">Login</Link>
-              </a>
-            </>
-          )}
+                )}
+
+                <Button 
+                  variant="outline" 
+                  size="small" 
+                  onClick={handleLogout}
+                  className="flex items-center"
+                >
+                  <FiLogOut className="mr-1" size={16} />
+                  Sair
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link to="/register">
+                  <Button variant="outline" size="small">
+                    Cadastrar
+                  </Button>
+                </Link>
+                <Link to="/login">
+                  <Button variant="primary" size="small">
+                    Entrar
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            type="button"
+            className="md:hidden p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 py-4">
+            <div className="flex flex-col space-y-3">
+              <Link 
+                to="/" 
+                className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                onClick={closeMenu}
+              >
+                <MdShoppingBasket className="mr-2" size={18} />
+                Produtos
+              </Link>
+              
+              <Link 
+                to="/aboutus" 
+                className="text-gray-700 hover:text-gray-900 transition-colors py-2"
+                onClick={closeMenu}
+              >
+                Sobre
+              </Link>
+
+              {isAuthenticated ? (
+                <>
+                  <Link 
+                    to="/cart" 
+                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                    onClick={closeMenu}
+                  >
+                    <FiShoppingCart className="mr-2" size={18} />
+                    Carrinho
+                  </Link>
+
+                  <Link 
+                    to="/account" 
+                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                    onClick={closeMenu}
+                  >
+                    <FiUser className="mr-2" size={18} />
+                    Perfil
+                  </Link>
+
+                  {user?.isAdmin && (
+                    <Link 
+                      to="/admin" 
+                      className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                      onClick={closeMenu}
+                    >
+                      <MdAdminPanelSettings className="mr-2" size={18} />
+                      Admin
+                    </Link>
+                  )}
+
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2 text-left"
+                  >
+                    <FiLogOut className="mr-2" size={18} />
+                    Sair
+                  </button>
+                </>
+              ) : (
+                <div className="flex flex-col space-y-2 pt-2">
+                  <Link to="/register" onClick={closeMenu}>
+                    <Button variant="outline" className="w-full">
+                      Cadastrar
+                    </Button>
+                  </Link>
+                  <Link to="/login" onClick={closeMenu}>
+                    <Button variant="primary" className="w-full">
+                      Entrar
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
     </header>
   );

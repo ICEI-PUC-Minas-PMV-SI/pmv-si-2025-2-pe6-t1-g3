@@ -1,0 +1,140 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: store-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: store_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "9080:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - store-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d store_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API
+  backend:
+    build:
+      context: ./infrastructure/backend
+      dockerfile: Dockerfile
+    container_name: store-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:password123@postgres:5432/store_db?schema=public
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-this-in-production}
+      FRONTEND_URL: http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - store-network
+    volumes:
+      - ./infrastructure/backend/prisma:/app/prisma
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend React App
+  frontend:
+    build:
+      context: ./infrastructure/frontend
+      dockerfile: Dockerfile
+    container_name: store-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - store-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Prisma Studio (Database Admin)
+  prisma-studio:
+    image: node:18-alpine
+    container_name: store-prisma-studio
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      DATABASE_URL: postgresql://postgres:password123@postgres:5432/store_db?schema=public
+    ports:
+      - "5555:5555"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - store-network
+    volumes:
+      - ./infrastructure/backend:/app
+    command: sh -c "npm install -g prisma && npx prisma studio --hostname 0.0.0.0"
+
+  # Redis for Caching (Optional - for future use)
+  redis:
+    image: redis:7-alpine
+    container_name: store-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - store-network
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: store-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - store-network
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  store-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

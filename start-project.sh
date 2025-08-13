@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Script de inicialização do projeto PMV-SI
-# Este script inicializa todos os serviços necessários para o desenvolvimento
+# Script de inicialização do projeto PMV-SI com Docker
+# Este script inicializa toda a stack usando Docker Compose
 
 set -e  # Para o script se algum comando falhar
 
@@ -10,6 +10,8 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Função para imprimir mensagens coloridas
@@ -29,6 +31,10 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+print_header() {
+    echo -e "${PURPLE}[DOCKER]${NC} $1"
+}
+
 # Função para verificar se um comando existe
 command_exists() {
     command -v "$1" >/dev/null 2>&1
@@ -39,7 +45,7 @@ wait_for_service() {
     local host=$1
     local port=$2
     local service_name=$3
-    local max_attempts=30
+    local max_attempts=60
     local attempt=1
     
     print_status "Aguardando $service_name estar disponível em $host:$port..."
@@ -61,12 +67,20 @@ wait_for_service() {
 
 # Função para verificar dependências
 check_dependencies() {
-    print_status "Verificando dependências..."
+    print_status "Verificando dependências para Docker..."
     
     # Verificar Docker
     if ! command_exists docker; then
         print_error "Docker não está instalado ou não está no PATH"
         print_error "Por favor, instale o Docker Desktop e ative a integração WSL2"
+        print_error "Download: https://docs.docker.com/desktop/"
+        exit 1
+    fi
+    
+    # Verificar se Docker está rodando
+    if ! docker info >/dev/null 2>&1; then
+        print_error "Docker não está rodando"
+        print_error "Por favor, inicie o Docker Desktop"
         exit 1
     fi
     
@@ -76,191 +90,174 @@ check_dependencies() {
         exit 1
     fi
     
-    # Verificar Node.js
-    if ! command_exists node; then
-        print_error "Node.js não está instalado"
-        exit 1
-    fi
+    print_success "Docker e Docker Compose estão disponíveis"
+}
+
+# Função para verificar .env
+check_env_file() {
+    print_status "Verificando arquivo de configuração..."
     
-    # Verificar npm
-    if ! command_exists npm; then
-        print_error "npm não está instalado"
-        exit 1
+    if [ ! -f ".env" ]; then
+        print_warning "Arquivo .env não encontrado"
+        print_status "Criando .env a partir do .env.example..."
+        
+        if [ -f ".env.example" ]; then
+            cp .env.example .env
+            print_success "Arquivo .env criado com configurações padrão"
+            print_warning "IMPORTANTE: Revise o arquivo .env e altere as senhas padrão!"
+        else
+            print_error "Arquivo .env.example não encontrado"
+            exit 1
+        fi
+    else
+        print_success "Arquivo .env encontrado"
     fi
-    
-    print_success "Todas as dependências estão instaladas"
 }
 
 # Função para parar serviços existentes
 stop_existing_services() {
-    print_status "Parando serviços existentes..."
+    print_status "Parando containers existentes..."
     
-    # Parar containers Docker existentes
-    if docker ps -q | grep -q .; then
-        docker stop $(docker ps -q) 2>/dev/null || true
-    fi
+    # Parar stack atual se estiver rodando
+    docker-compose down --remove-orphans 2>/dev/null || true
     
-    # Parar processos Node.js existentes nas portas 3000 e 5173
-    if lsof -ti:3000 >/dev/null 2>&1; then
-        print_warning "Parando processo na porta 3000 (backend)"
-        kill -9 $(lsof -ti:3000) 2>/dev/null || true
-    fi
+    # Limpar volumes órfãos (opcional)
+    docker volume prune -f 2>/dev/null || true
     
-    if lsof -ti:5173 >/dev/null 2>&1; then
-        print_warning "Parando processo na porta 5173 (frontend)"
-        kill -9 $(lsof -ti:5173) 2>/dev/null || true
-    fi
-    
-    print_success "Serviços existentes parados"
+    print_success "Containers existentes parados"
 }
 
-# Função para inicializar Docker Compose
-start_docker_compose() {
-    print_status "Iniciando Docker Compose..."
+# Função para fazer build das imagens
+build_images() {
+    print_header "Fazendo build das imagens Docker..."
     
-    cd infrastructure/local-environment
+    # Build das imagens com cache
+    docker-compose build --parallel
     
-    # Remover containers existentes
-    docker-compose down -v 2>/dev/null || true
+    print_success "Build das imagens concluído"
+}
+
+# Função para inicializar a stack Docker
+start_docker_stack() {
+    print_header "Iniciando stack Docker..."
     
-    # Iniciar serviços
-    docker-compose up -d
+    # Iniciar serviços principais (sem nginx de produção)
+    docker-compose up -d postgres redis
     
     # Aguardar PostgreSQL estar disponível
     wait_for_service "localhost" "9080" "PostgreSQL"
     
-    cd ../..
-    print_success "Docker Compose iniciado com sucesso"
-}
-
-# Função para instalar dependências do backend
-install_backend_dependencies() {
-    print_status "Instalando dependências do backend..."
+    # Iniciar backend
+    docker-compose up -d backend
+    wait_for_service "localhost" "3000" "Backend API"
     
-    cd infrastructure/backend
-    
-    if [ ! -d "node_modules" ]; then
-        npm install
-        print_success "Dependências do backend instaladas"
-    else
-        print_status "Dependências do backend já estão instaladas"
-    fi
-    
-    cd ../..
-}
-
-# Função para instalar dependências do frontend
-install_frontend_dependencies() {
-    print_status "Instalando dependências do frontend..."
-    
-    cd infrastructure/frontend
-    
-    if [ ! -d "node_modules" ]; then
-        npm install
-        print_success "Dependências do frontend instaladas"
-    else
-        print_status "Dependências do frontend já estão instaladas"
-    fi
-    
-    cd ../..
-}
-
-# Função para iniciar o backend
-start_backend() {
-    print_status "Iniciando backend..."
-    
-    cd infrastructure/backend
-    
-    # Iniciar backend em background
-    npm run start:dev > ../../backend.log 2>&1 &
-    BACKEND_PID=$!
-    
-    # Aguardar backend estar disponível
-    wait_for_service "localhost" "3000" "Backend"
-    
-    cd ../..
-    print_success "Backend iniciado com PID: $BACKEND_PID"
-}
-
-# Função para iniciar o frontend
-start_frontend() {
-    print_status "Iniciando frontend..."
-    
-    cd infrastructure/frontend
-    
-    # Iniciar frontend em background
-    npm run dev > ../../frontend.log 2>&1 &
-    FRONTEND_PID=$!
-    
-    # Aguardar frontend estar disponível
+    # Iniciar frontend
+    docker-compose up -d frontend
     wait_for_service "localhost" "5173" "Frontend"
     
-    cd ../..
-    print_success "Frontend iniciado com PID: $FRONTEND_PID"
+    # Iniciar Prisma Studio
+    docker-compose up -d prisma-studio
+    wait_for_service "localhost" "5555" "Prisma Studio"
+    
+    print_success "Stack Docker iniciada com sucesso"
+}
+
+# Função para mostrar logs em tempo real
+show_logs() {
+    print_status "Iniciando visualização de logs..."
+    print_status "Pressione Ctrl+C para parar os logs (serviços continuarão rodando)"
+    echo ""
+    
+    # Mostrar logs de todos os serviços
+    docker-compose logs --follow --tail=100
 }
 
 # Função para mostrar status dos serviços
 show_status() {
     echo ""
-    echo "=========================================="
-    echo "           STATUS DOS SERVIÇOS            "
-    echo "=========================================="
+    echo "============================================================"
+    echo "                    STATUS DOS SERVIÇOS                    "
+    echo "============================================================"
     echo ""
     
-    # Status do Docker
-    if docker ps | grep -q postgres; then
-        echo -e "${GREEN}✓ Docker Compose:${NC} Rodando"
+    # Verificar status dos containers
+    if docker-compose ps | grep -q "Up"; then
+        docker-compose ps
     else
-        echo -e "${RED}✗ Docker Compose:${NC} Parado"
-    fi
-    
-    # Status do Backend
-    if lsof -ti:3000 >/dev/null 2>&1; then
-        echo -e "${GREEN}✓ Backend:${NC} Rodando em http://localhost:3000"
-    else
-        echo -e "${RED}✗ Backend:${NC} Parado"
-    fi
-    
-    # Status do Frontend
-    if lsof -ti:5173 >/dev/null 2>&1; then
-        echo -e "${GREEN}✓ Frontend:${NC} Rodando em http://localhost:5173"
-    else
-        echo -e "${RED}✗ Frontend:${NC} Parado"
+        print_error "Nenhum container está rodando"
+        return 1
     fi
     
     echo ""
-    echo "=========================================="
-    echo "              LINKS ÚTEIS                "
-    echo "=========================================="
-    echo "Backend API:     http://localhost:3000"
-    echo "Frontend:        http://localhost:5173"
-    echo "Documentação:    http://localhost:3000/api"
-    echo "PostgreSQL:      localhost:9080"
+    echo "============================================================"
+    echo "                      LINKS ÚTEIS                         "
+    echo "============================================================"
     echo ""
-    echo "Logs do Backend: ./backend.log"
-    echo "Logs do Frontend: ./frontend.log"
+    echo -e "${CYAN}🌐 Frontend (React):${NC}      http://localhost:5173"
+    echo -e "${CYAN}🚀 Backend API:${NC}           http://localhost:3000"
+    echo -e "${CYAN}📚 Documentação (Swagger):${NC} http://localhost:3000/api"
+    echo -e "${CYAN}🗄️  Database Admin:${NC}       http://localhost:5555"
+    echo -e "${CYAN}🗃️  PostgreSQL:${NC}           localhost:9080"
+    echo -e "${CYAN}🔴 Redis:${NC}                localhost:6379"
     echo ""
+    echo "============================================================"
+    echo "                      COMANDOS ÚTEIS                      "
+    echo "============================================================"
+    echo ""
+    echo "Ver logs:              docker-compose logs -f"
+    echo "Parar stack:           docker-compose down"
+    echo "Restart stack:         docker-compose restart"
+    echo "Rebuild images:        docker-compose build --no-cache"
+    echo "Limpar tudo:           docker-compose down -v --rmi all"
+    echo ""
+}
+
+# Função para fazer health check
+health_check() {
+    print_status "Verificando saúde dos serviços..."
+    
+    local failed=0
+    
+    # Check PostgreSQL
+    if docker-compose exec -T postgres pg_isready -U postgres >/dev/null 2>&1; then
+        print_success "PostgreSQL: Saudável"
+    else
+        print_error "PostgreSQL: Não responsivo"
+        failed=1
+    fi
+    
+    # Check Backend
+    if curl -f http://localhost:3000 >/dev/null 2>&1; then
+        print_success "Backend API: Saudável"
+    else
+        print_error "Backend API: Não responsivo"
+        failed=1
+    fi
+    
+    # Check Frontend
+    if curl -f http://localhost:5173 >/dev/null 2>&1; then
+        print_success "Frontend: Saudável"
+    else
+        print_error "Frontend: Não responsivo"
+        failed=1
+    fi
+    
+    if [ $failed -eq 0 ]; then
+        print_success "Todos os serviços estão saudáveis!"
+        return 0
+    else
+        print_warning "Alguns serviços podem estar com problemas"
+        return 1
+    fi
 }
 
 # Função para limpeza ao sair
 cleanup() {
-    print_status "Limpando recursos..."
-    
-    # Parar processos em background
-    if [ ! -z "$BACKEND_PID" ]; then
-        kill $BACKEND_PID 2>/dev/null || true
-    fi
-    
-    if [ ! -z "$FRONTEND_PID" ]; then
-        kill $FRONTEND_PID 2>/dev/null || true
-    fi
-    
-    # Parar Docker Compose
-    cd infrastructure/local-environment
-    docker-compose down 2>/dev/null || true
-    cd ../..
-    
-    print_success "Limpeza concluída"
+    echo ""
+    print_status "Limpeza iniciada..."
+    print_status "Stack Docker continuará rodando em background"
+    print_status "Para parar completamente, execute: docker-compose down"
+    print_success "Script finalizado"
 }
 
 # Configurar trap para limpeza ao sair
@@ -268,38 +265,102 @@ trap cleanup EXIT INT TERM
 
 # Função principal
 main() {
-    echo "=========================================="
-    echo "    INICIALIZADOR DO PROJETO PMV-SI      "
-    echo "=========================================="
+    local mode=${1:-"start"}
+    
+    echo "============================================================"
+    echo "           🐳 DOCKER STACK - PROJETO PMV-SI              "
+    echo "============================================================"
     echo ""
     
-    # Verificar dependências
-    check_dependencies
-    
-    # Parar serviços existentes
-    stop_existing_services
-    
-    # Iniciar Docker Compose
-    start_docker_compose
-    
-    # Instalar dependências
-    install_backend_dependencies
-    install_frontend_dependencies
-    
-    # Iniciar serviços
-    start_backend
-    start_frontend
-    
-    # Mostrar status final
-    show_status
-    
-    print_success "Projeto inicializado com sucesso!"
-    print_status "Pressione Ctrl+C para parar todos os serviços"
-    
-    # Manter script rodando
-    while true; do
-        sleep 1
-    done
+    case $mode in
+        "start"|"")
+            check_dependencies
+            check_env_file
+            stop_existing_services
+            build_images
+            start_docker_stack
+            
+            echo ""
+            print_success "🎉 Stack Docker iniciada com sucesso!"
+            show_status
+            
+            echo ""
+            print_status "Executando health check em 10 segundos..."
+            sleep 10
+            health_check
+            
+            echo ""
+            print_status "Para ver logs em tempo real, execute:"
+            echo "docker-compose logs -f"
+            echo ""
+            print_status "Pressione Ctrl+C para sair (serviços continuarão rodando)"
+            
+            # Manter script rodando para logs
+            while true; do
+                sleep 5
+                if ! docker-compose ps | grep -q "Up"; then
+                    print_error "Alguns containers pararam. Verificando..."
+                    show_status
+                    break
+                fi
+            done
+            ;;
+            
+        "stop")
+            print_status "Parando stack Docker..."
+            docker-compose down
+            print_success "Stack parada"
+            ;;
+            
+        "restart")
+            print_status "Reiniciando stack Docker..."
+            docker-compose restart
+            print_success "Stack reiniciada"
+            show_status
+            ;;
+            
+        "logs")
+            show_logs
+            ;;
+            
+        "status")
+            show_status
+            health_check
+            ;;
+            
+        "clean")
+            print_warning "Limpando tudo (containers, volumes, imagens)..."
+            read -p "Tem certeza? Esta ação não pode ser desfeita. (y/N): " -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                docker-compose down -v --rmi all
+                docker system prune -f
+                print_success "Limpeza concluída"
+            else
+                print_status "Limpeza cancelada"
+            fi
+            ;;
+            
+        "help"|"-h"|"--help")
+            echo "Uso: $0 [comando]"
+            echo ""
+            echo "Comandos disponíveis:"
+            echo "  start     - Inicia a stack Docker (padrão)"
+            echo "  stop      - Para todos os containers"
+            echo "  restart   - Reinicia todos os containers"
+            echo "  logs      - Mostra logs em tempo real"
+            echo "  status    - Mostra status dos serviços"
+            echo "  clean     - Remove tudo (containers, volumes, imagens)"
+            echo "  help      - Mostra esta ajuda"
+            echo ""
+            ;;
+            
+        *)
+            print_error "Comando inválido: $mode"
+            print_status "Execute '$0 help' para ver comandos disponíveis"
+            exit 1
+            ;;
+    esac
 }
 
 # Executar função principal
