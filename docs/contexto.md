@@ -287,18 +287,18 @@ Atualizado em: 12/08/2025
 
 | Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| July          | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025     |
+| Jully         | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025     |
 | Jully         | Introdução       | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| July          | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025     |
-| July          | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| July          | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| July          | Requisitos FN/NF Restrições  | 01/08/2025    | 17/08/2025 |  📝  |    |
+| Jully         | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025     |
+| Jully         | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
+| Jully         | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
+| Jully         | Requisitos FN/NF Restrições  | 01/08/2025    | 17/08/2025 |  ✔️   |  12/08/2025  |
 | Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  ✔️  |   12/08/2025     |
 | Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | ✔️   |   12/08/2025   |
-| Vinicius      | Catálogo de Serviços       |    01/08/2025  |  |  📝   |                |
+| Vinícius      | Catálogo de Serviços       |    01/08/2025  |  |  📝   |                |
 | Pedro         | Arquitetura da Solução       |    01/08/2025  |  |  📝   |                |
 | Lucas         | Tecnologias Utilizadas       |    01/08/2025  |  | 📝   |                |
-| Italo         | Hospedagem       |    01/08/2025  |  |  📝   |                |
+| Ítalo         | Hospedagem       |    01/08/2025  |  |  📝   |                |
 
 #### Semana 2
 
