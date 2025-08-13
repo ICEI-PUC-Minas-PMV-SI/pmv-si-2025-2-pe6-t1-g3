@@ -1,0 +1,253 @@
+.cart {
+  padding: 30px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.h1-header-cart {
+  padding: 20px;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.cart-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-cart-container {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  padding: 30px;
+  width: 70%;
+  background-color: whitesmoke;
+}
+
+.right-cart-container {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  height: 300px;
+  padding: 30px;
+  background-color: whitesmoke;
+}
+
+.address-selection {
+  margin-top: 20px;
+}
+
+.address-selection label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.address-selection select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  appearance: none;
+  cursor: pointer;
+
+  margin-bottom: 30px;
+  transition: border-color 0.3s ease;
+}
+
+.address-selection select:focus {
+  border-color: black;
+  cursor: pointer;
+  outline: none;
+}
+
+.address-selection select option {
+  padding: 2px;
+  cursor: pointer;
+  background-color: #fff;
+  font-size: 1rem;
+}
+
+.address-selection select option:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+#close-cart {
+  width: 100%;
+  padding: 5px;
+  font-size: 1.2rem;
+  color: black;
+  background-color: #fda900e4;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#close-cart:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#close-cart:hover:not(:disabled) {
+  color: black;
+  background-color: #49f90f8f;
+}
+
+.product-cart {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-products {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-product {
+  display: flex;
+  font-weight: 800;
+  width: 100%;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background-color: #f9f9f9;
+  height: auto;
+}
+
+.cart-product img {
+  width: 150px;
+  height: 160px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 2px;
+}
+
+.cart-product .product-cart-right {
+  display: flex;
+  min-width: 200px;
+  max-width: 200px;
+  flex-direction: column;
+}
+
+.cart-product h2 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+.cart-product p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.remove-product-button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+  padding: 3px 2px;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.remove-product-button:hover {
+  background-color: #f71313c1;
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: #ff0000;
+  font-size: 20px;
+  margin-top: 10px;
+  transition: color 0.2s ease-in-out;
+}
+
+.delete-icon:hover {
+  color: #ff4500;
+}
+
+#quantity-controlsss {
+  display: flex;
+  padding: 10px 0;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+#quantity-controlsss button {
+  padding: 10px;
+}
+
+#quantity-controlsss button:hover {
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 900px) {
+  .cart-container {
+    width: 100%;
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+
+  .cart-products {
+    height: auto;
+  }
+
+  .cart-product {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .left-cart-container {
+    width: 100%;
+  }
+
+  .right-cart-container {
+    width: 100%;
+  }
+
+  .cart-product img {
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .cart-product .product-cart-right {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  #quantity-controlsss {
+    flex-direction: column;
+
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .h1-header-cart {
+    padding: 20px;
+    font-size: 23px;
+    font-weight: 700;
+  }
+}

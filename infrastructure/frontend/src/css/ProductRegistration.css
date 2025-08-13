@@ -1,0 +1,66 @@
+.product-registration {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 30px auto;
+}
+
+.form-group-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.column {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-control-file {
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.submit-product {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.submit-product input {
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.87);
+  color: white;
+  font-weight: 700;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+
+@media (max-width: 900px) {
+  .form-group-container {
+    flex-direction: column;
+  }
+}

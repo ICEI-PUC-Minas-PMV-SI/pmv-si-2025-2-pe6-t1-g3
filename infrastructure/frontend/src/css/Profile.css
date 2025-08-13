@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-4,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+.account-page {
+  background-color: whitesmoke;
+  margin-bottom: 10px;
+  height: auto;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#form-profile {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 40%;
+  margin-right: 50px;
+  margin-top: 0;
+}
+
+#form-profile label {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#email-profile,
+#senha-profile,
+#senha2-profile {
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid black;
+  width: 70%;
+  padding: 7px;
+}
+
+#form-profile input:focus {
+  background-color: rgba(128, 128, 128, 0.145);
+}
+
+#form-password-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  padding-left: 30px;
+  padding-right: 30px;
+  gap: 20px;
+}
+
+#form-password-profile h1 {
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 25px;
+}
+
+.input-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.input-profile input {
+  display: flex;
+  font-size: 18px;
+  width: 70%;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  padding: 7px;
+  align-items: center;
+  transition: 0.1s ease-in-out;
+}
+
+.input-profile input:hover {
+  color: white;
+  background-color: rgba(35, 34, 34, 0.76);
+}
+
+.input-profile-password {
+  width: 70%;
+}
+
+.input-profile-password input {
+  display: flex;
+  width: 100%;
+  margin-top: 30px;
+  font-size: 18px;
+  justify-content: center;
+  color: white;
+  background-color: black;
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  padding: 7px;
+  border-radius: 2px;
+  align-items: center;
+  transition: 0.1s ease-in-out;
+  margin-bottom: 30px;
+}
+
+.input-profile-password input:hover {
+  color: white;
+  background-color: rgba(35, 34, 34, 0.76);
+}
+
+@media (max-width: 900px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+  }
+
+  #form-profile {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 30px;
+    padding: 0 30px;
+  }
+
+  #form-password-profile {
+    width: 100%;
+    padding: 30px;
+  }
+
+  .input-profile input {
+    width: 100%;
+  }
+
+  .input-profile-password input {
+    width: 100%;
+  }
+}

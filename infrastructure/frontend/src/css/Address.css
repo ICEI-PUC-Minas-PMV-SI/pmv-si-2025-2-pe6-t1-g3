@@ -1,0 +1,146 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-4,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+#form-address {
+  display: flex;
+  width: 60vw;
+  height: auto;
+  justify-content: space-between;
+  padding-bottom: 50px;
+}
+
+#form-address label {
+  margin-top: 20px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.input-column1 {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin-right: 100px;
+}
+
+.input-column2 {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+}
+
+.input-profile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#submit-address {
+  display: flex;
+  width: 100%;
+  margin-top: 30px;
+  justify-content: center;
+  background-color: black;
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  color: white;
+  padding: 10px;
+  border-radius: 2px;
+  align-items: center;
+  transition: 0.1s ease-in-out;
+}
+
+#submit-address:hover {
+  color: white;
+  background-color: rgba(35, 34, 34, 0.76);
+}
+
+#form-address input:focus {
+  background-color: rgba(128, 128, 128, 0.145);
+}
+
+.css-addr {
+  background-color: transparent;
+  outline: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  padding: 5px;
+}
+
+.css-addr-block {
+  background-color: rgba(128, 128, 128, 0.145);
+  outline: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  padding: 5px;
+}
+
+.header-visible {
+  transition: transform 0.5s ease;
+  transform: translateY(0);
+}
+
+.header-hidden {
+  transition: transform 0.5s ease;
+  transform: translateY(-100%);
+}
+
+.endereco-container {
+  display: flex;
+  align-items: center;
+  align-items: center;
+  margin: 10px;
+  border-radius: 4px;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.116);
+}
+
+.endereco {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px;
+  font-weight: 700;
+}
+
+.endereco h1 {
+  display: flex;
+  align-items: center;
+}
+
+.icon-container {
+  display: flex;
+}
+
+.icon-container span {
+  cursor: pointer;
+  margin: 8px;
+}
+
+@media (max-width: 900px) {
+  #form-address {
+    flex-direction: column;
+    margin: 0;
+    padding: 30px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-address-inputs {
+    width: 75%;
+  }
+
+  .input-column1 {
+    width: 140%;
+    margin: 0;
+  }
+
+  .input-column2 {
+    width: 140%;
+    margin: 0;
+  }
+
+  .endereco-container {
+    padding: 20px;
+    width: 100%;
+  }
+}
