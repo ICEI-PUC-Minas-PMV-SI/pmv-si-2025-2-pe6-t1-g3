@@ -293,8 +293,8 @@ Atualizado em: 12/08/2025
 | July          | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
 | July          | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
 | July          | Requisitos FN/NF Restrições  | 01/08/2025    | 17/08/2025 |  📝  |    |
-| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  📝  |                |
-| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | 📝   |                |
+| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  ✔️  |   12/08/2025     |
+| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | ✔️   |   12/08/2025   |
 | Vinicius      | Catálogo de Serviços       |    01/08/2025  |  |  📝   |                |
 | Pedro         | Arquitetura da Solução       |    01/08/2025  |  |  📝   |                |
 | Lucas         | Tecnologias Utilizadas       |    01/08/2025  |  | 📝   |                |
