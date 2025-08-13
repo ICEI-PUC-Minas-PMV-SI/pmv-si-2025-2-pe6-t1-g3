@@ -1,0 +1,57 @@
+.aboutus-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(220, 220, 220, 0.561);
+  padding: 30px;
+}
+
+.aboutus-title h1 {
+  font-size: 70px;
+  color: black;
+  margin-bottom: 20px;
+}
+
+.person-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.person-image-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.person-image {
+  width: 250px;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+  margin-bottom: 20px;
+}
+
+.person-text-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.person-name {
+  font-size: 30px;
+  font-weight: 700;
+  color: black;
+}
+
+.person-description {
+  font-size: 20px;
+  color: black;
+}
+
+@media (max-width: 900px) {
+  .person-container {
+    flex-direction: column;
+  }
+}

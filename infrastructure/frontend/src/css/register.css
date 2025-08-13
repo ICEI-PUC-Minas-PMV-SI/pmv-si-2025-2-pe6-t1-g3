@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+}
+
+.container-register {
+  display: flex;
+  background-color: #f5f5f536;
+}
+
+.container-register-form {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #0d6759;
+}
+
+.form-register {
+  background-color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45%;
+  padding: 32px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 29px 0px;
+  flex-direction: column;
+}
+
+.textfield-register {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.textfield-register label {
+  margin-top: 15px;
+}
+
+.inputs-register {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.column {
+  width: 48%;
+}
+
+#senha,
+#email,
+#confSenha,
+#nome,
+#sobrenome,
+#cpf,
+#telefone {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 2px;
+  background-color: whitesmoke;
+  width: calc(100% - 22px);
+}
+
+.error-border {
+  border: 2px solid red;
+}
+
+.password-error {
+  color: red;
+  margin-top: 5px;
+}
+
+.aside-register {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 40%;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-register h1 {
+  font-size: 4vh;
+  font-weight: 800;
+}
+
+#submit-register {
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.87);
+  color: white;
+  margin-top: 10px;
+  font-weight: 700;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  transition: 0.3s ease;
+}
+
+#submit-register:hover {
+  background-color: rgba(128, 128, 128, 0.368);
+  color: black;
+}
+
+.status-error {
+  color: red;
+  letter-spacing: 1px;
+  font-family: "Poppins", sans-serif;
+  margin: 5px 0 5px 0;
+  padding: 7px;
+  border-radius: 3px;
+  background-color: rgba(165, 42, 42, 0.115);
+  font-size: 15px;
+}
+
+.status-success {
+  color: rgba(153, 255, 0, 0.915);
+  letter-spacing: 1px;
+  font-family: "Poppins", sans-serif;
+  margin: 5px 0 5px 0;
+  padding: 7px;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.588);
+  font-size: 30px;
+}
+
+.submit-register {
+  width: calc(100% - 22px);
+  margin-top: 30px;
+}
+
+@media (max-width: 900px) {
+  .form-register {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 30px;
+    margin: 10px;
+    box-shadow: none;
+  }
+
+  .container-register {
+    height: auto;
+  }
+  .textfield-register {
+    width: 100%;
+  }
+
+  .textfield-register label {
+    margin-top: 10px;
+  }
+  .column {
+    width: 100%;
+  }
+
+  .submit-register {
+    width: 100%;
+  }
+
+  .submit-register input {
+    width: 100%;
+  }
+
+  #senha,
+  #email,
+  #confSenha,
+  #nome,
+  #sobrenome,
+  #cpf,
+  #telefone {
+    width: 100%;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}

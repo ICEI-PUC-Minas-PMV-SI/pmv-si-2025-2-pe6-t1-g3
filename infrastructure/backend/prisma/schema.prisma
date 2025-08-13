@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Login {
+  CODUSU    Int     @id @default(autoincrement())
+  EMAIL     String
+  SENHA     String
+  PERMISSAO String? @default("CLIENTE")
+
+  PESSOA Pessoa?
+
+  @@map("LOGIN")
+}
+
+model Pessoa {
+  CODPES Int @id @default(autoincrement())
+
+  NOME      String
+  SOBRENOME String
+  CPF       String
+  TELEFONE  String
+
+  CODUSU    Int        @unique
+  USUARIO   Login      @relation(fields: [CODUSU], references: [CODUSU])
+  ENDERECOS Endereco[]
+
+  PEDIDOS Pedido[]
+
+  @@map("INFOS")
+}
+
+model Endereco {
+  CODEND      Int    @id @default(autoincrement())
+  CEP         String
+  RUA         String
+  NUMERO      String
+  BAIRRO      String
+  CIDADE      String
+  COMPLEMENTO String
+  DESCRICAO   String
+
+  PEDIDOS Pedido[]
+
+  PESSOA Pessoa? @relation(fields: [CODPES], references: [CODPES])
+  CODPES Int
+
+  @@map("ENDERECOS")
+}
+
+model Categorias {
+  CODCAT    Int    @id @default(autoincrement())
+  CATEGORIA String
+
+  PRODUTOS Produtos[]
+}
+
+model Produtos {
+  CODPROD Int @id @default(autoincrement())
+
+  PRODUTO   String
+  DESCRICAO String
+  IMAGEM    String
+  ESTOQUE   Float  @default(0)
+
+  VALOR      Float       @default(0)
+  DESCONTO   Float?      @default(0)
+  CATEGORIAS Categorias? @relation(fields: [CODCAT], references: [CODCAT])
+  CODCAT     Int?
+
+  ITENSPEDIDO ItensPedido[]
+
+  @@map("PRODUTO")
+}
+
+model Pedido {
+  CODPED Int @id @default(autoincrement())
+
+  SUBTOTAL   Float? @default(0)
+  VALORTOTAL Float? @default(0)
+  DESCONTO   Float? @default(0)
+  FRETE      Float? @default(0)
+
+  ITENSPEDIDO ItensPedido[]
+
+  ENDERECO Endereco? @relation(fields: [CODEND], references: [CODEND])
+  CODEND   Int?
+  PESSOA   Pessoa?   @relation(fields: [CODPES], references: [CODPES])
+  CODPES   Int?
+
+  DATAINC DateTime @default(now())
+
+  @@map("PEDIDOS")
+}
+
+model ItensPedido {
+  CODITEM Int @id @default(autoincrement())
+
+  TAMANHO String?
+  QTD     Int?
+
+  Produtos Produtos? @relation(fields: [CODPROD], references: [CODPROD])
+  CODPROD  Int?
+  Pedido   Pedido?   @relation(fields: [CODPED], references: [CODPED])
+  CODPED   Int?
+}

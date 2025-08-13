@@ -1,0 +1,21 @@
+.pedido {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.pedido h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.pedido p {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.pedido .endereco {
+  font-style: italic;
+  color: #666;
+}
