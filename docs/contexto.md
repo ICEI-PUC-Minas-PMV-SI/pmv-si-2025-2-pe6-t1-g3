@@ -60,8 +60,9 @@ O público-alvo do projeto é composto por:
   <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8fc8b031-4be4-4391-b466-89f91668e564" />
 
 ### Personas
+
 #### Persona 1 – Laura Andrade
-![Laura - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Laura)
+<img width="64" height="68" alt="image_LauraAndrade" src="https://github.com/user-attachments/assets/5625200c-3a03-4736-84ea-73a0e6082576" />
 
 **Profissão:** Proprietária de loja de roupas  
 **Mini-biografia:** Laura, 35 anos, administra uma pequena boutique especializada em moda feminina e peças personalizadas. É apaixonada por tendências e busca sempre trazer novidades para suas clientes.  
@@ -89,7 +90,8 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 2 – Patrícia Nogueira
-![Patrícia - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Patricia)
+<img width="60" height="64" alt="image_PatriciaNogueira" src="https://github.com/user-attachments/assets/b01cfe97-d448-486c-9ae2-49b4640aca96" />
+
 
 **Profissão:** Artista independente  
 **Mini-biografia:** Patrícia, 29 anos, cria e vende ilustrações autorais e artesanato. Já possui uma clientela fiel, mas ainda depende muito de eventos presenciais para vender.  
@@ -117,7 +119,8 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 3 – Carlos Menezes
-![Carlos - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Carlos)
+<img width="60" height="64" alt="image_CarlosMenezs" src="https://github.com/user-attachments/assets/55c63b68-2832-4709-a2e0-79ba54f7916c" />
+
 
 **Profissão:** Gerente de vendas  
 **Mini-biografia:** Carlos, 42 anos, atua no setor de eletrodomésticos e busca digitalizar parte das operações da loja física.  
@@ -145,7 +148,8 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 4 – Sara Lima
-![Sara - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Sara)
+<img width="60" height="64" alt="image_SaraLima" src="https://github.com/user-attachments/assets/3e028ce0-f8b3-48af-8014-8a7cc93c40e4" />
+
 
 **Profissão:** Analista de marketing  
 **Mini-biografia:** Sara, 31 anos, atua no setor de cosméticos e busca otimizar campanhas digitais para aumentar conversões no e-commerce.  
@@ -173,7 +177,8 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 5 – João Ferreira
-![João - Ilustração Minimalista](https://via.placeholder.com/150x150.png?text=Joao)
+<img width="60" height="64" alt="image" src="https://github.com/user-attachments/assets/299d7e86-a870-41ca-b4b0-b98bdc3eb7e8" />
+
 
 **Profissão:** Pequeno produtor rural  
 **Mini-biografia:** João, 50 anos, cultiva e vende produtos orgânicos diretamente para consumidores e pequenos mercados. Quer alcançar mais clientes pela internet.  
