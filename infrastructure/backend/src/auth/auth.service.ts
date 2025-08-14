@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma.service';
 import { LoginDto, RegistroDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -12,103 +13,194 @@ export class AuthService {
 
   async login(body: LoginDto) {
     try {
-      const procuraUsu = await this.prisma.login.findFirst({
-        where: { EMAIL: body.EMAIL, SENHA: body.SENHA },
+      const user = await this.prisma.login.findFirst({
+        where: { EMAIL: body.EMAIL.toLowerCase() },
         include: { PESSOA: true },
       });
 
-      if (!procuraUsu) {
+      if (!user) {
         throw new HttpException(
-          'Usuario ou senha incorreto',
-          HttpStatus.NOT_FOUND,
+          'Credenciais inválidas',
+          HttpStatus.UNAUTHORIZED,
         );
       }
 
-      const token = await this.assinaToken({
-        EMAIL: procuraUsu.EMAIL,
-        SENHA: procuraUsu.SENHA,
-        PERMISSAO: procuraUsu.PERMISSAO,
-        CODUSU: procuraUsu.CODUSU,
-        CODPES: procuraUsu.PESSOA.CODPES,
-        NOME: procuraUsu.PESSOA.NOME,
-        SOBRENOME: procuraUsu.PESSOA.SOBRENOME,
-        TELEFONE: procuraUsu.PESSOA.TELEFONE,
-        CPF: procuraUsu.PESSOA.CPF,
+      const isPasswordValid = await bcrypt.compare(body.SENHA, user.SENHA);
+      if (!isPasswordValid) {
+        throw new HttpException(
+          'Credenciais inválidas',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      const token = await this.generateToken({
+        CODUSU: user.CODUSU,
+        EMAIL: user.EMAIL,
+        PERMISSAO: user.PERMISSAO,
+        CODPES: user.PESSOA?.CODPES,
+        NOME: user.PESSOA?.NOME,
+        SOBRENOME: user.PESSOA?.SOBRENOME,
+        TELEFONE: user.PESSOA?.TELEFONE,
+        CPF: user.PESSOA?.CPF,
       });
 
-      return { token: token };
+      return {
+        token,
+        user: {
+          id: user.CODUSU,
+          email: user.EMAIL,
+          permission: user.PERMISSAO,
+          profile: user.PESSOA
+            ? {
+                id: user.PESSOA.CODPES,
+                name: user.PESSOA.NOME,
+                lastName: user.PESSOA.SOBRENOME,
+                phone: user.PESSOA.TELEFONE,
+                cpf: user.PESSOA.CPF,
+              }
+            : null,
+        },
+      };
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Erro interno do servidor',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async alteraLogin(body: LoginDto) {
+  async changePassword(
+    userId: number,
+    oldPassword: string,
+    newPassword: string,
+  ) {
     try {
-      const procuraUsu = await this.prisma.login.findFirst({
-        where: { EMAIL: body.EMAIL },
+      const user = await this.prisma.login.findUnique({
+        where: { CODUSU: userId },
       });
 
-      if (!procuraUsu) {
-        throw new HttpException('Usuario não encontrado', HttpStatus.NOT_FOUND);
+      if (!user) {
+        throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
       }
 
+      const isOldPasswordValid = await bcrypt.compare(oldPassword, user.SENHA);
+      if (!isOldPasswordValid) {
+        throw new HttpException(
+          'Senha atual incorreta',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+
       return await this.prisma.login.update({
-        where: { CODUSU: procuraUsu.CODUSU },
-        data: { SENHA: body.SENHA },
+        where: { CODUSU: userId },
+        data: { SENHA: hashedNewPassword },
       });
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Erro interno do servidor',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async registro(body: RegistroDto) {
     try {
-      const procuraUsu = await this.prisma.login.findFirst({
-        where: { EMAIL: body.EMAIL },
+      // Normalize email
+      const email = body.EMAIL.toLowerCase();
+
+      const existingUser = await this.prisma.login.findFirst({
+        where: { EMAIL: email },
       });
 
-      if (procuraUsu) {
-        throw new HttpException(
-          'Já existe um usuario com esse email',
-          HttpStatus.CONFLICT,
-        );
+      if (existingUser) {
+        throw new HttpException('Email já está em uso', HttpStatus.CONFLICT);
       }
 
-      const primeiroUsu = await this.prisma.login.create({
-        data: { EMAIL: body.EMAIL, SENHA: body.SENHA },
-      });
+      // Hash password
+      const hashedPassword = await bcrypt.hash(body.SENHA, 12);
 
-      await this.prisma.pessoa.create({
+      // Create user
+      const newUser = await this.prisma.login.create({
         data: {
-          NOME: body.NOME,
-          SOBRENOME: body.SOBRENOME,
-          CPF: body.CPF,
-          CODUSU: primeiroUsu.CODUSU,
-          TELEFONE: body.TELEFONE,
+          EMAIL: email,
+          SENHA: hashedPassword,
+          PERMISSAO: 'CLIENTE',
         },
       });
 
-      return primeiroUsu;
+      // Create profile
+      await this.prisma.pessoa.create({
+        data: {
+          NOME: body.NOME.trim(),
+          SOBRENOME: body.SOBRENOME.trim(),
+          CPF: body.CPF.replace(/\D/g, ''), // Remove non-numeric characters
+          CODUSU: newUser.CODUSU,
+          TELEFONE: body.TELEFONE.replace(/\D/g, ''),
+        },
+      });
+
+      // Return user without password
+      return {
+        id: newUser.CODUSU,
+        email: newUser.EMAIL,
+        permission: newUser.PERMISSAO,
+      };
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Erro interno do servidor',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  async assinaToken(args: {
+  private async generateToken(payload: {
     CODUSU: number;
     EMAIL: string;
-    SENHA: string;
     PERMISSAO: string;
-    CODPES: number;
-    NOME: string;
-    SOBRENOME: string;
-    CPF: string;
-    TELEFONE: string;
+    CODPES?: number;
+    NOME?: string;
+    SOBRENOME?: string;
+    CPF?: string;
+    TELEFONE?: string;
   }) {
-    const payload = args;
-    return await this.jwt.signAsync(payload, {
+    // Don't include sensitive data in JWT
+    const tokenPayload = {
+      sub: payload.CODUSU,
+      email: payload.EMAIL,
+      PERMISSAO: payload.PERMISSAO,
+      CODUSU: payload.CODUSU,
+      CODPES: payload.CODPES,
+      NOME: payload.NOME,
+      SOBRENOME: payload.SOBRENOME,
+      TELEFONE: payload.TELEFONE,
+      CPF: payload.CPF,
+    };
+
+    return await this.jwt.signAsync(tokenPayload, {
       expiresIn: '24h',
-      secret: 'facul',
+      secret: process.env.JWT_SECRET || 'dev-secret-key-change-in-production',
     });
+  }
+
+  async validateToken(token: string) {
+    try {
+      const decoded = await this.jwt.verifyAsync(token, {
+        secret: process.env.JWT_SECRET || 'dev-secret-key-change-in-production',
+      });
+      return decoded;
+    } catch (error) {
+      throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED);
+    }
   }
 }

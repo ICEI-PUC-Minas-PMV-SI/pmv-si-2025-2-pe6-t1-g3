@@ -58,7 +58,7 @@ export class ProdutoService {
   async cadastrar(body: any) {
     try {
       const categorias = ['MASCULINO', 'FEMININO'];
-      for (let element of categorias) {
+      for (const element of categorias) {
         const existingCategory = await this.prisma.categorias.findFirst({
           where: { CATEGORIA: element },
         });

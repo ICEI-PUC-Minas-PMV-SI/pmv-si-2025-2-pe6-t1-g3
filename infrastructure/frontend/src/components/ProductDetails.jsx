@@ -1,427 +1,267 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { ClipLoader } from "react-spinners";
-import Sustentavel from "../assets/sustentabilidade.jpg";
-import { PiShoppingCartFill } from "react-icons/pi";
-import { FaTrash, FaPencilAlt } from "react-icons/fa";
-import axios from "axios";
-import { css } from "@emotion/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import "../css/ProductDetails.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { productService } from '../services/api';
+import Card from './UI/Card';
+import Button from './UI/Button';
+import LoadingSpinner from './UI/LoadingSpinner';
+import { FiMinus, FiPlus, FiShoppingCart, FiEdit, FiTrash2 } from 'react-icons/fi';
 
 const ProductDetails = () => {
-  // Products
   const { productId } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  
   const [product, setProduct] = useState(null);
-
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomStyle, setZoomStyle] = useState({});
-
-  // Loading
   const [loading, setLoading] = useState(true);
-
-  // Products
-  const [selectedSize, setSelectedSize] = useState("");
-  const [showAddToCartMessage, setShowAddToCartMessage] = useState(false);
+  const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-
-  // Validations
-  const [token, setToken] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  // Pop Ups
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [editableProduct, setEditableProduct] = useState({});
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Set css to spinner loading
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: black;
-  `;
-
-  const spinnerContainerStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-  };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Check if user is admin to display more buttons
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const storedToken = localStorage.getItem("token");
-  useEffect(() => {
-    if (storedToken) {
-      try {
-        const decodedToken = jwtDecode(storedToken);
-        const expirationTime = decodedToken.exp * 1000;
-        if (Date.now() > expirationTime) {
-          localStorage.removeItem("token");
-          setToken(null);
-        }
-        setIsAdmin(decodedToken.PERMISSAO === "ADMINISTRADOR");
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  }, [storedToken]);
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Fetch products from localhost
-  // // // // // // // // // // // // // // // // // // // // // // // //
+  const [selectedSize, setSelectedSize] = useState('');
 
   useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        if (productId) {
-          const response = await axios.get(`http://localhost:3000/produto/buscar?CODPROD=${parseInt(productId, 10)}`);
-          setProduct(response.data);
-        } else {
-          throw new Error("ID do produto não fornecido");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar os detalhes do produto:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductDetails();
+    loadProduct();
   }, [productId]);
 
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Set size of the product
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
-  };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Set messagem when hovering cart button
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const handleMouseOverCart = () => {
-    setShowAddToCartMessage(true);
-  };
-
-  const handleMouseOutCart = () => {
-    setShowAddToCartMessage(false);
-  };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Set and remove edit product pop-up
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const handleEditClick = () => {
-    setEditableProduct({ ...product, CODPROD: parseInt(productId, 10) });
-    setIsPopupOpen(true);
-  };
-
-  const handlePopupClose = () => {
-    setIsPopupOpen(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditableProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
-  };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Quantity
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const increaseQuantity = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // update product image in pop-up (conversion png - base64)
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEditableProduct((prevProduct) => ({
-          ...prevProduct,
-          IMAGEM: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
+  const loadProduct = async () => {
+    try {
+      setLoading(true);
+      const response = await productService.getProduct(productId);
+      setProduct(response.data);
+    } catch (error) {
+      setError('Produto não encontrado');
+      console.error('Erro ao carregar produto:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Add to cart function
-  // // // // // // // // // // // // // // // // // // // // // // // //
+  const handleQuantityChange = (delta) => {
+    setQuantity(prev => Math.max(1, Math.min(product?.ESTOQUE || 1, prev + delta)));
+  };
 
-  const addToCart = () => {
+  const handleAddToCart = () => {
     if (!selectedSize) {
-      toast.error("Por favor, selecione um tamanho antes de adicionar ao carrinho.", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      alert('Por favor, selecione um tamanho');
       return;
     }
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const productWithSize = { ...product, size: selectedSize };
 
-    const existingProductIndex = cart.findIndex((item) => item.CODPROD === productWithSize.CODPROD && item.size === productWithSize.size);
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existingItem = cart.find(item => 
+      item.CODPROD === product.CODPROD && item.size === selectedSize
+    );
 
-    if (existingProductIndex >= 0) {
-      cart[existingProductIndex].quantity += 1;
+    if (existingItem) {
+      existingItem.quantity += quantity;
     } else {
-      cart.push({ ...productWithSize, quantity: 1 });
+      cart.push({
+        CODPROD: product.CODPROD,
+        PRODUTO: product.PRODUTO,
+        VALOR: product.VALOR,
+        IMAGEM: product.IMAGEM,
+        size: selectedSize,
+        quantity: quantity
+      });
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    toast.success("Produto adicionado ao carrinho!", {
-      position: "bottom-right",
-      autoClose: 6000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Produto adicionado ao carrinho!');
   };
 
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Buy product function
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  const handleBuy = async () => {};
+  const handleEdit = () => {
+    navigate(`/admin/products/edit/${productId}`);
+  };
 
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Edit product function
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  const handleSaveChanges = async (e) => {
-    e.preventDefault();
+  const handleDelete = async () => {
+    if (!window.confirm('Tem certeza que deseja excluir este produto?')) {
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.patch(
-        `http://localhost:3000/produto/atualizar`,
-        {
-          ...editableProduct,
-          CODPROD: parseInt(editableProduct.CODPROD, 10),
-        },
-        config
-      );
-      setProduct(response.data);
-      setIsPopupOpen(false);
+      await productService.deleteProduct(productId);
+      navigate('/');
     } catch (error) {
-      console.error("Erro ao atualizar o produto:", error);
+      alert('Erro ao excluir produto');
     }
   };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Set and remove delete product pop-up
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const handleConfirmDeleteProduct = () => {
-    setShowDeleteConfirmation(true);
-  };
-
-  const handleCancelDeleteProduct = () => {
-    setShowDeleteConfirmation(false);
-  };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Delete product function
-  // // // // // // // // // // // // // // // // // // // // // // // //
-
-  const handleDeleteProduct = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.delete(`http://localhost:3000/produto/deletar?CODPROD=${parseInt(productId, 10)}`, config);
-      window.location.href = "/";
-    } catch (error) {
-      console.error("Erro ao excluir o produto:", error);
-    }
-  };
-
-  // Handle mouse move on image
-  const handleMouseMove = (e) => {
-    const { left, top, width, height } = e.target.getBoundingClientRect();
-    const x = ((e.pageX - left) / width) * 100;
-    const y = ((e.pageY - top) / height) * 100;
-    setZoomStyle({
-      transformOrigin: `${x}% ${y}%`,
-    });
-  };
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // Loading stuff
-  // // // // // // // // // // // // // // // // // // // // // // // //
 
   if (loading) {
     return (
-      <div style={spinnerContainerStyle}>
-        <ClipLoader color={"#000"} loading={loading} css={override} size={150} />
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="large" />
       </div>
     );
   }
 
-  if (!product) {
-    return <div>Produto não encontrado</div>;
+  if (error || !product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Card>
+          <div className="text-center py-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              {error || 'Produto não encontrado'}
+            </h2>
+            <Button onClick={() => navigate('/')}>
+              Voltar à loja
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
   }
 
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(price);
+  };
+
+  const sizes = ['P', 'M', 'G', 'GG'];
+
   return (
-    <>
-      <div className="product-details">
-        <div className="image-product-side">
-          <div className="cart-icon-container" onMouseOver={handleMouseOverCart} onMouseOut={handleMouseOutCart}>
-            <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" onClick={addToCart} />
-            {showAddToCartMessage && <p className="add-to-cart-message">Adicionar ao carrinho</p>}
-          </div>
-          <img
-            src={product.IMAGEM}
-            alt={product.NOME}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsZoomed(true)}
-            onMouseLeave={() => setIsZoomed(false)}
-            style={isZoomed ? { transform: "scale(1.2)", ...zoomStyle } : {}}
-          />
-        </div>
-        <div className="description-products">
-          <h1>{product.PRODUTO}</h1>
-          <p>{product.DESCRICAO}</p>
-          <p className="price">Preço: R${product.VALOR}</p>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Card className="overflow-hidden">
+            <div className="aspect-square relative">
+              <img
+                src={product.IMAGEM}
+                alt={product.PRODUTO}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.src = '/api/placeholder/600/600';
+                }}
+              />
+            </div>
+          </Card>
 
-          <div className="quantity-selection">
-            <p> Quantidade: </p>
-            <button onClick={decreaseQuantity} className="quantity-button">
-              -
-            </button>
-            <span className="quantity">{quantity}</span>
-            <button onClick={increaseQuantity} className="quantity-button">
-              +
-            </button>
-          </div>
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {product.PRODUTO}
+              </h1>
+              <p className="text-gray-600 text-lg">
+                {product.DESCRICAO}
+              </p>
+            </div>
 
-          <div className="size-selection">
-            <button onClick={() => handleSizeSelect("P")} className={selectedSize === "P" ? "selected" : ""}>
-              P
-            </button>
-            <button onClick={() => handleSizeSelect("M")} className={selectedSize === "M" ? "selected" : ""}>
-              M
-            </button>
-            <button onClick={() => handleSizeSelect("G")} className={selectedSize === "G" ? "selected" : ""}>
-              G
-            </button>
-          </div>
+            <div className="flex items-center justify-between">
+              <span className="text-3xl font-bold text-gray-900">
+                {formatPrice(product.VALOR)}
+              </span>
+              <span className="text-sm text-gray-500">
+                {product.ESTOQUE} em estoque
+              </span>
+            </div>
 
-          <form className="submit-producttt" onSubmit={handleBuy}>
-            {isAdmin && (
-              <>
-                <button type="button" id="submit-edit-product" className="admin-buttons" onClick={handleEditClick}>
-                  <FaPencilAlt className="inline mr-1" />
-                  Atualizar
-                </button>
-                <button type="button" id="submit-delete-product" className="admin-buttons" onClick={handleConfirmDeleteProduct}>
-                  <FaTrash className="inline mr-1" />
-                  Excluir
-                </button>
-              </>
-            )}
-            <button type="submit" id="submit-buy-product" className="flex items-center">
-              <PiShoppingCartFill className="inline mr-1" />
-              Comprar
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className="sustentability">
-        <div className="sustentability-image">
-          <img src={Sustentavel} alt="" />
-        </div>
-        <div className="sustentability-text">
-          <h1 className="sustentability-paragraph">Produto Sustentável</h1>
-          <p>
-            Estamos comprometidos em oferecer produtos que não apenas atendam às suas necessidades, mas também respeitem o meio ambiente. Este item foi cuidadosamente produzido com
-            materiais sustentáveis e práticas eco-friendly. Ao escolher este produto, você está contribuindo para um futuro mais sustentável e ajudando a reduzir o impacto
-            ambiental. Juntos, podemos fazer a diferença!
-          </p>
-        </div>
-      </div>
-      <ToastContainer />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tamanho
+              </label>
+              <div className="flex space-x-2">
+                {sizes.map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`px-4 py-2 border rounded-lg font-medium transition-colors ${
+                      selectedSize === size
+                        ? 'border-gray-900 bg-gray-900 text-white'
+                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-      {/* // // // // // // // // // // // // // // // // // // // // // // // //
-      // Set edit popup
-       // // // // // // // // // // // // // // // // // // // // // // // // */}
-      {showDeleteConfirmation && (
-        <div className="popup">
-          <div className="popup-content">
-            <h2>Confirmar exclusão</h2>
-            <p>Tem certeza de que deseja excluir este produto?</p>
-            <div className="popup-buttons">
-              <button onClick={handleCancelDeleteProduct}>Não</button>
-              <button onClick={handleDeleteProduct}>Sim</button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Quantidade
+              </label>
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="outline"
+                  size="small"
+                  onClick={() => handleQuantityChange(-1)}
+                  disabled={quantity <= 1}
+                >
+                  <FiMinus size={16} />
+                </Button>
+                <span className="px-4 py-2 text-lg font-medium">
+                  {quantity}
+                </span>
+                <Button
+                  variant="outline"
+                  size="small"
+                  onClick={() => handleQuantityChange(1)}
+                  disabled={quantity >= product.ESTOQUE}
+                >
+                  <FiPlus size={16} />
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Button
+                className="w-full flex items-center justify-center"
+                onClick={handleAddToCart}
+                disabled={!selectedSize || product.ESTOQUE === 0}
+              >
+                <FiShoppingCart className="mr-2" size={18} />
+                Adicionar ao carrinho
+              </Button>
+
+              {user?.isAdmin && (
+                <div className="flex space-x-3">
+                  <Button
+                    variant="outline"
+                    className="flex-1 flex items-center justify-center"
+                    onClick={handleEdit}
+                  >
+                    <FiEdit className="mr-2" size={16} />
+                    Editar
+                  </Button>
+                  <Button
+                    variant="danger"
+                    className="flex-1 flex items-center justify-center"
+                    onClick={handleDelete}
+                  >
+                    <FiTrash2 className="mr-2" size={16} />
+                    Excluir
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className="pt-6 border-t border-gray-200">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-medium text-gray-900 mb-2">
+                    Categoria
+                  </h3>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                    {product.CATEGORIAS?.CATEGORIA || 'Sem categoria'}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="font-medium text-gray-900 mb-2">
+                    Informações do produto
+                  </h3>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>Material de alta qualidade</li>
+                    <li>Confortável para uso diário</li>
+                    <li>Fácil manutenção</li>
+                    <li>Envio rápido e seguro</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      )}
-
-      {/* // // // // // // // // // // // // // // // // // // // // // // // //
-      // Set delete popup
-     // // // // // // // // // // // // // // // // // // // // // // // // */}
-      {isPopupOpen && (
-        <div className="popup">
-          <div className="popup-content">
-            <h2>Editar Produto</h2>
-            <label>
-              Nome:
-              <input type="text" name="PRODUTO" value={editableProduct.PRODUTO || ""} onChange={handleInputChange} />
-            </label>
-            <label>
-              Descrição:
-              <input type="text" name="DESCRICAO" value={editableProduct.DESCRICAO || ""} onChange={handleInputChange} />
-            </label>
-            <label>
-              Preço:
-              <input type="text" name="VALOR" value={editableProduct.VALOR || ""} onChange={handleInputChange} />
-            </label>
-            <label>
-              Estoque:
-              <input type="text" name="ESTOQUE" value={editableProduct.ESTOQUE || ""} onChange={handleInputChange} />
-            </label>
-            <label>
-              Imagem URL:
-              <input type="file" name="IMAGEM" accept="image/*" onChange={handleImageChange} />
-            </label>
-            <div className="popup-buttons">
-              <button onClick={handlePopupClose}>Cancelar</button>
-              <button onClick={handleSaveChanges}>Salvar</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 

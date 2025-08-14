@@ -9,7 +9,7 @@ datasource db {
 
 model Login {
   CODUSU    Int     @id @default(autoincrement())
-  EMAIL     String
+  EMAIL     String  @unique
   SENHA     String
   PERMISSAO String? @default("CLIENTE")
 
@@ -63,7 +63,7 @@ model Categorias {
 model Produtos {
   CODPROD Int @id @default(autoincrement())
 
-  PRODUTO   String
+  PRODUTO   String @unique
   DESCRICAO String
   IMAGEM    String
   ESTOQUE   Float  @default(0)
