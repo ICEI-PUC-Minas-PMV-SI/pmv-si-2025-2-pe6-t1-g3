@@ -47,7 +47,7 @@ A ConectaShop também contribui para a inclusão digital e a capacitação tecno
 
 Finalmente, a plataforma se apoia nas estratégias de marketing digital, que oferecem baixo custo e alto retorno, potencializando a visibilidade dos fornecedores e o alcance de novos clientes [(GONÇALVES; MARTINS, 2020)](../docs/references.md).
 
-Assim, o projeto ConectaShop se posiciona como uma iniciativa que fortalece o ecossistema do comércio eletrônico e promove a inclusão digital, contribuindo para o desenvolvimento econômico e social dos empreendedores.
+Assim, o projeto ZABBIX STORE se posiciona como uma iniciativa que fortalece o ecossistema do comércio eletrônico e promove a inclusão digital, contribuindo para o desenvolvimento econômico e social dos empreendedores.
 
 
 ## Público-Alvo
@@ -57,7 +57,7 @@ O público-alvo do projeto é composto por:
 - **Fornecedores:** pequenos e médios empreendedores, comerciantes locais e marcas que desejam ampliar seu alcance no comércio digital.  
 - **Compradores:** consumidores finais que buscam praticidade, variedade e segurança ao realizar compras online.
 
-  <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8fc8b031-4be4-4391-b466-89f91668e564" />
+  <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8098e55e-eed2-4e36-8ef1-3b629bbba266" />
 
 ### Personas
 
