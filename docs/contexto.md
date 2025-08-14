@@ -23,7 +23,7 @@ Por outro lado, compradores muitas vezes enfrentam a limitação de encontrar pr
 ## Objetivos
 
 ### Objetivo Geral
-Desenvolver uma plataforma de e-commerce, chamada **ConectaShop**, que conecte fornecedores e compradores, oferecendo um ambiente digital seguro, escalável e com recursos de análise de vendas para fornecedores.
+Desenvolver uma plataforma de e-commerce, chamada **ZABBIX STORE**, que conecte fornecedores e compradores, oferecendo um ambiente digital seguro, escalável e com recursos de análise de vendas para fornecedores.
 
 ### Objetivos Específicos
 - Permitir o cadastro de fornecedores e seus produtos de forma simples e intuitiva.  
@@ -35,7 +35,7 @@ Desenvolver uma plataforma de e-commerce, chamada **ConectaShop**, que conecte f
 
 ## Justificativa
 
-A criação da ConectaShop busca atender a uma necessidade crescente do mercado digital: proporcionar oportunidades para pequenos e médios fornecedores competirem em condições mais equilibradas com grandes empresas. As Micro, Pequenas e Médias Empresas (MPMEs) têm um papel relevante na economia, sendo responsáveis por grande parte do emprego e da produção local, o que fortalece o impacto social e produtivo do projeto [(BRASIL, 2021)](../docs/references.md).
+A criação da ZABBIX STORE busca atender a uma necessidade crescente do mercado digital: proporcionar oportunidades para pequenos e médios fornecedores competirem em condições mais equilibradas com grandes empresas. As Micro, Pequenas e Médias Empresas (MPMEs) têm um papel relevante na economia, sendo responsáveis por grande parte do emprego e da produção local, o que fortalece o impacto social e produtivo do projeto [(BRASIL, 2021)](../docs/references.md).
 
 Além disso, o e-commerce surge como uma solução acessível e eficiente, especialmente para empreendedores que enfrentam barreiras financeiras ou logísticas para expandir seus negócios de forma tradicional. Esse modelo digital permite superar limitações físicas e alcançar novos mercados com menores custos [(SILVA; PEREIRA, 2020)](../docs/references.md).
 
