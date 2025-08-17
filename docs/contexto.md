@@ -273,7 +273,82 @@ Apresente também uma figura explicando como as tecnologias estão relacionadas 
 
 ## Hospedagem
 
-Explique como a hospedagem e o lançamento da plataforma foi feita.
+## 🗄️ Banco de Dados
+- **Tipo:** PostgreSQL (relacional)  
+- **Provedor:** AWS RDS  
+- **Localização:** São Paulo (sa-east-1)  
+- **Escalabilidade:**  
+  - Instância inicial: `db.t3.medium`  
+  - Auto Scaling (read replicas / mudança de instância)  - (Podemos deixar como essa definição inicial mas limitar para não ter muito custo sem querer na etapa de desenvolvimento)
+- **Backup & Recovery:**  
+  - Backup automático (retenção: 7 dias)  
+  - Snapshots manuais para releases  
+  - Replicação Multi-AZ (futuro)  
+
+**Justificativa:** Banco robusto, confiável, suporte nativo AWS, compliance LGPD.
+
+---
+
+## ☁️ Hospedagem da Aplicação
+- **Infraestrutura:** AWS  
+- **Serviço:**  
+  - Inicial: **Elastic Beanstalk**  
+  - Futuro: ECS/Fargate (se necessário)  (trabalhamos com ECS no ultimo eixo, mas tem que ver quanto a custo gratuito inicial)
+- **Rede e Segurança:**  - Caso seja necessário
+  - VPC privada  
+  - Load Balancer  
+  - Comunicação interna restrita via Security Groups  
+
+**Justificativa:** Beanstalk reduz esforço inicial; ECS avaliado para crescimento. Trabalhamos com isso no eixo anterior
+**Bonus:** Podemos tentar montar na estrutura de IAC
+
+---
+
+## 🔄 CI/CD
+- **Ferramenta:** GitHub Actions  
+- **Pipeline:**  
+  1. **Build** (dependências + build frontend/backend)  
+  2. **Testes** (unitários)  
+  3. **Deploy**  
+     - Automático em *staging*  
+     - Produção com *approval manual*  
+
+- **Gerenciamento de Segredos:**  
+  - GitHub Secrets + AWS Secrets Manager  
+
+**Justificativa:** GitHub Actions integrado ao repositório, com controle de qualidade via testes. Trabalhamos com isso no eixo anterior.
+
+---
+
+## 📱 Geração de APK (Mobile)
+- **Ferramenta:** Expo Go + EAS Build  
+- **Configurações:**  
+  - APK **unsigned** para uso interno  
+  - `app.json` configurado  
+  - `.aab` possível no futuro - (documento para padronização de publicação do aplicativo na loja, podemos fazer como extra)
+- **Assinatura:** Não aplicável inicialmente  
+- **Publicação:** Apenas distribuição interna (QA/testes)  - (Geraríamos versão de PRD mas sem publicação)
+
+**Justificativa:** Expo simplifica o build mobile, sem necessidade de publicação em loja.
+**Estudo:** Junção com a pipe do github para ativação e execução do APK como artefato
+
+---
+
+## 📊 Monitoramento e Logs
+- **Infraestrutura:** AWS CloudWatch  
+  - Dashboards de métricas (CPU, memória, latência, erros)  
+  - Alarmes + SNS (e-mail)  
+  - Retenção de logs: 30 dias  
+- **Aplicação:** Logs centralizados com Request ID 
+
+**Justificativa:** CloudWatch nativo da AWS + Sentry para rastreamento de falhas. Considerando que subiremos o serviço na AWS seria mais facil de mapear
+
+---
+
+## 📎 Referências 
+- Guia [Expo](https://docs.expo.dev/)  
+- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)  
+
 
 # Planejamento
 
