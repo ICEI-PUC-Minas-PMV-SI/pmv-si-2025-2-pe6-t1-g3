@@ -255,9 +255,57 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |07| Cada comprador poderá possuir apenas uma conta por endereço de e-mail |
 |08| Cada fornecedor poderá ter apenas uma conta com perfil administrador e até duas contas de usuário associadas |
 
-# Catálogo de Serviços
+# Catálogo de Serviços 
 
-Descreva aqui todos os serviços que serão disponibilizados pelo seu projeto, detalhando suas características e funcionalidades.
+As funcionalidades da plataforma **ZABBIX STORE** em três categorias: **Existentes**, **Em desenvolvimento** e **Planejadas**.  
+
+---
+
+## ✅ Funcionalidades Existentes  
+
+| Código  | Funcionalidade                                      | Descrição                                                                 | Status |
+|---------|------------------------------------------------------|---------------------------------------------------------------------------|--------|
+| RF-001  | Cadastro de fornecedores                             | Permite cadastrar fornecedores com dados empresariais.                    | **Ativo** |
+| RF-002  | Cadastro de compradores                              | Permite cadastrar compradores com dados pessoais, endereço e contato.     | **Ativo** |
+| RF-003  | Login de usuários                                    | Fornecedores e compradores acessam suas contas.                           | **Ativo** |
+| RF-004  | Gerenciamento de perfil do fornecedor                | Editar e excluir informações do perfil empresarial.                       | **Ativo** |
+| RF-005  | Gerenciamento de perfil do comprador                 | Editar e excluir dados pessoais, endereço e contato.                      | **Ativo** |
+| RF-006  | Gerenciamento de produtos e formas de pagamento      | Cadastro, edição e exclusão de produtos e modalidades de pagamento.       | **Ativo** |
+| RF-009  | Carrinho de compras                                  | Compradores podem adicionar produtos ao carrinho.                         | **Ativo** |
+| RF-010  | Confirmação de pedido                                | Geração de confirmação para comprador e notificação para fornecedor.      | **Ativo** |
+| RF-011  | Histórico de compras                                 | Exibe lista de compras realizadas pelo comprador.                         | **Ativo** |
+
+---
+
+## 🚧 Funcionalidades em Desenvolvimento  
+
+| Código  | Funcionalidade                        | Descrição                                                                 | Status |
+|---------|----------------------------------------|---------------------------------------------------------------------------|--------|
+| RF-007  | Dashboard de vendas para fornecedores | Fornecedores visualizam métricas de vendas e relatórios.                  | **Em desenvolvimento** |
+| RF-008  | Busca e filtros de produtos            | Compradores podem pesquisar produtos por categoria, preço, avaliação etc. | **Em desenvolvimento** |
+| RF-012  | Página de detalhes do produto          | Exibe informações completas: fotos, descrição, preço, avaliações, vendedor.| **Em desenvolvimento** |
+
+---
+
+## 🛠️ Funcionalidades Planejadas (Futuras Versões)  
+
+| Código  | Funcionalidade                          | Descrição                                                                 | Status |
+|---------|------------------------------------------|---------------------------------------------------------------------------|--------|
+| RF-013  | Avaliação de produtos e vendedores      | Compradores podem avaliar produtos e fornecedores após a compra.          | **Planejado** |
+| RF-014  | Gestão de estoque com alertas           | Fornecedores recebem aviso de baixa de estoque.                           | **Planejado** |
+| ---     | Integração com múltiplos canais de venda | Integração centralizada com marketplaces e redes sociais.                  | **Planejado** |
+| ---     | App mobile (Android/iOS)                 | Versão nativa para dispositivos móveis.                                   | **Planejado** |
+| ---     | Módulo de segurança avançada             | 2FA, monitoramento de fraudes e criptografia de dados sensíveis.          | **Planejado** |
+| ---     | Recomendações personalizadas             | Sugestões de produtos baseadas em histórico e perfil de compra.           | **Planejado** |
+
+---
+
+## ♻️ Funcionalidades Depreciadas  
+
+| Código | Funcionalidade | Descrição | Status |
+|--------|----------------|-----------|--------|
+| –      | –              | Até o momento, nenhuma funcionalidade foi depreciada. | – |
+
 
 # Arquitetura da Solução
 
