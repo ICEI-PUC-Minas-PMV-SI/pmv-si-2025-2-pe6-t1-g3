@@ -23,7 +23,7 @@ Por outro lado, compradores muitas vezes enfrentam a limitação de encontrar pr
 ## Objetivos
 
 ### Objetivo Geral
-Desenvolver uma plataforma de e-commerce, chamada **ConectaShop**, que conecte fornecedores e compradores, oferecendo um ambiente digital seguro, escalável e com recursos de análise de vendas para fornecedores.
+Desenvolver uma plataforma de e-commerce, chamada **ZABBIX STORE**, que conecte fornecedores e compradores, oferecendo um ambiente digital seguro, escalável e com recursos de análise de vendas para fornecedores.
 
 ### Objetivos Específicos
 - Permitir o cadastro de fornecedores e seus produtos de forma simples e intuitiva.  
@@ -35,7 +35,7 @@ Desenvolver uma plataforma de e-commerce, chamada **ConectaShop**, que conecte f
 
 ## Justificativa
 
-A criação da ConectaShop busca atender a uma necessidade crescente do mercado digital: proporcionar oportunidades para pequenos e médios fornecedores competirem em condições mais equilibradas com grandes empresas. As Micro, Pequenas e Médias Empresas (MPMEs) têm um papel relevante na economia, sendo responsáveis por grande parte do emprego e da produção local, o que fortalece o impacto social e produtivo do projeto [(BRASIL, 2021)](../docs/references.md).
+A criação da ZABBIX STORE busca atender a uma necessidade crescente do mercado digital: proporcionar oportunidades para pequenos e médios fornecedores competirem em condições mais equilibradas com grandes empresas. As Micro, Pequenas e Médias Empresas (MPMEs) têm um papel relevante na economia, sendo responsáveis por grande parte do emprego e da produção local, o que fortalece o impacto social e produtivo do projeto [(BRASIL, 2021)](../docs/references.md).
 
 Além disso, o e-commerce surge como uma solução acessível e eficiente, especialmente para empreendedores que enfrentam barreiras financeiras ou logísticas para expandir seus negócios de forma tradicional. Esse modelo digital permite superar limitações físicas e alcançar novos mercados com menores custos [(SILVA; PEREIRA, 2020)](../docs/references.md).
 
@@ -47,7 +47,7 @@ A ConectaShop também contribui para a inclusão digital e a capacitação tecno
 
 Finalmente, a plataforma se apoia nas estratégias de marketing digital, que oferecem baixo custo e alto retorno, potencializando a visibilidade dos fornecedores e o alcance de novos clientes [(GONÇALVES; MARTINS, 2020)](../docs/references.md).
 
-Assim, o projeto ConectaShop se posiciona como uma iniciativa que fortalece o ecossistema do comércio eletrônico e promove a inclusão digital, contribuindo para o desenvolvimento econômico e social dos empreendedores.
+Assim, o projeto ZABBIX STORE se posiciona como uma iniciativa que fortalece o ecossistema do comércio eletrônico e promove a inclusão digital, contribuindo para o desenvolvimento econômico e social dos empreendedores.
 
 
 ## Público-Alvo
@@ -57,19 +57,151 @@ O público-alvo do projeto é composto por:
 - **Fornecedores:** pequenos e médios empreendedores, comerciantes locais e marcas que desejam ampliar seu alcance no comércio digital.  
 - **Compradores:** consumidores finais que buscam praticidade, variedade e segurança ao realizar compras online.
 
-  <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8fc8b031-4be4-4391-b466-89f91668e564" />
+  <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8098e55e-eed2-4e36-8ef1-3b629bbba266" />
+
+### Personas
+
+#### Persona 1 – Laura Andrade
+<img width="64" height="68" alt="image_LauraAndrade" src="https://github.com/user-attachments/assets/5625200c-3a03-4736-84ea-73a0e6082576" />
+
+**Profissão:** Proprietária de loja de roupas  
+**Mini-biografia:** Laura, 35 anos, administra uma pequena boutique especializada em moda feminina e peças personalizadas. É apaixonada por tendências e busca sempre trazer novidades para suas clientes.  
+**Detalhes pessoais:**  
+- Localização: São Paulo/SP  
+- Renda familiar: R$ 6.800,00  
+- Nível educacional: Ensino Superior Completo (Moda)  
+- Status relacionamento: Casada  
+
+**Carreira:**  
+- Empresa: Elegância Feminina  
+- Tamanho da empresa: Pequena (3 funcionários)  
+- Responsabilidades profissionais: Gerenciar estoque, atendimento ao cliente, marketing digital e compras de novas coleções.  
+- Objetivos: Ampliar o alcance da loja por meio do e-commerce e fidelizar clientes.  
+- Desafios: Concorrer com grandes marcas e lidar com custos de logística.
+
+**Mapa de Empatia:**  
+- O que vê: Concorrentes bem estabelecidos no digital.  
+- O que ouve: Clientes pedindo mais praticidade nas compras.  
+- O que pensa e sente: Ansiosa para expandir mas receosa com a adaptação ao online.  
+- O que fala e faz: Investe em fotos de qualidade e atendimento personalizado.  
+- Dores: Baixa visibilidade e falta de integração de sistemas.  
+- Ganhos: Mais vendas e reconhecimento da marca.  
+
+---
+
+#### Persona 2 – Patrícia Nogueira
+<img width="60" height="64" alt="image_PatriciaNogueira" src="https://github.com/user-attachments/assets/b01cfe97-d448-486c-9ae2-49b4640aca96" />
 
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
+**Profissão:** Artista independente  
+**Mini-biografia:** Patrícia, 29 anos, cria e vende ilustrações autorais e artesanato. Já possui uma clientela fiel, mas ainda depende muito de eventos presenciais para vender.  
+**Detalhes pessoais:**  
+- Localização: Fortaleza/CE  
+- Renda familiar: R$ 8.000,00  
+- Nível educacional: Ensino Superior Completo (Design)  
+- Status relacionamento: Solteira  
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
+**Carreira:**  
+- Empresa: Estúdio Próprio  
+- Tamanho da empresa: Microempreendedora individual  
+- Responsabilidades profissionais: Produção de artes, atendimento a clientes, divulgação online e logística de envio.  
+- Objetivos: Expandir a base de clientes nacionalmente.  
+- Desafios: Baixo alcance digital e pouco conhecimento em marketing.
 
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+**Mapa de Empatia:**  
+- O que vê: Plataformas grandes dominando as buscas.  
+- O que ouve: Feedback de clientes sobre dificuldades de compra online.  
+- O que pensa e sente: Quer autonomia e controle sobre seu canal de vendas.  
+- O que fala e faz: Busca cursos de marketing digital e redes sociais.  
+- Dores: Falta de tempo e recursos para gestão.  
+- Ganhos: Vendas constantes sem depender de eventos presenciais.
+
+---
+
+#### Persona 3 – Carlos Menezes
+<img width="60" height="64" alt="image_CarlosMenezs" src="https://github.com/user-attachments/assets/55c63b68-2832-4709-a2e0-79ba54f7916c" />
+
+
+**Profissão:** Gerente de vendas  
+**Mini-biografia:** Carlos, 42 anos, atua no setor de eletrodomésticos e busca digitalizar parte das operações da loja física.  
+**Detalhes pessoais:**  
+- Localização: Porto Alegre/RS  
+- Renda familiar: R$ 12.000,00  
+- Nível educacional: Ensino Médio Completo  
+- Status relacionamento: Casado  
+
+**Carreira:**  
+- Empresa: Móveis & Eletros Sul  
+- Tamanho da empresa: Média (25 funcionários)  
+- Responsabilidades profissionais: Gestão de equipe, definição de metas, relacionamento com fornecedores e análise de vendas.  
+- Objetivos: Aumentar as vendas online e integrar estoque físico e digital.  
+- Desafios: Treinar a equipe e adaptar processos ao e-commerce.
+
+**Mapa de Empatia:**  
+- O que vê: Concorrentes investindo pesado em e-commerce.  
+- O que ouve: Clientes pedindo mais opções de compra online.  
+- O que pensa e sente: Preocupado com a curva de aprendizado da equipe.  
+- O que fala e faz: Participa de reuniões de tecnologia e novos negócios.  
+- Dores: Perder clientes para lojas 100% digitais.  
+- Ganhos: Melhor aproveitamento de estoque e novos canais de vendas.
+
+---
+
+#### Persona 4 – Sara Lima
+<img width="60" height="64" alt="image_SaraLima" src="https://github.com/user-attachments/assets/3e028ce0-f8b3-48af-8014-8a7cc93c40e4" />
+
+
+**Profissão:** Analista de marketing  
+**Mini-biografia:** Sara, 31 anos, atua no setor de cosméticos e busca otimizar campanhas digitais para aumentar conversões no e-commerce.  
+**Detalhes pessoais:**  
+- Localização: Rio de Janeiro/RJ  
+- Renda familiar: R$ 9.500,00  
+- Nível educacional: Ensino Superior Completo (Publicidade e Propaganda)  
+- Status relacionamento: Namorando  
+
+**Carreira:**  
+- Empresa: Beleza Natural  
+- Tamanho da empresa: Grande (150 funcionários)  
+- Responsabilidades profissionais: Gestão de campanhas digitais, análise de métricas, relacionamento com influenciadores e redes sociais.  
+- Objetivos: Aumentar o ROI de campanhas e melhorar a jornada do cliente.  
+- Desafios: Concorrer em um mercado saturado e com alto custo de mídia.
+
+**Mapa de Empatia:**  
+- O que vê: Alta concorrência em anúncios online.  
+- O que ouve: Feedback de vendas sobre baixa conversão.  
+- O que pensa e sente: Pressionada por resultados rápidos.  
+- O que fala e faz: Testa novas estratégias e ferramentas de marketing.  
+- Dores: Custos crescentes e retorno instável.  
+- Ganhos: Aumento de conversões e reconhecimento profissional.
+
+---
+
+#### Persona 5 – João Ferreira
+<img width="60" height="64" alt="image" src="https://github.com/user-attachments/assets/299d7e86-a870-41ca-b4b0-b98bdc3eb7e8" />
+
+
+**Profissão:** Pequeno produtor rural  
+**Mini-biografia:** João, 50 anos, cultiva e vende produtos orgânicos diretamente para consumidores e pequenos mercados. Quer alcançar mais clientes pela internet.  
+**Detalhes pessoais:**  
+- Localização: Uberlândia/MG  
+- Renda familiar: R$ 5.500,00  
+- Nível educacional: Ensino Médio Completo  
+- Status relacionamento: Casado  
+
+**Carreira:**  
+- Empresa: Sítio Boa Terra  
+- Tamanho da empresa: Microempresa familiar  
+- Responsabilidades profissionais: Produção, colheita, empacotamento e vendas diretas.  
+- Objetivos: Criar um canal de vendas online para entrega direta ao consumidor.  
+- Desafios: Pouca familiaridade com tecnologia e logística de entregas.
+
+**Mapa de Empatia:**  
+- O que vê: Crescimento da demanda por orgânicos.  
+- O que ouve: Clientes querendo entrega em casa.  
+- O que pensa e sente: Motivado, mas inseguro quanto à tecnologia.  
+- O que fala e faz: Busca apoio de familiares mais jovens para usar redes sociais.  
+- Dores: Dificuldade de gerenciamento de pedidos online.  
+- Ganhos: Expansão da base de clientes e aumento de renda.
 
 # Especificações do Projeto
 
@@ -123,9 +255,57 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |07| Cada comprador poderá possuir apenas uma conta por endereço de e-mail |
 |08| Cada fornecedor poderá ter apenas uma conta com perfil administrador e até duas contas de usuário associadas |
 
-# Catálogo de Serviços
+# Catálogo de Serviços 
 
-Descreva aqui todos os serviços que serão disponibilizados pelo seu projeto, detalhando suas características e funcionalidades.
+As funcionalidades da plataforma **ZABBIX STORE** em três categorias: **Existentes**, **Em desenvolvimento** e **Planejadas**.  
+
+---
+
+## ✅ Funcionalidades Existentes  
+
+| Código  | Funcionalidade                                      | Descrição                                                                 | Status |
+|---------|------------------------------------------------------|---------------------------------------------------------------------------|--------|
+| RF-001  | Cadastro de fornecedores                             | Permite cadastrar fornecedores com dados empresariais.                    | **Ativo** |
+| RF-002  | Cadastro de compradores                              | Permite cadastrar compradores com dados pessoais, endereço e contato.     | **Ativo** |
+| RF-003  | Login de usuários                                    | Fornecedores e compradores acessam suas contas.                           | **Ativo** |
+| RF-004  | Gerenciamento de perfil do fornecedor                | Editar e excluir informações do perfil empresarial.                       | **Ativo** |
+| RF-005  | Gerenciamento de perfil do comprador                 | Editar e excluir dados pessoais, endereço e contato.                      | **Ativo** |
+| RF-006  | Gerenciamento de produtos e formas de pagamento      | Cadastro, edição e exclusão de produtos e modalidades de pagamento.       | **Ativo** |
+| RF-009  | Carrinho de compras                                  | Compradores podem adicionar produtos ao carrinho.                         | **Ativo** |
+| RF-010  | Confirmação de pedido                                | Geração de confirmação para comprador e notificação para fornecedor.      | **Ativo** |
+| RF-011  | Histórico de compras                                 | Exibe lista de compras realizadas pelo comprador.                         | **Ativo** |
+
+---
+
+## 🚧 Funcionalidades em Desenvolvimento  
+
+| Código  | Funcionalidade                        | Descrição                                                                 | Status |
+|---------|----------------------------------------|---------------------------------------------------------------------------|--------|
+| RF-007  | Dashboard de vendas para fornecedores | Fornecedores visualizam métricas de vendas e relatórios.                  | **Em desenvolvimento** |
+| RF-008  | Busca e filtros de produtos            | Compradores podem pesquisar produtos por categoria, preço, avaliação etc. | **Em desenvolvimento** |
+| RF-012  | Página de detalhes do produto          | Exibe informações completas: fotos, descrição, preço, avaliações, vendedor.| **Em desenvolvimento** |
+
+---
+
+## 🛠️ Funcionalidades Planejadas (Futuras Versões)  
+
+| Código  | Funcionalidade                          | Descrição                                                                 | Status |
+|---------|------------------------------------------|---------------------------------------------------------------------------|--------|
+| RF-013  | Avaliação de produtos e vendedores      | Compradores podem avaliar produtos e fornecedores após a compra.          | **Planejado** |
+| RF-014  | Gestão de estoque com alertas           | Fornecedores recebem aviso de baixa de estoque.                           | **Planejado** |
+| ---     | Integração com múltiplos canais de venda | Integração centralizada com marketplaces e redes sociais.                  | **Planejado** |
+| ---     | App mobile (Android/iOS)                 | Versão nativa para dispositivos móveis.                                   | **Planejado** |
+| ---     | Módulo de segurança avançada             | 2FA, monitoramento de fraudes e criptografia de dados sensíveis.          | **Planejado** |
+| ---     | Recomendações personalizadas             | Sugestões de produtos baseadas em histórico e perfil de compra.           | **Planejado** |
+
+---
+
+## ♻️ Funcionalidades Depreciadas  
+
+| Código | Funcionalidade | Descrição | Status |
+|--------|----------------|-----------|--------|
+| –      | –              | Até o momento, nenhuma funcionalidade foi depreciada. | – |
+
 
 # Arquitetura da Solução
 
@@ -141,7 +321,82 @@ Apresente também uma figura explicando como as tecnologias estão relacionadas 
 
 ## Hospedagem
 
-Explique como a hospedagem e o lançamento da plataforma foi feita.
+## 🗄️ Banco de Dados
+- **Tipo:** PostgreSQL (relacional)  
+- **Provedor:** AWS RDS  
+- **Localização:** São Paulo (sa-east-1)  
+- **Escalabilidade:**  
+  - Instância inicial: `db.t3.medium`  
+  - Auto Scaling (read replicas / mudança de instância)  - (Podemos deixar como essa definição inicial mas limitar para não ter muito custo sem querer na etapa de desenvolvimento)
+- **Backup & Recovery:**  
+  - Backup automático (retenção: 7 dias)  
+  - Snapshots manuais para releases  
+  - Replicação Multi-AZ (futuro)  
+
+**Justificativa:** Banco robusto, confiável, suporte nativo AWS, compliance LGPD.
+
+---
+
+## ☁️ Hospedagem da Aplicação
+- **Infraestrutura:** AWS  
+- **Serviço:**  
+  - Inicial: **Elastic Beanstalk**  
+  - Futuro: ECS/Fargate (se necessário)  (trabalhamos com ECS no ultimo eixo, mas tem que ver quanto a custo gratuito inicial)
+- **Rede e Segurança:**  - Caso seja necessário
+  - VPC privada  
+  - Load Balancer  
+  - Comunicação interna restrita via Security Groups  
+
+**Justificativa:** Beanstalk reduz esforço inicial; ECS avaliado para crescimento. Trabalhamos com isso no eixo anterior
+**Bonus:** Podemos tentar montar na estrutura de IAC
+
+---
+
+## 🔄 CI/CD
+- **Ferramenta:** GitHub Actions  
+- **Pipeline:**  
+  1. **Build** (dependências + build frontend/backend)  
+  2. **Testes** (unitários)  
+  3. **Deploy**  
+     - Automático em *staging*  
+     - Produção com *approval manual*  
+
+- **Gerenciamento de Segredos:**  
+  - GitHub Secrets + AWS Secrets Manager  
+
+**Justificativa:** GitHub Actions integrado ao repositório, com controle de qualidade via testes. Trabalhamos com isso no eixo anterior.
+
+---
+
+## 📱 Geração de APK (Mobile)
+- **Ferramenta:** Expo Go + EAS Build  
+- **Configurações:**  
+  - APK **unsigned** para uso interno  
+  - `app.json` configurado  
+  - `.aab` possível no futuro - (documento para padronização de publicação do aplicativo na loja, podemos fazer como extra)
+- **Assinatura:** Não aplicável inicialmente  
+- **Publicação:** Apenas distribuição interna (QA/testes)  - (Geraríamos versão de PRD mas sem publicação)
+
+**Justificativa:** Expo simplifica o build mobile, sem necessidade de publicação em loja.
+**Estudo:** Junção com a pipe do github para ativação e execução do APK como artefato
+
+---
+
+## 📊 Monitoramento e Logs
+- **Infraestrutura:** AWS CloudWatch  
+  - Dashboards de métricas (CPU, memória, latência, erros)  
+  - Alarmes + SNS (e-mail)  
+  - Retenção de logs: 30 dias  
+- **Aplicação:** Logs centralizados com Request ID 
+
+**Justificativa:** CloudWatch nativo da AWS + Sentry para rastreamento de falhas. Considerando que subiremos o serviço na AWS seria mais facil de mapear
+
+---
+
+## 📎 Referências 
+- Guia [Expo](https://docs.expo.dev/)  
+- [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)  
+
 
 # Planejamento
 
@@ -155,18 +410,18 @@ Atualizado em: 12/08/2025
 
 | Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| July          | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025     |
+| Jully         | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025     |
 | Jully         | Introdução       | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| July          | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025     |
-| July          | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| July          | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| July          | Requisitos FN/NF Restrições  | 01/08/2025    | 17/08/2025 |  📝  |    |
-| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  📝  |                |
-| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | 📝   |                |
-| Vinicius      | Catálogo de Serviços       |    01/08/2025  |  |  📝   |                |
+| Jully         | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025     |
+| Jully         | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
+| Jully         | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
+| Jully         | Requisitos FN/NF Restrições  | 01/08/2025    | 17/08/2025 |  ✔️   |  12/08/2025  |
+| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  ✔️  |   12/08/2025     |
+| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | ✔️   |   12/08/2025   |
+| Vinícius      | Catálogo de Serviços       |    01/08/2025  |  |  📝   |                |
 | Pedro         | Arquitetura da Solução       |    01/08/2025  |  |  📝   |                |
 | Lucas         | Tecnologias Utilizadas       |    01/08/2025  |  | 📝   |                |
-| Italo         | Hospedagem       |    01/08/2025  |  |  📝   |                |
+| Ítalo         | Hospedagem       |    01/08/2025  |  |  📝   |                |
 
 #### Semana 2
 

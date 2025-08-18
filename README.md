@@ -1,5 +1,8 @@
-<h1 align="center">ConectaShop</h1> 
-<img width="1080" height="772" alt="Image" src="https://github.com/user-attachments/assets/56b2e0b8-cda8-4511-af00-2d3923147529" />
+<h1 align="center">ZABBIX STORE</h1> 
+<div align="center">
+  <img width="498" height="383" alt="Image" src="https://github.com/user-attachments/assets/e8981c7b-7308-47b5-bf49-70a4dd7ab00a" />
+</div>
+
 
 `CURSO: Sistemas de Informação`
 
@@ -7,7 +10,7 @@
 
 `SEMESTRE: 6º`
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+A ZABBIX STORE é uma plataforma de e-commerce web e mobile, com arquitetura de sistemas distribuídos para garantir escalabilidade e alta disponibilidade. Voltada para lojistas de pequeno e médio porte, oferece gestão integrada de produtos e pedidos, proporcionando uma experiência de compra segura e prática para consumidores.
 
 ## Integrantes
 
