@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../../css/Cart.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../css/Cart.css";
-import { FaTrash } from "react-icons/fa";
+import { FiTrash2, FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
 
 const CartProducts = ({ onTotalChange }) => {
   const [cart, setCart] = useState([]);
@@ -105,38 +103,104 @@ const CartProducts = ({ onTotalChange }) => {
   };
 
   if (loading) {
-    return <div>Carregando...</div>;
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+        <span className="ml-2 text-gray-600">Carregando produtos...</span>
+      </div>
+    );
   }
 
   if (products.length === 0) {
-    return <div>Seu carrinho está vazio.</div>;
+    return (
+      <div className="text-center py-12">
+        <FiShoppingCart className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Seu carrinho está vazio</h3>
+        <p className="text-gray-500 mb-6">Adicione produtos para continuar com sua compra</p>
+        <a
+          href="/"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 transition-colors"
+        >
+          Continuar Comprando
+        </a>
+      </div>
+    );
   }
 
   return (
-    <div className="cart">
+    <div className="space-y-6">
       <ToastContainer />
-      <div className="cart-products">
+      
+      {/* Cart Header */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">Itens no Carrinho</h2>
+        <p className="text-sm text-gray-600">{products.length} {products.length === 1 ? 'produto' : 'produtos'}</p>
+      </div>
+
+      {/* Products List */}
+      <div className="space-y-4">
         {products.map((product) => (
-          <div key={product.CODPROD} className="cart-product">
-            <img src={product.IMAGEM} alt={product.PRODUTO} />
-            <div className="product-cart-right">
-              <h2>{product.PRODUTO}</h2>
-              <p>Preço: {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.VALOR)}</p>
-              <p>Tamanho: {product.size}</p>
-              <span className="remove-product-button" onClick={() => handleRemoveProduct(product.CODPROD)}>
-                <FaTrash />
-                <p>Remover</p>
-              </span>
-            </div>
-            <div id="quantity-controlsss">
-              <p>Quantidade: </p>
-              <button className="cart-hover-quantity" onClick={() => handleDecreaseQuantity(product.CODPROD)}>
-                -
-              </button>
-              <p>{product.quantity}</p>
-              <button className="cart-hover-quantity" onClick={() => handleIncreaseQuantity(product.CODPROD)}>
-                +
-              </button>
+          <div key={product.CODPROD} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="flex items-start space-x-4">
+              {/* Product Image */}
+              <div className="flex-shrink-0">
+                <img 
+                  src={product.IMAGEM} 
+                  alt={product.PRODUTO}
+                  className="w-20 h-20 object-cover rounded-lg"
+                />
+              </div>
+
+              {/* Product Info */}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{product.PRODUTO}</h3>
+                <div className="space-y-1 text-sm text-gray-600">
+                  <p>Preço unitário: <span className="font-medium text-gray-900">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.VALOR)}</span></p>
+                  <p>Tamanho: <span className="font-medium text-gray-900">{product.size}</span></p>
+                </div>
+
+                {/* Quantity Controls */}
+                <div className="flex items-center space-x-4 mt-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-600">Quantidade:</span>
+                    <div className="flex items-center border border-gray-300 rounded-md">
+                      <button
+                        onClick={() => handleDecreaseQuantity(product.CODPROD)}
+                        className="p-2 hover:bg-gray-50 transition-colors"
+                        disabled={product.quantity <= 1}
+                      >
+                        <FiMinus size={14} />
+                      </button>
+                      <span className="px-3 py-2 text-sm font-medium">{product.quantity}</span>
+                      <button
+                        onClick={() => handleIncreaseQuantity(product.CODPROD)}
+                        className="p-2 hover:bg-gray-50 transition-colors"
+                      >
+                        <FiPlus size={14} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Remove Button */}
+                  <button
+                    onClick={() => handleRemoveProduct(product.CODPROD)}
+                    className="flex items-center space-x-1 text-red-600 hover:text-red-800 transition-colors"
+                  >
+                    <FiTrash2 size={14} />
+                    <span className="text-sm">Remover</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Product Total */}
+              <div className="flex-shrink-0 text-right">
+                <p className="text-lg font-semibold text-gray-900">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.VALOR * product.quantity)}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {product.quantity} x {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.VALOR)}
+                </p>
+              </div>
             </div>
           </div>
         ))}

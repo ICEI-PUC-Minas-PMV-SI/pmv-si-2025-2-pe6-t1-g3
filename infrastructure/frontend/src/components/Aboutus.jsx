@@ -28,7 +28,7 @@ const Aboutus = () => {
                 Nossa História
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                A EStore nasceu da visão de criar uma plataforma de e-commerce que combina 
+                A Zabbix nasceu da visão de criar uma plataforma de e-commerce que combina 
                 tecnologia de ponta com uma experiência de usuário excepcional. Somos uma 
                 empresa focada em oferecer produtos de alta qualidade com um atendimento 
                 personalizado e eficiente.

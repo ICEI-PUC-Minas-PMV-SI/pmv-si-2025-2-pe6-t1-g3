@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import "../css/Address.css";
-import { FaTrash, FaPencilAlt } from "react-icons/fa";
-import Inputs from "./fragments/Inputs";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,10 +22,8 @@ const Address = () => {
 
   const [addresses, setAddresses] = useState([]);
   const [editedAddress, setEditedAddress] = useState(null);
-
-  // // // // // // // // // // // // // // // // // // // // // // // //
-  // CEP Functions
-  // // // // // // // // // // // // // // // // // // // // // // // //
+  const [isLoading, setIsLoading] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [cep, setCEP] = useState("");
   const [invalidCep, setInvalidCep] = useState(false);
 
@@ -128,94 +123,34 @@ const Address = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const token = localStorage.getItem("token");
     if (token) {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       try {
         if (editedAddress) {
-          delete addressInfo.CODPES;
-          await axios.patch("http://localhost:3000/endereco/atualizar/", addressInfo, config);
-          setAddressInfo((prevInfo) => ({
-            ...prevInfo,
-            CEP: "",
-            RUA: "",
-            BAIRRO: "",
-            CIDADE: "",
-            COMPLEMENTO: "",
-            NUMERO: "",
-            DESCRICAO: "",
-          }));
-          setCEP("");
-          setAddresses((prevAddresses) => prevAddresses.map((address) => (address.CODEND === editedAddress.CODEND ? { ...address, ...addressInfo } : address)));
-          toast.success("Endereço atualizado com sucesso!", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          const updateData = { ...addressInfo };
+          delete updateData.CODPES;
+          await axios.patch("http://localhost:3000/endereco/atualizar/", updateData, config);
+          setAddresses((prevAddresses) => 
+            prevAddresses.map((address) => 
+              address.CODEND === editedAddress.CODEND 
+                ? { ...address, ...updateData } 
+                : address
+            )
+          );
+          toast.success("Endereço atualizado com sucesso!");
+          setEditedAddress(null);
         } else {
           const res = await axios.post("http://localhost:3000/endereco/cadastrar", addressInfo, config);
-          setAddresses([...addresses, addressInfo]);
-          setAddressInfo((prevInfo) => ({
-            ...prevInfo,
-            CEP: "",
-            RUA: "",
-            BAIRRO: "",
-            CIDADE: "",
-            COMPLEMENTO: "",
-            NUMERO: "",
-            DESCRICAO: "",
-          }));
-          setCEP("");
-          toast.success("Endereço adicionado com sucesso!", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          setAddresses([...addresses, { ...addressInfo, CODEND: res.data.CODEND }]);
+          toast.success("Endereço adicionado com sucesso!");
         }
-      } catch (error) {
-        if (error.response && error.response.status === 409) {
-          toast.error("Descrição de endereço já utilizada!", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-        if (error.response && error.response.status === 400) {
-          toast.error("Erro ao enviar. Tente mais tarde!", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-        if (error.response && error.response.status === 406) {
-          toast.error("Máximo de endereços cadastrados (3)!", {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        }
-        setAddressInfo((prevInfo) => ({
-          ...prevInfo,
+        
+        // Reset form
+        setAddressInfo({
+          CODPES: addressInfo.CODPES,
+          CODEND: "",
           CEP: "",
           RUA: "",
           BAIRRO: "",
@@ -223,7 +158,20 @@ const Address = () => {
           COMPLEMENTO: "",
           NUMERO: "",
           DESCRICAO: "",
-        }));
+        });
+        setCEP("");
+        setShowForm(false);
+        
+      } catch (error) {
+        if (error.response?.status === 409) {
+          toast.error("Descrição de endereço já utilizada!");
+        } else if (error.response?.status === 406) {
+          toast.error("Máximo de endereços cadastrados (3)!");
+        } else {
+          toast.error("Erro ao salvar endereço. Tente mais tarde!");
+        }
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -267,6 +215,7 @@ const Address = () => {
   // // // // // // // // // // // // // // // // // // // // // // // //
   const handleEdit = (address) => {
     setEditedAddress(address);
+    setShowForm(true);
     setAddressInfo((prevAddressInfo) => ({
       ...prevAddressInfo,
       CODPES: prevAddressInfo.CODPES,
@@ -283,70 +232,227 @@ const Address = () => {
   };
 
   return (
-    <div className="container-address-inputs">
-      <form id="form-address" onSubmit={handleSubmit}>
-        <div className="input-column1">
-          <Inputs label="CEP" type="text" name="CEP" className="css-addr" onChange={handleChange} value={cep} maxLength={9} placeholder="Digite seu cep aqui :)" required />
-          {invalidCep ? <p style={{ color: "red" }}>* CEP INVÁLIDO, PREENCHA NOVAMENTE</p> : null}
-          <Inputs label="Rua:" type="text" name="RUA" className="css-addr-block" value={addressInfo.RUA} readOnly={true} required />
-          <Inputs
-            label="Número:"
-            type="number"
-            name="NUMERO"
-            onChange={(e) => setAddressInfo({ ...addressInfo, NUMERO: e.target.value })}
-            className="css-addr"
-            value={addressInfo.NUMERO}
-            required
-          />
-          <Inputs
-            label="Complemento:"
-            type="text"
-            name="COMPLEMENTO"
-            onChange={(e) => setAddressInfo({ ...addressInfo, COMPLEMENTO: e.target.value })}
-            className="css-addr"
-            value={addressInfo.COMPLEMENTO}
-            placeholder="apto 201, bloco 06..."
-          />
+    <div className="max-w-4xl mx-auto">
+      {/* Header with Add Button */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Meus Endereços</h2>
+          <p className="text-gray-600">Gerencie seus endereços de entrega</p>
         </div>
-        <div className="input-column2">
-          <Inputs label="Bairro:" type="text" name="BAIRRO" className="css-addr-block" value={addressInfo.BAIRRO} readOnly={true} required />
-          <Inputs label="Cidade:" type="text" name="CIDADE" className="css-addr-block" value={addressInfo.CIDADE} readOnly={true} required />
-          <Inputs
-            label="Descrição:"
-            type="text"
-            name="DESCRICAO"
-            className="css-addr"
-            onChange={(e) => setAddressInfo({ ...addressInfo, DESCRICAO: e.target.value })}
-            value={addressInfo.DESCRICAO}
-            placeholder="Casa, trabalho..."
-            required
-          />
-          <input type="submit" id="submit-address" value="Atualizar dados" />
-        </div>
-      </form>
-      <ToastContainer />
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors flex items-center space-x-2"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          <span>Adicionar Endereço</span>
+        </button>
+      </div>
 
-      {/* Display address from user if exists at least one */}
-      {addresses.length > 0 && <h1>Endereços cadastrados:</h1>}
-      {addresses.map((address, index) => (
-        <>
-          <div className="endereco-container" key={index}>
-            <div className="endereco">
-              <h1>
-                {address.DESCRICAO} - {address.CEP}
-              </h1>
-              <div className="icon-container">
-                <span onClick={() => handleEdit(address)} className="edit-icon">
-                  <FaPencilAlt />
-                </span>
-                <span onClick={() => handleDelete(address.CODEND)} className="delete-icon">
-                  <FaTrash />
-                </span>
+      {/* Form */}
+      {showForm && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            {editedAddress ? 'Editar Endereço' : 'Novo Endereço'}
+          </h3>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  CEP
+                </label>
+                <input
+                  type="text"
+                  value={cep}
+                  onChange={handleChange}
+                  maxLength={9}
+                  placeholder="00000-000"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
+                  required
+                />
+                {invalidCep && (
+                  <p className="mt-1 text-sm text-red-600">CEP inválido. Verifique o formato.</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Descrição
+                </label>
+                <input
+                  type="text"
+                  value={addressInfo.DESCRICAO}
+                  onChange={(e) => setAddressInfo({ ...addressInfo, DESCRICAO: e.target.value })}
+                  placeholder="Casa, Trabalho, etc."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
+                  required
+                />
               </div>
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Rua
+              </label>
+              <input
+                type="text"
+                value={addressInfo.RUA}
+                readOnly
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Número
+                </label>
+                <input
+                  type="number"
+                  value={addressInfo.NUMERO}
+                  onChange={(e) => setAddressInfo({ ...addressInfo, NUMERO: e.target.value })}
+                  placeholder="123"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Bairro
+                </label>
+                <input
+                  type="text"
+                  value={addressInfo.BAIRRO}
+                  readOnly
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Cidade
+                </label>
+                <input
+                  type="text"
+                  value={addressInfo.CIDADE}
+                  readOnly
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Complemento
+              </label>
+              <input
+                type="text"
+                value={addressInfo.COMPLEMENTO}
+                onChange={(e) => setAddressInfo({ ...addressInfo, COMPLEMENTO: e.target.value })}
+                placeholder="Apto 201, Bloco A, etc."
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
+              />
+            </div>
+
+            <div className="flex space-x-4">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {isLoading ? 'Salvando...' : editedAddress ? 'Atualizar' : 'Adicionar'}
+              </button>
+              
+              {editedAddress && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditedAddress(null);
+                    setAddressInfo({
+                      CODPES: addressInfo.CODPES,
+                      CODEND: "",
+                      CEP: "",
+                      RUA: "",
+                      BAIRRO: "",
+                      CIDADE: "",
+                      COMPLEMENTO: "",
+                      NUMERO: "",
+                      DESCRICAO: "",
+                    });
+                    setCEP("");
+                  }}
+                  className="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                >
+                  Cancelar
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Address List */}
+      <div className="space-y-4">
+        {addresses.length === 0 ? (
+          <div className="text-center py-12">
+            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">Nenhum endereço cadastrado</h3>
+            <p className="mt-1 text-sm text-gray-500">Comece adicionando um novo endereço de entrega.</p>
           </div>
-        </>
-      ))}
+        ) : (
+          addresses.map((address, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <h3 className="text-lg font-semibold text-gray-900">{address.DESCRICAO}</h3>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      {address.CEP}
+                    </span>
+                  </div>
+                  <p className="text-gray-600">
+                    {address.RUA}, {address.NUMERO}
+                    {address.COMPLEMENTO && `, ${address.COMPLEMENTO}`}
+                  </p>
+                  <p className="text-gray-600">
+                    {address.BAIRRO}, {address.CIDADE}
+                  </p>
+                </div>
+                
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => handleEdit(address)}
+                    className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleDelete(address.CODEND)}
+                    className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      <ToastContainer />
     </div>
   );
 };

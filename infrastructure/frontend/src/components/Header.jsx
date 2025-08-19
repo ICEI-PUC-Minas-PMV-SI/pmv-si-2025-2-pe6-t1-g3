@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX } from "react-icons/fi";
+import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX, FiInfo } from "react-icons/fi";
 import { MdShoppingBasket, MdAdminPanelSettings } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
 import Button from "./UI/Button";
@@ -30,7 +30,7 @@ function Header() {
             className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
             onClick={closeMenu}
           >
-            STORE
+            Zabbix
           </Link>
 
           {/* Desktop Navigation */}
@@ -45,8 +45,9 @@ function Header() {
             
             <Link 
               to="/aboutus" 
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
             >
+              <FiInfo className="mr-1" size={18} />
               Sobre
             </Link>
 
@@ -129,9 +130,10 @@ function Header() {
               
               <Link 
                 to="/aboutus" 
-                className="text-gray-700 hover:text-gray-900 transition-colors py-2"
+                className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
                 onClick={closeMenu}
               >
+                <FiInfo className="mr-2" size={18} />
                 Sobre
               </Link>
 

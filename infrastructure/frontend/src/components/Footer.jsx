@@ -38,7 +38,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-black text-white flex items-center justify-center rounded font-bold text-lg mr-3">
                 E
               </div>
-              <span className="text-xl font-semibold text-gray-900">EStore</span>
+              <span className="text-xl font-semibold text-gray-900">Zabbix</span>
             </Link>
             <p className="text-gray-600 mb-6 max-w-md">
               Sua loja de moda online com as melhores peças femininas e masculinas. 
@@ -102,8 +102,8 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <a href="mailto:contato@estore.com.br" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  contato@estore.com.br
+                <a href="mailto:contato@zabbix.com.br" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  contato@zabbix.com.br
                 </a>
               </li>
               <li className="text-gray-600">
@@ -119,7 +119,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-600 text-sm">
-            © 2025 EStore. Todos os direitos reservados.
+            © 2025 Zabbix. Todos os direitos reservados.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-600 hover:text-gray-900 text-sm transition-colors">
