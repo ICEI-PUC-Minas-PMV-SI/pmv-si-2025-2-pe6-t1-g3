@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX, FiInfo } from "react-icons/fi";
-import { MdShoppingBasket, MdAdminPanelSettings } from "react-icons/md";
+import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX, FiSearch, FiHeart } from "react-icons/fi";
+import { MdAdminPanelSettings } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
 import Button from "./UI/Button";
+import zabbixLogo from "../assets/zabbixLogo.png";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -27,68 +29,106 @@ function Header() {
           {/* Logo */}
           <Link 
             to="/" 
-            className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
+            className="flex items-center hover:opacity-80 transition-opacity"
             onClick={closeMenu}
           >
-            Zabbix
+            <img 
+              src={zabbixLogo} 
+              alt="Zabbix" 
+              className="h-10 w-auto"
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex items-center space-x-8">
             <Link 
               to="/" 
-              className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
             >
-              <MdShoppingBasket className="mr-1" size={18} />
-              Produtos
+              Eletrônicos
+            </Link>
+            
+            <Link 
+              to="/" 
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            >
+              Fashion
+            </Link>
+            
+            <Link 
+              to="/" 
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            >
+              Casa
             </Link>
             
             <Link 
               to="/aboutus" 
-              className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
             >
-              <FiInfo className="mr-1" size={18} />
               Sobre
             </Link>
+          </div>
 
+          {/* Search Bar */}
+          <div className="hidden md:flex flex-1 max-w-lg mx-8">
+            <div className="relative w-full">
+              <input
+                type="text"
+                placeholder="Buscar produtos..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-black focus:border-black transition-colors text-sm"
+              />
+              <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
+                <FiSearch size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Right Icons */}
+          <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                <Link 
-                  to="/cart" 
-                  className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
-                >
-                  <FiShoppingCart className="mr-1" size={18} />
-                  Carrinho
-                </Link>
-
+              <>
                 <Link 
                   to="/account" 
-                  className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+                  className="text-gray-600 hover:text-gray-900 transition-colors p-2"
+                  title="Perfil"
                 >
-                  <FiUser className="mr-1" size={18} />
-                  Perfil
+                  <FiUser size={20} />
                 </Link>
-
+                
+                <button className="text-gray-600 hover:text-gray-900 transition-colors p-2" title="Favoritos">
+                  <FiHeart size={20} />
+                </button>
+                
+                <Link 
+                  to="/cart" 
+                  className="text-gray-600 hover:text-gray-900 transition-colors p-2 relative"
+                  title="Carrinho"
+                >
+                  <FiShoppingCart size={20} />
+                </Link>
+                
                 {user?.isAdmin && (
                   <Link 
                     to="/admin" 
-                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center"
+                    className="text-gray-600 hover:text-gray-900 transition-colors p-2"
+                    title="Admin"
                   >
-                    <MdAdminPanelSettings className="mr-1" size={18} />
-                    Admin
+                    <MdAdminPanelSettings size={20} />
                   </Link>
                 )}
-
+                
                 <Button 
                   variant="outline" 
                   size="small" 
                   onClick={handleLogout}
-                  className="flex items-center"
+                  className="ml-2"
                 >
-                  <FiLogOut className="mr-1" size={16} />
                   Sair
                 </Button>
-              </div>
+              </>
             ) : (
               <div className="flex items-center space-x-3">
                 <Link to="/register">
@@ -118,36 +158,59 @@ function Header() {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4">
-            <div className="flex flex-col space-y-3">
+            {/* Mobile Search */}
+            <div className="px-4 pb-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Buscar produtos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-black focus:border-black transition-colors text-sm"
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-black text-white rounded-full">
+                  <FiSearch size={14} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex flex-col space-y-3 px-4">
               <Link 
                 to="/" 
-                className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
-                <MdShoppingBasket className="mr-2" size={18} />
-                Produtos
+                Eletrônicos
+              </Link>
+              
+              <Link 
+                to="/" 
+                className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
+                onClick={closeMenu}
+              >
+                Fashion
+              </Link>
+              
+              <Link 
+                to="/" 
+                className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
+                onClick={closeMenu}
+              >
+                Casa
               </Link>
               
               <Link 
                 to="/aboutus" 
-                className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
-                <FiInfo className="mr-2" size={18} />
                 Sobre
               </Link>
 
               {isAuthenticated ? (
                 <>
-                  <Link 
-                    to="/cart" 
-                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
-                    onClick={closeMenu}
-                  >
-                    <FiShoppingCart className="mr-2" size={18} />
-                    Carrinho
-                  </Link>
-
+                  <hr className="border-gray-200 my-2" />
+                  
                   <Link 
                     to="/account" 
                     className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
@@ -155,6 +218,15 @@ function Header() {
                   >
                     <FiUser className="mr-2" size={18} />
                     Perfil
+                  </Link>
+                  
+                  <Link 
+                    to="/cart" 
+                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                    onClick={closeMenu}
+                  >
+                    <FiShoppingCart className="mr-2" size={18} />
+                    Carrinho
                   </Link>
 
                   {user?.isAdmin && (
@@ -177,7 +249,7 @@ function Header() {
                   </button>
                 </>
               ) : (
-                <div className="flex flex-col space-y-2 pt-2">
+                <div className="flex flex-col space-y-2 pt-4">
                   <Link to="/register" onClick={closeMenu}>
                     <Button variant="outline" className="w-full">
                       Cadastrar

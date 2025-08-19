@@ -7,19 +7,35 @@ async function main() {
   console.log('Iniciando seed do banco de dados...');
 
   console.log('Criando categorias...');
-  const categoriaMasculino = await prisma.categorias.upsert({
+  const categoriaEletronicos = await prisma.categorias.upsert({
     where: { CODCAT: 1 },
     update: {},
     create: {
-      CATEGORIA: 'MASCULINO'
+      CATEGORIA: 'ELETRÔNICOS'
     }
   });
 
-  const categoriaFeminino = await prisma.categorias.upsert({
+  const categoriaFashion = await prisma.categorias.upsert({
     where: { CODCAT: 2 },
     update: {},
     create: {
-      CATEGORIA: 'FEMININO'
+      CATEGORIA: 'FASHION'
+    }
+  });
+
+  const categoriaCasa = await prisma.categorias.upsert({
+    where: { CODCAT: 3 },
+    update: {},
+    create: {
+      CATEGORIA: 'CASA'
+    }
+  });
+
+  const categoriaEsportes = await prisma.categorias.upsert({
+    where: { CODCAT: 4 },
+    update: {},
+    create: {
+      CATEGORIA: 'ESPORTES'
     }
   });
 
@@ -82,104 +98,188 @@ async function main() {
   console.log('Criando produtos...');
   
   const produtos = [
-    // Produtos Masculinos
+    // ELETRÔNICOS
     {
-      PRODUTO: 'Camiseta Básica Preta',
-      DESCRICAO: 'Camiseta 100% algodão, corte regular, ideal para o dia a dia',
-      IMAGEM: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop',
-      VALOR: 49.90,
+      PRODUTO: 'Smartphone Samsung Galaxy A54',
+      DESCRICAO: 'Smartphone com tela AMOLED 6.4", 128GB, câmera tripla 50MP, bateria 5000mAh',
+      IMAGEM: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 1299.99,
       ESTOQUE: 25,
-      CODCAT: categoriaMasculino.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT
     },
     {
-      PRODUTO: 'Polo Azul Marinho',
-      DESCRICAO: 'Camisa polo em piquet, manga curta, acabamento de qualidade',
-      IMAGEM: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400&h=400&fit=crop',
-      VALOR: 89.90,
+      PRODUTO: 'Notebook Lenovo IdeaPad 3',
+      DESCRICAO: 'Notebook Intel Core i5, 8GB RAM, 256GB SSD, tela 15.6" Full HD',
+      IMAGEM: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 2499.99,
       ESTOQUE: 15,
-      CODCAT: categoriaMasculino.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT
     },
     {
-      PRODUTO: 'Calça Jeans Slim',
-      DESCRICAO: 'Calça jeans com elastano, corte slim fit, lavação escura',
-      IMAGEM: 'https://images.unsplash.com/photo-1582552938357-32b906df40cb?w=400&h=400&fit=crop',
-      VALOR: 129.90,
-      ESTOQUE: 20,
-      CODCAT: categoriaMasculino.CODCAT
+      PRODUTO: 'Fone de Ouvido JBL Tune 510BT',
+      DESCRICAO: 'Fone Bluetooth sem fio, até 40h de bateria, som JBL Pure Bass',
+      IMAGEM: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 199.99,
+      ESTOQUE: 30,
+      CODCAT: categoriaEletronicos.CODCAT
     },
     {
-      PRODUTO: 'Tênis Casual Branco',
-      DESCRICAO: 'Tênis casual em couro sintético, solado em borracha',
-      IMAGEM: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop',
-      VALOR: 199.90,
+      PRODUTO: 'Smart TV LG 43" 4K UHD',
+      DESCRICAO: 'Smart TV LED 43 polegadas, resolução 4K, WebOS, HDR10',
+      IMAGEM: 'https://images.unsplash.com/photo-1552975084-6e027ba2d5ce?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 1899.99,
       ESTOQUE: 12,
-      CODCAT: categoriaMasculino.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT
     },
     {
-      PRODUTO: 'Moletom Cinza',
-      DESCRICAO: 'Moletom com capuz, bolso canguru, algodão e poliéster',
-      IMAGEM: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop',
-      VALOR: 79.90,
+      PRODUTO: 'Tablet Apple iPad 10.9"',
+      DESCRICAO: 'iPad 10ª geração, chip A14 Bionic, 64GB, Wi-Fi, tela Liquid Retina',
+      IMAGEM: 'https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 2199.99,
       ESTOQUE: 18,
-      CODCAT: categoriaMasculino.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT
+    },
+    {
+      PRODUTO: 'Smartwatch Apple Watch SE',
+      DESCRICAO: 'Apple Watch SE 44mm, GPS, caixa de alumínio, pulseira esportiva',
+      IMAGEM: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 1799.99,
+      ESTOQUE: 20,
+      CODCAT: categoriaEletronicos.CODCAT
     },
 
-    // Produtos Femininos
+    // FASHION
     {
-      PRODUTO: 'Blusa Floral Rosa',
-      DESCRICAO: 'Blusa feminina em tecido leve, estampa floral delicada',
-      IMAGEM: 'https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=400&h=400&fit=crop',
-      VALOR: 69.90,
+      PRODUTO: 'Camiseta Básica Premium',
+      DESCRICAO: 'Camiseta 100% algodão orgânico, corte unissex, disponível em várias cores',
+      IMAGEM: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 79.99,
+      ESTOQUE: 50,
+      CODCAT: categoriaFashion.CODCAT
+    },
+    {
+      PRODUTO: 'Jaqueta Jeans Vintage',
+      DESCRICAO: 'Jaqueta jeans com lavação vintage, corte oversized, unissex',
+      IMAGEM: 'https://images.unsplash.com/photo-1544966503-7cc5ac882d5e?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 189.99,
+      ESTOQUE: 25,
+      CODCAT: categoriaFashion.CODCAT
+    },
+    {
+      PRODUTO: 'Tênis Esportivo Nike Air',
+      DESCRICAO: 'Tênis esportivo com tecnologia Air, ideal para corrida e caminhada',
+      IMAGEM: 'https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 399.99,
+      ESTOQUE: 30,
+      CODCAT: categoriaFashion.CODCAT
+    },
+    {
+      PRODUTO: 'Vestido Midi Floral',
+      DESCRICAO: 'Vestido midi com estampa floral, tecido leve e fluido, ideal para verão',
+      IMAGEM: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 149.99,
       ESTOQUE: 22,
-      CODCAT: categoriaFeminino.CODCAT
+      CODCAT: categoriaFashion.CODCAT
     },
     {
-      PRODUTO: 'Vestido Midi Azul',
-      DESCRICAO: 'Vestido midi em viscose, corte evasê, ideal para ocasiões especiais',
-      IMAGEM: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400&h=400&fit=crop',
-      VALOR: 149.90,
-      ESTOQUE: 10,
-      CODCAT: categoriaFeminino.CODCAT
+      PRODUTO: 'Moletom Oversize Cinza',
+      DESCRICAO: 'Moletom com capuz, corte oversize, algodão e poliéster, unissex',
+      IMAGEM: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 129.99,
+      ESTOQUE: 35,
+      CODCAT: categoriaFashion.CODCAT
+    },
+
+    // CASA
+    {
+      PRODUTO: 'Kit Panelas Antiaderente 5 Peças',
+      DESCRICAO: 'Conjunto de panelas antiaderente com revestimento cerâmico, cabos ergonômicos',
+      IMAGEM: 'https://images.unsplash.com/photo-1584269600519-112e9ac90624?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 299.99,
+      ESTOQUE: 20,
+      CODCAT: categoriaCasa.CODCAT
     },
     {
-      PRODUTO: 'Saia Jeans Clara',
-      DESCRICAO: 'Saia jeans com lavação clara, botões frontais, comprimento médio',
-      IMAGEM: 'https://images.unsplash.com/photo-1583496661160-fb5886a13d27?w=400&h=400&fit=crop',
-      VALOR: 89.90,
-      ESTOQUE: 16,
-      CODCAT: categoriaFeminino.CODCAT
+      PRODUTO: 'Aspirador de Pó Robô',
+      DESCRICAO: 'Aspirador robô inteligente com mapeamento, controle por app, 120min autonomia',
+      IMAGEM: 'https://images.unsplash.com/photo-1571551742402-4e82f6d16610?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 899.99,
+      ESTOQUE: 15,
+      CODCAT: categoriaCasa.CODCAT
     },
     {
-      PRODUTO: 'Sandália Rasteira Dourada',
-      DESCRICAO: 'Sandália rasteira com acabamento dourado, confortável para o dia todo',
-      IMAGEM: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&h=400&fit=crop',
-      VALOR: 79.90,
-      ESTOQUE: 14,
-      CODCAT: categoriaFeminino.CODCAT
+      PRODUTO: 'Jogo de Cama Queen Percale',
+      DESCRICAO: 'Jogo de cama 4 peças em percale 200 fios, macio e durável',
+      IMAGEM: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 189.99,
+      ESTOQUE: 25,
+      CODCAT: categoriaCasa.CODCAT
     },
     {
-      PRODUTO: 'Cardigan Bege',
-      DESCRICAO: 'Cardigan tricot em fio macio, botões de madeira, ideal para meia estação',
-      IMAGEM: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=400&fit=crop',
-      VALOR: 99.90,
-      ESTOQUE: 13,
-      CODCAT: categoriaFeminino.CODCAT
+      PRODUTO: 'Cafeteira Expresso Automática',
+      DESCRICAO: 'Cafeteira expresso com moedor integrado, pressão 15 bar, sistema milk frother',
+      IMAGEM: 'https://images.unsplash.com/photo-1459755486867-b55449bb39ff?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 1299.99,
+      ESTOQUE: 12,
+      CODCAT: categoriaCasa.CODCAT
     },
     {
-      PRODUTO: 'Tênis Feminino Rosa',
-      DESCRICAO: 'Tênis esportivo feminino em tons de rosa, ideal para exercícios',
-      IMAGEM: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=400&fit=crop',
-      VALOR: 169.90,
-      ESTOQUE: 11,
-      CODCAT: categoriaFeminino.CODCAT
+      PRODUTO: 'Luminária LED Smart',
+      DESCRICAO: 'Luminária de mesa com controle RGB, dimmer, compatível com Alexa e Google',
+      IMAGEM: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 159.99,
+      ESTOQUE: 30,
+      CODCAT: categoriaCasa.CODCAT
+    },
+
+    // ESPORTES
+    {
+      PRODUTO: 'Bicicleta Mountain Bike Aro 29',
+      DESCRICAO: 'Mountain bike com quadro de alumínio, 21 marchas Shimano, freios a disco',
+      IMAGEM: 'https://images.unsplash.com/photo-1544191696-15693072fab4?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 1899.99,
+      ESTOQUE: 8,
+      CODCAT: categoriaEsportes.CODCAT
     },
     {
-      PRODUTO: 'Jaqueta Jeans Feminina',
-      DESCRICAO: 'Jaqueta jeans com lavação média, corte ajustado, versátil',
-      IMAGEM: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&h=400&fit=crop',
-      VALOR: 119.90,
-      ESTOQUE: 9,
-      CODCAT: categoriaFeminino.CODCAT
+      PRODUTO: 'Kit Halteres Reguláveis 20kg',
+      DESCRICAO: 'Par de halteres com anilhas removíveis, peso variável de 2kg a 20kg cada',
+      IMAGEM: 'https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 399.99,
+      ESTOQUE: 15,
+      CODCAT: categoriaEsportes.CODCAT
+    },
+    {
+      PRODUTO: 'Esteira Elétrica Dobrável',
+      DESCRICAO: 'Esteira elétrica com 12 programas, velocidade até 16km/h, dobrável para economia de espaço',
+      IMAGEM: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 2499.99,
+      ESTOQUE: 6,
+      CODCAT: categoriaEsportes.CODCAT
+    },
+    {
+      PRODUTO: 'Bola de Futebol Oficial FIFA',
+      DESCRICAO: 'Bola de futebol profissional, tamanho oficial, aprovada pela FIFA',
+      IMAGEM: 'https://images.unsplash.com/photo-1614632537190-23e4b2e69c88?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 149.99,
+      ESTOQUE: 40,
+      CODCAT: categoriaEsportes.CODCAT
+    },
+    {
+      PRODUTO: 'Tênis de Corrida Adidas Ultraboost',
+      DESCRICAO: 'Tênis de corrida com tecnologia Boost, cabedal Primeknit, máximo conforto',
+      IMAGEM: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 599.99,
+      ESTOQUE: 25,
+      CODCAT: categoriaEsportes.CODCAT
+    },
+    {
+      PRODUTO: 'Kit Yoga Completo',
+      DESCRICAO: 'Kit com tapete de yoga antiderrapante, blocos, alça e bolsa para transporte',
+      IMAGEM: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
+      VALOR: 189.99,
+      ESTOQUE: 20,
+      CODCAT: categoriaEsportes.CODCAT
     }
   ];
 
@@ -271,7 +371,7 @@ async function main() {
   console.log('Dados criados:');
   console.log('Admin: admin@store.com / Admin123');
   console.log('Cliente: cliente@teste.com / Cliente123');
-  console.log(`${produtos.length} produtos em 2 categorias`);
+  console.log(`${produtos.length} produtos em 4 categorias`);
   console.log('2 pedidos de exemplo');
   console.log('Acesse: http://localhost:5173');
   console.log('Admin: http://localhost:5173/admin');

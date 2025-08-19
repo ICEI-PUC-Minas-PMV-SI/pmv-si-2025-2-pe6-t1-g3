@@ -1,4 +1,5 @@
 import React from "react";
+import zabbixLogo from "../assets/zabbixLogo.png";
 
 const Aboutus = () => {
   return (
@@ -38,14 +39,15 @@ const Aboutus = () => {
                 personalidade e estilo, sempre com os melhores preços e qualidade garantida.
               </p>
             </div>
-            <div className="bg-gray-100 h-80 rounded-lg flex items-center justify-center">
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 h-80 rounded-lg flex items-center justify-center p-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-black text-white flex items-center justify-center rounded-full mx-auto mb-4">
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                  </svg>
-                </div>
-                <p className="text-gray-500">Imagem Ilustrativa</p>
+                <img 
+                  src={zabbixLogo} 
+                  alt="Zabbix Logo" 
+                  className="w-32 h-32 mx-auto mb-6 opacity-80 hover:opacity-100 transition-opacity"
+                />
+                <p className="text-gray-600 font-medium">Nossa Marca</p>
+                <p className="text-gray-500 text-sm mt-2">Qualidade e estilo em cada produto</p>
               </div>
             </div>
           </div>
