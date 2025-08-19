@@ -121,7 +121,7 @@ const CartProducts = ({ onTotalChange }) => {
             <img src={product.IMAGEM} alt={product.PRODUTO} />
             <div className="product-cart-right">
               <h2>{product.PRODUTO}</h2>
-              <p>Preço: R${product.VALOR}</p>
+              <p>Preço: {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.VALOR)}</p>
               <p>Tamanho: {product.size}</p>
               <span className="remove-product-button" onClick={() => handleRemoveProduct(product.CODPROD)}>
                 <FaTrash />
