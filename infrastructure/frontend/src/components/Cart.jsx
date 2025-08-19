@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "../css/Cart.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CartProducts from "../components/fragments/cartProducts";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { FiMapPin, FiShoppingBag } from "react-icons/fi";
 
 const Cart = () => {
   const [total, setTotal] = useState(0);
@@ -146,34 +146,93 @@ const Cart = () => {
   };
 
   return (
-    <div className="cart">
-      <div className="h1-header-cart">
-        <h1>Seu carrinho de compras</h1>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Carrinho de Compras</h1>
+        <p className="text-gray-600">Revise seus itens antes de finalizar a compra</p>
       </div>
-      <div className="cart-container">
-        <div className="left-cart-container">
-          <div className="product-cart">
-            <CartProducts items={cartItems} onTotalChange={handleTotalChange} onCartItemsChange={handleCartItemsChange} />
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Cart Items */}
+        <div className="lg:col-span-2">
+          <CartProducts 
+            items={cartItems} 
+            onTotalChange={handleTotalChange} 
+            onCartItemsChange={handleCartItemsChange} 
+          />
+        </div>
+
+        {/* Order Summary */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Resumo do Pedido</h2>
+            
+            {/* Total */}
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Subtotal:</span>
+                <span className="text-gray-900">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Frete:</span>
+                <span className="text-green-600">Grátis</span>
+              </div>
+              <div className="border-t border-gray-200 pt-3">
+                <div className="flex justify-between">
+                  <span className="text-lg font-semibold text-gray-900">Total:</span>
+                  <span className="text-lg font-semibold text-gray-900">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Address Selection */}
+            <div className="mb-6">
+              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
+                <FiMapPin className="mr-2" size={16} />
+                Endereço de Entrega
+              </label>
+              <select 
+                value={selectedAddress} 
+                onChange={handleAddressChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
+              >
+                <option value="">Selecione um endereço</option>
+                {addresses.map((address, index) => (
+                  <option key={index} value={address.CODEND}>
+                    {address.DESCRICAO} - {address.RUA}, {address.NUMERO}
+                  </option>
+                ))}
+              </select>
+              {addresses.length === 0 && (
+                <p className="mt-2 text-sm text-gray-500">
+                  <a href="/account" className="text-black hover:underline">
+                    Adicione um endereço
+                  </a> para continuar
+                </p>
+              )}
+            </div>
+
+            {/* Checkout Button */}
+            <button
+              onClick={handleOrderSubmit}
+              disabled={!selectedAddress || cartItems.length === 0}
+              className="w-full bg-black text-white py-3 px-4 rounded-md hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              <FiShoppingBag className="mr-2" size={18} />
+              {cartItems.length === 0 ? 'Carrinho Vazio' : 'Finalizar Compra'}
+            </button>
+
+            {/* Security Info */}
+            <div className="mt-4 text-center">
+              <p className="text-xs text-gray-500">
+                Compra 100% segura e protegida
+              </p>
+            </div>
           </div>
         </div>
-        <div className="right-cart-container">
-          <h1>
-            Subtotal: <b> R${total.toFixed(2)} </b>
-          </h1>
-          <div className="address-selection">
-            <label htmlFor="address">Selecione o endereço de entrega:</label>
-            <select id="address" value={selectedAddress} onChange={handleAddressChange}>
-              <option value="">Selecione um endereço</option>
-              {addresses.map((address, index) => (
-                <option key={index} value={address.CODEND}>
-                  {address.DESCRICAO}
-                </option>
-              ))}
-            </select>
-          </div>
-          <input type="button" value="Fechar pedido" id="close-cart" onClick={handleOrderSubmit} disabled={!selectedAddress} />
-        </div>
       </div>
+      
       <ToastContainer />
     </div>
   );
