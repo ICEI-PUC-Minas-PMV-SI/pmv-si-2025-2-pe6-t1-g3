@@ -262,7 +262,7 @@ As funcionalidades da plataforma **ZABBIX STORE** em categorias:
 
 ---
 
-## 🍽️ Contas e Acesso  
+## 👤 Contas e Acesso  
 
 | Serviço                          | Descrição                                                                 | Status |
 |----------------------------------|---------------------------------------------------------------------------|--------|
