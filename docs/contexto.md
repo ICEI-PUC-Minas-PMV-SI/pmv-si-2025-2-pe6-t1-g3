@@ -262,12 +262,6 @@ As funcionalidades da plataforma **ZABBIX STORE** em três categorias: **Existen
 
 ---
 
-# 📘 Catálogo de Serviços – ZABBIX STORE  
-
-Este catálogo apresenta as funcionalidades da plataforma ZABBIX STORE organizadas em **categorias de serviços**, no formato de menu com status atualizado.  
-
----
-
 ## 🍽️ Contas e Acesso  
 
 | Serviço                          | Descrição                                                                 | Status |
