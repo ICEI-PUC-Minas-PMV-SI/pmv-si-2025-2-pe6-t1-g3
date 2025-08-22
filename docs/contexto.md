@@ -262,50 +262,53 @@ As funcionalidades da plataforma **ZABBIX STORE** em três categorias: **Existen
 
 ---
 
-## ✅ Funcionalidades Existentes  
+# 📘 Catálogo de Serviços – ZABBIX STORE  
 
-| Código  | Funcionalidade                                      | Descrição                                                                 | Status |
-|---------|------------------------------------------------------|---------------------------------------------------------------------------|--------|
-| RF-001  | Cadastro de fornecedores                             | Permite cadastrar fornecedores com dados empresariais.                    | **Ativo** |
-| RF-002  | Cadastro de compradores                              | Permite cadastrar compradores com dados pessoais, endereço e contato.     | **Ativo** |
-| RF-003  | Login de usuários                                    | Fornecedores e compradores acessam suas contas.                           | **Ativo** |
-| RF-004  | Gerenciamento de perfil do fornecedor                | Editar e excluir informações do perfil empresarial.                       | **Ativo** |
-| RF-005  | Gerenciamento de perfil do comprador                 | Editar e excluir dados pessoais, endereço e contato.                      | **Ativo** |
-| RF-006  | Gerenciamento de produtos e formas de pagamento      | Cadastro, edição e exclusão de produtos e modalidades de pagamento.       | **Ativo** |
-| RF-009  | Carrinho de compras                                  | Compradores podem adicionar produtos ao carrinho.                         | **Ativo** |
-| RF-010  | Confirmação de pedido                                | Geração de confirmação para comprador e notificação para fornecedor.      | **Ativo** |
-| RF-011  | Histórico de compras                                 | Exibe lista de compras realizadas pelo comprador.                         | **Ativo** |
+Este catálogo apresenta as funcionalidades da plataforma ZABBIX STORE organizadas em **categorias de serviços**, no formato de menu com status atualizado.  
 
 ---
 
-## 🚧 Funcionalidades em Desenvolvimento  
+## 🍽️ Contas e Acesso  
 
-| Código  | Funcionalidade                        | Descrição                                                                 | Status |
-|---------|----------------------------------------|---------------------------------------------------------------------------|--------|
-| RF-007  | Dashboard de vendas para fornecedores | Fornecedores visualizam métricas de vendas e relatórios.                  | **Em desenvolvimento** |
-| RF-008  | Busca e filtros de produtos            | Compradores podem pesquisar produtos por categoria, preço, avaliação etc. | **Em desenvolvimento** |
-| RF-012  | Página de detalhes do produto          | Exibe informações completas: fotos, descrição, preço, avaliações, vendedor.| **Em desenvolvimento** |
-
----
-
-## 🛠️ Funcionalidades Planejadas (Futuras Versões)  
-
-| Código  | Funcionalidade                          | Descrição                                                                 | Status |
-|---------|------------------------------------------|---------------------------------------------------------------------------|--------|
-| RF-013  | Avaliação de produtos e vendedores      | Compradores podem avaliar produtos e fornecedores após a compra.          | **Planejado** |
-| RF-014  | Gestão de estoque com alertas           | Fornecedores recebem aviso de baixa de estoque.                           | **Planejado** |
-| ---     | Integração com múltiplos canais de venda | Integração centralizada com marketplaces e redes sociais.                  | **Planejado** |
-| ---     | App mobile (Android/iOS)                 | Versão nativa para dispositivos móveis.                                   | **Planejado** |
-| ---     | Módulo de segurança avançada             | 2FA, monitoramento de fraudes e criptografia de dados sensíveis.          | **Planejado** |
-| ---     | Recomendações personalizadas             | Sugestões de produtos baseadas em histórico e perfil de compra.           | **Planejado** |
+| Serviço                          | Descrição                                                                 | Status |
+|----------------------------------|---------------------------------------------------------------------------|--------|
+| Cadastro de Fornecedores         | Permite o cadastro de fornecedores com dados empresariais.                | Ativo  |
+| Cadastro de Compradores          | Permite o cadastro de compradores com dados pessoais, endereço e contato. | Ativo  |
+| Login de Usuários                | Permite que fornecedores e compradores acessem suas contas.               | Ativo  |
+| Gerenciamento de Perfil (Fornecedor) | Fornecedores podem atualizar, editar e excluir informações do seu perfil. | Ativo  |
+| Gerenciamento de Perfil (Comprador)  | Compradores podem atualizar, editar e excluir informações do perfil, como endereço de entrega e contato. | Ativo  |
 
 ---
 
-## ♻️ Funcionalidades Depreciadas  
+## 🛒 Compras  
 
-| Código | Funcionalidade | Descrição | Status |
-|--------|----------------|-----------|--------|
-| –      | –              | Até o momento, nenhuma funcionalidade foi depreciada. | – |
+| Serviço                          | Descrição                                                                 | Status |
+|----------------------------------|---------------------------------------------------------------------------|--------|
+| Carrinho de Compras              | Permite que compradores adicionem produtos ao carrinho de compras.        | Ativo  |
+| Confirmação de Pedido            | Gera confirmação de pedido para o comprador e notificação para o fornecedor. | Ativo  |
+| Histórico de Compras             | Disponibiliza o histórico de compras realizadas pelo comprador.           | Ativo  |
+| Página de Detalhes do Produto    | Exibe informações completas do produto: fotos, descrições, preço, avaliações e vendedor. | Em desenvolvimento |
+| Avaliação de Produtos e Vendedores | Permite que compradores avaliem produtos e vendedores após a compra.     | Planejado |
+
+---
+
+## 📦 Produtos e Vendas  
+
+| Serviço                          | Descrição                                                                 | Status |
+|----------------------------------|---------------------------------------------------------------------------|--------|
+| Gerenciamento de Produtos e Pagamentos | Permite aos fornecedores cadastrar, editar e excluir produtos e modalidades de pagamento. | Ativo  |
+| Dashboard de Vendas              | Fornecedores podem acompanhar métricas de vendas em tempo real.           | Em desenvolvimento |
+| Gestão de Estoque com Alertas    | Fornecedores recebem alertas quando o estoque de um produto estiver baixo. | Planejado |
+
+---
+
+## 🔎 Busca e Descoberta  
+
+| Serviço                          | Descrição                                                                 | Status |
+|----------------------------------|---------------------------------------------------------------------------|--------|
+| Busca de Produtos com Filtros    | Permite que compradores pesquisem produtos por categoria, preço, avaliação, entre outros filtros. | Em desenvolvimento |
+| Recomendações Personalizadas     | Sugestões de produtos baseadas no histórico e perfil de compra.           | Planejado |
+
 
 
 # Arquitetura da Solução
