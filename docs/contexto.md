@@ -227,6 +227,7 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 |RF-012| Exibir página de detalhes de produto com fotos, descrições, preço, avaliações e informações do vendedor. | MÉDIA | 
 |RF-013| Permitir que compradores avaliem produtos e vendedores após a compra. | MÉDIA |
 |RF-014| Permitir que fornecedores gerenciem estoque e recebam alertas de baixa quantidade.  | BAIXA | 
+|RF-015| O sistema deve permitir que os usuários realizem autenticação utilizando suas credenciais da conta Google, por meio de integração com o serviço de login social.  | BAIXA | 
         
 ### Requisitos não Funcionais
 
@@ -309,8 +310,13 @@ As funcionalidades da plataforma **ZABBIX STORE** em três categorias: **Existen
 
 # Arquitetura da Solução
 
-Definição de como o software é estruturado em termos dos componentes que fazem parte da solução e do ambiente de hospedagem da aplicação.
+A arquitetura proposta é baseada em uma aplicação web moderna, estruturada em três principais camadas: Frontend, Backend e Banco de Dados, todas executadas em containers Docker para garantir portabilidade, escalabilidade e facilidade de implantação.
 
+O Frontend, desenvolvido em React, é responsável pela interface do usuário e se comunica com o backend por meio de chamadas autenticadas utilizando JWT (JSON Web Token). O acesso ao frontend é feito através de um DNS, que direciona as requisições para a aplicação.
+
+O Backend, implementado em NextJS, gerencia a lógica de negócio e disponibiliza as rotas da aplicação. Ele valida a autenticação via JWT e processa as requisições vindas do frontend. Além disso, o backend realiza a comunicação com o Banco de Dados, que é baseado em PostgreSQL e também executado em container.
+
+Essa arquitetura garante separação de responsabilidades, segurança por meio de autenticação JWT, e flexibilidade com o uso de Docker, permitindo que cada componente seja escalado ou atualizado de forma independente.
 ![Alt text](../docs/img/arch.png)
 
 ## Tecnologias Utilizadas
