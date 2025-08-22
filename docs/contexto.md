@@ -258,7 +258,7 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 # Catálogo de Serviços 
 
-As funcionalidades da plataforma **ZABBIX STORE** em três categorias: **Existentes**, **Em desenvolvimento** e **Planejadas**.  
+As funcionalidades da plataforma **ZABBIX STORE** em três categorias: 
 
 ---
 
