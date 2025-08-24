@@ -307,7 +307,7 @@ As funcionalidades da plataforma **ZABBIX STORE** em categorias:
 
 # Arquitetura da Solução
 
-A arquitetura proposta é baseada em uma aplicação web moderna, estruturada em três principais camadas: Frontend, Backend e Banco de Dados, todas executadas em containers Docker para garantir portabilidade, escalabilidade e facilidade de implantação.
+A arquitetura proposta é baseada em uma aplicação web, estruturada em três principais camadas: Frontend, Backend e Banco de Dados, todas executadas em containers Docker para garantir portabilidade, escalabilidade e facilidade de implantação.
 
 O Frontend, desenvolvido em React, é responsável pela interface do usuário e se comunica com o backend por meio de chamadas autenticadas utilizando JWT (JSON Web Token). O acesso ao frontend é feito através de um DNS, que direciona as requisições para a aplicação.
 
@@ -315,55 +315,57 @@ O Backend, implementado em NextJS, gerencia a lógica de negócio e disponibiliz
 
 Essa arquitetura garante separação de responsabilidades, segurança por meio de autenticação JWT, e flexibilidade com o uso de Docker, permitindo que cada componente seja escalado ou atualizado de forma independente.
 
+![Alt text](../docs/img/arch.png)
+
 ## Tecnologias Utilizadas
 
--Para o desenvolvimento da solução, serão utilizadas diversas tecnologias modernas, visando alta performance, escalabilidade e facilidade de manutenção. Abaixo estão listadas todas as tecnologias envolvidas e seu respectivo papel no projeto:
+Para o desenvolvimento da solução, serão utilizadas diversas tecnologias modernas, visando alta performance, escalabilidade e facilidade de manutenção. Abaixo estão listadas todas as tecnologias envolvidas e seu respectivo papel no projeto:
 
 ## Backend
 
--NestJS: Framework Node.js baseado em TypeScript, escolhido por sua arquitetura modular, suporte a injeção de dependências e facilidade na criação de APIs robustas.
+**NestJS**: Framework Node.js baseado em TypeScript, escolhido por sua arquitetura modular, suporte a injeção de dependências e facilidade na criação de APIs robustas.
 
--Prisma ORM: Ferramenta para mapeamento objeto-relacional que simplifica a comunicação com o banco de dados, oferecendo tipagem forte e consultas mais seguras.
+**Prisma ORM**: Ferramenta para mapeamento objeto-relacional que simplifica a comunicação com o banco de dados, oferecendo tipagem forte e consultas mais seguras.
 
--PostgreSQL: Banco de dados relacional utilizado para armazenar e gerenciar todas as informações do sistema, devido à sua confiabilidade e suporte a transações complexas.
+**PostgreSQL**: Banco de dados relacional utilizado para armazenar e gerenciar todas as informações do sistema, devido à sua confiabilidade e suporte a transações complexas.
 
--API REST: A comunicação entre o backend e o frontend será feita por meio de uma API REST, garantindo padronização, escalabilidade e facilidade de integração.
+**API REST**: A comunicação entre o backend e o frontend será feita por meio de uma API REST, garantindo padronização, escalabilidade e facilidade de integração.
 
--Swagger: Utilizado para documentação da API, permitindo que desenvolvedores consultem os endpoints, os parâmetros aceitos e os formatos de resposta.
+**Swagger**: Utilizado para documentação da API, permitindo que desenvolvedores consultem os endpoints, os parâmetros aceitos e os formatos de resposta.
 
 ## Frontend Web
 
--React: Biblioteca JavaScript para construção da interface web, escolhida por sua eficiência na renderização de componentes e pela ampla comunidade de suporte.
+**React**: Biblioteca JavaScript para construção da interface web, escolhida por sua eficiência na renderização de componentes e pela ampla comunidade de suporte.
 
 ## Aplicativo Mobile
 
--React Native: Framework para desenvolvimento mobile multiplataforma (Android e iOS), permitindo a reutilização de grande parte do código do React.
+**React Native**: Framework para desenvolvimento mobile multiplataforma (Android e iOS), permitindo a reutilização de grande parte do código do React.
 
--Ferramentas e IDEs
+## Ferramentas e IDEs
 
--Visual Studio Code: IDE principal para desenvolvimento, com suporte a extensões que aumentam a produtividade.
+**Visual Studio Code**: IDE principal para desenvolvimento, com suporte a extensões que aumentam a produtividade.
 
--Postman / Insomnia: Ferramentas para testar e validar os endpoints da API.
+**Postman / Insomnia**: Ferramentas para testar e validar os endpoints da API.
 
--Git & GitHub: Controle de versão e hospedagem do repositório de código.
+**Git & GitHub**: Controle de versão e hospedagem do repositório de código.
 
--Fluxo de Interação do Usuário com o Sistema
+## Fluxo de Interação do Usuário com o Sistema
 
--Usuário acessa o sistema via navegador (web) ou aplicativo (mobile).
+- Usuário acessa o sistema via navegador (web) ou aplicativo (mobile).
 
--A requisição é enviada para o Frontend (React ou React Native).
+- A requisição é enviada para o Frontend (React ou React Native).
 
--O frontend faz uma chamada à API REST disponibilizada pelo Backend (NestJS).
+- O frontend faz uma chamada à API REST disponibilizada pelo Backend (NestJS).
 
--O NestJS processa a requisição, interage com o Prisma para consultar ou persistir dados no PostgreSQL.
+- O NestJS processa a requisição, interage com o Prisma para consultar ou persistir dados no PostgreSQL.
 
--Após o processamento, o backend retorna uma resposta estruturada ao frontend.
+- Após o processamento, o backend retorna uma resposta estruturada ao frontend.
 
--O Frontend exibe os dados processados para o usuário, atualizando a interface em tempo real.
+- O Frontend exibe os dados processados para o usuário, atualizando a interface em tempo real.
 
--Toda a documentação dos endpoints estará disponível via Swagger, facilitando a integração e manutenção.
+- Toda a documentação dos endpoints estará disponível via Swagger, facilitando a integração e manutenção.
 
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/b11a349c-0011-4648-8d1e-16b65d758fc6" />
+<img width="1536" height="1024" alt="Image" src="https://github.com/user-attachments/assets/c9f55042-610b-4a8e-984a-2eee30d6a24c" />
 
 
 ## Hospedagem
