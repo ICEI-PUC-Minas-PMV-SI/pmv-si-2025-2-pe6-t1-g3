@@ -314,13 +314,57 @@ O Frontend, desenvolvido em React, é responsável pela interface do usuário e 
 O Backend, implementado em NextJS, gerencia a lógica de negócio e disponibiliza as rotas da aplicação. Ele valida a autenticação via JWT e processa as requisições vindas do frontend. Além disso, o backend realiza a comunicação com o Banco de Dados, que é baseado em PostgreSQL e também executado em container.
 
 Essa arquitetura garante separação de responsabilidades, segurança por meio de autenticação JWT, e flexibilidade com o uso de Docker, permitindo que cada componente seja escalado ou atualizado de forma independente.
-![Alt text](../docs/img/arch.png)
 
 ## Tecnologias Utilizadas
 
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+-Para o desenvolvimento da solução, serão utilizadas diversas tecnologias modernas, visando alta performance, escalabilidade e facilidade de manutenção. Abaixo estão listadas todas as tecnologias envolvidas e seu respectivo papel no projeto:
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+## Backend
+
+-NestJS: Framework Node.js baseado em TypeScript, escolhido por sua arquitetura modular, suporte a injeção de dependências e facilidade na criação de APIs robustas.
+
+-Prisma ORM: Ferramenta para mapeamento objeto-relacional que simplifica a comunicação com o banco de dados, oferecendo tipagem forte e consultas mais seguras.
+
+-PostgreSQL: Banco de dados relacional utilizado para armazenar e gerenciar todas as informações do sistema, devido à sua confiabilidade e suporte a transações complexas.
+
+-API REST: A comunicação entre o backend e o frontend será feita por meio de uma API REST, garantindo padronização, escalabilidade e facilidade de integração.
+
+-Swagger: Utilizado para documentação da API, permitindo que desenvolvedores consultem os endpoints, os parâmetros aceitos e os formatos de resposta.
+
+## Frontend Web
+
+-React: Biblioteca JavaScript para construção da interface web, escolhida por sua eficiência na renderização de componentes e pela ampla comunidade de suporte.
+
+## Aplicativo Mobile
+
+-React Native: Framework para desenvolvimento mobile multiplataforma (Android e iOS), permitindo a reutilização de grande parte do código do React.
+
+-Ferramentas e IDEs
+
+-Visual Studio Code: IDE principal para desenvolvimento, com suporte a extensões que aumentam a produtividade.
+
+-Postman / Insomnia: Ferramentas para testar e validar os endpoints da API.
+
+-Git & GitHub: Controle de versão e hospedagem do repositório de código.
+
+-Fluxo de Interação do Usuário com o Sistema
+
+-Usuário acessa o sistema via navegador (web) ou aplicativo (mobile).
+
+-A requisição é enviada para o Frontend (React ou React Native).
+
+-O frontend faz uma chamada à API REST disponibilizada pelo Backend (NestJS).
+
+-O NestJS processa a requisição, interage com o Prisma para consultar ou persistir dados no PostgreSQL.
+
+-Após o processamento, o backend retorna uma resposta estruturada ao frontend.
+
+-O Frontend exibe os dados processados para o usuário, atualizando a interface em tempo real.
+
+-Toda a documentação dos endpoints estará disponível via Swagger, facilitando a integração e manutenção.
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/b11a349c-0011-4648-8d1e-16b65d758fc6" />
+
 
 ## Hospedagem
 
