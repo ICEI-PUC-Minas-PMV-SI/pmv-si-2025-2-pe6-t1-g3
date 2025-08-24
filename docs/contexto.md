@@ -461,18 +461,19 @@ Atualizado em: 12/08/2025
 
 | Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| Jully         | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025     |
-| Jully         | Introdução       | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| Jully         | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025     |
-| Jully         | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| Jully         | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025     |
-| Jully         | Requisitos FN/NF Restrições  | 01/08/2025    | 17/08/2025 |  ✔️   |  12/08/2025  |
-| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  ✔️  |   12/08/2025     |
-| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | ✔️   |   12/08/2025   |
-| Vinícius      | Catálogo de Serviços       |    01/08/2025  |  |  📝   |                |
-| Pedro         | Arquitetura da Solução       |    01/08/2025  |  |  📝   |                |
-| Lucas         | Tecnologias Utilizadas       |    01/08/2025  |  | 📝   |                |
-| Ítalo         | Hospedagem       |    01/08/2025  |  |  📝   |                |
+| Todos         | Escolha do tema  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025      |
+| Jully         | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025      |
+| Jully         | Introdução       | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
+| Jully         | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025      |
+| Jully         | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
+| Jully         | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
+| Jully         | Requisitos FN/NF Restrições  | 01/08/2025 | 17/08/2025 |  ✔️   |  12/08/2025  |
+| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  ✔️  |   12/08/2025      |
+| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | ✔️   |   12/08/2025      |
+| Vinícius      | Catálogo de Serviços | 01/08/2025 | 27/08/2025 |  ✔️  |    20/08/2025     |
+| Pedro         | Arquitetura da Solução | 01/08/2025 | 27/08/2025 |  ✔️  |  20/08/2025     |
+| Lucas         | Tecnologias Utilizadas | 01/08/2025 | 27/08/2025 | ✔️   |  24/08/25       |
+| Ítalo         | Hospedagem       | 01/08/2025     | 27/08/2025 |  ✔️   |   20/08/2025     |
 
 #### Semana 2
 
@@ -480,9 +481,9 @@ Atualizado em: 21/04/2024
 
 | Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| AlunaX        | Página inicial   | 01/02/2024     | 07/03/2024 | ✔️    | 05/02/2024      |
+| Todos         | Levantamento de APIS | 24/08/2025    | 07/03/2024 | ✔️    | 05/02/2024      |
 | AlunaZ        | CSS unificado    | 03/02/2024     | 10/03/2024 | 📝    |                 |
-| AlunoY        | Página de login  | 01/02/2024     | 07/03/2024 | ⌛     |                 |
+| AlunoY        | Página de login  | 01/02/2024     | 07/03/2024 | ⌛    |                 |
 | AlunoK        | Script de login  |  01/01/2024    | 12/03/2024 | ❌    |       |
 
 Legenda:
