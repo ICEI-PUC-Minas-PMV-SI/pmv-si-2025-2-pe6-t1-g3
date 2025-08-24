@@ -303,7 +303,9 @@ As funcionalidades da plataforma **ZABBIX STORE** em categorias:
 | Busca de Produtos com Filtros    | Permite que compradores pesquisem produtos por categoria, preço, avaliação, entre outros filtros. | Em desenvolvimento |
 | Recomendações Personalizadas     | Sugestões de produtos baseadas no histórico e perfil de compra.           | Planejado |
 
-
+--
+## Diagrama de caso de uso
+<img width="1126" height="593" alt="Image" src="https://github.com/user-attachments/assets/b64ef173-625f-4307-9a47-a5c8256507e3" />
 
 # Arquitetura da Solução
 
