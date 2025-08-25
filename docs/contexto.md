@@ -358,6 +358,8 @@ Para o desenvolvimento da solução, serão utilizadas diversas tecnologias mode
 
 **Git & GitHub**: Controle de versão e hospedagem do repositório de código.
 
+<img width="1536" height="1024" alt="Tecnologias Utilizadas" src="./img/Tecnologias-utilizadas.png" />
+
 ## Fluxo de Interação do Usuário com o Sistema
 
 - Usuário acessa o sistema via navegador (web) ou aplicativo (mobile).
