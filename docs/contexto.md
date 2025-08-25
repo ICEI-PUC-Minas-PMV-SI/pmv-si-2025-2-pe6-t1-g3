@@ -85,7 +85,10 @@ O público-alvo do projeto é composto por:
 - O que pensa e sente: Ansiosa para expandir mas receosa com a adaptação ao online.  
 - O que fala e faz: Investe em fotos de qualidade e atendimento personalizado.  
 - Dores: Baixa visibilidade e falta de integração de sistemas.  
-- Ganhos: Mais vendas e reconhecimento da marca.  
+- Ganhos: Mais vendas e reconhecimento da marca.
+<img width="1024" height="768" alt="1" src="https://github.com/user-attachments/assets/7caaefa7-de73-4b2a-8a42-a555681fe3cb" />
+
+
 
 ---
 
@@ -115,6 +118,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Busca cursos de marketing digital e redes sociais.  
 - Dores: Falta de tempo e recursos para gestão.  
 - Ganhos: Vendas constantes sem depender de eventos presenciais.
+<img width="1024" height="768" alt="2" src="https://github.com/user-attachments/assets/52d05fb3-2419-48e1-976d-032b15b57854" />
 
 ---
 
@@ -144,6 +148,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Participa de reuniões de tecnologia e novos negócios.  
 - Dores: Perder clientes para lojas 100% digitais.  
 - Ganhos: Melhor aproveitamento de estoque e novos canais de vendas.
+<img width="1024" height="768" alt="3" src="https://github.com/user-attachments/assets/fe5901e0-d858-439d-a63c-0d8aeb41286a" />
 
 ---
 
@@ -173,6 +178,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Testa novas estratégias e ferramentas de marketing.  
 - Dores: Custos crescentes e retorno instável.  
 - Ganhos: Aumento de conversões e reconhecimento profissional.
+<img width="1024" height="768" alt="4" src="https://github.com/user-attachments/assets/1bddc566-dfc0-469d-b5a5-44726f4fff8b" />
 
 ---
 
@@ -202,6 +208,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Busca apoio de familiares mais jovens para usar redes sociais.  
 - Dores: Dificuldade de gerenciamento de pedidos online.  
 - Ganhos: Expansão da base de clientes e aumento de renda.
+<img width="1024" height="768" alt="5" src="https://github.com/user-attachments/assets/2976b704-d817-4a7a-ad25-f93535398023" />
 
 # Especificações do Projeto
 
