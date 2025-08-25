@@ -377,83 +377,88 @@ Para o desenvolvimento da solução, serão utilizadas diversas tecnologias mode
 <img width="1536" height="1024" alt="Image" src="https://github.com/user-attachments/assets/c9f55042-610b-4a8e-984a-2eee30d6a24c" />
 
 
-## Hospedagem
+# 📡 Hospedagem do Sistema
 
 ## 🗄️ Banco de Dados
 - **Tipo:** PostgreSQL (relacional)  
-- **Provedor:** AWS RDS  
+- **Provedor:** AWS (container em EC2)  
 - **Localização:** São Paulo (sa-east-1)  
 - **Escalabilidade:**  
-  - Instância inicial: `db.t3.medium`  
-  - Auto Scaling (read replicas / mudança de instância)  - (Podemos deixar como essa definição inicial mas limitar para não ter muito custo sem querer na etapa de desenvolvimento)
+  - Container dedicado (inicialmente `db.t3.medium` equivalente)  
+  - Possibilidade futura de migração para RDS (com Multi-AZ e auto scaling)  
 - **Backup & Recovery:**  
-  - Backup automático (retenção: 7 dias)  
-  - Snapshots manuais para releases  
-  - Replicação Multi-AZ (futuro)  
+  - Snapshots manuais a cada release  
+  - Estratégia futura: migração para RDS para backups automáticos  
 
-**Justificativa:** Banco robusto, confiável, suporte nativo AWS, compliance LGPD.
+**Justificativa:** Uso inicial em container reduz custos; PostgreSQL robusto e com fácil migração futura para RDS caso a demanda cresça.  
 
 ---
 
 ## ☁️ Hospedagem da Aplicação
-- **Infraestrutura:** AWS  
+- **Infraestrutura:** AWS EC2  
 - **Serviço:**  
-  - Inicial: **Elastic Beanstalk**  
-  - Futuro: ECS/Fargate (se necessário)  (trabalhamos com ECS no ultimo eixo, mas tem que ver quanto a custo gratuito inicial)
-- **Rede e Segurança:**  - Caso seja necessário
-  - VPC privada  
-  - Load Balancer  
-  - Comunicação interna restrita via Security Groups  
+  - Instância EC2 com **Docker Compose** para orquestração dos containers  
+  - Containers planejados:  
+    - **API do sistema**  
+    - **Frontend**  
+    - **Banco de Dados (Postgres)**  
+- **Rede e Segurança:**  
+  - VPC com sub-redes públicas/privadas  
+  - Security Groups para restringir portas (80/443 públicas; 5432 e API internas)  
+  - Load Balancer opcional para escalabilidade futura  
 
-**Justificativa:** Beanstalk reduz esforço inicial; ECS avaliado para crescimento. Trabalhamos com isso no eixo anterior
-**Bonus:** Podemos tentar montar na estrutura de IAC
+**Justificativa:** Uso de EC2 com Docker garante controle, flexibilidade e baixo custo inicial. Possibilidade futura de migração para ECS/Fargate ou Kubernetes conforme o crescimento.  
+**Bônus:** Estrutura pode ser automatizada via IaC (Terraform/CloudFormation).  
 
 ---
 
 ## 🔄 CI/CD
 - **Ferramenta:** GitHub Actions  
 - **Pipeline:**  
-  1. **Build** (dependências + build frontend/backend)  
+  1. **Build** (frontend/backend containers)  
   2. **Testes** (unitários)  
-  3. **Deploy**  
-     - Automático em *staging*  
+  3. **Deploy**:  
+     - Staging automático via SSH/Actions Runner na EC2  
      - Produção com *approval manual*  
 
 - **Gerenciamento de Segredos:**  
-  - GitHub Secrets + AWS Secrets Manager  
+  - GitHub Secrets para pipeline  
+  - `.env` versionado de forma segura via AWS Secrets Manager  
 
-**Justificativa:** GitHub Actions integrado ao repositório, com controle de qualidade via testes. Trabalhamos com isso no eixo anterior.
+**Justificativa:** GitHub Actions integrado ao repositório e deploy direto na EC2 via containers simplifica a operação.  
 
 ---
 
 ## 📱 Geração de APK (Mobile)
 - **Ferramenta:** Expo Go + EAS Build  
 - **Configurações:**  
-  - APK **unsigned** para uso interno  
-  - `app.json` configurado  
-  - `.aab` possível no futuro - (documento para padronização de publicação do aplicativo na loja, podemos fazer como extra)
-- **Assinatura:** Não aplicável inicialmente  
-- **Publicação:** Apenas distribuição interna (QA/testes)  - (Geraríamos versão de PRD mas sem publicação)
+  - APK **unsigned** para uso interno de QA  
+  - `.aab` planejado para futura publicação em loja  
+- **Assinatura:** Não aplicável no início  
+- **Publicação:** Apenas distribuição interna para testes  
 
-**Justificativa:** Expo simplifica o build mobile, sem necessidade de publicação em loja.
-**Estudo:** Junção com a pipe do github para ativação e execução do APK como artefato
+**Justificativa:** Expo simplifica build mobile e evita custos de publicação no início.  
+**Estudo:** Automatizar build do APK como artefato no pipeline CI/CD.  
 
 ---
 
 ## 📊 Monitoramento e Logs
-- **Infraestrutura:** AWS CloudWatch  
-  - Dashboards de métricas (CPU, memória, latência, erros)  
-  - Alarmes + SNS (e-mail)  
-  - Retenção de logs: 30 dias  
-- **Aplicação:** Logs centralizados com Request ID 
+- **Infraestrutura:**  
+  - **AWS CloudWatch** para métricas da instância EC2 (CPU, memória, rede)  
+  - Logs de containers direcionados para CloudWatch Logs  
+- **Aplicação:**  
+  - Centralização de logs com Request ID  
+  - Integração com Sentry para rastreamento de falhas  
 
-**Justificativa:** CloudWatch nativo da AWS + Sentry para rastreamento de falhas. Considerando que subiremos o serviço na AWS seria mais facil de mapear
+**Justificativa:** Monitoramento nativo da AWS, simplificando alertas e análise.  
 
 ---
 
-## 📎 Referências 
-- Guia [Expo](https://docs.expo.dev/)  
+## 📎 Referências
+- [Docker + EC2 Best Practices](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html)  
+- [Expo](https://docs.expo.dev/)  
 - [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/)  
+
 
 
 # Planejamento
