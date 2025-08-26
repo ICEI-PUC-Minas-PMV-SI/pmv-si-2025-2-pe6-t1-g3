@@ -90,12 +90,20 @@ Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvo
 
 Atualizado em: 21/04/2024
 
-| Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
-| :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| AlunaX        | Introdução | 01/02/2024     | 07/02/2024 | ✔️    | 05/02/2024      |
-| AlunaZ        | Objetivos    | 03/02/2024     | 10/02/2024 | 📝    |                 |
-| AlunoY        | Histórias de usuário  | 01/01/2024     | 07/01/2005 | ⌛     |                 |
-| AlunoK        | Personas 1  |    01/01/2024        | 12/02/2005 | ❌    |       |
+| Responsável      | Tarefa/Requisito            | Iniciado em    | Prazo      | Status  | Terminado em    |
+| :----            |    :----                    |   :----:       | :----:     | :----:  | :----:          |
+| Todos            | Correção etapa 1            |  01/02/2024    | 07/02/2024 |  ✔️     | 05/02/2024      |
+| Jully            | APIs e Web Services         |  03/02/2024    | 10/02/2024 |  📝     |                 |
+| Victor           | Objetivos da API            |  01/01/2024    | 07/01/2005 |  ⌛     |                 |
+| Vinicius / Jully | Modelagem da Aplicação      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Tecnologias Utilizadas      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Lucas            | API Endpoints               |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Tecnologias Utilizadas      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Considerações de Segurança  |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Pedro / Ítalo    | Implantação                 |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Considerações de Segurança  |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Ítalo            | Testes                      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+
 
 #### Semana 2
 
