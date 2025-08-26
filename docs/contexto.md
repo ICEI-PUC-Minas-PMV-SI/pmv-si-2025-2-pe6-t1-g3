@@ -267,48 +267,43 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 As funcionalidades da plataforma **ZABBIX STORE** em categorias: 
 
----
+1. Contas e Acesso
 
-## 👤 Contas e Acesso  
+- Cadastro de Fornecedores: Permite o cadastro de fornecedores com dados empresariais.
 
-| Serviço                          | Descrição                                                                 | Status |
-|----------------------------------|---------------------------------------------------------------------------|--------|
-| Cadastro de Fornecedores         | Permite o cadastro de fornecedores com dados empresariais.                | Ativo  |
-| Cadastro de Compradores          | Permite o cadastro de compradores com dados pessoais, endereço e contato. | Ativo  |
-| Login de Usuários                | Permite que fornecedores e compradores acessem suas contas.               | Ativo  |
-| Gerenciamento de Perfil (Fornecedor) | Fornecedores podem atualizar, editar e excluir informações do seu perfil. | Ativo  |
-| Gerenciamento de Perfil (Comprador)  | Compradores podem atualizar, editar e excluir informações do perfil, como endereço de entrega e contato. | Ativo  |
+- Cadastro de Compradores: Permite o cadastro de compradores com dados pessoais, endereço de entrega e informações de contato.
 
----
+- Login de Usuários: Permite que fornecedores e compradores acessem suas contas.
 
-## 🛒 Compras  
+- Gerenciamento de Perfil do Fornecedor: Fornecedores podem atualizar, editar e excluir informações do seu perfil.
 
-| Serviço                          | Descrição                                                                 | Status |
-|----------------------------------|---------------------------------------------------------------------------|--------|
-| Carrinho de Compras              | Permite que compradores adicionem produtos ao carrinho de compras.        | Ativo  |
-| Confirmação de Pedido            | Gera confirmação de pedido para o comprador e notificação para o fornecedor. | Ativo  |
-| Histórico de Compras             | Disponibiliza o histórico de compras realizadas pelo comprador.           | Ativo  |
-| Página de Detalhes do Produto    | Exibe informações completas do produto: fotos, descrições, preço, avaliações e vendedor. | Em desenvolvimento |
-| Avaliação de Produtos e Vendedores | Permite que compradores avaliem produtos e vendedores após a compra.     | Planejado |
+- Gerenciamento de Perfil do Comprador: Compradores podem atualizar, editar e excluir informações do perfil, como endereço de entrega e informações de contato.
 
----
+2. Compras
 
-## 📦 Produtos e Vendas  
+- Carrinho de Compras: Permite que compradores adicionem produtos ao carrinho de compras.
 
-| Serviço                          | Descrição                                                                 | Status |
-|----------------------------------|---------------------------------------------------------------------------|--------|
-| Gerenciamento de Produtos e Pagamentos | Permite aos fornecedores cadastrar, editar e excluir produtos e modalidades de pagamento. | Ativo  |
-| Dashboard de Vendas              | Fornecedores podem acompanhar métricas de vendas em tempo real.           | Em desenvolvimento |
-| Gestão de Estoque com Alertas    | Fornecedores recebem alertas quando o estoque de um produto estiver baixo. | Planejado |
+- Confirmação de Pedido: Gera confirmação de pedido para o comprador e notificação para o fornecedor.
 
----
+- Histórico de Compras: Disponibiliza o histórico de compras realizadas pelo comprador.
 
-## 🔎 Busca e Descoberta  
+- Página de Detalhes do Produto: Exibe informações completas do produto, incluindo fotos, descrição, preço, avaliações e informações do vendedor.
 
-| Serviço                          | Descrição                                                                 | Status |
-|----------------------------------|---------------------------------------------------------------------------|--------|
-| Busca de Produtos com Filtros    | Permite que compradores pesquisem produtos por categoria, preço, avaliação, entre outros filtros. | Em desenvolvimento |
-| Recomendações Personalizadas     | Sugestões de produtos baseadas no histórico e perfil de compra.           | Planejado |
+- Avaliação de Produtos e Vendedores: Permite que compradores avaliem produtos e vendedores após a compra.
+
+3. Produtos e Vendas
+
+- Gerenciamento de Produtos e Pagamentos: Permite aos fornecedores cadastrar, editar e excluir produtos e modalidades de pagamento.
+
+- Dashboard de Vendas: Fornecedores podem acompanhar métricas de vendas em tempo real.
+
+- Gestão de Estoque com Alertas: Fornecedores recebem alertas quando o estoque de um produto estiver baixo.
+
+4. Busca e Descoberta
+
+- Busca de Produtos com Filtros: Permite que compradores pesquisem produtos por categoria, preço, avaliação, entre outros filtros.
+
+- Recomendações Personalizadas: Sugestões de produtos baseadas no histórico e perfil de compra.
 
 --
 ## Diagrama de caso de uso
