@@ -271,71 +271,15 @@ As funcionalidades da plataforma **ZABBIX STORE** em categorias:
 
 A plataforma disponibiliza serviços voltados para a gestão de identidade digital dos usuários. Entre eles, o **Serviço de Registro de Usuário**, que permite o cadastro de clientes (compradores) e vendedores(fornecedores) mediante fornecimento de informações pessoais e credenciais de acesso. O **Serviço de Gerenciamento de Conta** é responsável por permitir que o usuário tenha controle sobre as informações de seu perfil dentro da plataforma. Por meio desse serviço, clientes e vendedores podem consultar, alterar e atualizar seus dados cadastrais, garantindo que suas informações estejam sempre corretas e atualizadas.O **Serviço de Login** garante a autenticação por meio de credenciais e a geração de tokens de segurança (JWT), enquanto o Serviço de Gerenciamento de Sessão controla a validade e a renovação desses tokens, assegurando acesso contínuo e protegido aos recursos da aplicação.
 
-	•	Serviço de Registro de Usuário
-	Descrição: Permite que novos clientes e vendedores se cadastrem na plataforma.
-	Entradas: Dados pessoais, e-mail, senha, tipo de usuário (cliente/vendedor).
-	Saídas: Confirmação de cadastro, ID do usuário.
-	Consumidores: Aplicativo Web, Aplicativo Mobile.
-
- 	•	Serviço de Atualização de Informações de Conta
-	Descrição: Permite que o usuário altere seus dados cadastrais, como nome, e-mail, endereço e telefone.
-	Entradas: ID do usuário, novos dados informados.
-	Saídas: Confirmação da atualização.
- 
-	•	Serviço de Alteração de Senha e Credenciais
-	Descrição: Possibilita a modificação da senha ou redefinição de credenciais de acesso, com validação de segurança.
-	Entradas: ID do usuário, senha atual, nova senha.
-	Saídas: Confirmação da alteração.
- 
-	•	Serviço de Exclusão de Conta
-	Descrição: Dá ao usuário a opção de excluir permanentemente sua conta, seguindo protocolos de segurança e conformidade legal.
-	Entradas: ID do usuário, confirmação da solicitação.
-	Saídas: Conta removida do sistema.
- 
-	•	Serviço de Login
-	Descrição: Garante autenticação segura via JWT.
-	Entradas: E-mail e senha.
-	Saídas: Token de acesso.
-	Consumidores: Frontend, API Gateway.
- 
-	•	Serviço de Gerenciamento de Sessão
-	Descrição: Valida e renova tokens, controla expiração de sessões.
-	Entradas: Token JWT.
-	Saídas: Sessão válida/inválida.
 
 **2. Serviços de Catálogo de Produtos**
 
 O núcleo do e-commerce é formado pelos serviços que compõem o catálogo de produtos. O **Serviço de Cadastro de Produto** possibilita que forneceddores registrem itens na plataforma, informando nome, descrição, categoria, preço e imagens. O **Serviço de Consulta e Busca de Produtos** fornece mecanismos de pesquisa e filtragem, permitindo aos compradores encontrar produtos de forma rápida e eficiente. Complementarmente, o **Serviço de Gerenciamento de Estoque** atualiza automaticamente as quantidades disponíveis, evitando vendas de produtos esgotados e assegurando consistência de informações.
 
-	•	Serviço de Cadastro de Produto
-	Descrição: Permite que vendedores registrem novos produtos.
-	Entradas: Nome, descrição, categoria, preço, imagens.
-	Saídas: Confirmação de cadastro, ID do produto.
- 
-	•	Serviço de Busca e Consulta de Produtos
-	Descrição: Permite pesquisa por nome, categoria, preço e filtros.
-	Entradas: Parâmetros de busca (texto, categoria, preço, etc.).
-	Saídas: Lista de produtos.
- 
-	•	Serviço de Gerenciamento de Estoque
-	Descrição: Atualiza quantidade disponível e controla movimentações de estoque.
-	Entradas: ID do produto, quantidade.
-	Saídas: Status de atualização.
-
 
 **3. Serviços de Carrinho e Pedidos**
 
 Para facilitar o processo de compra, o **Serviço de Carrinho de Compras** organiza os itens selecionados pelos clientes antes da finalização. Esse serviço se integra ao **Serviço de Criação de Pedido**, que converte o carrinho em um pedido formal, contemplando informações como itens, método de pagamento e endereço de entrega.
-
-	•	Serviço de Carrinho de Compras
-	Descrição: Gerencia itens adicionados pelo usuário antes da compra.
-	Entradas: ID do usuário, ID do produto, quantidade.
-	Saídas: Lista de itens no carrinho.
-	•	Serviço de Criação de Pedido
-	Descrição: Converte o carrinho em um pedido formal.
-	Entradas: Itens do carrinho, método de pagamento, endereço de entrega.
-	Saídas: ID do pedido, status inicial.
-
 
 --
 ## Diagrama de caso de uso
@@ -498,31 +442,31 @@ Para o desenvolvimento da solução, serão utilizadas diversas tecnologias mode
 
 ### Semana 1
 
-Atualizado em: 12/08/2025
+Atualizado em: 24/08/2025
 
-| Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
-| :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| Todos         | Escolha do tema  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025      |
-| Jully         | Criação da Logo  | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025      |
-| Jully         | Introdução       | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
-| Jully         | Objetivos        | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025      |
-| Jully         | Justificativa    | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
-| Jully         | Público-Alvo     | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
-| Jully         | Requisitos FN/NF Restrições  | 01/08/2025 | 17/08/2025 |  ✔️   |  12/08/2025  |
-| Victor        | Histórias de usuário| 01/08/2025  | 17/08/2025 |  ✔️  |   12/08/2025      |
-| Victor        | Personas 1       |    01/08/2025  | 17/08/2005 | ✔️   |   12/08/2025      |
-| Vinícius      | Catálogo de Serviços | 01/08/2025 | 27/08/2025 |  ✔️  |    20/08/2025     |
-| Pedro         | Arquitetura da Solução | 01/08/2025 | 27/08/2025 |  ✔️  |  20/08/2025     |
-| Lucas         | Tecnologias Utilizadas | 01/08/2025 | 27/08/2025 | ✔️   |  24/08/25       |
-| Ítalo         | Hospedagem       | 01/08/2025     | 27/08/2025 |  ✔️   |   20/08/2025     |
+| Responsável   | Tarefa/Requisito             | Iniciado em    | Prazo      | Status | Terminado em    |
+| :----         |    :----                     |      :----:    | :----:     | :----: | :----:          |
+| Todos         | Escolha do tema              | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025      |
+| Jully         | Criação da Logo              | 01/08/2025     | 17/08/2025 |  ✔️   |  07/08/2025      |
+| Jully         | Introdução                   | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
+| Jully         | Objetivos                    | 01/08/2025     | 17/08/2024 |  ✔️   |  11/08/2025      |
+| Jully         | Justificativa                | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
+| Jully         | Público-Alvo                 | 01/08/2025     | 17/08/2025 |  ✔️   |  11/08/2025      |
+| Jully         | Requisitos FN/NF Restrições  | 01/08/2025     | 17/08/2025 |  ✔️   |  12/08/2025      |
+| Victor        | Histórias de usuário         | 01/08/2025     | 17/08/2025 |  ✔️   |   12/08/2025     |
+| Victor        | Personas 1                   | 01/08/2025     | 17/08/2005 | ✔️    |   12/08/2025     |
+| Vinícius      | Catálogo de Serviços         | 01/08/2025     | 27/08/2025 |  ✔️   |    20/08/2025    |
+| Pedro         | Arquitetura da Solução       | 01/08/2025     | 27/08/2025 |  ✔️   |  20/08/2025      |
+| Lucas         | Tecnologias Utilizadas       | 01/08/2025     | 27/08/2025 | ✔️    |  24/08/2025      |
+| Ítalo         | Hospedagem                   | 01/08/2025     | 27/08/2025 |  ✔️   |   20/08/2025     |
 
 #### Semana 2
 
 Atualizado em: 21/04/2024
 
-| Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
-| :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| Todos         | Levantamento de APIS | 24/08/2025    | 07/03/2024 | ✔️    | 05/02/2024    |
+| Responsável   | Tarefa/Requisit      | Iniciado em    | Prazo      | Status  | Terminado em    |
+| :----         |    :----             |      :----:    | :----:     | :----:  | :----:          |
+| Todos         | Levantamento de APIS | 24/08/2025     | 07/03/2024 |  ✔️    |  24/08/2025      |
 
 Legenda:
 - ✔️: terminado
