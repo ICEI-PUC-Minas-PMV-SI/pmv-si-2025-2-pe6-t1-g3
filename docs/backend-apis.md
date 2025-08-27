@@ -4,7 +4,8 @@ O planejamento de uma aplicação de APIS Web é uma etapa fundamental para o su
 
 Aqui estão algumas etapas importantes que devem ser consideradas no planejamento de uma aplicação de APIS Web.
 
-[Inclua uma breve descrição do projeto.]
+O **Zabbix Store** é um e-commerce de múltiplos vendedores, com versões web e mobile, que permite a venda de diversos tipos de produtos, oferecendo uma experiência integrada para compradores e vendedores. O sistema precisa suportar operações de cadastro, gerenciamento de produtos, controle de estoque, processamento de pedidos e gerenciamento de usuários e garantindo segurança.
+
 
 ## Objetivos da API
 
