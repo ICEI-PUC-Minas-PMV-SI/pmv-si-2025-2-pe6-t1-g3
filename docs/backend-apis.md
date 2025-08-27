@@ -1,10 +1,6 @@
 # APIs e Web Services
 
-O planejamento de uma aplicação de APIS Web é uma etapa fundamental para o sucesso do projeto. Ao planejar adequadamente, você pode evitar muitos problemas e garantir que a sua API seja segura, escalável e eficiente.
-
-Aqui estão algumas etapas importantes que devem ser consideradas no planejamento de uma aplicação de APIS Web.
-
-O **Zabbix Store** é um e-commerce de múltiplos vendedores, com versões web e mobile, que permite a venda de diversos tipos de produtos, oferecendo uma experiência integrada para compradores e vendedores. O sistema precisa suportar operações de cadastro, gerenciamento de produtos, controle de estoque, processamento de pedidos e gerenciamento de usuários e garantindo segurança.
+A **Zabbix Store** é um e-commerce de plataforma de terceiros que permite a venda de diversos tipos de produtos, incluindo eletrônicos, roupas e itens de casa. O sistema oferece versões web e mobile, e as APIs serão responsáveis por integrar os serviços entre o front-end, o back-end e sistemas de terceiros, garantindo a comunicação segura e eficiente entre compradores e fornecedores. Entre as funcionalidades da API estão: autenticação de usuários, gerenciamento de produtos, validação de endereços e processamento de pedidos.
 
 
 ## Objetivos da API
