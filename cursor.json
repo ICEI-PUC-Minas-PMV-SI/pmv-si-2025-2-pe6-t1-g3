@@ -1,0 +1,196 @@
+{
+  "projectName": "ZabbixStore",
+  "description": "Plataforma de e-commerce com arquitetura de sistemas distribuídos",
+  "version": "2.0.0",
+  "framework": {
+    "frontend": {
+      "framework": "React 18",
+      "buildTool": "Vite",
+      "styling": "TailwindCSS + Material Tailwind",
+      "routing": "React Router DOM v6",
+      "stateManagement": "Context API + Hooks",
+      "httpClient": "Axios"
+    },
+    "backend": {
+      "framework": "NestJS",
+      "language": "TypeScript",
+      "orm": "Prisma",
+      "database": "PostgreSQL 15",
+      "authentication": "JWT + bcrypt",
+      "validation": "class-validator + class-transformer",
+      "documentation": "Swagger/OpenAPI"
+    },
+    "infrastructure": {
+      "containerization": "Docker + Docker Compose",
+      "cache": "Redis 7",
+      "proxy": "Nginx",
+      "monitoring": "Health Checks"
+    }
+  },
+  "guidelines": {
+    "security": ".cursor/security.md",
+    "database": ".cursor/database-guidelines.md",
+    "docker": ".cursor/docker-guidelines.md",
+    "api": ".cursor/api-guidelines.md",
+    "codingStyle": ".cursor/coding-style.md",
+    "development": ".cursor/development-guidelines.md",
+    "projectStructure": ".cursor/project-structure.md",
+    "rules": ".cursor/rules.md"
+  },
+  "conventions": {
+    "language": {
+      "code": "English",
+      "documentation": "Portuguese",
+      "comments": "English for technical, Portuguese for business context"
+    },
+    "naming": {
+      "variables": "camelCase",
+      "constants": "UPPER_SNAKE_CASE",
+      "classes": "PascalCase",
+      "files": "PascalCase for components, kebab-case for others",
+      "database": "UPPERCASE for tables and fields"
+    },
+    "commits": "Conventional Commits (feat:, fix:, docs:, etc.)"
+  },
+  "structure": {
+    "frontend": {
+      "root": "infrastructure/frontend",
+      "src": {
+        "components": "React components",
+        "contexts": "State management contexts",
+        "hooks": "Custom hooks",
+        "services": "API services",
+        "assets": "Static resources"
+      },
+      "port": {
+        "development": 5173,
+        "production": 80
+      }
+    },
+    "backend": {
+      "root": "infrastructure/backend",
+      "src": {
+        "auth": "Authentication module",
+        "produto": "Product module",
+        "pedido": "Order module",
+        "pessoa": "User module",
+        "endereco": "Address module",
+        "health": "Health checks",
+        "services": "Shared services"
+      },
+      "port": 3000
+    },
+    "database": {
+      "port": 9080,
+      "admin": {
+        "tool": "Prisma Studio",
+        "port": 5555
+      }
+    }
+  },
+  "development": {
+    "scripts": {
+      "start": "./start-project.sh",
+      "dev": "./start-dev.sh",
+      "backend": "npm run start:dev",
+      "frontend": "npm run dev",
+      "test": "npm run test",
+      "lint": "npm run lint",
+      "format": "npm run format"
+    },
+    "hotReload": {
+      "frontend": "Vite HMR",
+      "backend": "NestJS --watch"
+    }
+  },
+  "testing": {
+    "framework": "Jest",
+    "coverage": "80% minimum",
+    "structure": "*.spec.ts files alongside source files",
+    "e2e": "Supertest for integration tests"
+  },
+  "security": {
+    "authentication": "JWT Bearer tokens",
+    "validation": "class-validator DTOs",
+    "headers": "Helmet.js security headers",
+    "cors": "Configured for FRONTEND_URL",
+    "rateLimiting": "@nestjs/throttler"
+  },
+  "database": {
+    "schema": {
+      "naming": "UPPERCASE fields",
+      "relationships": "@relation decorators",
+      "mapping": "@@map for custom table names",
+      "timestamps": "DATAINC for creation dates"
+    },
+    "migrations": "npx prisma migrate dev",
+    "seeds": "npx prisma db seed"
+  },
+  "api": {
+    "documentation": "Swagger at /api",
+    "versioning": "Prepared for /api/v1/",
+    "authentication": "Bearer JWT tokens",
+    "validation": "Global ValidationPipe",
+    "errorHandling": "Centralized exception filters"
+  },
+  "docker": {
+    "services": {
+      "frontend": "React + Vite + Nginx",
+      "backend": "NestJS + Node.js",
+      "database": "PostgreSQL 15 Alpine",
+      "cache": "Redis 7 Alpine",
+      "admin": "Prisma Studio"
+    },
+    "healthChecks": "Required for all critical services",
+    "volumes": {
+      "postgres": "postgres_data",
+      "redis": "redis_data"
+    }
+  },
+  "linting": {
+    "frontend": {
+      "config": ".eslintrc.cjs",
+      "plugins": ["react", "react-hooks", "react-refresh"]
+    },
+    "backend": {
+      "config": ".eslintrc.js",
+      "plugins": ["@typescript-eslint", "prettier"]
+    },
+    "formatting": {
+      "tool": "Prettier",
+      "config": {
+        "singleQuote": true,
+        "trailingComma": "all"
+      }
+    }
+  },
+  "monitoring": {
+    "healthChecks": "/health endpoints",
+    "logging": "Centralized logging",
+    "metrics": "Performance monitoring",
+    "alerts": "Critical failure alerts"
+  },
+  "deployment": {
+    "environment": "Docker containers",
+    "ssl": "Nginx with SSL certificates",
+    "backup": "Database backup strategy",
+    "scaling": "Container orchestration ready"
+  },
+  "aiAssistance": {
+    "context": "E-commerce platform with distributed architecture",
+    "focus": "Maintain consistency with existing patterns",
+    "preferences": {
+      "useExistingPatterns": true,
+      "followNamingConventions": true,
+      "includeValidations": true,
+      "addDocumentation": true,
+      "considerSecurity": true
+    },
+    "constraints": {
+      "language": "English for code, Portuguese for documentation",
+      "architecture": "Modular NestJS backend, Component-based React frontend",
+      "database": "Prisma ORM with PostgreSQL",
+      "containerization": "Docker for all services"
+    }
+  }
+}
