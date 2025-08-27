@@ -88,21 +88,21 @@ Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvo
 
 ### Semana 1
 
-Atualizado em: 21/04/2024
+Atualizado em: 27/08/2025
 
 | Responsável      | Tarefa/Requisito            | Iniciado em    | Prazo      | Status  | Terminado em    |
 | :----            |    :----                    |   :----:       | :----:     | :----:  | :----:          |
-| Todos            | Correção etapa 1            |  01/02/2024    | 07/02/2024 |  ✔️     | 05/02/2024      |
-| Jully            | APIs e Web Services         |  03/02/2024    | 10/02/2024 |  📝     |                 |
-| Victor           | Objetivos da API            |  01/01/2024    | 07/01/2005 |  ⌛     |                 |
-| Vinicius / Jully | Modelagem da Aplicação      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
-| Pedro            | Tecnologias Utilizadas      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
-| Lucas            | API Endpoints               |  01/01/2024    | 12/02/2005 |  ❌     |                 |
-| Pedro            | Tecnologias Utilizadas      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
-| Pedro            | Considerações de Segurança  |  01/01/2024    | 12/02/2005 |  ❌     |                 |
-| Pedro / Ítalo    | Implantação                 |  01/01/2024    | 12/02/2005 |  ❌     |                 |
-| Pedro            | Considerações de Segurança  |  01/01/2024    | 12/02/2005 |  ❌     |                 |
-| Ítalo            | Testes                      |  01/01/2024    | 12/02/2005 |  ❌     |                 |
+| Todos            | Correção etapa 1            |  01/09/2025    | 07/09/2025 |  ✔️     | 05/02/2025      |
+| Jully            | APIs e Web Services         |  01/09/2025    | 10/02/2025 |  📝     |                 |
+| Victor           | Objetivos da API            |  01/09/2025    | 07/01/2005 |  ⌛     |                 |
+| Vinicius / Jully | Modelagem da Aplicação      |  01/09/2025    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Tecnologias Utilizadas      |  01/09/2025    | 12/02/2005 |  ❌     |                 |
+| Lucas            | API Endpoints               |  01/09/2025    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Tecnologias Utilizadas      |  01/09/2025    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Considerações de Segurança  |  01/09/2025    | 12/02/2005 |  ❌     |                 |
+| Pedro / Ítalo    | Implantação                 |  01/09/2024    | 12/02/2005 |  ❌     |                 |
+| Pedro            | Considerações de Segurança  |  01/09/2024    | 12/02/2005 |  ❌     |                 |
+| Ítalo            | Testes                      |  01/09/2024    | 12/02/2005 |  ❌     |                 |
 
 
 #### Semana 2
