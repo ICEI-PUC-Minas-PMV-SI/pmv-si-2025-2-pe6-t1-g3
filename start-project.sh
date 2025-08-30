@@ -1,20 +1,14 @@
 #!/bin/bash
+set -e
 
-# Script de inicialização do projeto PMV-SI com Docker
-# Este script inicializa toda a stack usando Docker Compose
-
-set -e  # Para o script se algum comando falhar
-
-# Cores para output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Função para imprimir mensagens coloridas
 print_status() {
     echo -e "${BLUE}[INFO]${NC} $1"
 }
@@ -35,19 +29,16 @@ print_header() {
     echo -e "${PURPLE}[DOCKER]${NC} $1"
 }
 
-# Função para verificar se um comando existe
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Função para aguardar um serviço estar disponível
 wait_for_service() {
     local host=$1
     local port=$2
     local service_name=$3
     local max_attempts=60
     local attempt=1
-    
     print_status "Aguardando $service_name estar disponível em $host:$port..."
     
     while [ $attempt -le $max_attempts ]; do
@@ -65,11 +56,9 @@ wait_for_service() {
     return 1
 }
 
-# Função para verificar dependências
 check_dependencies() {
     print_status "Verificando dependências para Docker..."
     
-    # Verificar Docker
     if ! command_exists docker; then
         print_error "Docker não está instalado ou não está no PATH"
         print_error "Por favor, instale o Docker Desktop e ative a integração WSL2"
@@ -77,14 +66,12 @@ check_dependencies() {
         exit 1
     fi
     
-    # Verificar se Docker está rodando
     if ! docker info >/dev/null 2>&1; then
         print_error "Docker não está rodando"
         print_error "Por favor, inicie o Docker Desktop"
         exit 1
     fi
     
-    # Verificar Docker Compose
     if ! command_exists docker-compose && ! docker compose version >/dev/null 2>&1; then
         print_error "Docker Compose não está disponível"
         exit 1
@@ -93,7 +80,6 @@ check_dependencies() {
     print_success "Docker e Docker Compose estão disponíveis"
 }
 
-# Função para verificar .env
 check_env_file() {
     print_status "Verificando arquivo de configuração..."
     
@@ -114,48 +100,32 @@ check_env_file() {
     fi
 }
 
-# Função para parar serviços existentes
 stop_existing_services() {
     print_status "Parando containers existentes..."
     
-    # Parar stack atual se estiver rodando
     docker-compose down --remove-orphans 2>/dev/null || true
-    
-    # Limpar volumes órfãos (opcional)
     docker volume prune -f 2>/dev/null || true
     
     print_success "Containers existentes parados"
 }
 
-# Função para fazer build das imagens
 build_images() {
     print_header "Fazendo build das imagens Docker..."
-    
-    # Build das imagens com cache
     docker-compose build --parallel
-    
     print_success "Build das imagens concluído"
 }
 
-# Função para inicializar a stack Docker
 start_docker_stack() {
     print_header "Iniciando stack Docker..."
-    
-    # Iniciar serviços principais (sem nginx de produção)
     docker-compose up -d postgres redis
     
-    # Aguardar PostgreSQL estar disponível
     wait_for_service "localhost" "9080" "PostgreSQL"
-    
-    # Iniciar backend
     docker-compose up -d backend
     wait_for_service "localhost" "3000" "Backend API"
     
-    # Iniciar frontend
     docker-compose up -d frontend
     wait_for_service "localhost" "5173" "Frontend"
     
-    # Iniciar Prisma Studio
     docker-compose up -d prisma-studio
     wait_for_service "localhost" "5555" "Prisma Studio"
     
@@ -180,7 +150,6 @@ show_status() {
     echo "============================================================"
     echo ""
     
-    # Verificar status dos containers
     if docker-compose ps | grep -q "Up"; then
         docker-compose ps
     else
@@ -212,13 +181,11 @@ show_status() {
     echo ""
 }
 
-# Função para fazer health check
 health_check() {
     print_status "Verificando saúde dos serviços..."
     
     local failed=0
     
-    # Check PostgreSQL
     if docker-compose exec -T postgres pg_isready -U postgres >/dev/null 2>&1; then
         print_success "PostgreSQL: Saudável"
     else
@@ -226,7 +193,6 @@ health_check() {
         failed=1
     fi
     
-    # Check Backend
     if curl -f http://localhost:3000 >/dev/null 2>&1; then
         print_success "Backend API: Saudável"
     else
@@ -234,7 +200,6 @@ health_check() {
         failed=1
     fi
     
-    # Check Frontend
     if curl -f http://localhost:5173 >/dev/null 2>&1; then
         print_success "Frontend: Saudável"
     else
@@ -251,7 +216,6 @@ health_check() {
     fi
 }
 
-# Função para limpeza ao sair
 cleanup() {
     echo ""
     print_status "Limpeza iniciada..."
@@ -260,10 +224,8 @@ cleanup() {
     print_success "Script finalizado"
 }
 
-# Configurar trap para limpeza ao sair
 trap cleanup EXIT INT TERM
 
-# Função principal
 main() {
     local mode=${1:-"start"}
     
@@ -295,7 +257,6 @@ main() {
             echo ""
             print_status "Pressione Ctrl+C para sair (serviços continuarão rodando)"
             
-            # Manter script rodando para logs
             while true; do
                 sleep 5
                 if ! docker-compose ps | grep -q "Up"; then
@@ -363,5 +324,4 @@ main() {
     esac
 }
 
-# Executar função principal
 main "$@" 

@@ -16,7 +16,6 @@ const ProductCard = ({ product }) => {
   return (
     <Link to={`/product/${product.CODPROD}`} className="group">
       <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group-hover:scale-105">
-        {/* Product Image */}
         <div className="aspect-square overflow-hidden bg-gray-100 rounded-lg mb-4">
           <img
             src={product.IMAGEM || '/api/placeholder/300/300'}
@@ -28,7 +27,6 @@ const ProductCard = ({ product }) => {
           />
         </div>
 
-        {/* Product Info */}
         <div className="space-y-2">
           <h3 className="text-lg font-medium text-gray-900 line-clamp-2 group-hover:text-gray-700 transition-colors">
             {product.PRODUTO}
@@ -40,7 +38,6 @@ const ProductCard = ({ product }) => {
             </p>
           )}
 
-          {/* Price */}
           <div className="flex items-center space-x-2">
             <span className="text-xl font-bold text-gray-900">
               {formatPrice(discountedPrice)}
@@ -58,7 +55,6 @@ const ProductCard = ({ product }) => {
             )}
           </div>
 
-          {/* Stock indicator */}
           {product.ESTOQUE !== undefined && (
             <div className="text-xs text-gray-500">
               {product.ESTOQUE > 0 ? (

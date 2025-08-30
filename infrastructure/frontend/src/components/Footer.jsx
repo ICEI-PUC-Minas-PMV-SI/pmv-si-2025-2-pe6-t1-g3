@@ -32,7 +32,6 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           
-          {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center mb-4">
               <div className="w-8 h-8 bg-black text-white flex items-center justify-center rounded font-bold text-lg mr-3">
@@ -46,7 +45,7 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="https://github.com/ICEI-PUC-Minas-PMV-SI/pmv-si-2025-2-pe6-t1-g3" 
+                href={import.meta.env.VITE_GITHUB_REPOSITORY_URL || "https://github.com/ICEI-PUC-Minas-PMV-SI/pmv-si-2025-2-pe6-t1-g3"} 
                 className="text-gray-400 hover:text-gray-600 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -58,7 +57,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
               Links Rápidos
@@ -95,15 +93,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Support */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
               Suporte
             </h3>
             <ul className="space-y-3">
               <li>
-                <a href="mailto:contato@zabbix.com.br" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  contato@zabbix.com.br
+                <a href={`mailto:${import.meta.env.VITE_CONTACT_EMAIL || "contato@zabbix.com.br"}`} className="text-gray-600 hover:text-gray-900 transition-colors">
+                  {import.meta.env.VITE_CONTACT_EMAIL || "contato@zabbix.com.br"}
                 </a>
               </li>
               <li className="text-gray-600">
@@ -116,7 +113,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section */}
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-600 text-sm">
             © 2025 Zabbix. Todos os direitos reservados.

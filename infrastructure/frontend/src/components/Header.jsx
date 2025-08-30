@@ -4,11 +4,11 @@ import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX, FiSearch, FiHeart } from
 import { MdAdminPanelSettings } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
 import Button from "./UI/Button";
+import SearchDropdown from "./UI/SearchDropdown";
 import zabbixLogo from "../assets/zabbixLogo.png";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -26,7 +26,6 @@ function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <Link 
             to="/" 
             className="flex items-center hover:opacity-80 transition-opacity"
@@ -39,7 +38,6 @@ function Header() {
             />
           </Link>
 
-          {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center space-x-8">
             <Link 
               to="/" 
@@ -70,23 +68,13 @@ function Header() {
             </Link>
           </div>
 
-          {/* Search Bar */}
           <div className="hidden md:flex flex-1 max-w-lg mx-8">
-            <div className="relative w-full">
-              <input
-                type="text"
-                placeholder="Buscar produtos..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-black focus:border-black transition-colors text-sm"
-              />
-              <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
-                <FiSearch size={16} />
-              </button>
-            </div>
+            <SearchDropdown 
+              placeholder="Buscar produtos..."
+              className="w-full"
+            />
           </div>
 
-          {/* Desktop Right Icons */}
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
@@ -160,18 +148,11 @@ function Header() {
           <div className="md:hidden border-t border-gray-200 py-4">
             {/* Mobile Search */}
             <div className="px-4 pb-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Buscar produtos..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-black focus:border-black transition-colors text-sm"
-                />
-                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-black text-white rounded-full">
-                  <FiSearch size={14} />
-                </button>
-              </div>
+              <SearchDropdown 
+                placeholder="Buscar produtos..."
+                className="w-full"
+                onClose={() => setIsMenuOpen(false)}
+              />
             </div>
             
             <div className="flex flex-col space-y-3 px-4">

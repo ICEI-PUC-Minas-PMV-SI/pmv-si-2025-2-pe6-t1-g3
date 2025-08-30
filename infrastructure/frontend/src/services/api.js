@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { ENV } from '../utils/env';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = ENV.API_URL();
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -48,8 +49,29 @@ export const orderService = {
 };
 
 export const userService = {
-  getProfile: () => api.get('/pessoa/buscar'),
+  getProfile: (codpes) => api.get('/pessoa/buscar', { params: { CODPES: codpes } }),
   updateProfile: (data) => api.put('/pessoa/atualizar', data),
+  changePassword: (data) => api.post('/alterar/senha', data),
+};
+
+export const addressService = {
+  updateAddress: (data) => api.put('/endereco/atualizar/', data),
+  createAddress: (data) => api.post('/endereco/cadastrar', data),
+  deleteAddress: (codend) => api.delete('/endereco/deletar', { params: { CODEND: codend } }),
+};
+
+export const orderService2 = {
+  getOrdersByUser: (codpes) => api.get('/pedido/listar', { params: { CODPES: codpes } }),
+  createOrder: (order) => api.post('/pedido/cadastrar', order),
+  getOrderById: (id) => api.get(`/pedido/buscar`, { params: { CODPED: id } }),
+};
+
+export const externalService = {
+  getCep: async (cep) => {
+    const viacepUrl = ENV.VIACEP_API_URL();
+    const response = await axios.get(`${viacepUrl}/${cep.replace(/[^0-9]/g, "")}/json/`);
+    return response;
+  },
 };
 
 export default api;

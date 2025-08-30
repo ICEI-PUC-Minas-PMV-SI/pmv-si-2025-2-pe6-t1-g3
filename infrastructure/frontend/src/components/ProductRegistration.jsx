@@ -1,15 +1,11 @@
 import React, { useState, useRef } from "react";
 import Inputs from "./fragments/Inputs";
-import axios from "axios";
 import "../css/ProductRegistration.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { productService } from "../services/api";
 
 const ProductRegistration = () => {
-  // Route to register products
-  const url_register_product = "http://localhost:3000/produto/cadastrar";
-
-  // Product field
   const [product, setProduct] = useState({
     PRODUTO: "",
     DESCRICAO: "",
@@ -20,10 +16,7 @@ const ProductRegistration = () => {
     CATEGORIA: "",
   });
 
-  // Reference for file input
   const fileInputRef = useRef(null);
-
-  // Getting inputs value to product field
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     setProduct({
@@ -32,7 +25,6 @@ const ProductRegistration = () => {
     });
   };
 
-  // Update product image (conversion png - base64)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -53,9 +45,7 @@ const ProductRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-      const registerProduct = await axios.post(url_register_product, product, config);
+      const registerProduct = await productService.createProduct(product);
       setProduct({
         PRODUTO: "",
         DESCRICAO: "",
@@ -68,9 +58,10 @@ const ProductRegistration = () => {
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+      const toastDuration = import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION || 3000;
       toast.success("Produto cadastrado com sucesso!", {
         position: "bottom-right",
-        autoClose: 3000,
+        autoClose: parseInt(toastDuration),
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -79,9 +70,10 @@ const ProductRegistration = () => {
       });
     } catch (error) {
       if (error.response && error.response.status === 500) {
+        const toastDuration = import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION || 3000;
         toast.error("Erro 500: Erro ao cadastrar produto. Tente novamente mais tarde.", {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: parseInt(toastDuration),
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -89,9 +81,10 @@ const ProductRegistration = () => {
           progress: undefined,
         });
       } else {
+        const toastDuration = import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION || 3000;
         toast.error("Erro ao cadastrar produto. Tente novamente.", {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: parseInt(toastDuration),
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

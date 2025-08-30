@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiTrash2, FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
+import { productService } from "../../services/api";
 
 const CartProducts = ({ onTotalChange }) => {
   const [cart, setCart] = useState([]);
@@ -17,7 +17,7 @@ const CartProducts = ({ onTotalChange }) => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const productDetailsPromises = cart.map((item) => axios.get(`http://localhost:3000/produto/buscar?CODPROD=${item.CODPROD}`));
+        const productDetailsPromises = cart.map((item) => productService.getProduct(item.CODPROD));
         const responses = await Promise.all(productDetailsPromises);
 
         const fetchedProducts = responses.map((response, index) => ({
@@ -50,7 +50,9 @@ const CartProducts = ({ onTotalChange }) => {
     setCart(updatedCart);
     setProducts(products.filter((product) => product.CODPROD !== productId));
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    toast.success("Produto removido do carrinho");
+    toast.success("Produto removido do carrinho", {
+      autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000
+    });
     calculateTotal();
   };
 
@@ -131,18 +133,15 @@ const CartProducts = ({ onTotalChange }) => {
     <div className="space-y-6">
       <ToastContainer />
       
-      {/* Cart Header */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">Itens no Carrinho</h2>
         <p className="text-sm text-gray-600">{products.length} {products.length === 1 ? 'produto' : 'produtos'}</p>
       </div>
 
-      {/* Products List */}
       <div className="space-y-4">
         {products.map((product) => (
           <div key={product.CODPROD} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-start space-x-4">
-              {/* Product Image */}
               <div className="flex-shrink-0">
                 <img 
                   src={product.IMAGEM} 
@@ -151,7 +150,6 @@ const CartProducts = ({ onTotalChange }) => {
                 />
               </div>
 
-              {/* Product Info */}
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-medium text-gray-900 mb-2">{product.PRODUTO}</h3>
                 <div className="space-y-1 text-sm text-gray-600">
@@ -159,7 +157,6 @@ const CartProducts = ({ onTotalChange }) => {
                   <p>Tamanho: <span className="font-medium text-gray-900">{product.size}</span></p>
                 </div>
 
-                {/* Quantity Controls */}
                 <div className="flex items-center space-x-4 mt-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-gray-600">Quantidade:</span>
@@ -181,7 +178,6 @@ const CartProducts = ({ onTotalChange }) => {
                     </div>
                   </div>
 
-                  {/* Remove Button */}
                   <button
                     onClick={() => handleRemoveProduct(product.CODPROD)}
                     className="flex items-center space-x-1 text-red-600 hover:text-red-800 transition-colors"
@@ -192,7 +188,6 @@ const CartProducts = ({ onTotalChange }) => {
                 </div>
               </div>
 
-              {/* Product Total */}
               <div className="flex-shrink-0 text-right">
                 <p className="text-lg font-semibold text-gray-900">
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.VALOR * product.quantity)}

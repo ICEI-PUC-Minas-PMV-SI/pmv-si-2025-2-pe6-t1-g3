@@ -58,7 +58,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -98,7 +97,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Categories Section */}
       <div className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -128,7 +126,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Features Section */}
       <div className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -145,7 +142,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Products Section */}
       <div id="produtos" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
