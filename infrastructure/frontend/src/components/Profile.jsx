@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { userService } from "../services/api";
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -50,7 +50,7 @@ const Profile = () => {
             EMAIL: decodedToken.EMAIL,
           });
 
-          const response = await axios.get(`http://localhost:3000/pessoa/buscar?CODPES=${decodedToken.CODPES}`, config);
+          const response = await userService.getProfile(decodedToken.CODPES);
           const user = response.data;
           setUserData({
             CODPES: user.CODPES,
@@ -80,11 +80,11 @@ const Profile = () => {
         },
       };
       try {
-        const res = await axios.post("http://localhost:3000/pessoa/atualizar", userData, config);
+        const res = await userService.updateProfile(userData);
         console.log("Dados atualizados com sucesso:", res);
         toast.success("Dados atualizados com sucesso!", {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -94,7 +94,7 @@ const Profile = () => {
       } catch (error) {
         toast.error("Erro ao atualizar. Tente mais tarde!", {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -119,10 +119,10 @@ const Profile = () => {
         try {
           const passwordData = { ...userPassword };
           delete passwordData.CONFIRMAR_SENHA;
-          const res = await axios.patch("http://localhost:3000/alterar/senha", passwordData);
+          const res = await userService.changePassword(passwordData);
           toast.success("Senha atualizada com sucesso!", {
             position: "bottom-right",
-            autoClose: 3000,
+            autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -135,7 +135,7 @@ const Profile = () => {
           console.error("Erro ao atualizar a senha:", error);
           toast.error("Erro ao atualizar senha!", {
             position: "bottom-right",
-            autoClose: 3000,
+            autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
           });
         } finally {
           setIsLoading(false);

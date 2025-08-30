@@ -12,7 +12,8 @@ input[type="submit"] {
 
 .container-register {
   display: flex;
-  background-color: #f5f5f536;
+  height: 100vh;
+  background-color: whitesmoke;
 }
 
 .container-register-form {
@@ -20,18 +21,17 @@ input[type="submit"] {
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-color: #0d6759;
 }
 
-.form-register {
+.form-register-login {
   background-color: whitesmoke;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 29px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 45%;
-  padding: 32px;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 29px 0px;
+  padding: 30px;
+  border-radius: 9px;
   flex-direction: column;
 }
 
@@ -42,10 +42,6 @@ input[type="submit"] {
   margin-top: 20px;
 }
 
-.textfield-register label {
-  margin-top: 15px;
-}
-
 .inputs-register {
   width: 100%;
   display: flex;
@@ -53,8 +49,32 @@ input[type="submit"] {
   justify-content: space-between;
 }
 
-.column {
+.column-login {
   width: 48%;
+}
+
+.submit-login {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  width: 70%;
+}
+
+.submit-login input {
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.87);
+  color: white;
+  font-weight: 700;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  width: calc(100% - 22px);
+  transition: 0.3s ease;
+}
+
+.submit-login input:hover {
+  background-color: rgba(0, 0, 0, 0.311);
+  color: black;
 }
 
 #senha,
@@ -66,50 +86,13 @@ input[type="submit"] {
 #telefone {
   padding: 10px;
   border: 1px solid black;
-  border-radius: 2px;
   background-color: whitesmoke;
   width: calc(100% - 22px);
 }
 
-.error-border {
-  border: 2px solid red;
-}
-
-.password-error {
-  color: red;
-  margin-top: 5px;
-}
-
-.aside-register {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 40%;
-  justify-content: center;
-  align-items: center;
-}
-
-.form-register h1 {
+.form-register-login h1 {
   font-size: 4vh;
   font-weight: 800;
-}
-
-#submit-register {
-  padding: 12px;
-  background-color: rgba(0, 0, 0, 0.87);
-  color: white;
-  margin-top: 10px;
-  font-weight: 700;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  width: 100%;
-  transition: 0.3s ease;
-}
-
-#submit-register:hover {
-  background-color: rgba(128, 128, 128, 0.368);
-  color: black;
 }
 
 .status-error {
@@ -134,18 +117,20 @@ input[type="submit"] {
   font-size: 30px;
 }
 
-.submit-register {
-  width: calc(100% - 22px);
-  margin-top: 30px;
+@media (max-width: 1700px) {
+  .form-register-login {
+    width: 50%;
+    flex-direction: column;
+    margin: 60px 0 20px 0;
+    box-shadow: none;
+  }
 }
 
 @media (max-width: 900px) {
-  .form-register {
+  .form-register-login {
+    width: 95%;
     flex-direction: column;
-    width: 100%;
-    height: auto;
-    padding: 30px;
-    margin: 10px;
+    margin: 60px 0 20px 0;
     box-shadow: none;
   }
 
@@ -156,18 +141,11 @@ input[type="submit"] {
     width: 100%;
   }
 
-  .textfield-register label {
-    margin-top: 10px;
-  }
-  .column {
+  .column-login {
     width: 100%;
   }
 
-  .submit-register {
-    width: 100%;
-  }
-
-  .submit-register input {
+  .submit-login input {
     width: 100%;
   }
 

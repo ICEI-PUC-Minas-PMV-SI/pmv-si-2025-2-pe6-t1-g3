@@ -1,110 +1,336 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Inputs from "./fragments/Inputs";
-import axios from "axios";
-import "../css/register.css";
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { authService } from '../services/api';
+import Input from './UI/Input';
+import Button from './UI/Button';
+import Card from './UI/Card';
 
 const Register = () => {
-  // Using navigate to redirect users with expired token
-  const navigate = useNavigate();
-  // Using useState for setting a message in a lot of uses cases (login succeded, login error, email already registered....)
-  const [message, setMessage] = useState(null);
-  // Showing that everything in registering worked fine
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  // Our route to register users, hitting nestJS
-  const REGISTER_URL = "http://localhost:3000/registro"
-
-
-  // getting the JWT Token from localstorage, checking if a valid user is trying to access /register again. Same for /login
-  const retrievetoken = localStorage.getItem("token");
-
-  // Checking if the token isnt expired, if not, redirect to the home page (user is already logged in)
-  useEffect(() => {
-    if (retrievetoken) {
-      try {
-        const decodedToken = JSON.parse(atob(retrievetoken.split(".")[1]));
-        const expirationTime = decodedToken.exp * 1000;
-        if (Date.now() < expirationTime) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  }, [retrievetoken, navigate]);
-
-  // Creating some inputs to receive and manipulate data, it will also used to send to the localhost
   const [formData, setFormData] = useState({
-    NOME: "",
-    SOBRENOME: "",
-    EMAIL: "",
-    CPF: "",
-    TELEFONE: "",
-    SENHA: "",
+    NOME: '',
+    SOBRENOME: '',
+    EMAIL: '',
+    CPF: '',
+    TELEFONE: '',
+    SENHA: '',
+    confSenha: ''
   });
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // The function of this function (lol) is to receive every change in the form's input values and set in to the formData by setFormData
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
   const handleChange = (e) => {
-    // Get the name and the value of the input
     const { name, value } = e.target;
-    // set into the formData by comparing its name and allocating the value
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
-  // Function triggered when hitting submit form button, responsible for posting, using axios, if success, redirect to the /login screen
-  // if it came back with 409, the email exist, so its not possible to overwrite. Else, its a unknown error
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.NOME) {
+      newErrors.NOME = 'Nome é obrigatório';
+    }
+    
+    if (!formData.SOBRENOME) {
+      newErrors.SOBRENOME = 'Sobrenome é obrigatório';
+    }
+    
+    if (!formData.EMAIL) {
+      newErrors.EMAIL = 'Email é obrigatório';
+    } else if (!/\S+@\S+\.\S+/.test(formData.EMAIL)) {
+      newErrors.EMAIL = 'Email inválido';
+    }
+    
+    if (!formData.CPF) {
+      newErrors.CPF = 'CPF é obrigatório';
+    } else if (!/^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$/.test(formData.CPF)) {
+      newErrors.CPF = 'CPF inválido';
+    }
+    
+    if (!formData.TELEFONE) {
+      newErrors.TELEFONE = 'Telefone é obrigatório';
+    }
+    
+    if (!formData.SENHA) {
+      newErrors.SENHA = 'Senha é obrigatória';
+    } else if (formData.SENHA.length < 6) {
+      newErrors.SENHA = 'Senha deve ter pelo menos 6 caracteres';
+    }
+    
+    if (!formData.confSenha) {
+      newErrors.confSenha = 'Confirmação de senha é obrigatória';
+    } else if (formData.SENHA !== formData.confSenha) {
+      newErrors.confSenha = 'Senhas não coincidem';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setIsLoading(true);
     try {
-      const res = await axios.post(REGISTER_URL, formData);
-      console.log("localhost URL:", REGISTER_URL);
-      // if the response of post is valid (200). if not, show errors
-      if ((res.status = 200)) {
-        setIsSuccess(true);
-        setMessage("Cadastrado com sucesso!");
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
-      }
+      const { confSenha, ...registerData } = formData;
+      const response = await authService.register(registerData);
+      
+      setErrors({
+        general: { 
+          message: 'Cadastro realizado com sucesso! Redirecionando...',
+          type: 'success'
+        }
+      });
+      
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+      
     } catch (error) {
-      console.log("localhost URL:", REGISTER_URL);
-      // showing email already exists error, or another type of error
-      if ((error.response.status = 409)) {
-        setMessage("Email já cadastrado.");
-      } else {
-        console.log("Erro ao se cadastrar:", error);
+      let errorMessage = 'Erro ao cadastrar usuário';
+      
+      if (error.response?.status === 409) {
+        errorMessage = 'Email já está sendo usado';
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
       }
+      
+      setErrors({
+        general: { message: errorMessage, type: 'error' }
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="container-register">
-      <div className="container-register-form">
-        <form className="form-register" onSubmit={handleSubmit}>
-          {message && <p className={isSuccess ? "status-success" : "status-error"}>{message}</p>}
-          <h1>Registre-se aqui!</h1>
-          <div className="inputs-register">
-            <div className="column">
-              <div className="textfield-register">
-                <Inputs label="Nome:" type="text" name="NOME" id="nome" placeholder="Seu nome" onChange={handleChange} required />
-                <Inputs label="Sobrenome:" type="text" name="SOBRENOME" id="sobrenome" placeholder="Seu sobrenome" onChange={handleChange} required />
-                <Inputs label="CPF:" type="text" name="CPF" id="cpf" placeholder="Seu CPF" onChange={handleChange} required />
-                <Inputs label="Telefone:" type="TELEFONE" name="TELEFONE" id="telefone" placeholder="(XX) 9 1234-5678" onChange={handleChange} required />
-              </div>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl w-full">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900">
+            Criar Conta
+          </h2>
+          <p className="mt-2 text-gray-600">
+            Cadastre-se para acessar sua conta
+          </p>
+        </div>
+
+        <Card>
+          <div className="mb-8">
+            <div className="flex items-center justify-between text-sm font-medium text-gray-600 mb-4">
+              <span className="flex items-center">
+                <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                Pessoais
+              </span>
+              <span className="flex items-center">
+                <span className="w-6 h-6 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                Contato
+              </span>
+              <span className="flex items-center">
+                <span className="w-6 h-6 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-xs mr-2">3</span>
+                Segurança
+              </span>
             </div>
-            <div className="column">
-              <div className="textfield-register">
-                <Inputs label="Seu email: " type="text" name="EMAIL" id="email" placeholder="Seu e-mail" onChange={handleChange} required />
-                <Inputs label="Senha: " type="password" name="SENHA" id="senha" placeholder="Sua senha" onChange={handleChange} required />
-                <Inputs type="password" label="Confirme sua senha:" name="confSenha" id="confSenha" placeholder="Sua senha novamente" required />
-              </div>
-              <div className="submit-register">
-                <input type="submit" id="submit-register" value="Registrar" />
-              </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-gray-900 h-2 rounded-full transition-all duration-300" style={{width: '33.33%'}}></div>
             </div>
           </div>
-        </form>
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {errors.general && (
+              <div className={`border rounded-lg p-4 ${
+                errors.general.type === 'success' 
+                  ? 'bg-green-50 border-green-200' 
+                  : 'bg-red-50 border-red-200'
+              }`}>
+                <p className={`text-sm ${
+                  errors.general.type === 'success' 
+                    ? 'text-green-600' 
+                    : 'text-red-600'
+                }`}>
+                  {errors.general.message}
+                </p>
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <div className="border-b border-gray-200 pb-2">
+                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                  <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                    1
+                  </span>
+                  Informações Pessoais
+                </h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Dados básicos para identificação
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  label="Nome"
+                  type="text"
+                  name="NOME"
+                  value={formData.NOME}
+                  onChange={handleChange}
+                  error={errors.NOME}
+                  placeholder="Seu primeiro nome"
+                  required
+                />
+
+                <Input
+                  label="Sobrenome"
+                  type="text"
+                  name="SOBRENOME"
+                  value={formData.SOBRENOME}
+                  onChange={handleChange}
+                  error={errors.SOBRENOME}
+                  placeholder="Seu sobrenome"
+                  required
+                />
+              </div>
+
+              <Input
+                label="CPF"
+                type="text"
+                name="CPF"
+                value={formData.CPF}
+                onChange={handleChange}
+                error={errors.CPF}
+                placeholder="000.000.000-00"
+                required
+              />
+            </div>
+
+            <div className="space-y-4">
+              <div className="border-b border-gray-200 pb-2">
+                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                  <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                    2
+                  </span>
+                  Informações de Contato
+                </h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Como podemos entrar em contato com você
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  label="Email"
+                  type="email"
+                  name="EMAIL"
+                  value={formData.EMAIL}
+                  onChange={handleChange}
+                  error={errors.EMAIL}
+                  placeholder="seu@email.com"
+                  required
+                />
+
+                <Input
+                  label="Telefone"
+                  type="tel"
+                  name="TELEFONE"
+                  value={formData.TELEFONE}
+                  onChange={handleChange}
+                  error={errors.TELEFONE}
+                  placeholder="(11) 99999-9999"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="border-b border-gray-200 pb-2">
+                <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                  <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                    3
+                  </span>
+                  Segurança da Conta
+                </h3>
+                <p className="mt-1 text-sm text-gray-600">
+                  Crie uma senha forte para proteger sua conta
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input
+                  label="Senha"
+                  type="password"
+                  name="SENHA"
+                  value={formData.SENHA}
+                  onChange={handleChange}
+                  error={errors.SENHA}
+                  placeholder="Mínimo 6 caracteres"
+                  required
+                />
+
+                <Input
+                  label="Confirmar Senha"
+                  type="password"
+                  name="confSenha"
+                  value={formData.confSenha}
+                  onChange={handleChange}
+                  error={errors.confSenha}
+                  placeholder="Digite a senha novamente"
+                  required
+                />
+              </div>
+              
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-blue-900 mb-2">
+                  Dicas para uma senha forte:
+                </h4>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  <li>Pelo menos 6 caracteres</li>
+                  <li>Use letras maiúsculas e minúsculas</li>
+                  <li>Inclua números e símbolos</li>
+                  <li>Evite informações pessoais óbvias</li>
+                </ul>
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Cadastrando...' : 'Criar Conta'}
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-gray-600">
+              Já tem uma conta?{' '}
+              <Link 
+                to="/login" 
+                className="text-gray-900 font-medium hover:text-gray-700 transition-colors"
+              >
+                Fazer login
+              </Link>
+            </p>
+          </div>
+        </Card>
       </div>
     </div>
   );

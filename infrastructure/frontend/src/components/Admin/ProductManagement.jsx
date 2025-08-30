@@ -152,7 +152,6 @@ const ProductManagement = ({ onProductChange }) => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900">Gerenciar Produtos</h2>
         <Button
@@ -164,7 +163,6 @@ const ProductManagement = ({ onProductChange }) => {
         </Button>
       </div>
 
-      {/* Product Form Modal */}
       {showForm && (
         <Card>
           <div className="mb-6">
@@ -261,7 +259,6 @@ const ProductManagement = ({ onProductChange }) => {
         </Card>
       )}
 
-      {/* Products List */}
       <Card>
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-gray-900">

@@ -41,7 +41,6 @@ const MetricsOverview = ({ metrics, onRefresh }) => {
 
   return (
     <div className="space-y-8">
-      {/* Header with refresh button */}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900">Métricas Gerais</h2>
         <Button
@@ -55,7 +54,6 @@ const MetricsOverview = ({ metrics, onRefresh }) => {
         </Button>
       </div>
 
-      {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {metricCards.map((metric, index) => {
           const Icon = metric.icon;
@@ -79,7 +77,6 @@ const MetricsOverview = ({ metrics, onRefresh }) => {
         })}
       </div>
 
-      {/* Recent Orders */}
       <Card>
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">

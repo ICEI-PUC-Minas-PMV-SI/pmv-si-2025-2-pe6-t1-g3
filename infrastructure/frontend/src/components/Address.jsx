@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { userService, addressService, externalService } from "../services/api";
 
 const Address = () => {
   // // // // // // // // // // // // // // // // // // // // // // // //
@@ -36,7 +36,7 @@ const Address = () => {
       if (isValidCEP(cep)) {
         fetchCEP();
       }
-    }, 500);
+    }, import.meta.env.VITE_CEP_FETCH_DELAY_MS || 500);
 
     return () => clearTimeout(timer);
   }, [cep]);
@@ -46,7 +46,7 @@ const Address = () => {
   // // // // // // // // // // // // // // // // // // // // // // // //
   const fetchCEP = async () => {
     try {
-      const res = await axios.get(`https://viacep.com.br/ws/${cep.replace(/[^0-9]/g, "")}/json/`);
+      const res = await externalService.getCep(cep);
       const data = res.data;
 
       setAddressInfo((prevInfo) => ({
@@ -91,8 +91,7 @@ const Address = () => {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get(`http://localhost:3000/pessoa/buscar?CODPES=${decodedToken.CODPES}`, config);
+        const response = await userService.getProfile(decodedToken.CODPES);
         const user = response.data;
 
         setAddressInfo({
@@ -126,12 +125,11 @@ const Address = () => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
     if (token) {
-      const config = { headers: { Authorization: `Bearer ${token}` } };
       try {
         if (editedAddress) {
           const updateData = { ...addressInfo };
           delete updateData.CODPES;
-          await axios.patch("http://localhost:3000/endereco/atualizar/", updateData, config);
+          await addressService.updateAddress(updateData);
           setAddresses((prevAddresses) => 
             prevAddresses.map((address) => 
               address.CODEND === editedAddress.CODEND 
@@ -142,7 +140,7 @@ const Address = () => {
           toast.success("Endereço atualizado com sucesso!");
           setEditedAddress(null);
         } else {
-          const res = await axios.post("http://localhost:3000/endereco/cadastrar", addressInfo, config);
+          const res = await addressService.createAddress(addressInfo);
           setAddresses([...addresses, { ...addressInfo, CODEND: res.data.CODEND }]);
           toast.success("Endereço adicionado com sucesso!");
         }
@@ -184,9 +182,8 @@ const Address = () => {
     setAddresses(newAddresses);
     const token = localStorage.getItem("token");
     if (token) {
-      const config = { headers: { Authorization: `Bearer ${token}` } };
       try {
-        await axios.delete(`http://localhost:3000/endereco/deletar?CODEND=${codend}`, config);
+        await addressService.deleteAddress(codend);
         toast.success("Endereço deletado com sucesso!", {
           position: "bottom-right",
           autoClose: 3000,

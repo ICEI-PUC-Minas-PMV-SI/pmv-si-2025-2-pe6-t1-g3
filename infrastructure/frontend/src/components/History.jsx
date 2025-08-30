@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { orderService2 } from "../services/api";
 
 const History = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -13,13 +13,14 @@ const History = () => {
       try {
         setLoading(true);
         const decodedToken = jwtDecode(token);
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get(`http://localhost:3000/pedido/listar?CODPES=${decodedToken.CODPES}`, config);
+        const response = await orderService2.getOrdersByUser(decodedToken.CODPES);
         const userPedidos = response.data;
 
         setPedidos(userPedidos);
       } catch (error) {
-        toast.error("Erro ao buscar pedidos. Tente mais tarde!");
+        toast.error("Erro ao buscar pedidos. Tente mais tarde!", {
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000
+        });
       } finally {
         setLoading(false);
       }
@@ -73,13 +74,11 @@ const History = () => {
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Header */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Meus Pedidos</h2>
         <p className="text-gray-600">Acompanhe o histórico dos seus pedidos</p>
       </div>
 
-      {/* Orders List */}
       <div className="space-y-6">
         {pedidos.length === 0 ? (
           <div className="text-center py-12">
@@ -100,7 +99,6 @@ const History = () => {
         ) : (
           pedidos.map((pedido) => (
             <div key={pedido.CODPED} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              {/* Order Header */}
               <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center space-x-4">
@@ -118,10 +116,8 @@ const History = () => {
                 </div>
               </div>
 
-              {/* Order Details */}
               <div className="px-6 py-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Order Summary */}
                   <div>
                     <h4 className="text-sm font-medium text-gray-900 mb-3">Resumo do Pedido</h4>
                     <dl className="space-y-2 text-sm">

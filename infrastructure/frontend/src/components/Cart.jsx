@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CartProducts from "../components/fragments/cartProducts";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { FiMapPin, FiShoppingBag } from "react-icons/fi";
+import { userService, orderService2 } from "../services/api";
 
 const Cart = () => {
   const [total, setTotal] = useState(0);
@@ -25,7 +25,7 @@ const Cart = () => {
   if (!token) {
     toast.info("Por favor, faça login ou registre-se para continuar.", {
       position: "bottom-right",
-      autoClose: 7000,
+      autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 7000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -41,14 +41,13 @@ const Cart = () => {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get(`http://localhost:3000/pessoa/buscar?CODPES=${decodedToken.CODPES}`, config);
+        const response = await userService.getProfile(decodedToken.CODPES);
         const user = response.data;
         setAddresses(user.ENDERECOS);
       } catch (error) {
         toast.error("Erro ao buscar dados. Tente mais tarde!", {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -73,7 +72,7 @@ const Cart = () => {
     if (!selectedAddress) {
       toast.error("Por favor, selecione um endereço antes de fechar o pedido!", {
         position: "bottom-right",
-        autoClose: 3000,
+        autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -86,7 +85,7 @@ const Cart = () => {
     if (cartItems.length === 0) {
       toast.error("O carrinho está vazio. Adicione produtos antes de fechar o pedido!", {
         position: "bottom-right",
-        autoClose: 3000,
+        autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -113,8 +112,7 @@ const Cart = () => {
         };
         console.log(orderData);
 
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        await axios.post("http://localhost:3000/pedido/cadastrar", orderData, config);
+        await orderService2.createOrder(orderData);
 
         localStorage.removeItem("cart");
 
@@ -124,7 +122,7 @@ const Cart = () => {
 
         toast.success("Pedido enviado com sucesso!", {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -134,7 +132,7 @@ const Cart = () => {
       } catch (error) {
         toast.error("Erro ao enviar pedido. Tente mais tarde!", {
           position: "bottom-right",
-          autoClose: 3000,
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

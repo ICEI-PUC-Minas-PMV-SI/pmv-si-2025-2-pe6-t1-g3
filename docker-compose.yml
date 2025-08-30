@@ -1,27 +1,20 @@
 services:
-  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: store-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: store_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "9080:5432"
+      - "${DATABASE_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - store-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d store_db"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
-  # Backend API
   backend:
     build:
       context: ./infrastructure/backend
@@ -29,112 +22,61 @@ services:
     container_name: store-backend
     restart: unless-stopped
     environment:
-      NODE_ENV: production
-      PORT: 3000
-      DATABASE_URL: postgresql://postgres:password123@postgres:5432/store_db?schema=public
-      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-this-in-production}
-      FRONTEND_URL: http://localhost:5173
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${BACKEND_PORT}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      JWT_SECRET: ${JWT_SECRET}
+      FRONTEND_URL: ${FRONTEND_URL}
     ports:
-      - "3000:3000"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     networks:
       - store-network
     volumes:
       - ./infrastructure/backend/prisma:/app/prisma
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
-  # Frontend React App
   frontend:
     build:
       context: ./infrastructure/frontend
       dockerfile: Dockerfile
     container_name: store-frontend
     restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:${BACKEND_PORT}
+      VITE_VIACEP_API_URL: https://viacep.com.br/ws
+      VITE_CONTACT_EMAIL: ${VITE_CONTACT_EMAIL}
+      VITE_GITHUB_REPOSITORY_URL: ${VITE_GITHUB_REPOSITORY_URL}
+      VITE_TOAST_AUTOCLOSE_DURATION: ${VITE_TOAST_AUTOCLOSE_DURATION:-3000}
+      VITE_SEARCH_DEBOUNCE_MS: ${VITE_SEARCH_DEBOUNCE_MS:-500}
+      VITE_CEP_FETCH_DELAY_MS: ${VITE_CEP_FETCH_DELAY_MS:-500}
     ports:
-      - "5173:80"
+      - "${FRONTEND_PORT}:80"
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     networks:
       - store-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
-  # Prisma Studio (Database Admin)
   prisma-studio:
     image: node:18-alpine
     container_name: store-prisma-studio
     restart: unless-stopped
     working_dir: /app
     environment:
-      DATABASE_URL: postgresql://postgres:password123@postgres:5432/store_db?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
     ports:
-      - "5555:5555"
+      - "${PRISMA_STUDIO_PORT}:5555"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     networks:
       - store-network
     volumes:
       - ./infrastructure/backend:/app
     command: sh -c "npm install -g prisma && npx prisma studio --hostname 0.0.0.0"
 
-  # Redis for Caching (Optional - for future use)
-  redis:
-    image: redis:7-alpine
-    container_name: store-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    networks:
-      - store-network
-    volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Nginx Reverse Proxy (Optional - for production)
-  nginx:
-    image: nginx:alpine
-    container_name: store-nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - store-network
-    profiles:
-      - production
-
 volumes:
   postgres_data:
-    driver: local
-  redis_data:
-    driver: local
 
 networks:
   store-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.25.0.0/16
