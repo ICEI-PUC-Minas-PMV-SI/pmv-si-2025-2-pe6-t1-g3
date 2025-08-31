@@ -1,0 +1,194 @@
+# Generate MemoryBank
+
+## Objetivo
+Gerar e atualizar conteúdo do MemoryBank para manter o contexto do projeto organizado e acessível.
+
+## Estrutura do MemoryBank
+
+### Business-context
+- Regras de negócio
+- Requisitos funcionais
+- Fluxos de usuário
+- Políticas e restrições
+
+### Technical-context
+- Stack tecnológico
+- Configurações de ambiente
+- Padrões de código
+- Dependências e versões
+
+### Architeture-patterns
+- Decisões arquiteturais
+- Padrões de design
+- Estrutura de dados
+- APIs e interfaces
+
+### Decision-logs
+- Histórico de decisões
+- Justificativas técnicas
+- Alternativas consideradas
+- Impactos das decisões
+
+## Template de Geração
+
+### Para Business-context
+```markdown
+# Business Context - [ÁREA/FUNCIONALIDADE]
+
+## Descrição
+[Descrição da regra de negócio ou funcionalidade]
+
+## Requisitos
+- **Funcional**: [Requisitos funcionais]
+- **Não Funcional**: [Requisitos não funcionais]
+
+## Regras de Negócio
+1. [Regra 1]
+2. [Regra 2]
+3. [Regra 3]
+
+## Fluxo de Usuário
+1. [Passo 1]
+2. [Passo 2]
+3. [Passo 3]
+
+## Validações
+- [Validação 1]
+- [Validação 2]
+
+## Exceções
+- [Exceção 1]
+- [Exceção 2]
+
+## Data de Criação
+[Data]
+
+## Última Atualização
+[Data]
+```
+
+### Para Technical-context
+```markdown
+# Technical Context - [COMPONENTE/TECNOLOGIA]
+
+## Tecnologia
+- **Nome**: [Nome da tecnologia]
+- **Versão**: [Versão]
+- **Propósito**: [Propósito no projeto]
+
+## Configuração
+```json
+{
+  "configuração": "exemplo"
+}
+```
+
+## Padrões de Uso
+- [Padrão 1]
+- [Padrão 2]
+
+## Dependências
+- [Dependência 1]
+- [Dependência 2]
+
+## Exemplos de Implementação
+```code
+// Exemplo de código
+```
+
+## Melhores Práticas
+- [Prática 1]
+- [Prática 2]
+
+## Data de Criação
+[Data]
+
+## Última Atualização
+[Data]
+```
+
+### Para Architeture-patterns
+```markdown
+# Architecture Pattern - [PADRÃO/DECISÃO]
+
+## Decisão
+[Descrição da decisão arquitetural]
+
+## Contexto
+[Contexto que levou à decisão]
+
+## Alternativas Consideradas
+1. **Alternativa 1**
+   - Prós: [Prós]
+   - Contras: [Contras]
+   - Por que não foi escolhida: [Justificativa]
+
+2. **Alternativa 2**
+   - Prós: [Prós]
+   - Contras: [Contras]
+   - Por que não foi escolhida: [Justificativa]
+
+## Solução Escolhida
+[Descrição da solução implementada]
+
+## Implementação
+```code
+// Exemplo de implementação
+```
+
+## Impactos
+- **Positivos**: [Impactos positivos]
+- **Negativos**: [Impactos negativos]
+- **Riscos**: [Riscos identificados]
+
+## Data da Decisão
+[Data]
+
+## Responsável
+[Nome/Equipe]
+```
+
+### Para Decision-logs
+```markdown
+# Decision Log - [DECISÃO]
+
+## Data
+[Data da decisão]
+
+## Decisão
+[Descrição da decisão tomada]
+
+## Contexto
+[Contexto que levou à decisão]
+
+## Alternativas
+1. [Alternativa 1]
+2. [Alternativa 2]
+
+## Consequências
+- **Esperadas**: [Consequências esperadas]
+- **Inesperadas**: [Consequências inesperadas]
+
+## Status
+[Implementada/Em andamento/Pendente]
+
+## Revisão
+- **Data de Revisão**: [Data]
+- **Resultado**: [Resultado da revisão]
+- **Ações**: [Ações necessárias]
+```
+
+## Instruções de Uso
+1. Identificar o tipo de informação a ser registrada
+2. Escolher o template apropriado
+3. Preencher com informações específicas do projeto
+4. Salvar no diretório correto do MemoryBank
+5. Atualizar índices ou referências quando necessário
+6. Manter consistência com informações existentes
+
+## Critérios de Qualidade
+- Informações devem ser claras e objetivas
+- Incluir contexto suficiente para compreensão
+- Manter histórico de mudanças
+- Referenciar fontes quando aplicável
+- Usar linguagem técnica apropriada

@@ -1,7 +1,8 @@
 {
   "projectName": "ZabbixStore",
   "description": "Plataforma de e-commerce com arquitetura de sistemas distribuídos",
-  "version": "2.0.0",
+  "version": "2.1.0",
+  "lastUpdated": "2025-01-27",
   "framework": {
     "frontend": {
       "framework": "React 18",
@@ -27,14 +28,75 @@
       "monitoring": "Health Checks"
     }
   },
+  "documentation": {
+    "structure": {
+      "guidelines": {
+        "purpose": "Comandos práticos e instruções operacionais",
+        "focus": "Como fazer",
+        "audience": "Desenvolvedores ativos",
+        "files": {
+          "main": ".cursor/README.md",
+          "development": ".cursor/development-guidelines.md",
+          "quickReference": ".cursor/quick-reference.md",
+          "troubleshooting": ".cursor/troubleshooting.md",
+          "deployment": ".cursor/deployment-checklist.md",
+          "docker": ".cursor/docker-guidelines.md",
+          "api": ".cursor/api-guidelines.md",
+          "database": ".cursor/database-guidelines.md",
+          "security": ".cursor/security.md",
+          "rules": ".cursor/rules.md"
+        }
+      },
+      "memoryBank": {
+        "purpose": "Contexto explicativo e padrões",
+        "focus": "Por que fazer",
+        "audience": "Novos devs, arquitetos",
+        "location": ".cursor/AI/MemoryBank/",
+        "categories": {
+          "businessContext": "Contexto de negócio e personas",
+          "technicalContext": "Contexto técnico e stack",
+          "architecturePatterns": "Padrões arquiteturais",
+          "decisionLogs": "Histórico de decisões técnicas",
+          "bestPractices": "Melhores práticas e padrões"
+        }
+      }
+    },
+    "templates": {
+      "location": ".cursor/Templates/",
+      "files": {
+        "taskTemplate": "task-template.md",
+        "architecturePattern": "architecture-pattern-template.md",
+        "businessContext": "business-context-template.md",
+        "decisionLog": "decision-log-template.md",
+        "technicalContext": "technical-context-template.md"
+      }
+    },
+    "rules": {
+      "location": ".cursor/Rules/",
+      "files": {
+        "testing": "testing-guidelines.md",
+        "zabbixstore": "zabbixstore-rules.md"
+      }
+    },
+    "aiPrompts": {
+      "location": ".cursor/AI/Prompt/",
+      "files": {
+        "executeTask": "execute-task.md",
+        "generateTask": "generate-task.md",
+        "generateMemoryBank": "generate-memorybank.md"
+      }
+    }
+  },
   "guidelines": {
-    "security": ".cursor/security.md",
-    "database": ".cursor/database-guidelines.md",
+    "main": ".cursor/README.md",
+    "development": ".cursor/development-guidelines.md",
+    "quickReference": ".cursor/quick-reference.md",
+    "troubleshooting": ".cursor/troubleshooting.md",
+    "deployment": ".cursor/deployment-checklist.md",
     "docker": ".cursor/docker-guidelines.md",
     "api": ".cursor/api-guidelines.md",
-    "codingStyle": ".cursor/coding-style.md",
-    "development": ".cursor/development-guidelines.md",
-    "projectStructure": ".cursor/project-structure.md",
+    "database": ".cursor/database-guidelines.md",
+    "security": ".cursor/security.md",
     "rules": ".cursor/rules.md"
   },
   "conventions": {
@@ -81,7 +143,7 @@
       "port": 3000
     },
     "database": {
-      "port": 9080,
+      "port": 5432,
       "admin": {
         "tool": "Prisma Studio",
         "port": 5555
@@ -101,6 +163,12 @@
     "hotReload": {
       "frontend": "Vite HMR",
       "backend": "NestJS --watch"
+    },
+    "quickCommands": {
+      "startAll": "./start-project.sh",
+      "stopAll": "docker-compose down",
+      "logs": "docker-compose logs -f",
+      "healthCheck": "curl http://localhost:3000/health"
     }
   },
   "testing": {
@@ -124,7 +192,8 @@
       "timestamps": "DATAINC for creation dates"
     },
     "migrations": "npx prisma migrate dev",
-    "seeds": "npx prisma db seed"
+    "seeds": "npx prisma db seed",
+    "studio": "npx prisma studio"
   },
   "api": {
     "documentation": "Swagger at /api",
@@ -174,23 +243,55 @@
     "environment": "Docker containers",
     "ssl": "Nginx with SSL certificates",
     "backup": "Database backup strategy",
-    "scaling": "Container orchestration ready"
+    "scaling": "Container orchestration ready",
+    "checklist": ".cursor/deployment-checklist.md"
+  },
+  "troubleshooting": {
+    "commonIssues": ".cursor/troubleshooting.md",
+    "quickReference": ".cursor/quick-reference.md",
+    "logs": "docker-compose logs -f",
+    "reset": "docker-compose down -v && ./start-project.sh"
   },
   "aiAssistance": {
     "context": "E-commerce platform with distributed architecture",
     "focus": "Maintain consistency with existing patterns",
+    "documentationStructure": {
+      "guidelines": "Operational commands and instructions",
+      "memoryBank": "Contextual explanations and patterns",
+      "templates": "Reusable templates for documentation"
+    },
     "preferences": {
       "useExistingPatterns": true,
       "followNamingConventions": true,
       "includeValidations": true,
       "addDocumentation": true,
-      "considerSecurity": true
+      "considerSecurity": true,
+      "referenceGuidelines": true,
+      "useMemoryBank": true
     },
     "constraints": {
       "language": "English for code, Portuguese for documentation",
       "architecture": "Modular NestJS backend, Component-based React frontend",
       "database": "Prisma ORM with PostgreSQL",
-      "containerization": "Docker for all services"
+      "containerization": "Docker for all services",
+      "documentation": "Guidelines for operations, MemoryBank for context"
+    },
+    "prompts": {
+      "location": ".cursor/AI/Prompt/",
+      "executeTask": "execute-task.md",
+      "generateTask": "generate-task.md",
+      "generateMemoryBank": "generate-memorybank.md"
+    }
+  },
+  "reorganization": {
+    "date": "2025-01-27",
+    "summary": ".cursor/REORGANIZATION-SUMMARY.md",
+    "changes": {
+      "guidelines": "Focused on operational commands and instructions",
+      "memoryBank": "Expanded with contextual explanations and patterns",
+      "separation": "Clear distinction between 'how to' and 'why to'",
+      "templates": "Added reusable templates for documentation",
+      "rules": "Organized testing and project-specific rules"
     }
   }
 }

@@ -1,14 +1,16 @@
-# 🎨 Coding Style
+# Best Practices - Coding Standards
 
-## Frontend (React + Vite)
+## Padrões de Código
 
-### Estrutura de Arquivos
+### Frontend (React + Vite)
+
+#### Estrutura de Arquivos
 - **Organização**: `/components`, `/pages`, `/hooks`, `/services`, `/contexts`, `/assets`
 - **Componentes**: `PascalCase` para arquivos de componentes (`Header.jsx`, `ProductDetails.jsx`)
 - **Helpers**: `camelCase` para utilitários e hooks customizados
 - **Contextos**: `/contexts` para gerenciamento de estado global
 
-### Tecnologias e Bibliotecas
+#### Tecnologias e Bibliotecas
 - **Framework**: React 18 com Hooks
 - **Build Tool**: Vite para desenvolvimento e build
 - **Styling**: TailwindCSS + Material Tailwind + Headless UI
@@ -18,14 +20,14 @@
 - **Notifications**: React Toastify
 - **Loading**: React Spinners
 
-### Padrões de Código
+#### Padrões de Código
 - **Hooks**: Preferir Hooks funcionais em vez de classes
 - **Props**: Destructuring de props
 - **State**: useState e useContext para gerenciamento de estado
 - **Effects**: useEffect para side effects
 - **Components**: Componentes funcionais com arrow functions
 
-### ESLint Configuração
+#### ESLint Configuração
 ```javascript
 // .eslintrc.cjs
 extends: [
@@ -36,15 +38,15 @@ extends: [
 ]
 ```
 
-## Backend (NestJS + TypeScript)
+### Backend (NestJS + TypeScript)
 
-### Estrutura de Arquivos
+#### Estrutura de Arquivos
 - **Módulos**: Organização por domínio (`auth/`, `produto/`, `pedido/`, `pessoa/`)
 - **Arquitetura**: Controllers, Services, DTOs separados
 - **Nomenclatura**: `camelCase` para variáveis/métodos, `PascalCase` para classes
 - **DTOs**: Pasta `dto/` em cada módulo
 
-### Tecnologias e Dependências
+#### Tecnologias e Dependências
 - **Framework**: NestJS com TypeScript
 - **ORM**: Prisma Client
 - **Validação**: class-validator + class-transformer
@@ -52,14 +54,14 @@ extends: [
 - **Autenticação**: JWT + bcrypt
 - **Segurança**: Helmet + CORS + Rate Limiting
 
-### Padrões de Código
+#### Padrões de Código
 - **Decorators**: Uso extensivo de decorators NestJS
 - **Dependency Injection**: Injeção de dependências via constructor
 - **Async/Await**: Preferir async/await em vez de Promises
 - **Error Handling**: Exception filters globais
 - **Logging**: Logger centralizado
 
-### ESLint e Prettier
+#### ESLint e Prettier
 ```javascript
 // .eslintrc.js
 extends: [
@@ -98,12 +100,19 @@ extends: [
 - **Interfaces**: `PascalCase` com prefixo `I` opcional (ex: `IProduct`, `UserDto`)
 
 ### Comentários
-- **Código**: Comentários em inglês para lógica complexa
-- **Documentação**: Comentários em português para contexto de negócio
-- **JSDoc**: Para funções públicas e APIs
-- **TODO**: Marcar tarefas pendentes com `// TODO: descrição`
+- **JSDoc**: Para funções e classes públicas
+- **Inline**: Apenas para lógica complexa
+- **TODO**: Marcar tarefas pendentes
+- **FIXME**: Marcar problemas conhecidos
 
-### Imports
-- **Ordem**: Imports de terceiros primeiro, depois locais
-- **Agrupamento**: Imports relacionados agrupados
-- **Aliases**: Usar aliases para imports longos quando necessário
+### Git Commits
+- **Conventional Commits**: `type(scope): description`
+- **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- **Scope**: Módulo afetado (ex: `auth`, `product`)
+- **Description**: Descrição clara e concisa
+
+## Data de Criação
+27/01/2025
+
+## Última Atualização
+27/01/2025

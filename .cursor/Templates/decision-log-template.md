@@ -1,0 +1,148 @@
+# Decision Log Template
+
+## Informações Básicas
+- **Decisão**: [Título da decisão]
+- **Data da Decisão**: [Data]
+- **Responsável**: [Nome/Equipe]
+- **Status**: [Proposta/Aprovada/Implementada/Rejeitada/Revisada]
+
+## Decisão
+[Descrição clara e concisa da decisão tomada]
+
+## Contexto
+### Situação
+[Descrição da situação que levou à necessidade da decisão]
+
+### Stakeholders
+- [Stakeholder 1]: [Papel e interesse]
+- [Stakeholder 2]: [Papel e interesse]
+
+### Restrições
+- [Restrição 1]: [Descrição]
+- [Restrição 2]: [Descrição]
+
+## Alternativas Consideradas
+
+### Alternativa 1: [Nome da Alternativa]
+- **Descrição**: [Descrição da alternativa]
+- **Prós**:
+  - [Pró 1]
+  - [Pró 2]
+- **Contras**:
+  - [Contra 1]
+  - [Contra 2]
+- **Impacto**: [Baixo/Médio/Alto]
+- **Custo**: [Estimativa de custo]
+
+### Alternativa 2: [Nome da Alternativa]
+- **Descrição**: [Descrição da alternativa]
+- **Prós**:
+  - [Pró 1]
+  - [Pró 2]
+- **Contras**:
+  - [Contra 1]
+  - [Contra 2]
+- **Impacto**: [Baixo/Médio/Alto]
+- **Custo**: [Estimativa de custo]
+
+## Decisão Tomada
+### Solução Escolhida
+[Descrição da solução escolhida]
+
+### Justificativa
+[Justificativa detalhada para a escolha]
+
+### Critérios de Decisão
+- [Critério 1]: [Peso/Importância]
+- [Critério 2]: [Peso/Importância]
+
+## Consequências
+### Consequências Esperadas
+- [Consequência 1]: [Descrição e impacto]
+- [Consequência 2]: [Descrição e impacto]
+
+### Consequências Inesperadas
+- [Consequência 1]: [Descrição e impacto]
+- [Consequência 2]: [Descrição e impacto]
+
+### Riscos
+- **Risco 1**: [Descrição do risco]
+  - **Probabilidade**: [Baixa/Média/Alta]
+  - **Impacto**: [Baixo/Médio/Alto]
+  - **Mitigação**: [Como mitigar]
+
+- **Risco 2**: [Descrição do risco]
+  - **Probabilidade**: [Baixa/Média/Alta]
+  - **Impacto**: [Baixo/Médio/Alto]
+  - **Mitigação**: [Como mitigar]
+
+## Implementação
+### Plano de Implementação
+1. [Passo 1]
+2. [Passo 2]
+3. [Passo 3]
+
+### Cronograma
+- **Início**: [Data]
+- **Fim**: [Data]
+- **Milestones**:
+  - [Milestone 1]: [Data]
+  - [Milestone 2]: [Data]
+
+### Recursos Necessários
+- [Recurso 1]: [Quantidade/Descrição]
+- [Recurso 2]: [Quantidade/Descrição]
+
+## Monitoramento
+### Métricas de Sucesso
+- [Métrica 1]: [Como medir]
+- [Métrica 2]: [Como medir]
+
+### Indicadores de Progresso
+- [Indicador 1]: [Descrição]
+- [Indicador 2]: [Descrição]
+
+### Pontos de Controle
+- [Ponto de controle 1]: [Data e critérios]
+- [Ponto de controle 2]: [Data e critérios]
+
+## Status
+### Status Atual
+[Status atual da implementação]
+
+### Progresso
+- **Concluído**: [X]%
+- **Em andamento**: [X]%
+- **Pendente**: [X]%
+
+### Bloqueadores
+- [Bloqueador 1]: [Descrição e responsável]
+- [Bloqueador 2]: [Descrição e responsável]
+
+## Revisão
+### Data de Revisão
+[Data da revisão]
+
+### Resultado da Revisão
+[Resultado da revisão da decisão]
+
+### Ações Necessárias
+- [ ] [Ação 1]
+- [ ] [Ação 2]
+
+### Lições Aprendidas
+- [Lição 1]: [Descrição]
+- [Lição 2]: [Descrição]
+
+## Documentação Relacionada
+- [Link para documentação 1]
+- [Link para documentação 2]
+- [Link para reuniões/atas]
+
+## Histórico de Alterações
+| Data | Versão | Alteração | Responsável |
+|------|--------|-----------|-------------|
+| [Data] | [Versão] | [Descrição da alteração] | [Responsável] |
+
+## Observações
+[Observações importantes sobre a decisão ou implementação]

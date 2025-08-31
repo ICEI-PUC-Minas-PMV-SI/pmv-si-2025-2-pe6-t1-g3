@@ -1,0 +1,137 @@
+# Generate Task Prompt Template
+
+<description>
+Template para gerar arquivo `current-work.md` estruturado com tarefas e sub-tarefas detalhadas usando a metodologia RIPER (Research, Implement, Plan, Execute, Review).
+</description>
+
+<projectContext>
+- **Nome do Projeto**: ZabbixStore
+- **Tecnologias**: React, Node.js, NestJS, Prisma, PostgreSQL
+- **Arquitetura**: Frontend (React), Backend (NestJS), Banco de Dados (PostgreSQL)
+</projectContext>
+
+<methodology>
+## Estrutura RIPER
+
+### R - Research (Pesquisa)
+- Análise dos requisitos
+- Investigação de tecnologias necessárias
+- Estudo de padrões e melhores práticas
+
+### I - Implement (Implementação)
+- Desenvolvimento do código
+- Configuração de dependências
+- Criação de componentes/serviços
+
+### P - Plan (Planejamento)
+- Definição de arquitetura
+- Estruturação de dados
+- Cronograma de execução
+
+### E - Execute (Execução)
+- Testes unitários
+- Testes de integração
+- Deploy e configuração
+
+### R - Review (Revisão)
+- Code review
+- Validação de requisitos
+- Documentação
+</methodology>
+
+<outputTemplate>
+```markdown
+# Current Work - [NOME_DA_TAREFA]
+
+## Objetivo
+[Descrição clara do objetivo da tarefa]
+
+## Contexto
+[Contexto técnico e de negócio]
+
+## Estrutura RIPER
+
+### R - Research
+- [ ] [Sub-tarefa de pesquisa 1]
+- [ ] [Sub-tarefa de pesquisa 2]
+- [ ] [Sub-tarefa de pesquisa 3]
+
+### I - Implement
+- [ ] [Sub-tarefa de implementação 1]
+- [ ] [Sub-tarefa de implementação 2]
+- [ ] [Sub-tarefa de implementação 3]
+
+### P - Plan
+- [ ] [Sub-tarefa de planejamento 1]
+- [ ] [Sub-tarefa de planejamento 2]
+- [ ] [Sub-tarefa de planejamento 3]
+
+### E - Execute
+- [ ] [Sub-tarefa de execução 1]
+- [ ] [Sub-tarefa de execução 2]
+- [ ] [Sub-tarefa de execução 3]
+
+### R - Review
+- [ ] [Sub-tarefa de revisão 1]
+- [ ] [Sub-tarefa de revisão 2]
+- [ ] [Sub-tarefa de revisão 3]
+
+## Critérios de Aceitação
+- [ ] [Critério 1]
+- [ ] [Critério 2]
+- [ ] [Critério 3]
+
+## Estimativa de Tempo
+- **Total**: [X] horas
+- **Research**: [X] horas
+- **Implement**: [X] horas
+- **Plan**: [X] horas
+- **Execute**: [X] horas
+- **Review**: [X] horas
+
+## Dependências
+- [Dependência 1]
+- [Dependência 2]
+
+## Observações
+[Observações importantes sobre a implementação]
+```
+</outputTemplate>
+
+<problemDescription>
+## Seção para Descrição de Problemas
+
+<programmerInput>
+### Problema Identificado
+[O programador deve descrever aqui o problema encontrado durante a execução]
+
+### Informações Técnicas
+- **Arquivo(s) afetado(s)**: [Lista de arquivos]
+- **Erro específico**: [Mensagem de erro ou comportamento inesperado]
+- **Contexto da execução**: [Em qual fase/etapa o problema ocorreu]
+
+### Tentativas de Resolução
+- [ ] [Tentativa 1 realizada]
+- [ ] [Tentativa 2 realizada]
+- [ ] [Tentativa 3 realizada]
+
+### Informações Adicionais
+- **Logs relevantes**: [Logs de erro ou debug]
+- **Configurações**: [Configurações específicas que podem estar causando o problema]
+- **Dependências**: [Dependências que podem estar relacionadas]
+
+### Solução Proposta
+[Descrição da solução que o programador propõe ou precisa de ajuda para implementar]
+</programmerInput>
+</problemDescription>
+
+<instructions>
+1. Analise a solicitação do usuário
+2. Identifique o tipo de tarefa (frontend, backend, infraestrutura, etc.)
+3. Aplique a metodologia RIPER
+4. Gere o arquivo `current-work.md` na raiz do projeto
+5. Inclua todas as sub-tarefas necessárias
+6. Estime o tempo para cada fase
+7. Identifique dependências e riscos
+8. Se houver problemas durante a execução, use a seção problemDescription para documentar
+</instructions>
