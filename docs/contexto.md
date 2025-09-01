@@ -243,7 +243,10 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 |RNF-003| O sistema deve ser compatível com os principais navegadores modernos (Chrome, Firefox, Edge, Safari). |  MÉDIA | 
 |RNF-004| O sistema deve cumprir todas as leis e regulamentos relevantes, incluindo leis de proteção ao consumidor, leis de privacidade de dados e leis de comércio eletrônico. |  MÉDIA |
 |RNF-005| O sistema deve ser facilmente mantido e atualizado, com código limpo e documentação abrangente para facilitar o trabalho dos desenvolvedores. |  MÉDIA |
-|RNF-006| Deve processar requisições do usuário em no máximo 3s.|  BAIXA | 
+|RNF-006| Todas as funcionalidades devem estar disponíveis tanto na versão web quanto na versão mobile. |  MÉDIA |
+|RNF-007| O design da interface deve seguir padrões responsivos para múltiplos dispositivos. |  MÉDIA |
+|RNF-008| Cada usuário poderá possuir apenas uma conta por endereço de e-mail. |  MÉDIA |
+|RNF-009| Deve processar requisições do usuário em no máximo 3s.|  BAIXA | 
 
 
 ## Restrições
@@ -254,11 +257,7 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |--|-------------------------------------------------------|
 |01| O projeto deverá ser entregue até o final do semestre .|
 |02| O orçamento disponível é limitado, priorizando tecnologias de baixo custo ou gratuitas. |
-|03| O prazo de desenvolvimento não pode ultrapassar 5 meses. |
-|04| Todas as funcionalidades devem estar disponíveis tanto na versão web quanto na versão mobile. |
-|05| O design da interface deve seguir padrões responsivos para múltiplos dispositivos. |
-|06| Cada comprador poderá possuir apenas uma conta por endereço de e-mail. |
-|07| Cada fornecedor poderá possuir apenas uma conta por endereço de e-mail. |
+
 
 # Catálogo de Serviços 
 
@@ -437,7 +436,7 @@ Para o desenvolvimento da solução, serão utilizadas diversas tecnologias mode
 
 > Apresente a divisão de tarefas entre os membros do grupo e o acompanhamento da execução, conforme o exemplo abaixo.
 
-### Semana 1
+### Etapa 1
 
 Atualizado em: 24/08/2025
 
@@ -456,14 +455,7 @@ Atualizado em: 24/08/2025
 | Pedro         | Arquitetura da Solução       | 01/08/2025     | 27/08/2025 |  ✔️   |  20/08/2025      |
 | Lucas         | Tecnologias Utilizadas       | 01/08/2025     | 27/08/2025 | ✔️    |  24/08/2025      |
 | Ítalo         | Hospedagem                   | 01/08/2025     | 27/08/2025 |  ✔️   |   20/08/2025     |
-
-#### Semana 2
-
-Atualizado em: 21/04/2024
-
-| Responsável   | Tarefa/Requisit      | Iniciado em    | Prazo      | Status  | Terminado em    |
-| :----         |    :----             |      :----:    | :----:     | :----:  | :----:          |
-| Todos         | Levantamento de APIS | 24/08/2025     | 07/03/2024 |  ✔️    |  24/08/2025      |
+| Todos         | Levantamento de APIS         | 24/08/2025     | 07/03/2024 |  ✔️   |  24/08/2025      |
 
 Legenda:
 - ✔️: terminado
