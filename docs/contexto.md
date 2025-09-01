@@ -57,8 +57,7 @@ O público-alvo do projeto é composto por:
 - **Fornecedores:** pequenos e médios empreendedores, comerciantes locais e marcas que desejam ampliar seu alcance no comércio digital.  
 - **Compradores:** consumidores finais que buscam praticidade, variedade e segurança ao realizar compras online.
 
-  <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/8098e55e-eed2-4e36-8ef1-3b629bbba266" />
-
+![Alt text](../docs/img/diagrama_publico_alvo.png)
 ### Personas
 
 #### Persona 1 – Laura Andrade
@@ -86,7 +85,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Investe em fotos de qualidade e atendimento personalizado.  
 - Dores: Baixa visibilidade e falta de integração de sistemas.  
 - Ganhos: Mais vendas e reconhecimento da marca.
-<img width="1024" height="768" alt="1" src="https://github.com/user-attachments/assets/7caaefa7-de73-4b2a-8a42-a555681fe3cb" />
+![Alt text](../docs/img/empathy_laura.png)
 
 
 
@@ -118,7 +117,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Busca cursos de marketing digital e redes sociais.  
 - Dores: Falta de tempo e recursos para gestão.  
 - Ganhos: Vendas constantes sem depender de eventos presenciais.
-<img width="1024" height="768" alt="2" src="https://github.com/user-attachments/assets/52d05fb3-2419-48e1-976d-032b15b57854" />
+![Alt text](../docs/img/empathy_patricia.png)
 
 ---
 
@@ -148,7 +147,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Participa de reuniões de tecnologia e novos negócios.  
 - Dores: Perder clientes para lojas 100% digitais.  
 - Ganhos: Melhor aproveitamento de estoque e novos canais de vendas.
-<img width="1024" height="768" alt="3" src="https://github.com/user-attachments/assets/fe5901e0-d858-439d-a63c-0d8aeb41286a" />
+![Alt text](../docs/img/empathy_carlos.png)
 
 ---
 
@@ -178,8 +177,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Testa novas estratégias e ferramentas de marketing.  
 - Dores: Custos crescentes e retorno instável.  
 - Ganhos: Aumento de conversões e reconhecimento profissional.
-<img width="1024" height="768" alt="4" src="https://github.com/user-attachments/assets/1bddc566-dfc0-469d-b5a5-44726f4fff8b" />
-
+![Alt text](../docs/img/empathy_sara.png)
 ---
 
 #### Persona 5 – João Ferreira
@@ -208,7 +206,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Busca apoio de familiares mais jovens para usar redes sociais.  
 - Dores: Dificuldade de gerenciamento de pedidos online.  
 - Ganhos: Expansão da base de clientes e aumento de renda.
-<img width="1024" height="768" alt="5" src="https://github.com/user-attachments/assets/2976b704-d817-4a7a-ad25-f93535398023" />
+![Alt text](../docs/img/empathy_joao.png)
 
 # Especificações do Projeto
 
@@ -283,7 +281,7 @@ Para facilitar o processo de compra, o **Serviço de Carrinho de Compras** organ
 
 --
 ## Diagrama de caso de uso
-<img width="1126" height="593" alt="Image" src="https://github.com/user-attachments/assets/b64ef173-625f-4307-9a47-a5c8256507e3" />
+![Alt text](../docs/img/diagrama_caso_uso.png)
 
 # Arquitetura da Solução
 
@@ -347,7 +345,7 @@ Para o desenvolvimento da solução, serão utilizadas diversas tecnologias mode
 
 - Toda a documentação dos endpoints estará disponível via Swagger, facilitando a integração e manutenção.
 
-<img width="1536" height="1024" alt="Image" src="https://github.com/user-attachments/assets/c9f55042-610b-4a8e-984a-2eee30d6a24c" />
+![Alt text](../docs/img/fluxo_interacao.png)
 
 
 # 📡 Hospedagem do Sistema
