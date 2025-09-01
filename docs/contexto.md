@@ -61,7 +61,7 @@ O público-alvo do projeto é composto por:
 ### Personas
 
 #### Persona 1 – Laura Andrade
-<img width="64" height="68" alt="image_LauraAndrade" src="https://github.com/user-attachments/assets/5625200c-3a03-4736-84ea-73a0e6082576" />
+![Alt text](../docs/img/P_laura.png)
 
 **Profissão:** Proprietária de loja de roupas  
 **Mini-biografia:** Laura, 35 anos, administra uma pequena boutique especializada em moda feminina e peças personalizadas. É apaixonada por tendências e busca sempre trazer novidades para suas clientes.  
@@ -92,8 +92,7 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 2 – Patrícia Nogueira
-<img width="60" height="64" alt="image_PatriciaNogueira" src="https://github.com/user-attachments/assets/b01cfe97-d448-486c-9ae2-49b4640aca96" />
-
+![Alt text](../docs/img/P_patricia.png)
 
 **Profissão:** Artista independente  
 **Mini-biografia:** Patrícia, 29 anos, cria e vende ilustrações autorais e artesanato. Já possui uma clientela fiel, mas ainda depende muito de eventos presenciais para vender.  
@@ -122,7 +121,7 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 3 – Carlos Menezes
-<img width="60" height="64" alt="image_CarlosMenezs" src="https://github.com/user-attachments/assets/55c63b68-2832-4709-a2e0-79ba54f7916c" />
+![Alt text](../docs/img/P_carlos.png)
 
 
 **Profissão:** Gerente de vendas  
@@ -152,7 +151,7 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 4 – Sara Lima
-<img width="60" height="64" alt="image_SaraLima" src="https://github.com/user-attachments/assets/3e028ce0-f8b3-48af-8014-8a7cc93c40e4" />
+![Alt text](../docs/img/P_sara.png)
 
 
 **Profissão:** Analista de marketing  
@@ -181,7 +180,7 @@ O público-alvo do projeto é composto por:
 ---
 
 #### Persona 5 – João Ferreira
-<img width="60" height="64" alt="image" src="https://github.com/user-attachments/assets/299d7e86-a870-41ca-b4b0-b98bdc3eb7e8" />
+![Alt text](../docs/img/p-joao.png)
 
 
 **Profissão:** Pequeno produtor rural  
