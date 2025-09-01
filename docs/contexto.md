@@ -253,13 +253,12 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |ID| Restrição                                             |
 |--|-------------------------------------------------------|
 |01| O projeto deverá ser entregue até o final do semestre .|
-|02| Não pode ser desenvolvido um módulo de backend.        |
-|03| O orçamento disponível é limitado, priorizando tecnologias de baixo custo ou gratuitas. |
-|04| O prazo de desenvolvimento não pode ultrapassar 5 meses. |
-|05| Todas as funcionalidades devem estar disponíveis tanto na versão web quanto na versão mobile. |
-|06| O design da interface deve seguir padrões responsivos para múltiplos dispositivos. |
-|07| Cada comprador poderá possuir apenas uma conta por endereço de e-mail. |
-|08| Cada fornecedor poderá possuir apenas uma conta por endereço de e-mail. |
+|02| O orçamento disponível é limitado, priorizando tecnologias de baixo custo ou gratuitas. |
+|03| O prazo de desenvolvimento não pode ultrapassar 5 meses. |
+|04| Todas as funcionalidades devem estar disponíveis tanto na versão web quanto na versão mobile. |
+|05| O design da interface deve seguir padrões responsivos para múltiplos dispositivos. |
+|06| Cada comprador poderá possuir apenas uma conta por endereço de e-mail. |
+|07| Cada fornecedor poderá possuir apenas uma conta por endereço de e-mail. |
 
 # Catálogo de Serviços 
 
