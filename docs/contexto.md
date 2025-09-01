@@ -238,12 +238,12 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |ID     | Descrição do Requisito  |Prioridade |
 |-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | ALTA | 
+|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel. | ALTA | 
 |RNF-002| O sistema deve restringir o acesso de sua conta por meio de autenticação via senha. | ALTA | 
-|RNF-003| O sistema deve ser compatível com os principais navegadores modernos (Chrome, Firefox, Edge, Safari) |  MÉDIA | 
+|RNF-003| O sistema deve ser compatível com os principais navegadores modernos (Chrome, Firefox, Edge, Safari). |  MÉDIA | 
 |RNF-004| O sistema deve cumprir todas as leis e regulamentos relevantes, incluindo leis de proteção ao consumidor, leis de privacidade de dados e leis de comércio eletrônico. |  MÉDIA |
 |RNF-005| O sistema deve ser facilmente mantido e atualizado, com código limpo e documentação abrangente para facilitar o trabalho dos desenvolvedores. |  MÉDIA |
-|RNF-006| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
+|RNF-006| Deve processar requisições do usuário em no máximo 3s.|  BAIXA | 
 
 
 ## Restrições
@@ -252,14 +252,14 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 |ID| Restrição                                             |
 |--|-------------------------------------------------------|
-|01| O projeto deverá ser entregue até o final do semestre |
-|02| Não pode ser desenvolvido um módulo de backend        |
-|03| O orçamento disponível é limitado, priorizando tecnologias de baixo custo ou gratuitas |
-|04| O prazo de desenvolvimento não pode ultrapassar 5 meses |
-|05| Todas as funcionalidades devem estar disponíveis tanto na versão web quanto na versão mobile |
-|06| O design da interface deve seguir padrões responsivos para múltiplos dispositivos |
-|07| Cada comprador poderá possuir apenas uma conta por endereço de e-mail |
-|08| Cada fornecedor poderá ter apenas uma conta com perfil administrador e até duas contas de usuário associadas |
+|01| O projeto deverá ser entregue até o final do semestre .|
+|02| Não pode ser desenvolvido um módulo de backend.        |
+|03| O orçamento disponível é limitado, priorizando tecnologias de baixo custo ou gratuitas. |
+|04| O prazo de desenvolvimento não pode ultrapassar 5 meses. |
+|05| Todas as funcionalidades devem estar disponíveis tanto na versão web quanto na versão mobile. |
+|06| O design da interface deve seguir padrões responsivos para múltiplos dispositivos. |
+|07| Cada comprador poderá possuir apenas uma conta por endereço de e-mail. |
+|08| Cada fornecedor poderá possuir apenas uma conta por endereço de e-mail. |
 
 # Catálogo de Serviços 
 
