@@ -57,11 +57,11 @@ O público-alvo do projeto é composto por:
 - **Fornecedores:** pequenos e médios empreendedores, comerciantes locais e marcas que desejam ampliar seu alcance no comércio digital.  
 - **Compradores:** consumidores finais que buscam praticidade, variedade e segurança ao realizar compras online.
 
-![Alt text](../docs/img/diagrama_publico_alvo.png)
+![Alt text](../docs/img/diagrams/diagrama_publico_alvo.png)
 ### Personas
 
 #### Persona 1 – Laura Andrade
-![Alt text](../docs/img/P_laura.png)
+![Alt text](../docs/img/personas/P_laura.png)
 
 **Profissão:** Proprietária de loja de roupas  
 **Mini-biografia:** Laura, 35 anos, administra uma pequena boutique especializada em moda feminina e peças personalizadas. É apaixonada por tendências e busca sempre trazer novidades para suas clientes.  
@@ -85,14 +85,14 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Investe em fotos de qualidade e atendimento personalizado.  
 - Dores: Baixa visibilidade e falta de integração de sistemas.  
 - Ganhos: Mais vendas e reconhecimento da marca.
-![Alt text](../docs/img/empathy_laura.png)
+![Alt text](../docs/img/personas/empathy_laura.png)
 
 
 
 ---
 
 #### Persona 2 – Patrícia Nogueira
-![Alt text](../docs/img/P_patricia.png)
+![Alt text](../docs/img/personas/P_patricia.png)
 
 **Profissão:** Artista independente  
 **Mini-biografia:** Patrícia, 29 anos, cria e vende ilustrações autorais e artesanato. Já possui uma clientela fiel, mas ainda depende muito de eventos presenciais para vender.  
@@ -116,12 +116,12 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Busca cursos de marketing digital e redes sociais.  
 - Dores: Falta de tempo e recursos para gestão.  
 - Ganhos: Vendas constantes sem depender de eventos presenciais.
-![Alt text](../docs/img/empathy_patricia.png)
+![Alt text](../docs/img/personas/empathy_patricia.png)
 
 ---
 
 #### Persona 3 – Carlos Menezes
-![Alt text](../docs/img/P_carlos.png)
+![Alt text](../docs/img/personas/P_carlos.png)
 
 
 **Profissão:** Gerente de vendas  
@@ -146,12 +146,12 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Participa de reuniões de tecnologia e novos negócios.  
 - Dores: Perder clientes para lojas 100% digitais.  
 - Ganhos: Melhor aproveitamento de estoque e novos canais de vendas.
-![Alt text](../docs/img/empathy_carlos.png)
+![Alt text](../docs/img/personas/empathy_carlos.png)
 
 ---
 
 #### Persona 4 – Sara Lima
-![Alt text](../docs/img/P_sara.png)
+![Alt text](../docs/img/personas/P_sara.png)
 
 
 **Profissão:** Analista de marketing  
@@ -176,11 +176,11 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Testa novas estratégias e ferramentas de marketing.  
 - Dores: Custos crescentes e retorno instável.  
 - Ganhos: Aumento de conversões e reconhecimento profissional.
-![Alt text](../docs/img/empathy_sara.png)
+![Alt text](../docs/img/personas/empathy_sara.png)
 ---
 
 #### Persona 5 – João Ferreira
-![Alt text](../docs/img/p-joao.png)
+![Alt text](../docs/img/personas/p-joao.png)
 
 
 **Profissão:** Pequeno produtor rural  
@@ -205,7 +205,7 @@ O público-alvo do projeto é composto por:
 - O que fala e faz: Busca apoio de familiares mais jovens para usar redes sociais.  
 - Dores: Dificuldade de gerenciamento de pedidos online.  
 - Ganhos: Expansão da base de clientes e aumento de renda.
-![Alt text](../docs/img/empathy_joao.png)
+![Alt text](../docs/img/personas/empathy_joao.png)
 
 # Especificações do Projeto
 
@@ -278,7 +278,7 @@ Para facilitar o processo de compra, o **Serviço de Carrinho de Compras** organ
 
 --
 ## Diagrama de caso de uso
-![Alt text](../docs/img/diagrama_caso_uso.png)
+![Alt text](../docs/img/diagrams/diagrama_caso_uso.png)
 
 # Arquitetura da Solução
 
@@ -290,7 +290,7 @@ O Backend, implementado em NextJS, gerencia a lógica de negócio e disponibiliz
 
 Essa arquitetura garante separação de responsabilidades, segurança por meio de autenticação JWT, e flexibilidade com o uso de Docker, permitindo que cada componente seja escalado ou atualizado de forma independente.
 
-![Alt text](../docs/img/solution_architecture%20.drawio.svg)
+![Alt text](../docs/img/diagrams/solution_architecture%20.drawio.svg)
 
 ## Tecnologias Utilizadas
 
@@ -324,7 +324,7 @@ Para o desenvolvimento da solução, serão utilizadas diversas tecnologias mode
 
 **Git & GitHub**: Controle de versão e hospedagem do repositório de código.
 
-<img width="1536" height="1024" alt="Tecnologias Utilizadas" src="./img/Tecnologias-utilizadas.png" />
+<img width="1536" height="1024" alt="Tecnologias Utilizadas" src="./img/diagrams/Tecnologias-utilizadas.png" />
 
 ## Fluxo de Interação do Usuário com o Sistema
 
@@ -342,7 +342,7 @@ Para o desenvolvimento da solução, serão utilizadas diversas tecnologias mode
 
 - Toda a documentação dos endpoints estará disponível via Swagger, facilitando a integração e manutenção.
 
-![Alt text](../docs/img/fluxo_interacao.png)
+![Alt text](../docs/img/diagrams/fluxo_interacao.png)
 
 
 # 📡 Hospedagem do Sistema
