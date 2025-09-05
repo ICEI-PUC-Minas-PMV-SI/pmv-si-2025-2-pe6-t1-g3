@@ -290,7 +290,7 @@ O Backend, implementado em NextJS, gerencia a lógica de negócio e disponibiliz
 
 Essa arquitetura garante separação de responsabilidades, segurança por meio de autenticação JWT, e flexibilidade com o uso de Docker, permitindo que cada componente seja escalado ou atualizado de forma independente.
 
-![Alt text](../docs/img/arch.png)
+![Alt text](../docs/img/solution_architecture%20.drawio.svg)
 
 ## Tecnologias Utilizadas
 
