@@ -1,3 +1,12 @@
+---
+description: "Regras de negócio e técnicas para o projeto ZabbixStore"
+globs: "**/*.ts, **/*.js, **/*.tsx, **/*.jsx, **/*.prisma, **/*.sql"
+alwaysApply: true
+priority: high
+category: "business-rules"
+tags: ["business", "technical", "security", "quality"]
+---
+
 # ZabbixStore Domain Rules
 
 ## Regras de Negócio

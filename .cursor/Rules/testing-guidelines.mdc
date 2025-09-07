@@ -1,3 +1,12 @@
+---
+description: "Guidelines e padrões para testes no projeto ZabbixStore"
+globs: "**/*.test.ts, **/*.test.js, **/*.spec.ts, **/*.spec.js, **/*.test.tsx, **/*.test.jsx, **/*.e2e-spec.ts, **/cypress/**/*.ts, **/cypress/**/*.js"
+alwaysApply: true
+priority: high
+category: "testing"
+tags: ["testing", "unit", "integration", "e2e", "jest", "cypress"]
+---
+
 # Testing Guidelines
 
 ## Princípios Gerais

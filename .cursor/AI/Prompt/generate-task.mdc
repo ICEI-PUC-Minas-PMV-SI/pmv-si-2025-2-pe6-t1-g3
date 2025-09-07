@@ -1,3 +1,12 @@
+---
+description: "Template para gerar arquivo current-work.md estruturado com tarefas detalhadas usando metodologia RIPER"
+globs: "**/current-work.md"
+alwaysApply: false
+priority: high
+category: "prompt"
+tags: ["task", "template", "riper", "project-management", "zabbixstore"]
+---
+
 # Generate Task Prompt Template
 
 <description>
@@ -9,6 +18,28 @@ Template para gerar arquivo `current-work.md` estruturado com tarefas e sub-tare
 - **Tecnologias**: React, Node.js, NestJS, Prisma, PostgreSQL
 - **Arquitetura**: Frontend (React), Backend (NestJS), Banco de Dados (PostgreSQL)
 </projectContext>
+
+<problemDescription>
+## Seção para Descrição de Problemas
+
+<programmerInput>
+### Problema Identificado
+[O programador deve descrever aqui o problema encontrado durante a execução]
+
+### Informações Técnicas
+- **Arquivo(s) afetado(s)**: [Lista de arquivos]
+- **Erro específico**: [Mensagem de erro ou comportamento inesperado]
+- **Contexto da execução**: [Em qual fase/etapa o problema ocorreu]
+
+### Informações Adicionais
+- **Logs relevantes**: [Logs de erro ou debug]
+- **Configurações**: [Configurações específicas que podem estar causando o problema]
+- **Dependências**: [Dependências que podem estar relacionadas]
+
+### Solução Proposta
+[Descrição da solução que o programador propõe ou precisa de ajuda para implementar]
+</programmerInput>
+</problemDescription>
 
 <methodology>
 ## Estrutura RIPER
@@ -95,35 +126,12 @@ Template para gerar arquivo `current-work.md` estruturado com tarefas e sub-tare
 
 ## Observações
 [Observações importantes sobre a implementação]
+
 ```
+
 </outputTemplate>
 
-<problemDescription>
-## Seção para Descrição de Problemas
 
-<programmerInput>
-### Problema Identificado
-[O programador deve descrever aqui o problema encontrado durante a execução]
-
-### Informações Técnicas
-- **Arquivo(s) afetado(s)**: [Lista de arquivos]
-- **Erro específico**: [Mensagem de erro ou comportamento inesperado]
-- **Contexto da execução**: [Em qual fase/etapa o problema ocorreu]
-
-### Tentativas de Resolução
-- [ ] [Tentativa 1 realizada]
-- [ ] [Tentativa 2 realizada]
-- [ ] [Tentativa 3 realizada]
-
-### Informações Adicionais
-- **Logs relevantes**: [Logs de erro ou debug]
-- **Configurações**: [Configurações específicas que podem estar causando o problema]
-- **Dependências**: [Dependências que podem estar relacionadas]
-
-### Solução Proposta
-[Descrição da solução que o programador propõe ou precisa de ajuda para implementar]
-</programmerInput>
-</problemDescription>
 
 <instructions>
 1. Analise a solicitação do usuário

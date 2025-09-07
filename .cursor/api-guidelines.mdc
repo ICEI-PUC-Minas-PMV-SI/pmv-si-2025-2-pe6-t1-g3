@@ -1,0 +1,338 @@
+---
+description: "Guidelines e padrões para desenvolvimento de APIs no projeto ZabbixStore"
+globs: "**/*.controller.ts, **/*.service.ts, **/*.module.ts, **/*.dto.ts, **/*.guard.ts, **/*.decorator.ts, **/main.ts"
+alwaysApply: true
+priority: high
+category: "api-development"
+tags: ["api", "nestjs", "rest", "swagger", "validation", "authentication"]
+---
+
+# 🚀 API Guidelines
+
+## Estrutura e Arquitetura
+- **Framework**: NestJS com TypeScript
+- **Arquitetura Modular**: Módulos separados por domínio (`auth`, `produto`, `pedido`, `pessoa`)
+- **Padrão REST**: Endpoints seguindo convenções RESTful
+- **Versionamento**: Preparado para `/api/v1/` (estrutura base)
+
+## Documentação e Swagger
+- **Swagger UI**: Disponível em `/api`
+- **Configuração**: `DocumentBuilder` com metadados completos
+- **Tags**: Organização por domínio (`auth`, `produto`, `pedido`, `pessoa`)
+- **Bearer Auth**: Configurado para JWT tokens
+- **Exemplos**: Todos os DTOs devem incluir exemplos
+
+## Autenticação e Autorização
+- **JWT**: Implementado via `@nestjs/jwt`
+- **Guards**: `AuthGuard` global para proteção de rotas
+- **Roles**: Sistema de permissões (`PERMISSAO` field)
+- **Expiração**: Tokens com 24h de validade padrão
+- **Refresh**: Implementar quando necessário
+
+## Validação e DTOs
+- **class-validator**: Validações obrigatórias em todos os DTOs
+- **class-transformer**: Transformação automática de tipos
+- **Mensagens**: Erros em português com contexto específico
+- **Swagger Decorators**: `@ApiProperty` para documentação
+- **Validações Customizadas**: `@IsIn`, `@Min`, `@MaxLength`
+
+## Estrutura de DTOs
+```typescript
+export class CreateProductDto {
+  @ApiProperty({ description: 'Nome do produto', example: 'Camiseta Polo' })
+  @IsNotEmpty({ message: 'Nome do produto é obrigatório' })
+  @IsString()
+  @MaxLength(100)
+  PRODUTO: string;
+  
+  // ... outros campos
+}
+```
+
+## Tratamento de Erros
+- **ValidationPipe Global**: Configurado com `whitelist: true`
+- **Exception Filters**: Tratamento centralizado de exceções
+- **Status Codes**: Uso correto de códigos HTTP
+- **Logs**: Logger centralizado para debugging
+
+## Configurações Globais
+- **CORS**: Configurado para `FRONTEND_URL`
+- **Helmet**: Headers de segurança
+- **Body Parser**: Limite de 10mb configurado
+- **Rate Limiting**: Via `@nestjs/throttler`
+
+## Endpoints Principais
+- **Health Check**: `/health` para monitoramento
+- **Auth**: `/auth/login`, `/auth/register`
+- **Produtos**: CRUD completo com filtros
+- **Pedidos**: Gestão de pedidos e itens
+- **Pessoas**: Gestão de usuários e endereços
+
+## Padrões de Nomenclatura
+
+### Controllers
+```typescript
+@Controller('produtos')
+@ApiTags('produtos')
+export class ProdutoController {
+  @Get()
+  @ApiOperation({ summary: 'Listar todos os produtos' })
+  async findAll() {
+    // implementação
+  }
+}
+```
+
+### Services
+```typescript
+@Injectable()
+export class ProdutoService {
+  async findAll(): Promise<Produto[]> {
+    // implementação
+  }
+}
+```
+
+### DTOs
+```typescript
+export class CreateProdutoDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  PRODUTO: string;
+}
+```
+
+## Middleware e Guards
+
+### Auth Guard
+```typescript
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    // implementação
+  }
+}
+```
+
+### Roles Guard
+```typescript
+@Injectable()
+export class RolesGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    // implementação
+  }
+}
+```
+
+## Interceptors
+
+### Response Interceptor
+```typescript
+@Injectable()
+export class ResponseInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    // implementação
+  }
+}
+```
+
+## Exception Filters
+
+### Global Exception Filter
+```typescript
+@Catch()
+export class GlobalExceptionFilter implements ExceptionFilter {
+  catch(exception: unknown, host: ArgumentsHost) {
+    // implementação
+  }
+}
+```
+
+## Validação Customizada
+
+### Validators
+```typescript
+@ValidatorConstraint({ name: 'isValidEmail', async: false })
+export class IsValidEmailConstraint implements ValidatorConstraintInterface {
+  validate(email: string) {
+    // implementação
+  }
+}
+```
+
+## Configuração de Ambiente
+
+### Variáveis Obrigatórias
+```bash
+NODE_ENV=development
+JWT_SECRET=your-secret-key
+DATABASE_URL=postgresql://postgres:password@localhost:5432/store_db
+FRONTEND_URL=http://localhost:5173
+```
+
+## Logging e Monitoramento
+
+### Logger Configuration
+```typescript
+import { Logger } from '@nestjs/common';
+
+@Injectable()
+export class AppService {
+  private readonly logger = new Logger(AppService.name);
+  
+  someMethod() {
+    this.logger.log('Method called');
+  }
+}
+```
+
+## Health Checks
+
+### Health Controller
+```typescript
+@Controller('health')
+export class HealthController {
+  @Get()
+  @HealthCheck()
+  check() {
+    return this.health.check([
+      () => this.db.pingCheck('database'),
+    ]);
+  }
+}
+```
+
+## Rate Limiting
+
+### Throttler Configuration
+```typescript
+@ThrottlerGuard()
+@UseGuards(ThrottlerGuard)
+export class AppController {
+  // implementação
+}
+```
+
+## CORS Configuration
+
+### CORS Setup
+```typescript
+app.enableCors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+});
+```
+
+## Security Headers
+
+### Helmet Configuration
+```typescript
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+    },
+  },
+}));
+```
+
+## Database Integration
+
+### Prisma Service
+```typescript
+@Injectable()
+export class PrismaService extends PrismaClient implements OnModuleInit {
+  async onModuleInit() {
+    await this.$connect();
+  }
+}
+```
+
+## Testing Guidelines
+
+### Unit Tests
+```typescript
+describe('ProdutoService', () => {
+  let service: ProdutoService;
+  
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [ProdutoService],
+    }).compile();
+    
+    service = module.get<ProdutoService>(ProdutoService);
+  });
+  
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});
+```
+
+### Integration Tests
+```typescript
+describe('ProdutoController (e2e)', () => {
+  let app: INestApplication;
+  
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+    
+    app = moduleFixture.createNestApplication();
+    await app.init();
+  });
+  
+  it('/produtos (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/produtos')
+      .expect(200);
+  });
+});
+```
+
+## Performance Guidelines
+
+### Caching
+```typescript
+@CacheKey('products')
+@CacheTTL(300)
+@Get()
+async findAll() {
+  // implementação
+}
+```
+
+### Pagination
+```typescript
+@Get()
+async findAll(
+  @Query('page') page: number = 1,
+  @Query('limit') limit: number = 10,
+) {
+  // implementação com paginação
+}
+```
+
+## Error Handling
+
+### Custom Exceptions
+```typescript
+export class ProdutoNotFoundException extends HttpException {
+  constructor() {
+    super('Produto não encontrado', HttpStatus.NOT_FOUND);
+  }
+}
+```
+
+### Validation Messages
+```typescript
+export class CreateProdutoDto {
+  @IsNotEmpty({ message: 'Nome do produto é obrigatório' })
+  @IsString({ message: 'Nome deve ser uma string' })
+  @MaxLength(100, { message: 'Nome deve ter no máximo 100 caracteres' })
+  PRODUTO: string;
+}
+```

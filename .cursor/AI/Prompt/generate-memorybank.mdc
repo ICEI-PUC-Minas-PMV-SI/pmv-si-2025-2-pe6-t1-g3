@@ -1,3 +1,12 @@
+---
+description: "Template para gerar e atualizar conteúdo do MemoryBank do projeto ZabbixStore"
+globs: "**/memory-bank/**/*.md"
+alwaysApply: false
+priority: medium
+category: "prompt"
+tags: ["memorybank", "documentation", "context", "zabbixstore"]
+---
+
 # Generate MemoryBank
 
 ## Objetivo

@@ -1,3 +1,12 @@
+---
+description: "Template estruturado para criação de tarefas no projeto ZabbixStore"
+globs: "**/current-work.md, **/tasks/**/*.md, **/work/**/*.md"
+alwaysApply: false
+priority: medium
+category: "template"
+tags: ["task", "template", "project-management", "riper"]
+---
+
 # Task Template
 
 ## Informações Básicas
