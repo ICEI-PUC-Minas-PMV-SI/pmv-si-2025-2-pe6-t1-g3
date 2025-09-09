@@ -1,0 +1,56 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Backend (NestJS)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/infrastructure/backend",
+      "program": "${workspaceFolder}/infrastructure/backend/src/main.ts",
+      "preLaunchTask": "npm: install",
+      "outFiles": ["${workspaceFolder}/infrastructure/backend/dist/**/*.js"],
+      "sourceMaps": true,
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": "3000",
+        "DATABASE_URL": "postgresql://postgres:password@localhost:5432/store_db?schema=public",
+        "JWT_SECRET": "your-secret-key-for-development",
+        "FRONTEND_URL": "http://localhost:5173"
+      },
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug Backend (Attach)",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}/infrastructure/backend",
+      "remoteRoot": "/app",
+      "protocol": "inspector",
+      "sourceMaps": true
+    },
+    {
+      "name": "Debug Frontend (Vite)",
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/infrastructure/frontend",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/src/*"
+      }
+    },
+    {
+      "name": "Debug Tests (Backend)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/infrastructure/backend/node_modules/.bin/jest",
+      "args": ["--runInBand", "--watchAll=false"],
+      "cwd": "${workspaceFolder}/infrastructure/backend",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true
+    }
+  ]
+}
