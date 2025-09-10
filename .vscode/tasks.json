@@ -2,23 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "npm: install",
+      "label": "docker-compose: build",
       "type": "shell",
-      "command": "npm",
-      "args": ["install"],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "silent",
-        "focus": false,
-        "panel": "shared"
-      },
-      "problemMatcher": "$tsc"
-    },
-    {
-      "label": "Start Docker Stack",
-      "type": "shell",
-      "command": "./start-project.sh",
+      "command": "docker-compose",
+      "args": ["build"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -26,8 +13,101 @@
         "focus": false,
         "panel": "shared"
       },
-      "isBackground": true,
-      "problemMatcher": []
+      "problemMatcher": "$docker-compose"
+    },
+    {
+      "label": "docker-compose: up",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["up", "-d"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "docker-compose: down",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["down"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "docker-compose: logs",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["logs", "-f"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "docker-compose: restart",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["restart"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "docker-compose: build and up",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["up", "--build", "-d"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "docker-compose: clean",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["down", "-v", "--rmi", "all"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "docker-compose: status",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["ps"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
     }
   ]
 }
