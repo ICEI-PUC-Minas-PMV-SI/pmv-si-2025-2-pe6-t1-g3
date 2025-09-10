@@ -2,50 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "postgres: start",
-      "type": "shell",
-      "command": "docker",
-      "args": [
-        "run",
-        "--name",
-        "zabbix-postgres-debug",
-        "-e",
-        "POSTGRES_DB=zabbix_store",
-        "-e",
-        "POSTGRES_USER=postgres",
-        "-e",
-        "POSTGRES_PASSWORD=password123",
-        "-p",
-        "9080:5432",
-        "-d",
-        "postgres:15-alpine"
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "postgres: stop",
-      "type": "shell",
-      "command": "docker",
-      "args": [
-        "stop",
-        "zabbix-postgres-debug"
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
       "label": "postgres: remove",
       "type": "shell",
       "command": "docker",
@@ -87,38 +43,6 @@
         "npm: install (backend)",
         "prisma: generate",
         "db: setup"
-      ],
-      "dependsOrder": "sequence",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "backend: setup",
-      "dependsOn": [
-        "postgres: clean-start",
-        "npm: install (backend)",
-        "prisma: generate",
-        "db: setup"
-      ],
-      "dependsOrder": "sequence",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "postgres: clean-start",
-      "dependsOn": [
-        "postgres: remove",
-        "postgres: start"
       ],
       "dependsOrder": "sequence",
       "group": "build",
@@ -188,26 +112,10 @@
       "dependsOn": [
         "docker-compose: clean",
         "docker-compose: up-database-only",
-        "db: setup"
+        "db: setup",
+        "prisma: seed"
       ],
       "dependsOrder": "sequence",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "prisma-studio: start-compose",
-      "type": "shell",
-      "command": "docker-compose",
-      "args": [
-        "up",
-        "-d",
-        "prisma-studio"
-      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -262,6 +170,25 @@
       "isBackground": true
     },
     {
+      "label": "prisma: seed",
+      "type": "shell",
+      "command": "npx",
+      "args": ["prisma", "db", "seed"],
+      "options": {
+        "cwd": "${workspaceFolder}/infrastructure/backend",
+        "env": {
+          "DATABASE_URL": "postgresql://postgres:password123@localhost:9080/zabbix_store?schema=public"
+        }
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
       "label": "docker-compose: up-database-only",
       "type": "shell",
       "command": "docker-compose",
@@ -294,64 +221,10 @@
       }
     },
     {
-      "label": "docker-compose: logs",
-      "type": "shell",
-      "command": "docker-compose",
-      "args": ["logs", "-f"],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      },
-      "isBackground": true
-    },
-    {
-      "label": "docker-compose: restart",
-      "type": "shell",
-      "command": "docker-compose",
-      "args": ["restart"],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "docker-compose: build and up",
-      "type": "shell",
-      "command": "docker-compose",
-      "args": ["up", "--build", "-d"],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      },
-      "isBackground": true
-    },
-    {
       "label": "docker-compose: clean",
       "type": "shell",
       "command": "docker-compose",
       "args": ["down", "-v", "--rmi", "all"],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "docker-compose: status",
-      "type": "shell",
-      "command": "docker-compose",
-      "args": ["ps"],
       "group": "build",
       "presentation": {
         "echo": true,
