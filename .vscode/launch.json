@@ -2,67 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Backend (Local + Prisma Studio)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/infrastructure/backend/src/main.ts",
-      "cwd": "${workspaceFolder}/infrastructure/backend",
-      "preLaunchTask": "backend: setup-with-prisma",
-      "postDebugTask": "prisma-studio: stop",
-      "env": {
-        "NODE_ENV": "development",
-        "PORT": "3000",
-        "DATABASE_URL": "postgresql://postgres:postgres123@localhost:5432/zabbix_store?schema=public",
-        "JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production",
-        "FRONTEND_URL": "http://localhost:5173"
-      },
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "sourceMaps": true,
-      "skipFiles": [
-        "<node_internals>/**",
-        "${workspaceFolder}/infrastructure/backend/node_modules/**"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/infrastructure/backend/dist/**/*.js"
-      ],
-      "restart": true
-    },
-    {
-      "name": "Debug Backend (Docker Compose)",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "start:debug"
-      ],
-      "cwd": "${workspaceFolder}/infrastructure/backend",
-      "preLaunchTask": "backend: setup-compose",
-      "env": {
-        "NODE_ENV": "development",
-        "PORT": "3000",
-        "DATABASE_URL": "postgresql://postgres:postgres123@postgres:5432/zabbix_store?schema=public",
-        "JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production",
-        "FRONTEND_URL": "http://localhost:5173"
-      },
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/infrastructure/backend/dist/**/*.js"],
-      "postDebugTask": "docker-compose: down"
-    },
-    {
       "name": "Debug Backend (Local + Docker)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/infrastructure/backend/src/main.ts",
       "cwd": "${workspaceFolder}/infrastructure/backend",
-      "preLaunchTask": "backend: setup",
+      "preLaunchTask": "debug: setup-docker-services",
+      "postDebugTask": "debug: cleanup-docker-services",
       "env": {
         "NODE_ENV": "development",
         "PORT": "3000",
-        "DATABASE_URL": "postgresql://postgres:postgres123@localhost:5432/zabbix_store?schema=public",
+        "DATABASE_URL": "postgresql://postgres:password123@localhost:9080/zabbix_store?schema=public",
         "JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production",
         "FRONTEND_URL": "http://localhost:5173"
       },

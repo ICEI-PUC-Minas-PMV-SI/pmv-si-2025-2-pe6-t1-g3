@@ -14,9 +14,9 @@
         "-e",
         "POSTGRES_USER=postgres",
         "-e",
-        "POSTGRES_PASSWORD=postgres123",
+        "POSTGRES_PASSWORD=password123",
         "-p",
-        "5432:5432",
+        "9080:5432",
         "-d",
         "postgres:15-alpine"
       ],
@@ -63,87 +63,6 @@
       }
     },
     {
-      "label": "postgres: wait",
-      "type": "shell",
-      "command": "cmd",
-      "args": [
-        "/c",
-        "echo Aguardando PostgreSQL... && timeout /t 5 /nobreak > nul && docker exec zabbix-postgres-debug pg_isready -U postgres -h localhost -p 5432 && echo PostgreSQL esta pronto! || (echo PostgreSQL nao esta pronto, tentando novamente... && timeout /t 10 /nobreak > nul && docker exec zabbix-postgres-debug pg_isready -U postgres -h localhost -p 5432 && echo PostgreSQL esta pronto! || echo Falha ao conectar ao PostgreSQL)"
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "postgres: wait-simple",
-      "type": "shell",
-      "command": "cmd",
-      "args": [
-        "/c",
-        "ping -n 10 127.0.0.1 > nul && echo Aguardando PostgreSQL... && docker exec zabbix-postgres-debug pg_isready -U postgres -h localhost -p 5432 && echo PostgreSQL esta pronto! || echo PostgreSQL ainda nao esta pronto, mas continuando..."
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "postgres: check",
-      "type": "shell",
-      "command": "docker",
-      "args": [
-        "ps",
-        "-q",
-        "-f",
-        "name=zabbix-postgres-debug"
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "postgres: clean-start",
-      "dependsOn": [
-        "postgres: remove",
-        "postgres: start"
-      ],
-      "dependsOrder": "sequence",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "postgres: wait",
-      "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-Command",
-        "$maxAttempts = 30; $attempt = 0; Write-Host 'Aguardando PostgreSQL...'; while ($attempt -lt $maxAttempts) { try { $connection = New-Object System.Net.Sockets.TcpClient('localhost', 5432); if ($connection.Connected) { Write-Host 'PostgreSQL está pronto!'; exit 0 } } catch { Write-Host \"Tentativa $($attempt + 1)/$maxAttempts falhou, tentando novamente...\" } $connection.Close(); Start-Sleep -Seconds 2; $attempt++ }; Write-Host 'PostgreSQL não respondeu após $maxAttempts tentativas'; exit 1"
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
       "label": "postgres: start-compose",
       "type": "shell",
       "command": "docker-compose",
@@ -162,26 +81,9 @@
       "isBackground": true
     },
     {
-      "label": "postgres: wait-compose",
-      "type": "shell",
-      "command": "cmd",
-      "args": [
-        "/c",
-        "timeout /t 15 /nobreak > nul && echo Aguardando PostgreSQL... && docker-compose exec -T postgres pg_isready -U postgres && echo PostgreSQL esta pronto!"
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
       "label": "backend: setup-compose",
       "dependsOn": [
         "postgres: start-compose",
-        "postgres: wait-compose",
         "npm: install (backend)",
         "prisma: generate",
         "db: setup"
@@ -199,10 +101,24 @@
       "label": "backend: setup",
       "dependsOn": [
         "postgres: clean-start",
-        "postgres: wait",
         "npm: install (backend)",
         "prisma: generate",
         "db: setup"
+      ],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "postgres: clean-start",
+      "dependsOn": [
+        "postgres: remove",
+        "postgres: start"
       ],
       "dependsOrder": "sequence",
       "group": "build",
@@ -237,63 +153,9 @@
       "options": {
         "cwd": "${workspaceFolder}/infrastructure/backend",
         "env": {
-          "DATABASE_URL": "postgresql://postgres:postgres123@localhost:5432/zabbix_store?schema=public"
+          "DATABASE_URL": "postgresql://postgres:password123@localhost:9080/zabbix_store?schema=public"
         }
       },
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "backend: setup-with-prisma",
-      "dependsOn": [
-        "postgres: clean-start",
-        "postgres: wait",
-        "prisma-studio: start",
-        "prisma-studio: wait",
-        "npm: install (backend)",
-        "prisma: generate",
-        "db: setup"
-      ],
-      "dependsOrder": "sequence",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "prisma-studio: start",
-      "type": "shell",
-      "command": "docker-compose",
-      "args": [
-        "up",
-        "-d",
-        "postgres",
-        "prisma-studio"
-      ],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "prisma-studio: wait",
-      "type": "shell",
-      "command": "cmd",
-      "args": [
-        "/c",
-        "timeout /t 10 /nobreak > nul && echo Aguardando Prisma Studio ficar pronto..."
-      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -310,7 +172,7 @@
       "options": {
         "cwd": "${workspaceFolder}/infrastructure/backend",
         "env": {
-          "DATABASE_URL": "postgresql://postgres:postgres123@localhost:5432/zabbix_store?schema=public"
+          "DATABASE_URL": "postgresql://postgres:password123@localhost:9080/zabbix_store?schema=public"
         }
       },
       "group": "build",
@@ -322,11 +184,11 @@
       }
     },
     {
-      "label": "docker-compose: debug-setup",
+      "label": "debug: setup-docker-services",
       "dependsOn": [
-        "docker-compose: build",
-        "docker-compose: up",
-        "prisma-studio: wait"
+        "docker-compose: clean",
+        "docker-compose: up-database-only",
+        "db: setup"
       ],
       "dependsOrder": "sequence",
       "group": "build",
@@ -338,12 +200,13 @@
       }
     },
     {
-      "label": "prisma-studio: wait",
+      "label": "prisma-studio: start-compose",
       "type": "shell",
-      "command": "cmd",
+      "command": "docker-compose",
       "args": [
-        "/c",
-        "timeout /t 10 /nobreak > nul && echo Aguardando Prisma Studio..."
+        "up",
+        "-d",
+        "prisma-studio"
       ],
       "group": "build",
       "presentation": {
@@ -354,7 +217,7 @@
       }
     },
     {
-      "label": "prisma-studio: stop",
+      "label": "debug: cleanup-docker-services",
       "type": "shell",
       "command": "docker-compose",
       "args": [
@@ -389,6 +252,25 @@
       "type": "shell",
       "command": "docker-compose",
       "args": ["up", "-d"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "docker-compose: up-database-only",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": [
+        "up",
+        "-d",
+        "postgres",
+        "prisma-studio"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
