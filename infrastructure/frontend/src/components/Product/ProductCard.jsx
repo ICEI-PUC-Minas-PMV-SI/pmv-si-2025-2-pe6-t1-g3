@@ -1,17 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../UI/Card';
+import { formatPrice } from '../../utils/formatPrice';
 
 const ProductCard = ({ product }) => {
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(price);
-  };
-
   const hasDiscount = product.DESCONTO && product.DESCONTO > 0;
-  const discountedPrice = hasDiscount ? product.VALOR - (product.VALOR * product.DESCONTO / 100) : product.VALOR;
+
+  const discountedPrice = hasDiscount
+    ? Number((product.VALOR - (product.VALOR * product.DESCONTO / 100)).toFixed(2))
+    : Number(product.VALOR.toFixed(2));
 
   return (
     <Link to={`/product/${product.CODPROD}`} className="group">

@@ -1,4 +1,5 @@
 import { useProducts } from "../hooks/useProducts";
+import { formatPrice } from '../utils/formatPrice';
 import ProductGrid from "./Product/ProductGrid";
 import { FiTrendingUp, FiShoppingBag, FiStar, FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
