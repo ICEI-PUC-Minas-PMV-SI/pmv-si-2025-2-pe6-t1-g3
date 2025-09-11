@@ -7,8 +7,8 @@ const ProductCard = ({ product }) => {
   const hasDiscount = product.DESCONTO && product.DESCONTO > 0;
 
   const discountedPrice = hasDiscount
-    ? Number((product.VALOR - (product.VALOR * product.DESCONTO / 100)).toFixed(2))
-    : Number(product.VALOR.toFixed(2));
+    ? product.VALOR - (product.VALOR * product.DESCONTO / 100)
+    : product.VALOR;
 
   return (
     <Link to={`/product/${product.CODPROD}`} className="group">
