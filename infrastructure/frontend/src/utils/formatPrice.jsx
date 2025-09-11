@@ -1,15 +1,15 @@
 /**
  * Formata um número para moeda brasileira (R$)
- * @param {number} value - Valor a ser formatado
+ * @param {number|string} value - Valor a ser formatado
  * @returns {string} - Valor formatado como R$
  */
 export const formatPrice = (value) => {
-  const roundedValue = Number.parseFloat(value); 
+  const numberValue = Number(value) || 0;
 
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-    minimumFractionDigits: 2, 
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  }).format(roundedValue);
+  }).format(Number(numberValue.toFixed(2)));
 };
