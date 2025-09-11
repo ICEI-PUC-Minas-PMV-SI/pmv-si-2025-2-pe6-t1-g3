@@ -4,11 +4,15 @@ import Card from '../UI/Card';
 import { formatPrice } from '../../utils/formatPrice';
 
 const ProductCard = ({ product }) => {
-  const hasDiscount = product.DESCONTO && product.DESCONTO > 0;
+  // Garantir que sempre seja número
+  const price = Number(product.VALOR) || 0;
+  const discount = Number(product.DESCONTO) || 0;
+
+  const hasDiscount = discount > 0;
 
   const discountedPrice = hasDiscount
-    ? product.VALOR - (product.VALOR * product.DESCONTO / 100)
-    : product.VALOR;
+    ? price - (price * discount / 100)
+    : price;
 
   return (
     <Link to={`/product/${product.CODPROD}`} className="group">
