@@ -29,6 +29,42 @@
       "restart": true
     },
     {
+      "name": "Debug Frontend (Backend & DB in Docker)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/infrastructure/frontend",
+      "sourceMapPathOverrides": {
+        "/src/*": "${webRoot}/src/*"
+      },
+      "preLaunchTask": "debug: setup-backend-services",
+      "postDebugTask": "debug: cleanup-backend-services",
+      "runtimeArgs": [
+        "--new-window"
+      ],
+      "presentation": {
+        "group": "frontend-debug",
+        "order": 1
+      }
+    },
+    {
+      "name": "Debug Frontend (Local Development)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/infrastructure/frontend",
+      "sourceMapPathOverrides": {
+        "/src/*": "${webRoot}/src/*"
+      },
+      "runtimeArgs": [
+        "--new-window"
+      ],
+      "presentation": {
+        "group": "frontend-debug",
+        "order": 2
+      }
+    },
+    {
       "name": "Backend in Docker",
       "type": "node",
       "request": "attach",
