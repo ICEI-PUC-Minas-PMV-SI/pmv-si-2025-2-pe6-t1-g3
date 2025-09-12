@@ -48,46 +48,6 @@
       }
     },
     {
-      "name": "Debug Frontend (Local Development)",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:5173",
-      "webRoot": "${workspaceFolder}/infrastructure/frontend",
-      "sourceMapPathOverrides": {
-        "/src/*": "${webRoot}/src/*"
-      },
-      "runtimeArgs": [
-        "--new-window"
-      ],
-      "presentation": {
-        "group": "frontend-debug",
-        "order": 2
-      }
-    },
-    {
-      "name": "Backend in Docker",
-      "type": "node",
-      "request": "attach",
-      "address": "localhost",
-      "port": 9229,
-      "localRoot": "${workspaceFolder}/infrastructure/backend",
-      "remoteRoot": "/app",
-      "sourceMaps": true,
-      "restart": true,
-      "preLaunchTask": "docker-compose: build and up"
-    },
-    {
-      "name": "Frontend in Docker",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:5173",
-      "webRoot": "${workspaceFolder}/infrastructure/frontend",
-      "sourceMapPathOverrides": {
-        "webpack:///src/*": "${webRoot}/src/*"
-      },
-      "preLaunchTask": "docker-compose: build and up"
-    },
-    {
       "name": "Run Docker (Build & Up)",
       "type": "node",
       "request": "launch",

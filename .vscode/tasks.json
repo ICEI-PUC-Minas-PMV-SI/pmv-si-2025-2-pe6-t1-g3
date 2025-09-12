@@ -111,7 +111,7 @@
       "label": "debug: setup-docker-services",
       "dependsOn": [
         "docker-compose: clean",
-        "docker-compose: up-database-only",
+        "docker-compose: up-frontend-with-database",
         "db: setup",
         "prisma: seed"
       ],
@@ -131,6 +131,7 @@
       "args": [
         "down",
         "postgres",
+        "frontend",
         "prisma-studio"
       ],
       "group": "build",
@@ -196,6 +197,46 @@
         "up",
         "-d",
         "postgres",
+        "prisma-studio"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "docker-compose: up-backend-with-database",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": [
+        "up",
+        "-d",
+        "postgres",
+        "backend",
+        "prisma-studio"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "docker-compose: up-frontend-with-database",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": [
+        "up",
+        "-d",
+        "postgres",
+        "frontend",
         "prisma-studio"
       ],
       "group": "build",
