@@ -55,9 +55,6 @@ async function bootstrap() {
     .setDescription('API para loja de e-commerce com painel administrativo')
     .setVersion('2.0')
     .addTag('auth', 'Endpoints de autenticação')
-    .addTag('produto', 'Gerenciamento de produtos')
-    .addTag('pedido', 'Gerenciamento de pedidos')
-    .addTag('pessoa', 'Gerenciamento de usuários')
     .addBearerAuth({
       type: 'http',
       scheme: 'Bearer',

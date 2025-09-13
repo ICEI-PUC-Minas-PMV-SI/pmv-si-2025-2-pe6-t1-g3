@@ -1,106 +1,76 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
-  IsString,
   IsNumber,
   IsOptional,
+  IsString,
+  IsUrl,
   Min,
-  MaxLength,
-  IsIn,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export class CreateProductDto {
   @ApiProperty({
     description: 'Nome do produto',
     example: 'Camiseta Polo',
-    required: true,
   })
-  @IsNotEmpty({ message: 'Nome do produto é obrigatório' })
-  @IsString()
-  @MaxLength(100, {
-    message: 'Nome do produto deve ter no máximo 100 caracteres',
-  })
+  @IsString({ message: 'PRODUTO deve ser uma string' })
+  @IsNotEmpty({ message: 'PRODUTO é obrigatório' })
   PRODUTO: string;
 
   @ApiProperty({
     description: 'Descrição do produto',
     example: 'Camiseta polo masculina 100% algodão',
-    required: true,
   })
-  @IsNotEmpty({ message: 'Descrição é obrigatória' })
-  @IsString()
-  @MaxLength(500, { message: 'Descrição deve ter no máximo 500 caracteres' })
+  @IsString({ message: 'DESCRICAO deve ser uma string' })
+  @IsNotEmpty({ message: 'DESCRICAO é obrigatória' })
   DESCRICAO: string;
 
   @ApiProperty({
     description: 'URL da imagem do produto',
     example: 'https://exemplo.com/imagem.jpg',
-    required: false,
   })
-  @IsOptional()
-  @IsString()
-  @MaxLength(255, {
-    message: 'URL da imagem deve ter no máximo 255 caracteres',
-  })
-  IMAGEM?: string;
-
-  @ApiProperty({
-    description: 'Preço do produto',
-    example: 29.99,
-    required: true,
-  })
-  @IsNotEmpty({ message: 'Preço é obrigatório' })
-  @IsNumber({}, { message: 'Preço deve ser um número' })
-  @Type(() => Number)
-  @Min(0.01, { message: 'Preço deve ser maior que zero' })
-  VALOR: number;
+  @IsString({ message: 'IMAGEM deve ser uma string' })
+  @IsUrl({}, { message: 'IMAGEM deve ser uma URL válida' })
+  @IsNotEmpty({ message: 'IMAGEM é obrigatória' })
+  IMAGEM: string;
 
   @ApiProperty({
     description: 'Quantidade em estoque',
     example: 50,
-    required: true,
+    minimum: 0,
   })
-  @IsNotEmpty({ message: 'Estoque é obrigatório' })
-  @IsNumber({}, { message: 'Estoque deve ser um número' })
-  @Type(() => Number)
-  @Min(0, { message: 'Estoque não pode ser negativo' })
+  @IsNumber({}, { message: 'ESTOQUE deve ser um número' })
+  @IsNotEmpty({ message: 'ESTOQUE é obrigatório' })
+  @Min(0, { message: 'ESTOQUE não pode ser negativo' })
   ESTOQUE: number;
 
   @ApiProperty({
-    description: 'Categoria do produto',
-    example: 'MASCULINO',
-    enum: ['MASCULINO', 'FEMININO'],
-    required: true,
+    description: 'Valor do produto',
+    example: 29.99,
+    minimum: 0,
   })
-  @IsNotEmpty({ message: 'Categoria é obrigatória' })
-  @IsString()
-  @IsIn(['MASCULINO', 'FEMININO'], {
-    message: 'Categoria deve ser MASCULINO ou FEMININO',
-  })
-  CATEGORIA: string;
+  @IsNumber({}, { message: 'VALOR deve ser um número' })
+  @IsNotEmpty({ message: 'VALOR é obrigatório' })
+  @Min(0, { message: 'VALOR não pode ser negativo' })
+  VALOR: number;
 
   @ApiProperty({
-    description: 'Desconto em porcentagem',
-    example: 10.5,
-    required: false,
+    description: 'Categoria do produto (MASCULINO ou FEMININO)',
+    example: 'MASCULINO',
+    enum: ['MASCULINO', 'FEMININO'],
   })
-  @IsOptional()
-  @IsNumber({}, { message: 'Desconto deve ser um número' })
-  @Type(() => Number)
-  @Min(0, { message: 'Desconto não pode ser negativo' })
-  DESCONTO?: number;
+  @IsString({ message: 'CATEGORIA deve ser uma string' })
+  @IsNotEmpty({ message: 'CATEGORIA é obrigatória' })
+  CATEGORIA: string;
 }
 
 export class UpdateProductDto {
   @ApiProperty({
     description: 'ID do produto',
     example: 1,
-    required: true,
   })
-  @IsNotEmpty({ message: 'ID do produto é obrigatório' })
-  @IsNumber({}, { message: 'ID deve ser um número' })
-  @Type(() => Number)
+  @IsNumber({}, { message: 'CODPROD deve ser um número' })
+  @IsNotEmpty({ message: 'CODPROD é obrigatório' })
   CODPROD: number;
 
   @ApiProperty({
@@ -108,11 +78,8 @@ export class UpdateProductDto {
     example: 'Camiseta Polo',
     required: false,
   })
+  @IsString({ message: 'PRODUTO deve ser uma string' })
   @IsOptional()
-  @IsString()
-  @MaxLength(100, {
-    message: 'Nome do produto deve ter no máximo 100 caracteres',
-  })
   PRODUTO?: string;
 
   @ApiProperty({
@@ -120,9 +87,8 @@ export class UpdateProductDto {
     example: 'Camiseta polo masculina 100% algodão',
     required: false,
   })
+  @IsString({ message: 'DESCRICAO deve ser uma string' })
   @IsOptional()
-  @IsString()
-  @MaxLength(500, { message: 'Descrição deve ter no máximo 500 caracteres' })
   DESCRICAO?: string;
 
   @ApiProperty({
@@ -130,56 +96,83 @@ export class UpdateProductDto {
     example: 'https://exemplo.com/imagem.jpg',
     required: false,
   })
+  @IsString({ message: 'IMAGEM deve ser uma string' })
+  @IsUrl({}, { message: 'IMAGEM deve ser uma URL válida' })
   @IsOptional()
-  @IsString()
-  @MaxLength(255, {
-    message: 'URL da imagem deve ter no máximo 255 caracteres',
-  })
   IMAGEM?: string;
-
-  @ApiProperty({
-    description: 'Preço do produto',
-    example: 29.99,
-    required: false,
-  })
-  @IsOptional()
-  @IsNumber({}, { message: 'Preço deve ser um número' })
-  @Type(() => Number)
-  @Min(0.01, { message: 'Preço deve ser maior que zero' })
-  VALOR?: number;
 
   @ApiProperty({
     description: 'Quantidade em estoque',
     example: 50,
+    minimum: 0,
     required: false,
   })
+  @IsNumber({}, { message: 'ESTOQUE deve ser um número' })
   @IsOptional()
-  @IsNumber({}, { message: 'Estoque deve ser um número' })
-  @Type(() => Number)
-  @Min(0, { message: 'Estoque não pode ser negativo' })
+  @Min(0, { message: 'ESTOQUE não pode ser negativo' })
   ESTOQUE?: number;
 
   @ApiProperty({
-    description: 'Categoria do produto',
+    description: 'Valor do produto',
+    example: 29.99,
+    minimum: 0,
+    required: false,
+  })
+  @IsNumber({}, { message: 'VALOR deve ser um número' })
+  @IsOptional()
+  @Min(0, { message: 'VALOR não pode ser negativo' })
+  VALOR?: number;
+
+  @ApiProperty({
+    description: 'Categoria do produto (MASCULINO ou FEMININO)',
     example: 'MASCULINO',
     enum: ['MASCULINO', 'FEMININO'],
     required: false,
   })
+  @IsString({ message: 'CATEGORIA deve ser uma string' })
   @IsOptional()
-  @IsString()
-  @IsIn(['MASCULINO', 'FEMININO'], {
-    message: 'Categoria deve ser MASCULINO ou FEMININO',
-  })
   CATEGORIA?: string;
 
   @ApiProperty({
-    description: 'Desconto em porcentagem',
+    description: 'Valor do desconto',
     example: 10.5,
+    minimum: 0,
     required: false,
   })
+  @IsNumber({}, { message: 'DESCONTO deve ser um número' })
   @IsOptional()
-  @IsNumber({}, { message: 'Desconto deve ser um número' })
-  @Type(() => Number)
-  @Min(0, { message: 'Desconto não pode ser negativo' })
+  @Min(0, { message: 'DESCONTO não pode ser negativo' })
   DESCONTO?: number;
+}
+
+export class DeleteProductDto {
+  @ApiProperty({
+    description: 'ID do produto',
+    example: 1,
+  })
+  @IsNumber({}, { message: 'CODPROD deve ser um número' })
+  @IsNotEmpty({ message: 'CODPROD é obrigatório' })
+  CODPROD: number;
+}
+
+export class FindProductDto {
+  @ApiProperty({
+    description: 'ID do produto',
+    example: 1,
+  })
+  @IsNumber({}, { message: 'CODPROD deve ser um número' })
+  @IsNotEmpty({ message: 'CODPROD é obrigatório' })
+  CODPROD: number;
+}
+
+export class ListProductsDto {
+  @ApiProperty({
+    description: 'Categoria para filtrar (MASCULINO ou FEMININO)',
+    example: 'MASCULINO',
+    enum: ['MASCULINO', 'FEMININO'],
+    required: false,
+  })
+  @IsString({ message: 'CATEGORIA deve ser uma string' })
+  @IsOptional()
+  CATEGORIA?: string;
 }
