@@ -117,7 +117,7 @@ build_images() {
 
 start_docker_stack() {
     print_header "Iniciando stack Docker..."
-    docker-compose up -d postgres redis
+    docker-compose up -d postgres
     
     wait_for_service "localhost" "9080" "PostgreSQL"
     docker-compose up -d backend
