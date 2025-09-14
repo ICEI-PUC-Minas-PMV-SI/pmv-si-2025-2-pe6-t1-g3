@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { productService } from '../services/api';
 import Card from './UI/Card';
 import Button from './UI/Button';
 import LoadingSpinner from './UI/LoadingSpinner';
-import { FiMinus, FiPlus, FiShoppingCart, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiMinus, FiPlus, FiShoppingCart, FiEdit, FiTrash2, FiHeart } from 'react-icons/fi';
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -17,9 +17,12 @@ const ProductDetails = () => {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     loadProduct();
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    setIsFavorite(favorites.some(item => item.CODPROD === productId?.CODPROD));
   }, [productId]);
 
   const loadProduct = async () => {
@@ -34,6 +37,19 @@ const ProductDetails = () => {
       setLoading(false);
     }
   };
+
+  const handleToggleFavorite = () => {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    if (isFavorite) {
+      const updated = favorites.filter(item => item.CODPROD !== product.CODPROD);
+      localStorage.setItem('favorites', JSON.stringify(updated));
+      setIsFavorite(false);
+    } else {
+      favorites.push(product);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      setIsFavorite(true);
+    }
+  }
 
   const handleQuantityChange = (delta) => {
     setQuantity(prev => Math.max(1, Math.min(product?.ESTOQUE || 1, prev + delta)));
@@ -132,6 +148,16 @@ const ProductDetails = () => {
                   e.target.src = '/api/placeholder/600/600';
                 }}
               />
+              <button
+                onClick={handleToggleFavorite}
+                className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
+              >
+                <FiHeart
+                  size={22}
+                  className={isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'}
+                />
+
+              </button>
             </div>
           </Card>
 
