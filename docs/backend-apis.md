@@ -37,7 +37,17 @@ A aplicação é organizada em torno de entidades que representam os usuários (
 
 
 * `modelo relacional`
+  
 ![Alt text](../docs/img/diagrams/modelo_relacional.drawio.svg)
+
+### Fluxo Funcional
+
+![Alt text](../docs/img/diagrams/fluxo_funcional.drawio.svg)
+
+### Arquitetura Lógica
+	1.	Frontend (UI) → interface web e mobile para compradores e fornecedores.
+	2.	Backend (API e Lógica de Negócio) → gerencia usuários, produtos, pedidos e avaliações.
+	3.	Banco de Dados → armazena todos os dados da plataforma: produtos, categorias, pedidos, itens, usuários, avaliações e logs.
 
 ## Tecnologias Utilizadas
 
