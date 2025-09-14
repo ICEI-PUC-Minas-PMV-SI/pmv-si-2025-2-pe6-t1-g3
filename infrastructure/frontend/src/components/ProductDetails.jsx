@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useCart } from '../contexts/CartContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { productService } from '../services/api';
@@ -6,8 +7,11 @@ import Card from './UI/Card';
 import Button from './UI/Button';
 import LoadingSpinner from './UI/LoadingSpinner';
 import { FiMinus, FiPlus, FiShoppingCart, FiEdit, FiTrash2, FiHeart } from 'react-icons/fi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetails = () => {
+  const { addToCart } = useCart();
   const { productId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -60,27 +64,17 @@ const ProductDetails = () => {
       alert('Por favor, selecione um tamanho');
       return;
     }
-
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItem = cart.find(item => 
-      item.CODPROD === product.CODPROD && item.size === selectedSize
-    );
-
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.push({
-        CODPROD: product.CODPROD,
-        PRODUTO: product.PRODUTO,
-        VALOR: product.VALOR,
-        IMAGEM: product.IMAGEM,
-        size: selectedSize,
-        quantity: quantity
-      });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Produto adicionado ao carrinho!');
+    addToCart({
+      CODPROD: product.CODPROD,
+      PRODUTO: product.PRODUTO,
+      VALOR: product.VALOR,
+      IMAGEM: product.IMAGEM,
+      size: selectedSize,
+      quantity: quantity
+    });
+    toast.success("Produto adicionado ao carrinho", {
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000
+        });
   };
 
   const handleEdit = () => {
@@ -136,6 +130,7 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <ToastContainer />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <Card className="overflow-hidden">

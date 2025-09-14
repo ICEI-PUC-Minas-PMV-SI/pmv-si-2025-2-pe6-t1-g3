@@ -83,7 +83,9 @@ const CartProductsLiked = () => {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Produto adicionado ao carrinho!');
+    toast.success("Produto adicionado ao carrinho", {
+      autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000
+    });
     handleRemoveProduct(product.CODPROD);
   };
 
