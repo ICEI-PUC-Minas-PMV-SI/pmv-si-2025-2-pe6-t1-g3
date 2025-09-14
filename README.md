@@ -34,9 +34,57 @@ A ZABBIX STORE é uma plataforma de e-commerce web e mobile, com arquitetura de 
 | ETAPA 3         |[Planejar, desenvolver e gerenciar uma aplicação Web](docs/frontend-web.md) |
 | ETAPA 4        |[Planejar, desenvolver e gerenciar uma aplicação Móvel](docs/frontend-mobile.md) <br>  |
 | ETAPA 5         | [Apresentação](presentation/README.md) |
-## Instruções de utilização
+## Como rodar o projeto
 
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
+### Modo Docker (Produção)
+
+1. Copie o arquivo de configuração de exemplo:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Execute o script de inicialização:
+   ```bash
+   ./start-project.sh
+   ```
+
+O script irá configurar e inicializar todos os serviços automaticamente.
+
+### Modo Desenvolvimento/Debug
+
+1. **Frontend:**
+   ```bash
+   cd infrastructure/frontend
+   cp .env.example .env
+   # Editar .env conforme necessário
+   npm install
+   npm run dev
+   ```
+
+2. **Banco de dados:**
+   ```bash
+   cd infrastructure/backend
+   cp .env.example .env
+   # Editar .env conforme necessário
+   docker-compose up -d postgres
+   ```
+
+3. **Backend:**
+   ```bash
+   cd infrastructure/backend
+   cp .env.example .env
+   # Editar .env conforme necessário
+   npm install
+   npx prisma generate
+   npx prisma migrate dev
+   # Escreva qualquer nome para o nome da nova migração
+   npm run start:dev
+   ```
+
+Os serviços estarão disponíveis em:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:3000
+- PostgreSQL: localhost:9080
 
 # Código
 
