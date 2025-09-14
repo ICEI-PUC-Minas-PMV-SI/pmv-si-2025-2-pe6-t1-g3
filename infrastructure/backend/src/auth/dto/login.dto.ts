@@ -6,7 +6,10 @@ import {
   MinLength,
   MaxLength,
   Matches,
+  IsObject,
+  IsOptional,
 } from 'class-validator';
+import { CadastrarEnderecoDto } from 'src/endereco/dto/endereco.dto';
 
 export class LoginDto {
   @ApiProperty({
@@ -92,6 +95,15 @@ export class RegistroDto {
   @IsString()
   @Matches(/^\d{10,11}$/, { message: 'Telefone deve conter 10 ou 11 dígitos' })
   TELEFONE: string;
+
+  @ApiProperty({
+    description: 'Endereço do usuário',
+    example: 'Rua das Flores, 123',
+    required: true,
+  })
+  @IsOptional({ message: 'Endereço é obrigatório' })
+  @IsObject()
+  ENDERECO: CadastrarEnderecoDto;
 }
 
 export class ChangePasswordDto {
