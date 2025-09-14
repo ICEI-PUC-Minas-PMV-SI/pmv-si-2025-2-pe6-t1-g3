@@ -39,7 +39,7 @@ A aplicação é organizada em torno de entidades que representam os usuários (
 - **Avaliação**: permite que compradores avaliem produtos adquiridos, registrando nota e comentário.
 
 * `diagrama entidade-relacionamento (DER)`
-![DER](../docs/img/diagrams/DER.drawio.svg)
+![der](../docs/img/diagrams/DER.drawio.svg)
 
 
 * `modelo relacional`
