@@ -2,7 +2,6 @@
 
 A **Zabbix Store** é um e-commerce de plataforma de terceiros que permite a venda de diversos tipos de produtos, incluindo eletrônicos, roupas e itens de casa. O sistema oferece versões web e mobile, e as APIs serão responsáveis por integrar os serviços entre o front-end, o back-end e sistemas de terceiros, garantindo a comunicação segura e eficiente entre compradores e fornecedores. Entre as funcionalidades da API estão: autenticação de usuários, gerenciamento de produtos, validação de endereços e processamento de pedidos.
 
-
 ## Objetivos da API
 
 A API da Zabbix Store tem como principais objetivos:
@@ -14,7 +13,6 @@ A API da Zabbix Store tem como principais objetivos:
 - **Processamento de Pedidos**: Gerenciar todo o ciclo de vida dos pedidos, desde a criação até a entrega.
 - **Integração Frontend**: Fornecer endpoints RESTful para integração com aplicações web e mobile.
 - **Segurança**: Implementar validações, sanitização de dados e controle de acesso baseado em roles.
-
 
 ## Modelagem da Aplicação
 
@@ -39,11 +37,10 @@ A aplicação é organizada em torno de entidades que representam os usuários (
 - **Avaliação**: permite que compradores avaliem produtos adquiridos, registrando nota e comentário.
 
 * `diagrama entidade-relacionamento (DER)`
-![DER](../docs/img/diagrams/DER.drawio.svg)
-
+  ![DER](../docs/img/diagrams/DER.drawio.svg)
 
 * `modelo relacional`
-  
+
 ![modelo_relacional](../docs/img/diagrams/modelo_relacional.drawio.svg)
 
 ### Fluxo Funcional
@@ -51,9 +48,10 @@ A aplicação é organizada em torno de entidades que representam os usuários (
 ![fluxo_funcional](../docs/img/diagrams/fluxo_funcional.drawio.svg)
 
 ### Arquitetura Lógica
-	1.	Frontend (UI) → interface web e mobile para compradores e fornecedores.
-	2.	Backend (API e Lógica de Negócio) → gerencia usuários, produtos, pedidos e avaliações.
-	3.	Banco de Dados → armazena todos os dados da plataforma: produtos, categorias, pedidos, itens, usuários, avaliações e logs.
+
+    1.	Frontend (UI) → interface web e mobile para compradores e fornecedores.
+    2.	Backend (API e Lógica de Negócio) → gerencia usuários, produtos, pedidos e avaliações.
+    3.	Banco de Dados → armazena todos os dados da plataforma: produtos, categorias, pedidos, itens, usuários, avaliações e logs.
 
 ## Tecnologias Utilizadas
 
@@ -243,6 +241,86 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
+#### POST /auth/change-password
+
+- **Descrição**: Altera senha do usuário autenticado
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "SENHA_ATUAL": "SenhaAtual@123",
+    "NOVA_SENHA": "NovaSenha@123"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "message": "Senha alterada com sucesso"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Senha atual incorreta",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### POST /auth/validate-token
+
+- **Descrição**: Valida token JWT e retorna dados do usuário
+- **Autenticação**: Requerida
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "id": 1,
+      "email": "usuario@exemplo.com",
+      "permission": "CLIENTE",
+      "profile": {
+        "id": 1,
+        "name": "João",
+        "lastName": "Silva",
+        "phone": "11987654321",
+        "cpf": "12345678900"
+      }
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Token inválido ou expirado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
 ### Produtos (`/produto`)
 
 #### GET /produto/listar
@@ -384,6 +462,132 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
+#### PUT /produto/atualizar
+
+- **Descrição**: Atualiza produto existente (Admin apenas)
+- **Autenticação**: Requerida (Admin)
+- **Parâmetros**:
+  ```json
+  {
+    "CODPROD": 1,
+    "PRODUTO": "Camiseta Polo Atualizada",
+    "DESCRICAO": "Camiseta polo masculina 100% algodão premium",
+    "VALOR": 39.99,
+    "ESTOQUE": 30,
+    "CODCAT": 1,
+    "IMAGEM": "https://exemplo.com/imagem-nova.jpg",
+    "DESCONTO": 10
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPROD": 1,
+      "PRODUTO": "Camiseta Polo Atualizada",
+      "DESCRICAO": "Camiseta polo masculina 100% algodão premium",
+      "VALOR": 39.99,
+      "ESTOQUE": 30,
+      "CODCAT": 1,
+      "IMAGEM": "https://exemplo.com/imagem-nova.jpg",
+      "DESCONTO": 10
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (403 Forbidden)
+    ```json
+    {
+      "statusCode": 403,
+      "message": "Usuário não tem permissão de administrador",
+      "error": "Forbidden"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Produto não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Dados inválidos",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### DELETE /produto/remover
+
+- **Descrição**: Remove produto do sistema (Admin apenas)
+- **Autenticação**: Requerida (Admin)
+- **Parâmetros**:
+  - `CODPROD`: ID do produto a ser removido
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "message": "Produto removido com sucesso"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (403 Forbidden)
+    ```json
+    {
+      "statusCode": 403,
+      "message": "Usuário não tem permissão de administrador",
+      "error": "Forbidden"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Produto não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Produto não pode ser removido",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
 ### Endereços (`/endereco`)
 
 #### POST /endereco/cadastrar
@@ -432,6 +636,117 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
       "statusCode": 401,
       "message": "Não autorizado",
       "error": "Unauthorized"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### PATCH /endereco/atualizar
+
+- **Descrição**: Atualiza endereço existente
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "CODEND": 1,
+    "CEP": "87654321",
+    "RUA": "Rua das Palmeiras",
+    "NUMERO": "456",
+    "COMPLEMENTO": "Casa 2",
+    "BAIRRO": "Jardins",
+    "CIDADE": "São Paulo",
+    "DESCRICAO": "Trabalho"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODEND": 1,
+      "CODPES": 1,
+      "DESCRICAO": "Trabalho",
+      "CEP": "87654321",
+      "RUA": "Rua das Palmeiras",
+      "NUMERO": "456",
+      "COMPLEMENTO": "Casa 2",
+      "BAIRRO": "Jardins",
+      "CIDADE": "São Paulo"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Endereço não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Dados inválidos",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### DELETE /endereco/deletar
+
+- **Descrição**: Remove endereço do usuário
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  - `CODEND`: ID do endereço a ser removido
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "message": "Endereço removido com sucesso"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Endereço não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Endereço não pode ser removido",
+      "error": "Bad Request"
     }
     ```
   - Erro (500 Internal Server Error)
@@ -577,6 +892,174 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
+#### PATCH /pedido/atualizar
+
+- **Descrição**: Atualiza status do pedido
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "CODPED": 1,
+    "STATUS": "Confirmado"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPED": 1,
+      "CODPES": 1,
+      "CODEND": 1,
+      "STATUS": "Confirmado",
+      "DESCONTO": 10,
+      "FRETE": 15,
+      "SUBTOTAL": 299.99,
+      "VALORTOTAL": 304.99
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Status inválido",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Pedido não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### DELETE /pedido/deletar
+
+- **Descrição**: Remove pedido do sistema
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  - `CODPED`: ID do pedido a ser removido
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "message": "Pedido removido com sucesso"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Pedido não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Pedido não pode ser removido",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### GET /pedido/buscar
+
+- **Descrição**: Busca pedido específico por ID
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  - `CODPED`: ID do pedido
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPED": 1,
+      "CODPES": 1,
+      "CODEND": 1,
+      "STATUS": "Pendente",
+      "DESCONTO": 10,
+      "FRETE": 15,
+      "SUBTOTAL": 299.99,
+      "VALORTOTAL": 304.99,
+      "ITENSPEDIDO": [
+        {
+          "CODPED": 1,
+          "CODPROD": 1,
+          "TAMANHO": "M",
+          "QTD": 2
+        }
+      ],
+      "ENDERECO": {
+        "CODEND": 1,
+        "CODPES": 1,
+        "DESCRICAO": "Casa",
+        "CEP": "12345678",
+        "RUA": "Rua das Flores",
+        "NUMERO": "123",
+        "COMPLEMENTO": "Apto 42",
+        "BAIRRO": "Centro",
+        "CIDADE": "São Paulo"
+      }
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Pedido não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
 ### Pessoas (`/pessoa`)
 
 #### GET /pessoa/buscar
@@ -641,6 +1124,62 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
+#### POST /pessoa/atualizar
+
+- **Descrição**: Atualiza dados do usuário
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "CODPES": 1,
+    "NOME": "João Atualizado",
+    "SOBRENOME": "Silva Santos",
+    "CPF": "12345678900",
+    "TELEFONE": "11999888777"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPES": 1,
+      "NOME": "João Atualizado",
+      "SOBRENOME": "Silva Santos",
+      "CPF": "12345678900",
+      "TELEFONE": "11999888777",
+      "CODUSU": 1,
+      "USUARIO": {
+        "CODUSU": 1,
+        "EMAIL": "usuario@exemplo.com",
+        "PERMISSAO": "CLIENTE"
+      }
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Dados inválidos",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
 ### Health Check (`/health`)
 
 #### GET /health
@@ -673,12 +1212,14 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
 A API gerencia os seguintes recursos principais:
 
 #### 1. Autenticação (`/auth`)
+
 - **POST** `/auth/login` - Login de usuário
 - **POST** `/auth/registro` - Registro de novo usuário
 - **POST** `/auth/change-password` - Alteração de senha (autenticado)
 - **POST** `/auth/validate-token` - Validação de token JWT (autenticado)
 
 #### 2. Produtos (`/produto`)
+
 - **POST** `/produto/cadastrar` - Cadastrar produto (Admin apenas)
 - **PUT** `/produto/atualizar` - Atualizar produto (Admin apenas)
 - **DELETE** `/produto/remover` - Remover produto (Admin apenas)
@@ -686,6 +1227,7 @@ A API gerencia os seguintes recursos principais:
 - **GET** `/produto/listar` - Listar produtos com filtro opcional (público)
 
 #### 3. Pedidos (`/pedido`)
+
 - **POST** `/pedido/cadastrar` - Criar novo pedido (autenticado)
 - **PATCH** `/pedido/atualizar` - Atualizar pedido (autenticado)
 - **DELETE** `/pedido/deletar` - Remover pedido (autenticado)
@@ -693,15 +1235,18 @@ A API gerencia os seguintes recursos principais:
 - **GET** `/pedido/listar` - Listar pedidos (autenticado)
 
 #### 4. Pessoas/Usuários (`/pessoa`)
+
 - **POST** `/pessoa/atualizar` - Atualizar dados do usuário (autenticado)
 - **GET** `/pessoa/buscar` - Buscar dados do usuário (autenticado)
 
 #### 5. Endereços (`/endereco`)
+
 - **POST** `/endereco/cadastrar` - Cadastrar novo endereço (autenticado)
 - **PATCH** `/endereco/atualizar` - Atualizar endereço (autenticado)
 - **DELETE** `/endereco/deletar` - Remover endereço (autenticado)
 
 #### 6. Health Check (`/health`, `/`)
+
 - **GET** `/health` - Verificação de saúde da API (público)
 - **GET** `/` - Endpoint raiz com informações básicas (público)
 
@@ -710,7 +1255,6 @@ A API gerencia os seguintes recursos principais:
 ![Fluxo de Requisição de Produto](../docs/img/diagrams/product_request_flow.svg)
 
 ## Considerações de Segurança
-
 
 ### 1. Autenticação
 
@@ -721,18 +1265,21 @@ A API gerencia os seguintes recursos principais:
 #### Métodos Implementados
 
 ##### JWT (JSON Web Tokens)
+
 - **Algoritmo**: HS256 com secret key configurável via variável de ambiente
 - **Expiração**: 24 horas por token
 - **Payload**: Inclui informações essenciais do usuário (ID, email, permissões)
 - **Renovação**: Implementação manual através de novo login
 
 ##### Práticas de Segurança na Autenticação
+
 - Senhas hasheadas com bcrypt (cost factor 12)
 - Normalização de email (lowercase) para evitar duplicatas
 - Validação rigorosa de credenciais com mensagens genéricas de erro
 - Sanitização de dados de entrada (remoção de caracteres especiais em CPF/telefone)
 
 #### Recomendações para Produção
+
 - Implementar refresh tokens para renovação automática
 - Considerar Multi-Factor Authentication (MFA) para contas administrativas
 - Implementar bloqueio temporário após tentativas de login falhadas
@@ -745,15 +1292,18 @@ A API gerencia os seguintes recursos principais:
 ![Diagrama RBAC - Controle de Acesso](../docs/img/diagrams/rbac_authorization.svg)
 
 ##### Roles Implementadas
+
 - **ADMIN**: Acesso completo ao sistema, incluindo CRUD de produtos
 - **CLIENTE**: Acesso limitado às funcionalidades de usuário final
 
 ##### Controle de Acesso por Endpoint
+
 - **Públicos**: Health check, listagem/busca de produtos, autenticação
 - **Autenticados**: Gestão de perfil, endereços, pedidos
 - **Admin apenas**: CRUD completo de produtos
 
 ##### Guards Implementados
+
 - **AuthGuard**: Verificação de token JWT válido
 - **RolesGuard**: Verificação de permissões específicas por role
 - **Public Decorator**: Bypass de autenticação para endpoints públicos
@@ -761,26 +1311,31 @@ A API gerencia os seguintes recursos principais:
 ### 3. Proteção contra Ataques Comuns
 
 #### SQL Injection
+
 - **Proteção**: Uso exclusivo do ORM Prisma com queries parametrizadas
 - **Validação**: Class-validator para sanitização de entrada
 - **Monitoramento**: Logs de queries suspeitas
 
 #### Cross-Site Scripting (XSS)
+
 - **Helmet.js**: Headers de segurança HTTP configurados
 - **CSP**: Content Security Policy restritiva para scripts e imagens
 - **Sanitização**: Validação e transformação automática de dados
 
 #### Cross-Site Request Forgery (CSRF)
+
 - **CORS**: Configuração restritiva para origens permitidas
 - **SameSite Cookies**: Configuração adequada para cookies de sessão
 - **Token Validation**: Verificação obrigatória de JWT em operações sensíveis
 
 #### Brute Force
+
 - **Rate Limiting**: Implementação via NestJS Throttler
 - **Account Lockout**: Bloqueio temporário após tentativas falhadas
 - **Monitoring**: Alertas para padrões suspeitos de acesso
 
 #### DDoS
+
 - **Rate Limiting**: Proteção a nível de aplicação
 - **Load Balancing**: Distribuição de carga entre instâncias
 - **CDN**: Uso de Content Delivery Network para recursos estáticos
@@ -789,35 +1344,40 @@ A API gerencia os seguintes recursos principais:
 ### 4. Comunicação Segura
 
 #### HTTPS/TLS
+
 - **Obrigatório**: Todas as comunicações devem usar HTTPS em produção
 - **Certificados**: SSL/TLS com certificados válidos
 - **HSTS**: HTTP Strict Transport Security habilitado
 - **Cipher Suites**: Configuração de algoritmos criptográficos seguros
 
 #### Configuração CORS
+
 ```typescript
 app.enableCors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 });
 ```
 
 ### 5. Gestão de Credenciais e Segredos
 
 #### Variáveis de Ambiente
+
 - **JWT_SECRET**: Secret key para assinatura de tokens
 - **DATABASE_URL**: String de conexão com banco de dados
 - **FRONTEND_URL**: URL permitida para CORS
 
 #### Recomendações para Produção
+
 - **AWS Secrets Manager**: Armazenamento seguro de credenciais
 - **Rotação Automática**: Rotação periódica de secrets
 - **Principle of Least Privilege**: Acesso mínimo necessário
 - **Encryption at Rest**: Criptografia de dados sensíveis no banco
 
 #### Boas Práticas
+
 - Nunca commitar secrets no repositório
 - Usar arquivos .env.example como template
 - Implementar validação de configuração na inicialização
@@ -826,12 +1386,14 @@ app.enableCors({
 ### 6. Logs e Auditoria
 
 #### Implementação Atual
+
 - Logs estruturados via NestJS Logger
 - Registro de tentativas de autenticação
 - Monitoramento de health checks
 - Exception logging com stack traces
 
 #### Eventos a Auditar
+
 - Tentativas de login (sucesso/falha)
 - Operações administrativas (CRUD produtos)
 - Mudanças de senha
@@ -839,6 +1401,7 @@ app.enableCors({
 - Tentativas de acesso negadas
 
 #### Recomendações para Produção
+
 - **Centralização**: ELK Stack ou similar para agregação
 - **Retention Policy**: Política de retenção de logs
 - **Alertas**: Notificações para eventos suspeitos
@@ -941,6 +1504,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Endpoint**: `POST /auth/login`  
 **Dados de entrada**:
+
 ```json
 {
   "email": "usuario@teste.com",
@@ -948,12 +1512,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna token JWT válido
 - Payload contém informações do usuário
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -965,6 +1531,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Endpoint**: `POST /auth/login`  
 **Dados de entrada**:
+
 ```json
 {
   "email": "usuario@teste.com",
@@ -972,11 +1539,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 401 Unauthorized
 - Mensagem: "Credenciais inválidas"
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -988,6 +1557,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Endpoint**: `POST /auth/registro`  
 **Dados de entrada**:
+
 ```json
 {
   "nome": "João Silva",
@@ -998,12 +1568,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 201 Created
 - Usuário criado no banco de dados
 - Retorna dados do usuário (sem senha)
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1015,6 +1587,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Endpoint**: `POST /auth/registro`  
 **Dados de entrada**:
+
 ```json
 {
   "nome": "Maria Silva",
@@ -1025,11 +1598,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 400 Bad Request
 - Mensagem: "Email já cadastrado"
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1042,11 +1617,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `POST /auth/validate-token`  
 **Headers**: `Authorization: Bearer <token_jwt>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna informações do usuário autenticado
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1059,11 +1636,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `POST /auth/validate-token`  
 **Headers**: `Authorization: Bearer <token_expirado>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 401 Unauthorized
 - Mensagem: "Token expirado"
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1078,12 +1657,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Método**: `generateToken(user)`  
 **Dados de entrada**: Objeto usuário com id, email, role
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Token JWT válido gerado
 - Payload contém informações corretas do usuário
 - Token assinado com secret correto
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1096,11 +1677,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Método**: `validateToken(token)`  
 **Dados de entrada**: Token JWT expirado
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Lança exceção de token expirado
 - Não retorna dados do usuário
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1120,11 +1703,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /pessoa/buscar`  
 **Headers**: Sem Authorization
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 401 Unauthorized
 - Mensagem: "Token não fornecido"
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1138,11 +1723,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Headers**: `Authorization: Bearer <token_cliente>`  
 **Dados**: Dados de produto válidos
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 403 Forbidden
 - Mensagem: "Acesso negado - permissões insuficientes"
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1155,6 +1742,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `POST /produto/cadastrar`  
 **Headers**: `Authorization: Bearer <token_admin>`  
 **Dados**:
+
 ```json
 {
   "nome": "Produto Teste",
@@ -1165,11 +1753,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 201 Created
 - Produto criado com sucesso
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1189,12 +1779,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /produto/listar`  
 **Parâmetros**: Nenhum
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna array de produtos
 - Cada produto contém: id, nome, descrição, preço, estoque
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1207,11 +1799,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /produto/buscar?id=1`  
 **Parâmetros**: ID do produto existente
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna produto específico com todos os dados
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1224,11 +1818,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /produto/buscar?id=999`  
 **Parâmetros**: ID de produto que não existe
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 404 Not Found
 - Mensagem: "Produto não encontrado"
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1241,6 +1837,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `POST /produto/cadastrar`  
 **Headers**: `Authorization: Bearer <token_admin>`  
 **Dados**:
+
 ```json
 {
   "nome": "Smartphone XYZ",
@@ -1251,12 +1848,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 201 Created
 - Produto criado no banco
 - Retorna dados do produto criado
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1269,6 +1868,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `PUT /produto/atualizar`  
 **Headers**: `Authorization: Bearer <token_admin>`  
 **Dados**:
+
 ```json
 {
   "id": 1,
@@ -1278,12 +1878,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Produto atualizado no banco
 - Retorna dados atualizados
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1296,11 +1898,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `DELETE /produto/remover?id=1`  
 **Headers**: `Authorization: Bearer <token_admin>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 204 No Content
 - Produto removido do banco
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1315,11 +1919,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Método**: `findAll(filters)`  
 **Dados de entrada**: Filtros por categoria e preço
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Retorna produtos filtrados corretamente
 - Aplica filtros de categoria e faixa de preço
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1332,11 +1938,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Método**: `validateProductData(data)`  
 **Dados de entrada**: Dados inválidos (preço negativo, nome vazio)
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Lança exceção de validação
 - Mensagens específicas para cada campo inválido
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1349,11 +1957,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Método**: `updateStock(productId, quantity)`  
 **Dados de entrada**: ID do produto e nova quantidade
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Estoque atualizado no banco
 - Validação de quantidade não negativa
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1373,6 +1983,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `POST /pedido/cadastrar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
 **Dados**:
+
 ```json
 {
   "itens": [
@@ -1389,12 +2000,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 201 Created
 - Pedido criado com cálculo correto de valores
 - Status inicial: "Pendente"
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1407,12 +2020,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /pedido/listar`  
 **Headers**: `Authorization: Bearer <token_cliente>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna apenas pedidos do usuário logado
 - Ordenados por data (mais recente primeiro)
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1425,6 +2040,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `PATCH /pedido/atualizar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
 **Dados**:
+
 ```json
 {
   "id": 1,
@@ -1432,12 +2048,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Status do pedido atualizado
 - Retorna pedido com novo status
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1450,12 +2068,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /pedido/buscar?id=1`  
 **Headers**: `Authorization: Bearer <token_cliente>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna pedido com todos os detalhes
 - Inclui itens e valores
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1470,11 +2090,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Método**: `calculateTotal(items)`  
 **Dados de entrada**: Array de itens com produtos e quantidades
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Valor total calculado corretamente
 - Considera preços e quantidades de cada item
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1487,11 +2109,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Método**: `validateOrderItems(items)`  
 **Dados de entrada**: Itens com produtos indisponíveis ou quantidade maior que estoque
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Lança exceção de validação
 - Mensagem específica sobre disponibilidade
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1511,12 +2135,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /pessoa/buscar`  
 **Headers**: `Authorization: Bearer <token_cliente>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna dados do usuário logado (sem senha)
 - Inclui informações pessoais e de contato
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1529,6 +2155,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `POST /pessoa/atualizar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
 **Dados**:
+
 ```json
 {
   "nome": "João Silva Atualizado",
@@ -1536,12 +2163,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Dados atualizados no banco
 - Retorna perfil atualizado
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1561,12 +2190,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /endereco/listar`  
 **Headers**: `Authorization: Bearer <token_cliente>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna endereços do usuário logado
 - Ordenados por data de criação
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1579,6 +2210,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `POST /endereco/cadastrar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
 **Dados**:
+
 ```json
 {
   "logradouro": "Rua das Flores, 123",
@@ -1590,12 +2222,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 201 Created
 - Endereço criado e associado ao usuário
 - Retorna dados do endereço criado
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1608,6 +2242,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `PATCH /endereco/atualizar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
 **Dados**:
+
 ```json
 {
   "id": 1,
@@ -1616,12 +2251,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 }
 ```
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Endereço atualizado
 - Retorna dados atualizados
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1634,11 +2271,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `DELETE /endereco/deletar?id=1`  
 **Headers**: `Authorization: Bearer <token_cliente>`
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 204 No Content
 - Endereço removido do banco
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1658,12 +2297,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /health`  
 **Parâmetros**: Nenhum
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna status "ok" e informações do serviço
 - Inclui timestamp e versão da API
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1676,12 +2317,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Endpoint**: `GET /`  
 **Parâmetros**: Nenhum
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Status: 200 OK
 - Retorna informações básicas da API
 - Inclui nome, versão e status
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1700,17 +2343,20 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Cenário**: Registro → Login → Validação de token  
 **Passos**:
+
 1. Registrar novo usuário
 2. Fazer login com credenciais
 3. Validar token recebido
 4. Acessar endpoint protegido
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Usuário registrado com sucesso
 - Login retorna token válido
 - Token permite acesso a endpoints protegidos
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1722,17 +2368,20 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Cenário**: Login admin → Criar produto → Atualizar → Deletar  
 **Passos**:
+
 1. Login como administrador
 2. Criar novo produto
 3. Atualizar dados do produto
 4. Deletar produto
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Todas as operações CRUD funcionando
 - Validações de permissão aplicadas
 - Dados persistidos corretamente
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1744,17 +2393,20 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Cenário**: Login → Adicionar endereço → Criar pedido → Atualizar status  
 **Passos**:
+
 1. Login como cliente
 2. Adicionar endereço de entrega
 3. Criar pedido com múltiplos itens
 4. Atualizar status do pedido
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Pedido criado com cálculo correto
 - Status atualizado com sucesso
 - Validações de estoque aplicadas
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1766,17 +2418,20 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Cenário**: Login → Adicionar → Atualizar → Deletar endereço  
 **Passos**:
+
 1. Login como cliente
 2. Adicionar novo endereço
 3. Atualizar dados do endereço
 4. Deletar endereço
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - CRUD completo de endereços funcionando
 - Validações de CEP aplicadas
 - Associação correta com usuário
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1797,12 +2452,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Métrica**: Tempo de resposta  
 **Carga**: 100 requisições simultâneas
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Tempo médio de resposta < 200ms
 - 95% das requisições < 500ms
 - Sem erros de timeout
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1816,12 +2473,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Métrica**: Tempo de resposta  
 **Carga**: 50 requisições simultâneas
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Tempo médio de resposta < 100ms
 - 95% das requisições < 200ms
 - Autenticação funcionando corretamente
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1835,12 +2494,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Métrica**: Tempo de resposta com 1000+ produtos  
 **Carga**: Listagem de produtos com paginação
 
-**Resultado esperado**: 
+**Resultado esperado**:
+
 - Tempo de resposta < 300ms
 - Paginação funcionando corretamente
 - Memória utilizada estável
 
-**Print do teste**: 
+**Print do teste**:
+
 ```
 [Espaço para print do resultado]
 ```
@@ -1854,9 +2515,10 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ## Resumo de Cobertura de Testes
 
 ### Estatísticas Gerais
+
 - **Total de Casos de Teste**: 41 casos
 - **Testes de Autenticação**: 8 casos
-- **Testes de Autorização**: 3 casos  
+- **Testes de Autorização**: 3 casos
 - **Testes de Produtos**: 9 casos
 - **Testes de Pedidos**: 6 casos
 - **Testes de Pessoas**: 2 casos
@@ -1866,6 +2528,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - **Testes de Performance**: 3 casos
 
 ### Cobertura por Módulo
+
 - **AuthController**: 100% coberto
 - **ProdutoController**: 100% coberto
 - **PedidoController**: 100% coberto
@@ -1874,13 +2537,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - **HealthController**: 100% coberto
 
 ### Critérios de Aceitação
+
 - ✅ Cobertura mínima de 80% em todos os módulos
 - ✅ Todos os endpoints testados
 - ✅ Testes de segurança implementados
 - ✅ Testes de performance incluídos
 - ✅ Documentação completa com espaços para evidências
-
-
 
 # Referências
 
@@ -1915,7 +2577,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 # Planejamento
 
-##  Quadro de tarefas
+## Quadro de tarefas
 
 > Apresente a divisão de tarefas entre os membros do grupo e o acompanhamento da execução, conforme o exemplo abaixo.
 
@@ -1923,23 +2585,23 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 Atualizado em: 14/09/2025
 
-| Responsável      | Tarefa/Requisito            | Iniciado em    | Prazo      | Status  | Terminado em    |
-| :----            |    :----                    |   :----:       | :----:     | :----:  | :----:          |
-| Todos            | Correção etapa 1            |  01/09/2025    | 05/09/2025 |  ✔️     | 04/09/2025      |
-| Jully            |Montar a apresentação 1 Etapa|  01/09/2025    | 05/09/2025 |  ✔️     | 07/09/2025      |
-| Jully            | APIs e Web Services         |  01/09/2025    | 10/09/2025 |  ✔️     | 08/09/2025      |
-| Victor           | Objetivos da API            |  01/09/2025    | 14/09/2005 |  ✔️     | 14/09/2025      |
-| Vinicius / Jully | Modelagem da Aplicação      |  01/09/2025    | 17/09/2005 |  ✔️     |  14/09/2025     |
-| Vinicius         | Tecnologias Utilizadas      |  01/09/2025    | 17/09/2005 |  ✔️     | 14/09/2025      |
-| Lucas            | API Endpoints               |  01/09/2025    | 17/09/2005 |  ✔️     |  14/09/2025     |
-| Pedro / Ítalo    | Implantação                 |  01/09/2025    | 04/10/2005 |  ✔️     |  14/09/2025     |
-| Pedro            | Considerações de Segurança  |  01/09/2025    | 04/10/2005 |  ✔️     |  14/09/2025     |
-| Ítalo            | Testes                      |  01/09/2025    | 04/10/2005 |  ✔️     |  14/09/2025     |
-| Jully            |Montar a apresentação 2 Etapa|  01/09/2025    | 04/10/2025 |  📝     |                 |
+| Responsável      | Tarefa/Requisito              | Iniciado em |   Prazo    | Status | Terminado em |
+| :--------------- | :---------------------------- | :---------: | :--------: | :----: | :----------: |
+| Todos            | Correção etapa 1              | 01/09/2025  | 05/09/2025 |   ✔️   |  04/09/2025  |
+| Jully            | Montar a apresentação 1 Etapa | 01/09/2025  | 05/09/2025 |   ✔️   |  07/09/2025  |
+| Jully            | APIs e Web Services           | 01/09/2025  | 10/09/2025 |   ✔️   |  08/09/2025  |
+| Victor           | Objetivos da API              | 01/09/2025  | 14/09/2005 |   ✔️   |  14/09/2025  |
+| Vinicius / Jully | Modelagem da Aplicação        | 01/09/2025  | 17/09/2005 |   ✔️   |  14/09/2025  |
+| Vinicius         | Tecnologias Utilizadas        | 01/09/2025  | 17/09/2005 |   ✔️   |  14/09/2025  |
+| Lucas            | API Endpoints                 | 01/09/2025  | 17/09/2005 |   ✔️   |  14/09/2025  |
+| Pedro / Ítalo    | Implantação                   | 01/09/2025  | 04/10/2005 |   ✔️   |  14/09/2025  |
+| Pedro            | Considerações de Segurança    | 01/09/2025  | 04/10/2005 |   ✔️   |  14/09/2025  |
+| Ítalo            | Testes                        | 01/09/2025  | 04/10/2005 |   ✔️   |  14/09/2025  |
+| Jully            | Montar a apresentação 2 Etapa | 01/09/2025  | 04/10/2025 |   📝   |              |
 
 Legenda:
+
 - ✔️: terminado
 - 📝: em execução
 - ⌛: atrasado
 - ❌: não iniciado
-

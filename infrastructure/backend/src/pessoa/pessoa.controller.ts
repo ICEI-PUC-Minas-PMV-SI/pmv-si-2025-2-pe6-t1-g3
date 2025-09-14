@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Get,
-  Post,
+  Put,
   Query,
   UseGuards,
   HttpStatus,
@@ -27,7 +27,7 @@ import { BuscarPessoaDto } from './dto/buscar-pessoa.dto';
 export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
 
-  @Post('/atualizar')
+  @Put('/atualizar')
   @ApiOperation({
     summary: 'Atualizar dados do usuário',
     description:
@@ -126,7 +126,7 @@ export class PessoaController {
       },
     },
   })
-  cadastrar(@Body() body: any) {
+  atualizar(@Body() body: any) {
     return this.pessoaService.atualizar(body);
   }
 
@@ -222,7 +222,7 @@ export class PessoaController {
       },
     },
   })
-  atualizar(@Query() body: BuscarPessoaDto) {
+  buscar(@Query() body: BuscarPessoaDto) {
     return this.pessoaService.buscar(body);
   }
 }
