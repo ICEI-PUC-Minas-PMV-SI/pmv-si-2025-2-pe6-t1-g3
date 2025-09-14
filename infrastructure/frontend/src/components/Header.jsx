@@ -86,9 +86,12 @@ function Header() {
                   <FiUser size={20} />
                 </Link>
                 
-                <button className="text-gray-600 hover:text-gray-900 transition-colors p-2" title="Favoritos">
+                <Link 
+                  to="/favorites"
+                  className="text-gray-600 hover:text-gray-900 transition-colors p-2"
+                  title="Favoritos">
                   <FiHeart size={20} />
-                </button>
+                </Link>
                 
                 <Link 
                   to="/cart" 

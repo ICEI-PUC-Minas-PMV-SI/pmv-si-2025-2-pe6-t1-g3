@@ -22,7 +22,7 @@ const ProductDetails = () => {
   useEffect(() => {
     loadProduct();
     const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    setIsFavorite(favorites.some(item => item.CODPROD === productId?.CODPROD));
+    setIsFavorite(favorites.some(item => item.CODPROD === parseInt(productId)));
   }, [productId]);
 
   const loadProduct = async () => {
