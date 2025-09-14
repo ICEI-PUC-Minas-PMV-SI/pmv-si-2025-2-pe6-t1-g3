@@ -44,5 +44,5 @@ jobs:
             echo "Pulling new images..."
             docker pull ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ inputs.release_name }}
             docker pull ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ inputs.release_name }}
-            docker-compose up -d
-            docker-compose ps
+            docker compose up -d
+            docker compose ps
