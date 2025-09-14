@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useCart } from "../contexts/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX, FiSearch, FiHeart } from "react-icons/fi";
 import { MdAdminPanelSettings } from "react-icons/md";
@@ -10,6 +11,7 @@ import zabbixLogo from "../assets/zabbixLogo.png";
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
+  const { cartCount } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -99,6 +101,11 @@ function Header() {
                   title="Carrinho"
                 >
                   <FiShoppingCart size={20} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
+                      {cartCount}
+                    </span>
+                  )}
                 </Link>
                 
                 {user?.isAdmin && (
@@ -206,11 +213,16 @@ function Header() {
                   
                   <Link 
                     to="/cart" 
-                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2"
+                    className="text-gray-700 hover:text-gray-900 transition-colors flex items-center py-2 relative"
                     onClick={closeMenu}
                   >
                     <FiShoppingCart className="mr-2" size={18} />
                     Carrinho
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1 left-16 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
+                        {cartCount}
+                      </span>
+                    )}
                   </Link>
 
                   {user?.isAdmin && (

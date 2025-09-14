@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useCart } from '../../contexts/CartContext';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiTrash2, FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
 import { productService } from "../../services/api";
 
 const CartProducts = ({ onTotalChange }) => {
+  const { cartItems, setCartItems } = useCart();
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCart(storedCart);
-  }, []);
+    setCart(cartItems);
+  }, [cartItems]);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -48,6 +49,7 @@ const CartProducts = ({ onTotalChange }) => {
   const handleRemoveProduct = (productId) => {
     const updatedCart = cart.filter((item) => item.CODPROD !== productId);
     setCart(updatedCart);
+    setCartItems(updatedCart);
     setProducts(products.filter((product) => product.CODPROD !== productId));
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     toast.success("Produto removido do carrinho", {
@@ -64,6 +66,7 @@ const CartProducts = ({ onTotalChange }) => {
       return item;
     });
     setCart(updatedCart);
+    setCartItems(updatedCart);
     setProducts(
       products.map((product) => {
         if (product.CODPROD === productId) {
@@ -84,6 +87,7 @@ const CartProducts = ({ onTotalChange }) => {
       return item;
     });
     setCart(updatedCart);
+    setCartItems(updatedCart);
     setProducts(
       products.map((product) => {
         if (product.CODPROD === productId && product.quantity > 1) {
