@@ -57,7 +57,7 @@ O público-alvo do projeto é composto por:
 - **Fornecedores:** pequenos e médios empreendedores, comerciantes locais e marcas que desejam ampliar seu alcance no comércio digital.  
 - **Compradores:** consumidores finais que buscam praticidade, variedade e segurança ao realizar compras online.
 
-![Alt text](../docs/img/diagrams/diagrama_publico_alvo.png)
+![publico_alvo](../docs/img/diagrams/diagrama_publico_alvo.png)
 ### Personas
 
 #### Persona 1 – Laura Andrade
@@ -278,7 +278,7 @@ Para facilitar o processo de compra, o **Serviço de Carrinho de Compras** organ
 
 --
 ## Diagrama de caso de uso
-![Alt text](../docs/img/diagrams/diagrama_caso_uso.png)
+![caso_uso](../docs/img/diagrams/diagrama_caso_uso.png)
 
 # Arquitetura da Solução
 
@@ -290,7 +290,7 @@ O Backend, implementado em NextJS, gerencia a lógica de negócio e disponibiliz
 
 Essa arquitetura garante separação de responsabilidades, segurança por meio de autenticação JWT, e flexibilidade com o uso de Docker, permitindo que cada componente seja escalado ou atualizado de forma independente.
 
-![Alt text](../docs/img/diagrams/solution_architecture.drawio.svg)
+![solution_archt](../docs/img/diagrams/solution_architecture.drawio.svg)
 
 ## Tecnologias Utilizadas
 
