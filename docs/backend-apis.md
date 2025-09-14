@@ -199,6 +199,92 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
+#### POST /auth/change-password
+
+- **Descrição**: Altera senha do usuário autenticado
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "oldPassword": "SenhaAtual@123",
+    "newPassword": "NovaSenha@123"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODUSU": 1,
+      "EMAIL": "usuario@exemplo.com",
+      "PERMISSAO": "CLIENTE"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Senha atual incorreta",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### POST /auth/validate-token
+
+- **Descrição**: Valida token JWT e retorna dados do usuário
+- **Autenticação**: Requerida
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "valid": true,
+      "user": {
+        "sub": 1,
+        "email": "usuario@exemplo.com",
+        "PERMISSAO": "CLIENTE",
+        "CODUSU": 1,
+        "CODPES": 1,
+        "NOME": "João",
+        "SOBRENOME": "Silva",
+        "TELEFONE": "11987654321",
+        "CPF": "12345678900",
+        "iat": 1694613600,
+        "exp": 1694700000
+      }
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Token inválido",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
 ### Produtos (`/produto`)
 
 #### GET /produto/listar
@@ -340,6 +426,141 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
+#### PUT /produto/atualizar
+
+- **Descrição**: Atualiza produto existente (Admin apenas)
+- **Autenticação**: Requerida (Admin)
+- **Parâmetros**:
+  ```json
+  {
+    "CODPROD": 1,
+    "PRODUTO": "Camiseta Polo Atualizada",
+    "DESCRICAO": "Camiseta polo masculina 100% algodão premium",
+    "VALOR": 39.99,
+    "ESTOQUE": 75,
+    "CODCAT": 1,
+    "IMAGEM": "https://exemplo.com/imagem-nova.jpg",
+    "DESCONTO": 10
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPROD": 1,
+      "PRODUTO": "Camiseta Polo Atualizada",
+      "DESCRICAO": "Camiseta polo masculina 100% algodão premium",
+      "VALOR": 39.99,
+      "ESTOQUE": 75,
+      "CODCAT": 1,
+      "IMAGEM": "https://exemplo.com/imagem-nova.jpg",
+      "DESCONTO": 10,
+      "CATEGORIAS": {
+        "CODCAT": 1,
+        "CATEGORIA": "MASCULINO"
+      }
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (403 Forbidden)
+    ```json
+    {
+      "statusCode": 403,
+      "message": "Usuário não tem permissão de administrador",
+      "error": "Forbidden"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Produto não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Valor não pode ser negativo",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### DELETE /produto/remover
+
+- **Descrição**: Remove produto do sistema (Admin apenas)
+- **Autenticação**: Requerida (Admin)
+- **Parâmetros**:
+  ```json
+  {
+    "CODPROD": 1
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "message": "Produto removido com sucesso",
+      "CODPROD": 1
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (403 Forbidden)
+    ```json
+    {
+      "statusCode": 403,
+      "message": "Usuário não tem permissão de administrador",
+      "error": "Forbidden"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Produto não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Produto está associado a pedidos",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
 ### Endereços (`/endereco`)
 
 #### POST /endereco/cadastrar
@@ -388,6 +609,125 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
       "statusCode": 401,
       "message": "Não autorizado",
       "error": "Unauthorized"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### PATCH /endereco/atualizar
+
+- **Descrição**: Atualiza endereço existente
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "CODEND": 1,
+    "CEP": "87654321",
+    "RUA": "Avenida das Palmeiras",
+    "NUMERO": "456",
+    "COMPLEMENTO": "Casa 2",
+    "BAIRRO": "Jardins",
+    "CIDADE": "São Paulo",
+    "DESCRICAO": "Trabalho"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODEND": 1,
+      "CODPES": 1,
+      "DESCRICAO": "Trabalho",
+      "CEP": "87654321",
+      "RUA": "Avenida das Palmeiras",
+      "NUMERO": "456",
+      "COMPLEMENTO": "Casa 2",
+      "BAIRRO": "Jardins",
+      "CIDADE": "São Paulo"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Endereço não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "CEP inválido",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### DELETE /endereco/deletar
+
+- **Descrição**: Remove endereço do usuário
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  - `CODEND`: ID do endereço a ser removido
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODEND": 1,
+      "CODPES": 1,
+      "DESCRICAO": "Casa",
+      "CEP": "12345678",
+      "RUA": "Rua das Flores",
+      "NUMERO": "123",
+      "COMPLEMENTO": "Apto 42",
+      "BAIRRO": "Centro",
+      "CIDADE": "São Paulo"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Endereço não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Endereço está associado a pedidos em andamento",
+      "error": "Bad Request"
     }
     ```
   - Erro (500 Internal Server Error)
@@ -533,6 +873,216 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
+#### PATCH /pedido/atualizar
+
+- **Descrição**: Atualiza status do pedido
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "CODPED": 1,
+    "STATUS": "EM_PREPARACAO"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPED": 1,
+      "CODPES": 1,
+      "CODEND": 1,
+      "DESCONTO": 10,
+      "FRETE": 15,
+      "SUBTOTAL": 299.99,
+      "VALORTOTAL": 304.99,
+      "ITENSPEDIDO": [
+        {
+          "CODPED": 1,
+          "CODPROD": 1,
+          "TAMANHO": "M",
+          "QTD": 2
+        }
+      ],
+      "ENDERECO": {
+        "CODEND": 1,
+        "CODPES": 1,
+        "DESCRICAO": "Casa",
+        "CEP": "12345678",
+        "RUA": "Rua das Flores",
+        "NUMERO": "123",
+        "COMPLEMENTO": "Apto 42",
+        "BAIRRO": "Centro",
+        "CIDADE": "São Paulo"
+      }
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Status inválido para o pedido atual",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Pedido não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### DELETE /pedido/deletar
+
+- **Descrição**: Cancela pedido existente
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  - `CODPED`: ID do pedido a ser cancelado
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPED": 1,
+      "CODPES": 1,
+      "CODEND": 1,
+      "DESCONTO": 10,
+      "FRETE": 15,
+      "SUBTOTAL": 299.99,
+      "VALORTOTAL": 304.99,
+      "ITENSPEDIDO": [
+        {
+          "CODPED": 1,
+          "CODPROD": 1,
+          "TAMANHO": "M",
+          "QTD": 2
+        }
+      ],
+      "ENDERECO": {
+        "CODEND": 1,
+        "CODPES": 1,
+        "DESCRICAO": "Casa",
+        "CEP": "12345678",
+        "RUA": "Rua das Flores",
+        "NUMERO": "123",
+        "COMPLEMENTO": "Apto 42",
+        "BAIRRO": "Centro",
+        "CIDADE": "São Paulo"
+      }
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Pedido não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Pedido não pode ser cancelado neste status",
+      "error": "Bad Request"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### GET /pedido/buscar
+
+- **Descrição**: Busca pedido por ID
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  - `CODPED`: ID do pedido
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPED": 1,
+      "CODPES": 1,
+      "CODEND": 1,
+      "DESCONTO": 10,
+      "FRETE": 15,
+      "SUBTOTAL": 299.99,
+      "VALORTOTAL": 304.99,
+      "ITENSPEDIDO": [
+        {
+          "CODPED": 1,
+          "CODPROD": 1,
+          "TAMANHO": "M",
+          "QTD": 2
+        }
+      ],
+      "ENDERECO": {
+        "CODEND": 1,
+        "CODPES": 1,
+        "DESCRICAO": "Casa",
+        "CEP": "12345678",
+        "RUA": "Rua das Flores",
+        "NUMERO": "123",
+        "COMPLEMENTO": "Apto 42",
+        "BAIRRO": "Centro",
+        "CIDADE": "São Paulo"
+      }
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (404 Not Found)
+    ```json
+    {
+      "statusCode": 404,
+      "message": "Pedido não encontrado",
+      "error": "Not Found"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
 ### Pessoas (`/pessoa`)
 
 #### GET /pessoa/buscar
@@ -578,6 +1128,77 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
       "statusCode": 404,
       "message": "Usuário não encontrado",
       "error": "Not Found"
+    }
+    ```
+  - Erro (401 Unauthorized)
+    ```json
+    {
+      "statusCode": 401,
+      "message": "Não autorizado",
+      "error": "Unauthorized"
+    }
+    ```
+  - Erro (500 Internal Server Error)
+    ```json
+    {
+      "statusCode": 500,
+      "message": "Erro interno do servidor",
+      "error": "Internal Server Error"
+    }
+    ```
+
+#### PATCH /pessoa/atualizar
+
+- **Descrição**: Atualiza dados do usuário
+- **Autenticação**: Requerida
+- **Parâmetros**:
+  ```json
+  {
+    "CODPES": 1,
+    "EMAIL": "novoemail@exemplo.com",
+    "NOME": "João Atualizado",
+    "SOBRENOME": "Silva Santos",
+    "CPF": "12345678900",
+    "TELEFONE": "11999888777"
+  }
+  ```
+- **Resposta**:
+  - Sucesso (200 OK)
+    ```json
+    {
+      "CODPES": 1,
+      "NOME": "João Atualizado",
+      "SOBRENOME": "Silva Santos",
+      "CPF": "12345678900",
+      "TELEFONE": "11999888777",
+      "CODUSU": 1,
+      "USUARIO": {
+        "CODUSU": 1,
+        "EMAIL": "novoemail@exemplo.com",
+        "PERMISSAO": "CLIENTE"
+      },
+      "ENDERECOS": [
+        {
+          "CODEND": 1,
+          "CODPES": 1,
+          "DESCRICAO": "Casa",
+          "CEP": "12345678",
+          "RUA": "Rua das Flores",
+          "NUMERO": "123",
+          "COMPLEMENTO": "Apto 42",
+          "BAIRRO": "Centro",
+          "CIDADE": "São Paulo",
+          "PRINCIPAL": true
+        }
+      ]
+    }
+    ```
+  - Erro (400 Bad Request)
+    ```json
+    {
+      "statusCode": 400,
+      "message": "Email já cadastrado",
+      "error": "Bad Request"
     }
     ```
   - Erro (401 Unauthorized)
