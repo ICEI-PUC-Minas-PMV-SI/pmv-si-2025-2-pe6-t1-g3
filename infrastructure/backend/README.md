@@ -1,73 +1,204 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# ZabbixStore API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descrição
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+API REST para a loja virtual ZabbixStore, construída com NestJS.
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## Instalação
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+## Executando a aplicação
 
 ```bash
-# development
+# desenvolvimento
 $ npm run start
 
-# watch mode
+# modo watch
 $ npm run start:dev
 
-# production mode
+# produção
 $ npm run start:prod
 ```
 
-## Test
+## Documentação da API
+
+A documentação completa da API está disponível através do Swagger UI em:
+
+```
+http://localhost:3000/api
+```
+
+### Autenticação
+
+A API utiliza autenticação JWT (JSON Web Token). Para endpoints protegidos, inclua o token no header:
+
+```
+Authorization: Bearer <seu_token_jwt>
+```
+
+#### Endpoints de Autenticação
+
+- **POST /auth/login**
+
+  - Login de usuário
+  - Body: `{ "EMAIL": "string", "SENHA": "string" }`
+  - Retorna: Token JWT e dados do usuário
+
+- **POST /auth/registro**
+
+  - Registro de novo usuário
+  - Body: Dados do usuário (email, senha, nome, etc.)
+  - Retorna: Dados do usuário criado
+
+- **POST /auth/change-password** (Autenticado)
+
+  - Alteração de senha
+  - Body: `{ "oldPassword": "string", "newPassword": "string" }`
+
+- **POST /auth/validate-token** (Autenticado)
+  - Validação de token JWT
+  - Retorna: Status do token e dados do usuário
+
+### Produtos
+
+#### Endpoints Públicos
+
+- **GET /produto/listar**
+
+  - Lista todos os produtos
+  - Query params: `CATEGORIA` (opcional)
+  - Retorna: Array de produtos
+
+- **GET /produto/buscar**
+  - Busca produto por ID
+  - Query params: `CODPROD` (obrigatório)
+  - Retorna: Dados do produto
+
+#### Endpoints Administrativos (Requer autenticação e role ADMIN)
+
+- **POST /produto/cadastrar**
+
+  - Cadastra novo produto
+  - Body: Dados do produto (nome, descrição, preço, etc.)
+  - Retorna: Produto criado
+
+- **PUT /produto/atualizar**
+
+  - Atualiza produto existente
+  - Body: Dados do produto com ID
+  - Retorna: Produto atualizado
+
+- **DELETE /produto/remover**
+  - Remove produto
+  - Body: `{ "CODPROD": number }`
+  - Retorna: Confirmação de remoção
+
+### Usuários (Requer autenticação)
+
+- **POST /pessoa/atualizar**
+
+  - Atualiza dados do usuário
+  - Body: Dados do usuário para atualização
+  - Retorna: Dados atualizados do usuário
+
+- **GET /pessoa/buscar**
+  - Busca usuário por ID
+  - Query params: `CODPES` (obrigatório)
+  - Retorna: Dados do usuário
+
+### Endereços (Requer autenticação)
+
+- **POST /endereco/cadastrar**
+
+  - Cadastra novo endereço
+  - Body: Dados do endereço (CEP, rua, número, etc.)
+  - Retorna: Endereço cadastrado
+
+- **PATCH /endereco/atualizar**
+
+  - Atualiza endereço existente
+  - Body: Dados do endereço com ID
+  - Retorna: Endereço atualizado
+
+- **DELETE /endereco/deletar**
+  - Remove endereço
+  - Query params: ID do endereço
+  - Retorna: Confirmação de remoção
+
+### Pedidos (Requer autenticação)
+
+- **POST /pedido/cadastrar**
+
+  - Cria novo pedido
+  - Body: Dados do pedido (itens, endereço, etc.)
+  - Retorna: Pedido criado
+
+- **PATCH /pedido/atualizar**
+
+  - Atualiza status do pedido
+  - Body: Dados de atualização do pedido
+  - Retorna: Pedido atualizado
+
+- **DELETE /pedido/deletar**
+
+  - Cancela pedido
+  - Query params: ID do pedido
+  - Retorna: Confirmação de cancelamento
+
+- **GET /pedido/buscar**
+
+  - Busca pedido por ID
+  - Query params: ID do pedido
+  - Retorna: Detalhes completos do pedido
+
+- **GET /pedido/listar**
+  - Lista pedidos do usuário
+  - Query params: Filtros opcionais
+  - Retorna: Lista resumida de pedidos
+
+### Códigos de Status HTTP
+
+- **200** - OK: Requisição bem-sucedida
+- **201** - Created: Recurso criado com sucesso
+- **400** - Bad Request: Dados inválidos ou faltando
+- **401** - Unauthorized: Token ausente ou inválido
+- **403** - Forbidden: Sem permissão para acessar o recurso
+- **404** - Not Found: Recurso não encontrado
+- **500** - Internal Server Error: Erro interno do servidor
+
+## Testes
 
 ```bash
-# unit tests
+# testes unitários
 $ npm run test
 
-# e2e tests
+# testes e2e
 $ npm run test:e2e
 
-# test coverage
+# cobertura de testes
 $ npm run test:cov
 ```
 
-## Support
+## Variáveis de Ambiente
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
-## Stay in touch
+```env
+# Configuração do servidor
+PORT=3000
+FRONTEND_URL=http://localhost:5173
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Banco de dados
+DATABASE_URL="postgresql://user:password@localhost:5432/zabbixstore?schema=public"
 
-## License
+# JWT
+JWT_SECRET=seu_secret_aqui
+JWT_EXPIRATION=24h
+```
 
-Nest is [MIT licensed](LICENSE).
+## Licença
+
+Este projeto está licenciado sob a [Licença MIT](LICENSE).

@@ -3,11 +3,13 @@ import { PrismaService } from 'src/services/prisma.service';
 import { LoginDto, RegistroDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { EnderecoService } from 'src/endereco/endereco.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly enderecoService: EnderecoService,
     private jwt: JwtService,
   ) {}
 
@@ -137,7 +139,7 @@ export class AuthService {
       });
 
       // Create profile
-      await this.prisma.pessoa.create({
+      const newProfile = await this.prisma.pessoa.create({
         data: {
           NOME: body.NOME.trim(),
           SOBRENOME: body.SOBRENOME.trim(),
@@ -147,6 +149,18 @@ export class AuthService {
         },
       });
 
+      if (body.ENDERECO) {
+        await this.enderecoService.cadastrar({
+          CODPES: newProfile.CODPES,
+          DESCRICAO: body.ENDERECO.DESCRICAO,
+          BAIRRO: body.ENDERECO.BAIRRO,
+          CEP: body.ENDERECO.CEP,
+          CIDADE: body.ENDERECO.CIDADE,
+          COMPLEMENTO: body.ENDERECO.COMPLEMENTO,
+          NUMERO: body.ENDERECO.NUMERO,
+          RUA: body.ENDERECO.RUA,
+        });
+      }
       // Return user without password
       return {
         id: newUser.CODUSU,
