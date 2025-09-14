@@ -120,17 +120,17 @@ Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvo
 
 ### Etapa 2
 
-Atualizado em: 01/09/2025
+Atualizado em: 14/09/2025
 
 | Responsável      | Tarefa/Requisito            | Iniciado em    | Prazo      | Status  | Terminado em    |
 | :----            |    :----                    |   :----:       | :----:     | :----:  | :----:          |
 | Todos            | Correção etapa 1            |  01/09/2025    | 05/09/2025 |  ✔️     | 04/09/2025      |
-| Jully            |Montar a apresentação 1 Etapa|  01/09/2025    | 05/09/2025 |  📝     |                 |
-| Jully            | APIs e Web Services         |  01/09/2025    | 10/09/2025 |  📝     |                 |
-| Victor           | Objetivos da API            |  01/09/2025    | 10/09/2005 |  ❌     |                 |
-| Vinicius / Jully | Modelagem da Aplicação      |  01/09/2025    | 12/09/2005 |  ❌     |                 |
-| Vinicius         | Tecnologias Utilizadas      |  01/09/2025    | 12/09/2005 |  ❌     |                 |
-| Lucas            | API Endpoints               |  01/09/2025    | 12/09/2005 |  ❌     |                 |
+| Jully            |Montar a apresentação 1 Etapa|  01/09/2025    | 05/09/2025 |  ✔️     | 07/09/2025      |
+| Jully            | APIs e Web Services         |  01/09/2025    | 10/09/2025 |  ✔️     | 08/09/2025      |
+| Victor           | Objetivos da API            |  01/09/2025    | 14/09/2005 |  ❌     |                 |
+| Vinicius / Jully | Modelagem da Aplicação      |  01/09/2025    | 17/09/2005 |  ✔️     |  14/09/2025     |
+| Vinicius         | Tecnologias Utilizadas      |  01/09/2025    | 17/09/2005 |  ❌     |                 |
+| Lucas            | API Endpoints               |  01/09/2025    | 17/09/2005 |  ❌     |                 |
 | Lucas / Pedro    | Tecnologias Utilizadas      |  01/09/2025    | 17/09/2005 |  ❌     |                 |
 | Victor /Pedro    | Considerações de Segurança  |  01/09/2025    | 04/10/2005 |  ❌     |                 |
 | Pedro / Ítalo    | Implantação                 |  01/09/2025    | 04/10/2005 |  ❌     |                 |
