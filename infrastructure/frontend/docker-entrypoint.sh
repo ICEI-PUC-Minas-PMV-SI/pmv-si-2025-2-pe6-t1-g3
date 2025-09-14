@@ -14,5 +14,8 @@ window.__RUNTIME_CONFIG__ = {
 };
 EOF
 
+sed -i '/<script src="\/config.js"><\/script>/d' /usr/share/nginx/html/index.html
+sed -i '/<title>Zabbix Store<\/title>/a\    <script src="/config.js"></script>' /usr/share/nginx/html/index.html
+
 # Start Nginx
 exec nginx -g "daemon off;"

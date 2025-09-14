@@ -1,0 +1,48 @@
+name: Deploy to Hetzner
+
+on:
+  workflow_call:
+    inputs:
+      release_name:
+        description: 'Release name for deployment'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: 'Release Name Version (Eg.: 1.0.0)'
+        required: true
+        type: string
+
+env:
+  REGISTRY: pnunesdev
+  FRONTEND_IMAGE_NAME: zabbixstore-frontend
+  BACKEND_IMAGE_NAME: zabbixstore-backend
+
+jobs:
+  deploy:
+    name: Deploy to Hetzner Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USERNAME }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          port: ${{ secrets.HETZNER_PORT }}
+          script: |
+            echo "Starting deployment process..."
+            cd ${{ secrets.HETZNER_PROJECT_PATH }}
+
+            echo "Updating environment variables..."
+            # Update image version in .env
+            sed -i "s|ZABBIX_BACKEND_IMAGE=.*|ZABBIX_BACKEND_IMAGE=${{ inputs.release_name }}|g" .env
+            sed -i "s|ZABBIX_FRONTEND_IMAGE=.*|ZABBIX_FRONTEND_IMAGE=${{ inputs.release_name }}|g" .env
+
+            echo "Pulling new images..."
+            docker pull ${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}:${{ inputs.release_name }}
+            docker pull ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ inputs.release_name }}
+            docker compose up -d
+            docker compose ps
