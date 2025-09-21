@@ -1507,8 +1507,8 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "email": "usuario@teste.com",
-  "senha": "senha123"
+  "email": "Cliente@teste.com",
+  "senha": "Cliente123"
 }
 ```
 
@@ -1520,9 +1520,8 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 01](img/tests/Caso-teste-01.png)
+
 
 </details>
 
@@ -1546,9 +1545,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 02](img/tests/Caso-teste-02.png)
 
 </details>
 
@@ -1560,11 +1557,21 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "nome": "João Silva",
-  "email": "joao@teste.com",
-  "senha": "senha123",
-  "cpf": "12345678901",
-  "telefone": "11999999999"
+  "EMAIL": "usuario@exemplo.com",
+  "SENHA": "Senha@123",
+  "NOME": "João",
+  "SOBRENOME": "Silva",
+  "CPF": "12345678900",
+  "TELEFONE": "11987654321",
+  "ENDERECO": {
+    "DESCRICAO": "Casa",
+    "CEP": "12345678",
+    "RUA": "Rua das Flores",
+    "NUMERO": "123",
+    "COMPLEMENTO": "Apto 42",
+    "BAIRRO": "Centro",
+    "CIDADE": "São Paulo"
+  }
 }
 ```
 
@@ -1576,9 +1583,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 03](img/tests/Caso-teste-03.png)
 
 </details>
 
@@ -1605,9 +1610,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 04](img/tests/Caso-teste-04.png)
 
 </details>
 
@@ -1624,9 +1627,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 05](img/tests/Caso-teste-05.png)
 
 </details>
 
@@ -1643,9 +1644,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 06](img/tests/Caso-teste-06.png)
 
 </details>
 
@@ -1665,9 +1664,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 07](img/tests/Caso-teste-07.png)
 
 </details>
 
@@ -1684,9 +1681,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 08](img/tests/Caso-teste-08.png)
 
 </details>
 
@@ -1710,9 +1705,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 09](img/tests/Caso-teste-09.png)
 
 </details>
 
@@ -1730,9 +1723,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 10](img/tests/Caso-teste-10.png)
 
 </details>
 
@@ -1745,11 +1736,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "nome": "Produto Teste",
-  "descricao": "Descrição do produto",
-  "preco": 99.99,
-  "estoque": 10,
-  "categoria": "Eletrônicos"
+  {
+    "PRODUTO": "Camiseta Polo",
+    "DESCRICAO": "Camiseta polo masculina 100% algodão",
+    "VALOR": 29.99,
+    "ESTOQUE": 50,
+    "IMAGEM": "https://exemplo.com/imagem.jpg",
+    "CATEGORIA": "MASCULINO"
+  }
 }
 ```
 
@@ -1760,9 +1754,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 11](img/tests/Caso-teste-11.png)
 
 </details>
 
@@ -1787,9 +1779,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 12](img/tests/Caso-teste-12.png)
 
 </details>
 
@@ -1806,9 +1796,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 13](img/tests/Caso-teste-13.png)
 
 </details>
 
@@ -1825,9 +1813,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 14](img/tests/Caso-teste-14.png)
 
 </details>
 
@@ -1840,11 +1826,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "nome": "Smartphone XYZ",
-  "descricao": "Smartphone com 128GB",
-  "preco": 1299.99,
-  "estoque": 50,
-  "categoria": "Eletrônicos"
+  "PRODUTO": "Smartphone XYZ",
+  "DESCRICAO": "Smartphone com 128GB",
+  "VALOR": 1299.99,
+  "ESTOQUE": 50,
+  "IMAGEM": "https://exemplo.com/imagem.jpg",
+  "CATEGORIA": "MASCULINO"
 }
 ```
 
@@ -1856,9 +1843,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 15](img/tests/Caso-teste-15.png)
 
 </details>
 
@@ -1871,10 +1856,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "id": 1,
-  "nome": "Smartphone XYZ Atualizado",
-  "preco": 1199.99,
-  "estoque": 30
+  "CODPROD": 24,
+  "PRODUTO": "Smartphone XYZ",
+  "DESCRICAO": "Smartphone com 128GB",
+  "VALOR": 1199.90,
+  "ESTOQUE": 30,
+  "IMAGEM": "https://exemplo.com/imagem-nova.jpg",
+  "DESCONTO": 10
 }
 ```
 
@@ -1886,9 +1874,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 16](img/tests/Caso-teste-16.png)
 
 </details>
 
@@ -1926,9 +1912,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 18](img/tests/Caso-teste-18.png)
 
 </details>
 
@@ -1964,9 +1948,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 18](img/tests/Caso-teste-18.png)
 
 </details>
 
