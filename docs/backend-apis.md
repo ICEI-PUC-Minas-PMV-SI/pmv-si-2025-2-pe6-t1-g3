@@ -1968,17 +1968,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "itens": [
+  "CODPES": 1,
+  "CODEND": 1,
+  "ITENS": [
     {
-      "produtoId": 1,
-      "quantidade": 2
-    },
-    {
-      "produtoId": 2,
-      "quantidade": 1
+      "CODPROD": 1,
+      "QUANTIDADE": 2
     }
-  ],
-  "enderecoId": 1
+  ]
 }
 ```
 
@@ -1990,9 +1987,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 21](img/tests/Caso-teste-21.png)
 
 </details>
 
@@ -2010,9 +2005,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 22](img/tests/Caso-teste-22.png)
 
 </details>
 
@@ -2058,9 +2051,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 24](img/tests/Caso-teste-24.png)
 
 </details>
 
@@ -2125,9 +2116,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 27](img/tests/Caso-teste-27.png)
 
 </details>
 
@@ -2140,8 +2129,11 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "nome": "João Silva Atualizado",
-  "telefone": "11988888888"
+  "CODPES": 1,
+  "NOME": "Administrador Atualizado",
+  "SOBRENOME": "Sistema",
+  "CPF": "0000000000000",
+  "TELEFONE": "11999999999"
 }
 ```
 
@@ -2153,9 +2145,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 28](img/tests/Caso-teste-28.png)
 
 </details>
 
@@ -2167,27 +2157,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### EnderecoController - Testes Unitários
 
 <details>
-<summary><strong>📋 Caso de Teste 29: Listar endereços do usuário</strong></summary>
-
-**Endpoint**: `GET /endereco/listar`  
-**Headers**: `Authorization: Bearer <token_cliente>`
-
-**Resultado esperado**:
-
-- Status: 200 OK
-- Retorna endereços do usuário logado
-- Ordenados por data de criação
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
-</details>
-
-<details>
-<summary><strong>📋 Caso de Teste 30: Adicionar novo endereço</strong></summary>
+<summary><strong>📋 Caso de Teste 29: Adicionar novo endereço</strong></summary>
 
 **Endpoint**: `POST /endereco/cadastrar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
@@ -2195,12 +2165,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "logradouro": "Rua das Flores, 123",
-  "bairro": "Centro",
-  "cidade": "São Paulo",
-  "estado": "SP",
-  "cep": "01234567",
-  "complemento": "Apto 45"
+  "CODPES": 1,
+  "CEP": "12345678",
+  "RUA": "Rua das Flores",
+  "NUMERO": "123",
+  "COMPLEMENTO": "Apto 42",
+  "BAIRRO": "Centro",
+  "CIDADE": "São Paulo",
+  "DESCRICAO": "Casa"
 }
 ```
 
@@ -2212,14 +2184,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 29](img/tests/Caso-teste-29.png)
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 31: Atualizar endereço existente</strong></summary>
+<summary><strong>📋 Caso de Teste 30: Atualizar endereço existente</strong></summary>
 
 **Endpoint**: `PATCH /endereco/atualizar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
@@ -2227,9 +2197,14 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ```json
 {
-  "id": 1,
-  "logradouro": "Rua das Flores, 456",
-  "complemento": "Apto 78"
+  "CODEND": 1,
+  "CEP": "87654321",
+  "RUA": "Rua das Palmeiras",
+  "NUMERO": "456",
+  "COMPLEMENTO": "Casa 2",
+  "BAIRRO": "Jardins",
+  "CIDADE": "São Paulo",
+  "DESCRICAO": "Trabalho"
 }
 ```
 
@@ -2241,28 +2216,24 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 30](img/tests/Caso-teste-30.png)
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 32: Deletar endereço</strong></summary>
+<summary><strong>📋 Caso de Teste 31: Deletar endereço</strong></summary>
 
 **Endpoint**: `DELETE /endereco/deletar?id=1`  
 **Headers**: `Authorization: Bearer <token_cliente>`
 
 **Resultado esperado**:
 
-- Status: 204 No Content
-- Endereço removido do banco
+- Status: 200
+- Info do Endereço removido do banco
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 31](img/tests/Caso-teste-31.png)
 
 </details>
 
@@ -2287,29 +2258,24 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 32](img/tests/Caso-teste-32.png)
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 34: Endpoint raiz</strong></summary>
+<summary><strong>📋 Caso de Teste 33: Endpoint raiz</strong></summary>
 
 **Endpoint**: `GET /`  
-**Parâmetros**: Nenhum
+**Parâmetros**: `Authorization: Bearer <token_admin>`
 
 **Resultado esperado**:
 
 - Status: 200 OK
-- Retorna informações básicas da API
-- Inclui nome, versão e status
+- Retorna Hello World!
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 33](img/tests/Caso-teste-33.png)
 
 </details>
 
@@ -2321,7 +2287,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### Fluxos Completos
 
 <details>
-<summary><strong>📋 Caso de Teste 35: Fluxo completo de autenticação</strong></summary>
+<summary><strong>📋 Caso de Teste 34: Fluxo completo de autenticação</strong></summary>
 
 **Cenário**: Registro → Login → Validação de token  
 **Passos**:
@@ -2346,7 +2312,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 36: Fluxo completo de produtos (admin)</strong></summary>
+<summary><strong>📋 Caso de Teste 35: Fluxo completo de produtos (admin)</strong></summary>
 
 **Cenário**: Login admin → Criar produto → Atualizar → Deletar  
 **Passos**:
@@ -2371,7 +2337,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 37: Fluxo completo de pedidos</strong></summary>
+<summary><strong>📋 Caso de Teste 36: Fluxo completo de pedidos</strong></summary>
 
 **Cenário**: Login → Adicionar endereço → Criar pedido → Atualizar status  
 **Passos**:
@@ -2396,7 +2362,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 38: Fluxo completo de endereços</strong></summary>
+<summary><strong>📋 Caso de Teste 37: Fluxo completo de endereços</strong></summary>
 
 **Cenário**: Login → Adicionar → Atualizar → Deletar endereço  
 **Passos**:
@@ -2428,7 +2394,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### Performance da API
 
 <details>
-<summary><strong>📋 Caso de Teste 39: Tempo de resposta da API de produtos</strong></summary>
+<summary><strong>📋 Caso de Teste 38: Tempo de resposta da API de produtos</strong></summary>
 
 **Endpoint**: `GET /produto/listar`  
 **Métrica**: Tempo de resposta  
@@ -2442,14 +2408,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 38](img/tests/Caso-teste-38.png) 
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 40: Tempo de resposta da API de login</strong></summary>
+<summary><strong>📋 Caso de Teste 39: Tempo de resposta da API de login</strong></summary>
 
 **Endpoint**: `POST /auth/login`  
 **Métrica**: Tempo de resposta  
@@ -2463,14 +2427,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 39](img/tests/Caso-teste-39.png) 
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 41: Performance com grande volume de dados</strong></summary>
+<summary><strong>📋 Caso de Teste 40: Performance com grande volume de dados</strong></summary>
 
 **Endpoint**: `GET /produto/listar`  
 **Métrica**: Tempo de resposta com 1000+ produtos  
@@ -2498,13 +2460,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ### Estatísticas Gerais
 
-- **Total de Casos de Teste**: 41 casos
+- **Total de Casos de Teste**: 40 casos
 - **Testes de Autenticação**: 8 casos
 - **Testes de Autorização**: 3 casos
 - **Testes de Produtos**: 9 casos
 - **Testes de Pedidos**: 6 casos
 - **Testes de Pessoas**: 2 casos
-- **Testes de Endereços**: 4 casos
+- **Testes de Endereços**: 3 casos
 - **Testes de Health Check**: 2 casos
 - **Testes de Integração**: 4 casos
 - **Testes de Performance**: 3 casos
