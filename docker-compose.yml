@@ -27,15 +27,16 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
       JWT_SECRET: ${JWT_SECRET}
       FRONTEND_URL: ${FRONTEND_URL}
+      NODE_OPTIONS: --inspect=0.0.0.0:9229
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+      - "9229:9229"
     depends_on:
       - postgres
     networks:
       - store-network
     volumes:
       - ./infrastructure/backend/prisma:/app/prisma
-
   frontend:
     build:
       context: ./infrastructure/frontend
