@@ -154,9 +154,11 @@ export class ProdutoService {
 
   async remover(body: any) {
     try {
-      const buscaProduto = await this.prisma.produtos.findFirst({
-        where: { CODPROD: +body.CODPROD },
-      });
+      if (body?.CODPROD === undefined || body?.CODPROD === null || Number.isNaN(Number(body.CODPROD))) {
+        throw new HttpException('CODPROD inválido', HttpStatus.BAD_REQUEST);
+      }
+      const id = Number(body.CODPROD);
+      const buscaProduto = await this.prisma.produtos.findFirst({ where: { CODPROD: id } });
 
       if (!buscaProduto) {
         throw new HttpException('Produto não encontrado', HttpStatus.NOT_FOUND);
