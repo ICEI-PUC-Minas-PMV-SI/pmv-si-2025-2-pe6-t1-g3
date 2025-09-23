@@ -1886,14 +1886,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Resultado esperado**:
 
-- Status: 204 No Content
+- Status: 200 Ok
 - Produto removido do banco
+- Info do produto removido
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 17](img/tests/Caso-teste-17.png)
 
 </details>
 
@@ -2052,46 +2051,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Print do teste**:
 
 ![Caso de Teste 24](img/tests/Caso-teste-24.png)
-
-</details>
-
-### PedidoService - Testes Unitários
-
-<details>
-<summary><strong>📋 Caso de Teste 25: Cálculo de valor total do pedido</strong></summary>
-
-**Método**: `calculateTotal(items)`  
-**Dados de entrada**: Array de itens com produtos e quantidades
-
-**Resultado esperado**:
-
-- Valor total calculado corretamente
-- Considera preços e quantidades de cada item
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
-</details>
-
-<details>
-<summary><strong>📋 Caso de Teste 26: Validação de itens do pedido</strong></summary>
-
-**Método**: `validateOrderItems(items)`  
-**Dados de entrada**: Itens com produtos indisponíveis ou quantidade maior que estoque
-
-**Resultado esperado**:
-
-- Lança exceção de validação
-- Mensagem específica sobre disponibilidade
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
 
 </details>
 
@@ -2303,12 +2262,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - Login retorna token válido
 - Token permite acesso a endpoints protegidos
 
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
 </details>
 
 <details>
@@ -2327,12 +2280,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - Todas as operações CRUD funcionando
 - Validações de permissão aplicadas
 - Dados persistidos corretamente
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
 
 </details>
 
@@ -2353,12 +2300,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - Status atualizado com sucesso
 - Validações de estoque aplicadas
 
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
 </details>
 
 <details>
@@ -2377,12 +2318,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - CRUD completo de endereços funcionando
 - Validações de CEP aplicadas
 - Associação correta com usuário
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
 
 </details>
 
@@ -2460,11 +2395,11 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ### Estatísticas Gerais
 
-- **Total de Casos de Teste**: 40 casos
+- **Total de Casos de Teste**: 38 casos
 - **Testes de Autenticação**: 8 casos
 - **Testes de Autorização**: 3 casos
 - **Testes de Produtos**: 9 casos
-- **Testes de Pedidos**: 6 casos
+- **Testes de Pedidos**: 4 casos
 - **Testes de Pessoas**: 2 casos
 - **Testes de Endereços**: 3 casos
 - **Testes de Health Check**: 2 casos
