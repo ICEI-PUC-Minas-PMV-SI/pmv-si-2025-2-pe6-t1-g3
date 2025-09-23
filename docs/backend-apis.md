@@ -124,9 +124,11 @@ A API está configurada para aceitar requisições do frontend em `http://localh
 
 A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Todos os endpoints (exceto os públicos) requerem autenticação via Bearer Token JWT.
 
-### Autenticação (`/auth`)
+<details>
+<summary><strong>Autenticação (/auth)</strong></summary>
 
-#### POST /auth/login
+<details>
+<summary><code>POST /auth/login</code></summary>
 
 - **Descrição**: Autentica usuário e retorna token JWT
 - **Autenticação**: Não requerida
@@ -165,7 +167,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /auth/registro
+</details>
+
+<details>
+<summary><code>POST /auth/registro</code></summary>
 
 - **Descrição**: Registra novo usuário no sistema
 - **Autenticação**: Não requerida
@@ -241,7 +246,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /auth/change-password
+</details>
+
+<details>
+<summary><code>POST /auth/change-password</code></summary>
 
 - **Descrição**: Altera senha do usuário autenticado
 - **Autenticação**: Requerida
@@ -284,7 +292,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /auth/validate-token
+</details>
+
+<details>
+<summary><code>POST /auth/validate-token</code></summary>
 
 - **Descrição**: Valida token JWT e retorna dados do usuário
 - **Autenticação**: Requerida
@@ -321,9 +332,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Produtos (`/produto`)
+</details>
 
-#### GET /produto/listar
+</details>
+
+<details>
+<summary><strong>Produtos (/produto)</strong></summary>
+
+<details>
+<summary><code>GET /produto/listar</code></summary>
 
 - **Descrição**: Lista todos os produtos disponíveis
 - **Autenticação**: Não requerida (público)
@@ -358,7 +375,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### GET /produto/buscar
+</details>
+
+<details>
+<summary><code>GET /produto/buscar</code></summary>
 
 - **Descrição**: Busca produto por ID
 - **Autenticação**: Não requerida (público)
@@ -399,7 +419,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /produto/cadastrar
+</details>
+
+<details>
+<summary><code>POST /produto/cadastrar</code></summary>
 
 - **Descrição**: Cadastra novo produto (Admin apenas)
 - **Autenticação**: Requerida (Admin)
@@ -462,7 +485,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### PUT /produto/atualizar
+</details>
+
+<details>
+<summary><code>PUT /produto/atualizar</code></summary>
 
 - **Descrição**: Atualiza produto existente (Admin apenas)
 - **Autenticação**: Requerida (Admin)
@@ -534,7 +560,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### DELETE /produto/remover
+</details>
+
+<details>
+<summary><code>DELETE /produto/remover</code></summary>
 
 - **Descrição**: Remove produto do sistema (Admin apenas)
 - **Autenticação**: Requerida (Admin)
@@ -588,9 +617,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Endereços (`/endereco`)
+</details>
 
-#### POST /endereco/cadastrar
+</details>
+
+<details>
+<summary><strong>Endereços (/endereco)</strong></summary>
+
+<details>
+<summary><code>POST /endereco/cadastrar</code></summary>
 
 - **Descrição**: Cadastra novo endereço para o usuário
 - **Autenticação**: Requerida
@@ -647,7 +682,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### PATCH /endereco/atualizar
+</details>
+
+<details>
+<summary><code>PATCH /endereco/atualizar</code></summary>
 
 - **Descrição**: Atualiza endereço existente
 - **Autenticação**: Requerida
@@ -712,7 +750,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### DELETE /endereco/deletar
+</details>
+
+<details>
+<summary><code>DELETE /endereco/deletar</code></summary>
 
 - **Descrição**: Remove endereço do usuário
 - **Autenticação**: Requerida
@@ -758,9 +799,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Pedidos (`/pedido`)
+</details>
 
-#### POST /pedido/cadastrar
+</details>
+
+<details>
+<summary><strong>Pedidos (/pedido)</strong></summary>
+
+<details>
+<summary><code>POST /pedido/cadastrar</code></summary>
 
 - **Descrição**: Cria novo pedido
 - **Autenticação**: Requerida
@@ -834,7 +881,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### GET /pedido/listar
+</details>
+
+<details>
+<summary><code>GET /pedido/listar</code></summary>
 
 - **Descrição**: Lista pedidos do usuário
 - **Autenticação**: Requerida
@@ -892,7 +942,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### PATCH /pedido/atualizar
+</details>
+
+<details>
+<summary><code>PATCH /pedido/atualizar</code></summary>
 
 - **Descrição**: Atualiza status do pedido
 - **Autenticação**: Requerida
@@ -950,7 +1003,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### DELETE /pedido/deletar
+</details>
+
+<details>
+<summary><code>DELETE /pedido/deletar</code></summary>
 
 - **Descrição**: Remove pedido do sistema
 - **Autenticação**: Requerida
@@ -996,7 +1052,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### GET /pedido/buscar
+</details>
+
+<details>
+<summary><code>GET /pedido/buscar</code></summary>
 
 - **Descrição**: Busca pedido específico por ID
 - **Autenticação**: Requerida
@@ -1060,9 +1119,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Pessoas (`/pessoa`)
+</details>
 
-#### GET /pessoa/buscar
+</details>
+
+<details>
+<summary><strong>Pessoas (/pessoa)</strong></summary>
+
+<details>
+<summary><code>GET /pessoa/buscar</code></summary>
 
 - **Descrição**: Busca dados do usuário
 - **Autenticação**: Requerida
@@ -1124,7 +1189,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /pessoa/atualizar
+</details>
+
+<details>
+<summary><code>POST /pessoa/atualizar</code></summary>
 
 - **Descrição**: Atualiza dados do usuário
 - **Autenticação**: Requerida
@@ -1180,9 +1248,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Health Check (`/health`)
+</details>
 
-#### GET /health
+</details>
+
+<details>
+<summary><strong>Health Check (/health)</strong></summary>
+
+<details>
+<summary><code>GET /health</code></summary>
 
 - **Descrição**: Verifica status da API
 - **Autenticação**: Não requerida
@@ -1196,6 +1270,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
       "version": "2.0.0"
     }
     ```
+
+</details>
+
+</details>
 
 ### Arquitetura de API - Diagrama
 
