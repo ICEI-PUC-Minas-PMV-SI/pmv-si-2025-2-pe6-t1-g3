@@ -124,9 +124,11 @@ A API está configurada para aceitar requisições do frontend em `http://localh
 
 A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Todos os endpoints (exceto os públicos) requerem autenticação via Bearer Token JWT.
 
-### Autenticação (`/auth`)
+<details>
+<summary><strong>Autenticação (/auth)</strong></summary>
 
-#### POST /auth/login
+<details>
+<summary><code>POST /auth/login</code></summary>
 
 - **Descrição**: Autentica usuário e retorna token JWT
 - **Autenticação**: Não requerida
@@ -165,7 +167,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /auth/registro
+</details>
+
+<details>
+<summary><code>POST /auth/registro</code></summary>
 
 - **Descrição**: Registra novo usuário no sistema
 - **Autenticação**: Não requerida
@@ -241,7 +246,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /auth/change-password
+</details>
+
+<details>
+<summary><code>POST /auth/change-password</code></summary>
 
 - **Descrição**: Altera senha do usuário autenticado
 - **Autenticação**: Requerida
@@ -284,7 +292,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /auth/validate-token
+</details>
+
+<details>
+<summary><code>POST /auth/validate-token</code></summary>
 
 - **Descrição**: Valida token JWT e retorna dados do usuário
 - **Autenticação**: Requerida
@@ -321,9 +332,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Produtos (`/produto`)
+</details>
 
-#### GET /produto/listar
+</details>
+
+<details>
+<summary><strong>Produtos (/produto)</strong></summary>
+
+<details>
+<summary><code>GET /produto/listar</code></summary>
 
 - **Descrição**: Lista todos os produtos disponíveis
 - **Autenticação**: Não requerida (público)
@@ -358,7 +375,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### GET /produto/buscar
+</details>
+
+<details>
+<summary><code>GET /produto/buscar</code></summary>
 
 - **Descrição**: Busca produto por ID
 - **Autenticação**: Não requerida (público)
@@ -399,7 +419,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /produto/cadastrar
+</details>
+
+<details>
+<summary><code>POST /produto/cadastrar</code></summary>
 
 - **Descrição**: Cadastra novo produto (Admin apenas)
 - **Autenticação**: Requerida (Admin)
@@ -462,7 +485,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### PUT /produto/atualizar
+</details>
+
+<details>
+<summary><code>PUT /produto/atualizar</code></summary>
 
 - **Descrição**: Atualiza produto existente (Admin apenas)
 - **Autenticação**: Requerida (Admin)
@@ -534,7 +560,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### DELETE /produto/remover
+</details>
+
+<details>
+<summary><code>DELETE /produto/remover</code></summary>
 
 - **Descrição**: Remove produto do sistema (Admin apenas)
 - **Autenticação**: Requerida (Admin)
@@ -588,9 +617,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Endereços (`/endereco`)
+</details>
 
-#### POST /endereco/cadastrar
+</details>
+
+<details>
+<summary><strong>Endereços (/endereco)</strong></summary>
+
+<details>
+<summary><code>POST /endereco/cadastrar</code></summary>
 
 - **Descrição**: Cadastra novo endereço para o usuário
 - **Autenticação**: Requerida
@@ -647,7 +682,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### PATCH /endereco/atualizar
+</details>
+
+<details>
+<summary><code>PATCH /endereco/atualizar</code></summary>
 
 - **Descrição**: Atualiza endereço existente
 - **Autenticação**: Requerida
@@ -712,7 +750,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### DELETE /endereco/deletar
+</details>
+
+<details>
+<summary><code>DELETE /endereco/deletar</code></summary>
 
 - **Descrição**: Remove endereço do usuário
 - **Autenticação**: Requerida
@@ -758,9 +799,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Pedidos (`/pedido`)
+</details>
 
-#### POST /pedido/cadastrar
+</details>
+
+<details>
+<summary><strong>Pedidos (/pedido)</strong></summary>
+
+<details>
+<summary><code>POST /pedido/cadastrar</code></summary>
 
 - **Descrição**: Cria novo pedido
 - **Autenticação**: Requerida
@@ -834,7 +881,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### GET /pedido/listar
+</details>
+
+<details>
+<summary><code>GET /pedido/listar</code></summary>
 
 - **Descrição**: Lista pedidos do usuário
 - **Autenticação**: Requerida
@@ -892,7 +942,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### PATCH /pedido/atualizar
+</details>
+
+<details>
+<summary><code>PATCH /pedido/atualizar</code></summary>
 
 - **Descrição**: Atualiza status do pedido
 - **Autenticação**: Requerida
@@ -950,7 +1003,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### DELETE /pedido/deletar
+</details>
+
+<details>
+<summary><code>DELETE /pedido/deletar</code></summary>
 
 - **Descrição**: Remove pedido do sistema
 - **Autenticação**: Requerida
@@ -996,7 +1052,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### GET /pedido/buscar
+</details>
+
+<details>
+<summary><code>GET /pedido/buscar</code></summary>
 
 - **Descrição**: Busca pedido específico por ID
 - **Autenticação**: Requerida
@@ -1060,9 +1119,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Pessoas (`/pessoa`)
+</details>
 
-#### GET /pessoa/buscar
+</details>
+
+<details>
+<summary><strong>Pessoas (/pessoa)</strong></summary>
+
+<details>
+<summary><code>GET /pessoa/buscar</code></summary>
 
 - **Descrição**: Busca dados do usuário
 - **Autenticação**: Requerida
@@ -1124,7 +1189,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-#### POST /pessoa/atualizar
+</details>
+
+<details>
+<summary><code>POST /pessoa/atualizar</code></summary>
 
 - **Descrição**: Atualiza dados do usuário
 - **Autenticação**: Requerida
@@ -1180,9 +1248,15 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
     }
     ```
 
-### Health Check (`/health`)
+</details>
 
-#### GET /health
+</details>
+
+<details>
+<summary><strong>Health Check (/health)</strong></summary>
+
+<details>
+<summary><code>GET /health</code></summary>
 
 - **Descrição**: Verifica status da API
 - **Autenticação**: Não requerida
@@ -1196,6 +1270,10 @@ A API da Zabbix Store oferece endpoints organizados por módulos funcionais. Tod
       "version": "2.0.0"
     }
     ```
+
+</details>
+
+</details>
 
 ### Arquitetura de API - Diagrama
 
@@ -1886,14 +1964,13 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Resultado esperado**:
 
-- Status: 204 No Content
+- Status: 200 Ok
 - Produto removido do banco
+- Info do produto removido
 
 **Print do teste**:
 
-```
-[Espaço para print do resultado]
-```
+![Caso de Teste 17](img/tests/Caso-teste-17.png)
 
 </details>
 
@@ -1913,25 +1990,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 **Print do teste**:
 
 ![Caso de Teste 18](img/tests/Caso-teste-18.png)
-
-</details>
-
-<details>
-<summary><strong>📋 Caso de Teste 19: Validação de dados de produto</strong></summary>
-
-**Método**: `validateProductData(data)`  
-**Dados de entrada**: Dados inválidos (preço negativo, nome vazio)
-
-**Resultado esperado**:
-
-- Lança exceção de validação
-- Mensagens específicas para cada campo inválido
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
 
 </details>
 
@@ -2055,46 +2113,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 </details>
 
-### PedidoService - Testes Unitários
-
-<details>
-<summary><strong>📋 Caso de Teste 25: Cálculo de valor total do pedido</strong></summary>
-
-**Método**: `calculateTotal(items)`  
-**Dados de entrada**: Array de itens com produtos e quantidades
-
-**Resultado esperado**:
-
-- Valor total calculado corretamente
-- Considera preços e quantidades de cada item
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
-</details>
-
-<details>
-<summary><strong>📋 Caso de Teste 26: Validação de itens do pedido</strong></summary>
-
-**Método**: `validateOrderItems(items)`  
-**Dados de entrada**: Itens com produtos indisponíveis ou quantidade maior que estoque
-
-**Resultado esperado**:
-
-- Lança exceção de validação
-- Mensagem específica sobre disponibilidade
-
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
-</details>
-
 </details>
 
 <details>
@@ -2103,7 +2121,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### PessoaController - Testes Unitários
 
 <details>
-<summary><strong>📋 Caso de Teste 27: Buscar perfil do usuário</strong></summary>
+<summary><strong>📋 Caso de Teste 25: Buscar perfil do usuário</strong></summary>
 
 **Endpoint**: `GET /pessoa/buscar`  
 **Headers**: `Authorization: Bearer <token_cliente>`
@@ -2116,12 +2134,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 27](img/tests/Caso-teste-27.png)
+![Caso de Teste 27](img/tests/Caso-teste-25.png)
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 28: Atualizar perfil do usuário</strong></summary>
+<summary><strong>📋 Caso de Teste 26: Atualizar perfil do usuário</strong></summary>
 
 **Endpoint**: `POST /pessoa/atualizar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
@@ -2145,7 +2163,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 28](img/tests/Caso-teste-28.png)
+![Caso de Teste 26](img/tests/Caso-teste-26.png)
 
 </details>
 
@@ -2157,7 +2175,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### EnderecoController - Testes Unitários
 
 <details>
-<summary><strong>📋 Caso de Teste 29: Adicionar novo endereço</strong></summary>
+<summary><strong>📋 Caso de Teste 27: Adicionar novo endereço</strong></summary>
 
 **Endpoint**: `POST /endereco/cadastrar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
@@ -2184,12 +2202,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 29](img/tests/Caso-teste-29.png)
+![Caso de Teste 27](img/tests/Caso-teste-27.png)
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 30: Atualizar endereço existente</strong></summary>
+<summary><strong>📋 Caso de Teste 28: Atualizar endereço existente</strong></summary>
 
 **Endpoint**: `PATCH /endereco/atualizar`  
 **Headers**: `Authorization: Bearer <token_cliente>`  
@@ -2216,7 +2234,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 30](img/tests/Caso-teste-30.png)
+![Caso de Teste 28](img/tests/Caso-teste-28.png)
 
 </details>
 
@@ -2233,7 +2251,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 31](img/tests/Caso-teste-31.png)
+![Caso de Teste 29](img/tests/Caso-teste-29.png)
 
 </details>
 
@@ -2245,7 +2263,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### HealthController - Testes Unitários
 
 <details>
-<summary><strong>📋 Caso de Teste 33: Health check endpoint</strong></summary>
+<summary><strong>📋 Caso de Teste 30: Health check endpoint</strong></summary>
 
 **Endpoint**: `GET /health`  
 **Parâmetros**: Nenhum
@@ -2258,12 +2276,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 32](img/tests/Caso-teste-32.png)
+![Caso de Teste 30](img/tests/Caso-teste-30.png)
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 33: Endpoint raiz</strong></summary>
+<summary><strong>📋 Caso de Teste 31: Endpoint raiz</strong></summary>
 
 **Endpoint**: `GET /`  
 **Parâmetros**: `Authorization: Bearer <token_admin>`
@@ -2275,7 +2293,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 33](img/tests/Caso-teste-33.png)
+![Caso de Teste 31](img/tests/Caso-teste-31.png)
 
 </details>
 
@@ -2287,7 +2305,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### Fluxos Completos
 
 <details>
-<summary><strong>📋 Caso de Teste 34: Fluxo completo de autenticação</strong></summary>
+<summary><strong>📋 Caso de Teste 32: Fluxo completo de autenticação</strong></summary>
 
 **Cenário**: Registro → Login → Validação de token  
 **Passos**:
@@ -2303,16 +2321,10 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - Login retorna token válido
 - Token permite acesso a endpoints protegidos
 
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 35: Fluxo completo de produtos (admin)</strong></summary>
+<summary><strong>📋 Caso de Teste 33: Fluxo completo de produtos (admin)</strong></summary>
 
 **Cenário**: Login admin → Criar produto → Atualizar → Deletar  
 **Passos**:
@@ -2328,16 +2340,10 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - Validações de permissão aplicadas
 - Dados persistidos corretamente
 
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 36: Fluxo completo de pedidos</strong></summary>
+<summary><strong>📋 Caso de Teste 34: Fluxo completo de pedidos</strong></summary>
 
 **Cenário**: Login → Adicionar endereço → Criar pedido → Atualizar status  
 **Passos**:
@@ -2353,16 +2359,10 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - Status atualizado com sucesso
 - Validações de estoque aplicadas
 
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 37: Fluxo completo de endereços</strong></summary>
+<summary><strong>📋 Caso de Teste 35: Fluxo completo de endereços</strong></summary>
 
 **Cenário**: Login → Adicionar → Atualizar → Deletar endereço  
 **Passos**:
@@ -2378,12 +2378,6 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 - Validações de CEP aplicadas
 - Associação correta com usuário
 
-**Print do teste**:
-
-```
-[Espaço para print do resultado]
-```
-
 </details>
 
 </details>
@@ -2394,7 +2388,7 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 ### Performance da API
 
 <details>
-<summary><strong>📋 Caso de Teste 38: Tempo de resposta da API de produtos</strong></summary>
+<summary><strong>📋 Caso de Teste 36: Tempo de resposta da API de produtos</strong></summary>
 
 **Endpoint**: `GET /produto/listar`  
 **Métrica**: Tempo de resposta  
@@ -2408,12 +2402,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 38](img/tests/Caso-teste-38.png) 
+![Caso de Teste 36](img/tests/Caso-teste-36.png) 
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 39: Tempo de resposta da API de login</strong></summary>
+<summary><strong>📋 Caso de Teste 37: Tempo de resposta da API de login</strong></summary>
 
 **Endpoint**: `POST /auth/login`  
 **Métrica**: Tempo de resposta  
@@ -2427,12 +2421,12 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 **Print do teste**:
 
-![Caso de Teste 39](img/tests/Caso-teste-39.png) 
+![Caso de Teste 37](img/tests/Caso-teste-37.png) 
 
 </details>
 
 <details>
-<summary><strong>📋 Caso de Teste 40: Performance com grande volume de dados</strong></summary>
+<summary><strong>📋 Caso de Teste 38: Performance com grande volume de dados</strong></summary>
 
 **Endpoint**: `GET /produto/listar`  
 **Métrica**: Tempo de resposta com 1000+ produtos  
@@ -2460,11 +2454,11 @@ A estratégia de testes da ZabbixStore segue a metodologia RIPER e está organiz
 
 ### Estatísticas Gerais
 
-- **Total de Casos de Teste**: 40 casos
+- **Total de Casos de Teste**: 38 casos
 - **Testes de Autenticação**: 8 casos
 - **Testes de Autorização**: 3 casos
 - **Testes de Produtos**: 9 casos
-- **Testes de Pedidos**: 6 casos
+- **Testes de Pedidos**: 4 casos
 - **Testes de Pessoas**: 2 casos
 - **Testes de Endereços**: 3 casos
 - **Testes de Health Check**: 2 casos

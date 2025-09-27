@@ -2,31 +2,21 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Backend (Local + Docker)",
+      "name": "Attach Backend (Docker)",
       "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/infrastructure/backend/src/main.ts",
-      "cwd": "${workspaceFolder}/infrastructure/backend",
-      "preLaunchTask": "debug: setup-docker-services",
-      "postDebugTask": "debug: cleanup-docker-services",
-      "env": {
-        "NODE_ENV": "development",
-        "PORT": "3000",
-        "DATABASE_URL": "postgresql://postgres:password123@localhost:9080/zabbix_store?schema=public",
-        "JWT_SECRET": "your-super-secret-jwt-key-change-this-in-production",
-        "FRONTEND_URL": "http://localhost:5173"
-      },
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "sourceMaps": true,
+      "request": "attach",
+      "address": "localhost",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}/infrastructure/backend",
+      "remoteRoot": "/app",
       "skipFiles": [
         "<node_internals>/**",
         "${workspaceFolder}/infrastructure/backend/node_modules/**"
       ],
+      "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/infrastructure/backend/dist/**/*.js"
-      ],
-      "restart": true
+      ]
     },
     {
       "name": "Debug Frontend (Backend & DB in Docker)",

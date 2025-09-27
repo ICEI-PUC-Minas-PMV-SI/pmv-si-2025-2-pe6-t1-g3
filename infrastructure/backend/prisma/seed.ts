@@ -283,12 +283,14 @@ async function main() {
     }
   ];
 
+  const createdProducts: { CODPROD: number; PRODUTO: string }[] = [];
   for (const produto of produtos) {
-    await prisma.produtos.upsert({
+    const created = await prisma.produtos.upsert({
       where: { PRODUTO: produto.PRODUTO },
       update: {},
       create: produto
     });
+    createdProducts.push({ CODPROD: created.CODPROD, PRODUTO: created.PRODUTO });
   }
 
   console.log(`${produtos.length} produtos criados`);
@@ -324,22 +326,28 @@ async function main() {
   });
 
   // Itens do pedido 1
-  await prisma.itensPedido.createMany({
-    data: [
-      {
-        CODPED: pedido1.CODPED,
-        CODPROD: 1, // Camiseta Básica Preta
-        QTD: 2,
-        TAMANHO: 'M'
-      },
-      {
-        CODPED: pedido1.CODPED,
-        CODPROD: 6, // Blusa Floral Rosa
-        QTD: 1,
-        TAMANHO: 'P'
-      }
-    ]
-  });
+  // Seleciona produtos válidos criados acima para evitar IDs fixos inexistentes
+  const productIdA = createdProducts[0]?.CODPROD;
+  const productIdB = createdProducts[1]?.CODPROD ?? createdProducts[0]?.CODPROD;
+
+  if (productIdA && productIdB) {
+    await prisma.itensPedido.createMany({
+      data: [
+        {
+          CODPED: pedido1.CODPED,
+          CODPROD: productIdA,
+          QTD: 2,
+          TAMANHO: 'M'
+        },
+        {
+          CODPED: pedido1.CODPED,
+          CODPROD: productIdB,
+          QTD: 1,
+          TAMANHO: 'P'
+        }
+      ]
+    });
+  }
 
   const pedido2 = await prisma.pedido.create({
     data: {
@@ -354,16 +362,19 @@ async function main() {
   });
 
   // Itens do pedido 2
-  await prisma.itensPedido.createMany({
-    data: [
-      {
-        CODPED: pedido2.CODPED,
-        CODPROD: 4, // Tênis Casual Branco
-        QTD: 1,
-        TAMANHO: '42'
-      }
-    ]
-  });
+  const productIdC = createdProducts[2]?.CODPROD ?? createdProducts[0]?.CODPROD;
+  if (productIdC) {
+    await prisma.itensPedido.createMany({
+      data: [
+        {
+          CODPED: pedido2.CODPED,
+          CODPROD: productIdC,
+          QTD: 1,
+          TAMANHO: '42'
+        }
+      ]
+    });
+  }
 
   console.log('2 pedidos de exemplo criados');
 

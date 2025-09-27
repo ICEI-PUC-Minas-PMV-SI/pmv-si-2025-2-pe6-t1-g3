@@ -1,0 +1,1782 @@
+{
+	"info": {
+		"_postman_id": "zabbix-store-api-collection",
+		"name": "ZabbixStore API Collection",
+		"description": "Collection completa para testar todas as rotas da API da ZabbixStore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "zabbix-store-api"
+	},
+	"item": [
+		{
+			"name": "🔐 Autenticação",
+			"item": [
+				{
+					"name": "Login Admin (Gerar Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('token_admin', response.token);",
+									"    console.log('Token admin gerado:', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"EMAIL\": \"{{admin_email}}\",\n  \"SENHA\": \"{{admin_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica usuário admin e gera token JWT automaticamente"
+					},
+					"response": []
+				},
+				{
+					"name": "Login Cliente (Gerar Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('token_client', response.token);",
+									"    console.log('Token cliente gerado:', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"EMAIL\": \"{{client_email}}\",\n  \"SENHA\": \"{{client_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica usuário cliente e gera token JWT automaticamente"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"EMAIL\": \"usuario@exemplo.com\",\n  \"SENHA\": \"Senha@123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica usuário e retorna token JWT"
+					},
+					"response": []
+				},
+				{
+					"name": "Registro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"EMAIL\": \"usuario@exemplo.com\",\n  \"SENHA\": \"Senha@123\",\n  \"NOME\": \"João\",\n  \"SOBRENOME\": \"Silva\",\n  \"CPF\": \"12345678900\",\n  \"TELEFONE\": \"11987654321\",\n  \"ENDERECO\": {\n    \"DESCRICAO\": \"Casa\",\n    \"CEP\": \"12345678\",\n    \"RUA\": \"Rua das Flores\",\n    \"NUMERO\": \"123\",\n    \"COMPLEMENTO\": \"Apto 42\",\n    \"BAIRRO\": \"Centro\",\n    \"CIDADE\": \"São Paulo\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/registro",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"registro"
+							]
+						},
+						"description": "Registra novo usuário no sistema"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Senha",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"SENHA_ATUAL\": \"SenhaAtual@123\",\n  \"NOVA_SENHA\": \"NovaSenha@123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/change-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						},
+						"description": "Altera senha do usuário autenticado"
+					},
+					"response": []
+				},
+				{
+					"name": "Validar Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/validate-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"validate-token"
+							]
+						},
+						"description": "Valida token JWT e retorna dados do usuário"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de autenticação e autorização"
+		},
+		{
+			"name": "📦 Produtos",
+			"item": [
+				{
+					"name": "Listar Produtos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produto/listar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"listar"
+							]
+						},
+						"description": "Lista todos os produtos disponíveis (público)"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Produtos por Categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produto/listar?CATEGORIA=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "CATEGORIA",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Lista produtos filtrados por categoria"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Produto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produto/buscar?CODPROD=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "CODPROD",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca produto específico por ID (público)"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Produto (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"PRODUTO\": \"Camiseta Polo\",\n  \"DESCRICAO\": \"Camiseta polo masculina 100% algodão\",\n  \"VALOR\": 29.99,\n  \"ESTOQUE\": 50,\n  \"CODCAT\": 1,\n  \"IMAGEM\": \"https://exemplo.com/imagem.jpg\",\n  \"DESCONTO\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/produto/cadastrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"cadastrar"
+							]
+						},
+						"description": "Cadastra novo produto (apenas Admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Produto (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CODPROD\": 1,\n  \"PRODUTO\": \"Camiseta Polo Atualizada\",\n  \"DESCRICAO\": \"Camiseta polo masculina 100% algodão premium\",\n  \"VALOR\": 39.99,\n  \"ESTOQUE\": 30,\n  \"CODCAT\": 1,\n  \"IMAGEM\": \"https://exemplo.com/imagem-nova.jpg\",\n  \"DESCONTO\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/produto/atualizar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"atualizar"
+							]
+						},
+						"description": "Atualiza produto existente (apenas Admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Remover Produto (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/produto/remover?CODPROD=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"remover"
+							],
+							"query": [
+								{
+									"key": "CODPROD",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Remove produto do sistema (apenas Admin)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gerenciamento de produtos"
+		},
+		{
+			"name": "📍 Endereços",
+			"item": [
+				{
+					"name": "Cadastrar Endereço",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CODPES\": 1,\n  \"CEP\": \"12345678\",\n  \"RUA\": \"Rua das Flores\",\n  \"NUMERO\": \"123\",\n  \"COMPLEMENTO\": \"Apto 42\",\n  \"BAIRRO\": \"Centro\",\n  \"CIDADE\": \"São Paulo\",\n  \"DESCRICAO\": \"Casa\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/endereco/cadastrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"endereco",
+								"cadastrar"
+							]
+						},
+						"description": "Cadastra novo endereço para o usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Endereço",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CODEND\": 1,\n  \"CEP\": \"87654321\",\n  \"RUA\": \"Rua das Palmeiras\",\n  \"NUMERO\": \"456\",\n  \"COMPLEMENTO\": \"Casa 2\",\n  \"BAIRRO\": \"Jardins\",\n  \"CIDADE\": \"São Paulo\",\n  \"DESCRICAO\": \"Trabalho\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/endereco/atualizar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"endereco",
+								"atualizar"
+							]
+						},
+						"description": "Atualiza endereço existente"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Endereço",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/endereco/deletar?CODEND=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"endereco",
+								"deletar"
+							],
+							"query": [
+								{
+									"key": "CODEND",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Remove endereço do usuário"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gerenciamento de endereços"
+		},
+		{
+			"name": "🛒 Pedidos",
+			"item": [
+				{
+					"name": "Cadastrar Pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CODPES\": 1,\n  \"CODEND\": 1,\n  \"ITENS\": [\n    {\n      \"CODPROD\": 1,\n      \"QUANTIDADE\": 2\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/pedido/cadastrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedido",
+								"cadastrar"
+							]
+						},
+						"description": "Cria novo pedido"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pedidos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/pedido/listar?CODPES=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedido",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "CODPES",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Lista pedidos do usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pedidos por Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/pedido/listar?CODPES=1&STATUS=Pendente",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedido",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "CODPES",
+									"value": "1"
+								},
+								{
+									"key": "STATUS",
+									"value": "Pendente"
+								}
+							]
+						},
+						"description": "Lista pedidos do usuário filtrados por status"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Pedido",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CODPED\": 1,\n  \"STATUS\": \"Confirmado\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/pedido/atualizar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedido",
+								"atualizar"
+							]
+						},
+						"description": "Atualiza status do pedido"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Pedido",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/pedido/deletar?CODPED=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedido",
+								"deletar"
+							],
+							"query": [
+								{
+									"key": "CODPED",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Remove pedido do sistema"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Pedido",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/pedido/buscar?CODPED=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedido",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "CODPED",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca pedido específico por ID"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gerenciamento de pedidos"
+		},
+		{
+			"name": "👤 Pessoas",
+			"item": [
+				{
+					"name": "Buscar Pessoa",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/pessoa/buscar?CODPES=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pessoa",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "CODPES",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca dados do usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Pessoa",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CODPES\": 1,\n  \"NOME\": \"João Atualizado\",\n  \"SOBRENOME\": \"Silva Santos\",\n  \"CPF\": \"12345678900\",\n  \"TELEFONE\": \"11999888777\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/pessoa/atualizar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pessoa",
+								"atualizar"
+							]
+						},
+						"description": "Atualiza dados do usuário"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para gerenciamento de pessoas/usuários"
+		},
+		{
+			"name": "🏥 Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Verifica status da API"
+					},
+					"response": []
+				},
+				{
+					"name": "Endpoint Raiz",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Endpoint raiz com informações básicas"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de verificação de saúde da API"
+		},
+		{
+			"name": "🧪 Testes de Cenários",
+			"item": [
+				{
+					"name": "Cenário: Login com Credenciais Inválidas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"EMAIL\": \"usuario@teste.com\",\n  \"SENHA\": \"senha_errada\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Teste de login com credenciais inválidas - deve retornar 401"
+					},
+					"response": []
+				},
+				{
+					"name": "Cenário: Acesso sem Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pessoa/buscar?CODPES=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pessoa",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "CODPES",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Teste de acesso a endpoint protegido sem token - deve retornar 401"
+					},
+					"response": []
+				},
+				{
+					"name": "Cenário: Acesso Admin com Usuário Comum",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"PRODUTO\": \"Produto Teste\",\n  \"DESCRICAO\": \"Descrição do produto\",\n  \"VALOR\": 99.99,\n  \"ESTOQUE\": 10,\n  \"CODCAT\": 1,\n  \"IMAGEM\": \"https://exemplo.com/imagem.jpg\",\n  \"DESCONTO\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/produto/cadastrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"cadastrar"
+							]
+						},
+						"description": "Teste de acesso a endpoint admin com usuário comum - deve retornar 403"
+					},
+					"response": []
+				},
+				{
+					"name": "Cenário: Buscar Produto Inexistente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produto/buscar?CODPROD=999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produto",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "CODPROD",
+									"value": "999"
+								}
+							]
+						},
+						"description": "Teste de busca de produto inexistente - deve retornar 404"
+					},
+					"response": []
+				},
+				{
+					"name": "Cenário: Criar Pedido sem Estoque",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"CODPES\": 1,\n  \"CODEND\": 1,\n  \"ITENS\": [\n    {\n      \"CODPROD\": 1,\n      \"QUANTIDADE\": 9999\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/pedido/cadastrar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedido",
+								"cadastrar"
+							]
+						},
+						"description": "Teste de criação de pedido com quantidade maior que estoque - deve retornar 400"
+					},
+					"response": []
+				}
+			],
+			"description": "Cenários de teste para validação de comportamentos esperados"
+		},
+		{
+			"name": "🧪 Casos de Teste - Backend APIs",
+			"item": [
+				{
+					"name": "🔐 Testes de Autenticação",
+					"item": [
+						{
+							"name": "Caso 1: Login com credenciais válidas",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"EMAIL\": \"cliente@teste.com\",\n  \"SENHA\": \"Cliente123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								},
+								"description": "Teste: Login com credenciais válidas - deve retornar 200 OK e token JWT"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 2: Login com credenciais inválidas",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"EMAIL\": \"usuario@teste.com\",\n  \"SENHA\": \"senha_errada\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								},
+								"description": "Teste: Login com credenciais inválidas - deve retornar 401 Unauthorized"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 3: Registro de novo usuário",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"EMAIL\": \"usuario@exemplo.com\",\n  \"SENHA\": \"Senha@123\",\n  \"NOME\": \"João\",\n  \"SOBRENOME\": \"Silva\",\n  \"CPF\": \"12345678900\",\n  \"TELEFONE\": \"11987654321\",\n  \"ENDERECO\": {\n    \"DESCRICAO\": \"Casa\",\n    \"CEP\": \"12345678\",\n    \"RUA\": \"Rua das Flores\",\n    \"NUMERO\": \"123\",\n    \"COMPLEMENTO\": \"Apto 42\",\n    \"BAIRRO\": \"Centro\",\n    \"CIDADE\": \"São Paulo\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/registro",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"registro"
+									]
+								},
+								"description": "Teste: Registro de novo usuário - deve retornar 201 Created"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 4: Registro com email duplicado",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"EMAIL\": \"cliente@teste.com\",\n  \"SENHA\": \"Senha@123\",\n  \"NOME\": \"Maria\",\n  \"SOBRENOME\": \"Silva\",\n  \"CPF\": \"98765432100\",\n  \"TELEFONE\": \"11888888888\",\n  \"ENDERECO\": {\n    \"DESCRICAO\": \"Casa\",\n    \"CEP\": \"12345678\",\n    \"RUA\": \"Rua das Flores\",\n    \"NUMERO\": \"123\",\n    \"COMPLEMENTO\": \"Apto 42\",\n    \"BAIRRO\": \"Centro\",\n    \"CIDADE\": \"São Paulo\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/registro",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"registro"
+									]
+								},
+								"description": "Teste: Registro com email duplicado - deve retornar 400 Bad Request"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 5: Validação de token JWT",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/auth/validate-token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"validate-token"
+									]
+								},
+								"description": "Teste: Validação de token JWT - deve retornar 200 OK com dados do usuário"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 6: Token JWT expirado",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyMzkwMjJ9.4Adcj3UFYzPUVaVF43FmMab6RlaQD8A9V8wFzzht-KQ"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/auth/validate-token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"validate-token"
+									]
+								},
+								"description": "Teste: Token JWT expirado - deve retornar 401 Unauthorized"
+							},
+							"response": []
+						}
+					],
+					"description": "Casos de teste para autenticação e autorização"
+				},
+				{
+					"name": "🛡️ Testes de Autorização",
+					"item": [
+						{
+							"name": "Caso 9: Acesso sem token",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pessoa/buscar?CODPES=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pessoa",
+										"buscar"
+									],
+									"query": [
+										{
+											"key": "CODPES",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Teste: Acesso a endpoint protegido sem token - deve retornar 401 Unauthorized"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 10: Acesso admin com usuário comum",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"PRODUTO\": \"Produto Teste\",\n  \"DESCRICAO\": \"Descrição do produto\",\n  \"VALOR\": 99.99,\n  \"ESTOQUE\": 10,\n  \"CODCAT\": 1,\n  \"IMAGEM\": \"https://exemplo.com/imagem.jpg\",\n  \"DESCONTO\": 0\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/produto/cadastrar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"cadastrar"
+									]
+								},
+								"description": "Teste: Acesso a endpoint admin com usuário comum - deve retornar 403 Forbidden"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 11: Acesso admin com usuário admin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_admin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"PRODUTO\": \"Camiseta Polo\",\n  \"DESCRICAO\": \"Camiseta polo masculina 100% algodão\",\n  \"VALOR\": 29.99,\n  \"ESTOQUE\": 50,\n  \"CODCAT\": 1,\n  \"IMAGEM\": \"https://exemplo.com/imagem.jpg\",\n  \"DESCONTO\": 0\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/produto/cadastrar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"cadastrar"
+									]
+								},
+								"description": "Teste: Acesso a endpoint admin com usuário admin - deve retornar 201 Created"
+							},
+							"response": []
+						}
+					],
+					"description": "Casos de teste para autorização e RBAC"
+				},
+				{
+					"name": "📦 Testes de Produtos",
+					"item": [
+						{
+							"name": "Caso 12: Listar todos os produtos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/produto/listar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"listar"
+									]
+								},
+								"description": "Teste: Listar todos os produtos - deve retornar 200 OK com array de produtos"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 13: Buscar produto por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/produto/buscar?CODPROD=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"buscar"
+									],
+									"query": [
+										{
+											"key": "CODPROD",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Teste: Buscar produto por ID - deve retornar 200 OK com produto específico"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 14: Buscar produto inexistente",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/produto/buscar?CODPROD=999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"buscar"
+									],
+									"query": [
+										{
+											"key": "CODPROD",
+											"value": "999"
+										}
+									]
+								},
+								"description": "Teste: Buscar produto inexistente - deve retornar 404 Not Found"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 15: Criar novo produto (admin)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_admin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"PRODUTO\": \"Smartphone XYZ\",\n  \"DESCRICAO\": \"Smartphone com 128GB\",\n  \"VALOR\": 1299.99,\n  \"ESTOQUE\": 50,\n  \"CODCAT\": 1,\n  \"IMAGEM\": \"https://exemplo.com/imagem.jpg\",\n  \"DESCONTO\": 0\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/produto/cadastrar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"cadastrar"
+									]
+								},
+								"description": "Teste: Criar novo produto (admin) - deve retornar 201 Created"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 16: Atualizar produto existente",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_admin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"CODPROD\": 1,\n  \"PRODUTO\": \"Smartphone XYZ Atualizado\",\n  \"DESCRICAO\": \"Smartphone com 128GB premium\",\n  \"VALOR\": 1199.90,\n  \"ESTOQUE\": 30,\n  \"CODCAT\": 1,\n  \"IMAGEM\": \"https://exemplo.com/imagem-nova.jpg\",\n  \"DESCONTO\": 10\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/produto/atualizar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"atualizar"
+									]
+								},
+								"description": "Teste: Atualizar produto existente - deve retornar 200 OK"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 17: Deletar produto",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_admin}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/produto/remover?CODPROD=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"produto",
+										"remover"
+									],
+									"query": [
+										{
+											"key": "CODPROD",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Teste: Deletar produto - deve retornar 200 OK"
+							},
+							"response": []
+						}
+					],
+					"description": "Casos de teste para gerenciamento de produtos"
+				},
+				{
+					"name": "🛒 Testes de Pedidos",
+					"item": [
+						{
+							"name": "Caso 21: Criar novo pedido",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"CODPES\": 1,\n  \"CODEND\": 1,\n  \"ITENS\": [\n    {\n      \"CODPROD\": 1,\n      \"QUANTIDADE\": 2\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/pedido/cadastrar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedido",
+										"cadastrar"
+									]
+								},
+								"description": "Teste: Criar novo pedido - deve retornar 201 Created"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 22: Listar pedidos do usuário",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/pedido/listar?CODPES=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedido",
+										"listar"
+									],
+									"query": [
+										{
+											"key": "CODPES",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Teste: Listar pedidos do usuário - deve retornar 200 OK"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 23: Atualizar status do pedido",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"CODPED\": 1,\n  \"STATUS\": \"Confirmado\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/pedido/atualizar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedido",
+										"atualizar"
+									]
+								},
+								"description": "Teste: Atualizar status do pedido - deve retornar 200 OK"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 24: Buscar pedido específico",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/pedido/buscar?CODPED=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedido",
+										"buscar"
+									],
+									"query": [
+										{
+											"key": "CODPED",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Teste: Buscar pedido específico - deve retornar 200 OK"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 25: Criar pedido sem estoque",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"CODPES\": 1,\n  \"CODEND\": 1,\n  \"ITENS\": [\n    {\n      \"CODPROD\": 1,\n      \"QUANTIDADE\": 9999\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/pedido/cadastrar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedido",
+										"cadastrar"
+									]
+								},
+								"description": "Teste: Criar pedido sem estoque - deve retornar 400 Bad Request"
+							},
+							"response": []
+						}
+					],
+					"description": "Casos de teste para gerenciamento de pedidos"
+				},
+				{
+					"name": "👤 Testes de Pessoas/Usuários",
+					"item": [
+						{
+							"name": "Caso 25: Buscar perfil do usuário",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/pessoa/buscar?CODPES=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pessoa",
+										"buscar"
+									],
+									"query": [
+										{
+											"key": "CODPES",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Teste: Buscar perfil do usuário - deve retornar 200 OK"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 26: Atualizar perfil do usuário",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"CODPES\": 1,\n  \"NOME\": \"João Atualizado\",\n  \"SOBRENOME\": \"Silva Santos\",\n  \"CPF\": \"12345678900\",\n  \"TELEFONE\": \"11999888777\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/pessoa/atualizar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pessoa",
+										"atualizar"
+									]
+								},
+								"description": "Teste: Atualizar perfil do usuário - deve retornar 200 OK"
+							},
+							"response": []
+						}
+					],
+					"description": "Casos de teste para gerenciamento de pessoas/usuários"
+				},
+				{
+					"name": "📍 Testes de Endereços",
+					"item": [
+						{
+							"name": "Caso 27: Adicionar novo endereço",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"CODPES\": 1,\n  \"CEP\": \"12345678\",\n  \"RUA\": \"Rua das Flores\",\n  \"NUMERO\": \"123\",\n  \"COMPLEMENTO\": \"Apto 42\",\n  \"BAIRRO\": \"Centro\",\n  \"CIDADE\": \"São Paulo\",\n  \"DESCRICAO\": \"Casa\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/endereco/cadastrar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endereco",
+										"cadastrar"
+									]
+								},
+								"description": "Teste: Adicionar novo endereço - deve retornar 201 Created"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 28: Atualizar endereço existente",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"CODEND\": 1,\n  \"CEP\": \"87654321\",\n  \"RUA\": \"Rua das Palmeiras\",\n  \"NUMERO\": \"456\",\n  \"COMPLEMENTO\": \"Casa 2\",\n  \"BAIRRO\": \"Jardins\",\n  \"CIDADE\": \"São Paulo\",\n  \"DESCRICAO\": \"Trabalho\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/endereco/atualizar",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endereco",
+										"atualizar"
+									]
+								},
+								"description": "Teste: Atualizar endereço existente - deve retornar 200 OK"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 29: Deletar endereço",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token_client}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/endereco/deletar?CODEND=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"endereco",
+										"deletar"
+									],
+									"query": [
+										{
+											"key": "CODEND",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Teste: Deletar endereço - deve retornar 200 OK"
+							},
+							"response": []
+						}
+					],
+					"description": "Casos de teste para gerenciamento de endereços"
+				},
+				{
+					"name": "🏥 Testes de Health Check",
+					"item": [
+						{
+							"name": "Caso 30: Health check endpoint",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/health",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"health"
+									]
+								},
+								"description": "Teste: Health check endpoint - deve retornar 200 OK"
+							},
+							"response": []
+						},
+						{
+							"name": "Caso 31: Endpoint raiz",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										""
+									]
+								},
+								"description": "Teste: Endpoint raiz - deve retornar 200 OK"
+							},
+							"response": []
+						}
+					],
+					"description": "Casos de teste para health check"
+				}
+			],
+			"description": "Casos de teste baseados na documentação backend-apis.md"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+

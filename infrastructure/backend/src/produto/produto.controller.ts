@@ -310,8 +310,8 @@ export class ProdutoController {
       },
     },
   })
-  remover(@Body() body: { CODPROD: number }) {
-    return this.produtoService.remover(body);
+  remover(@Query('CODPROD', ParseIntPipe) CODPROD: number) {
+    return this.produtoService.remover({ CODPROD });
   }
 
   @Public()
