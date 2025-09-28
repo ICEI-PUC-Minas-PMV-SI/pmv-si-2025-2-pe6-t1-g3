@@ -4,9 +4,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaHeartCrack } from "react-icons/fa6";
 import { productService } from "../../services/api";
+import { useCart } from '../../contexts/CartContext';
 
 const CartProductsLiked = () => {
   const [cart, setCart] = useState([]);
+  const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,11 +61,6 @@ const CartProductsLiked = () => {
 
 
   const handleAddToCart = (product) => {
-    // if (!selectedSize) {
-    //   alert('Por favor, selecione um tamanho');
-    //   return;
-    // }
-
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     const existingItem = cart.find(item => 
       item.CODPROD === product.CODPROD
@@ -81,6 +78,15 @@ const CartProductsLiked = () => {
         quantity: product.quantity || 1
       });
     }
+
+    addToCart({
+      CODPROD: product.CODPROD,
+      PRODUTO: product.PRODUTO,
+      VALOR: product.VALOR,
+      IMAGEM: product.IMAGEM,
+      size: product.size,
+      quantity: product.quantity || 1
+    });
 
     localStorage.setItem('cart', JSON.stringify(cart));
     toast.success("Produto adicionado ao carrinho", {
