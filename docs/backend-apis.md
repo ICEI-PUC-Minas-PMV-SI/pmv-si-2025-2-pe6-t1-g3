@@ -1367,7 +1367,7 @@ A API gerencia os seguintes recursos principais:
 
 #### RBAC (Role-Based Access Control)
 
-![Diagrama RBAC - Controle de Acesso](../docs/img/diagrams/rbac_authorization.svg)
+![Diagrama RBAC - Controle de Acesso](../docs/img/diagrams/rbac_authorization.png)
 
 ##### Roles Implementadas
 
