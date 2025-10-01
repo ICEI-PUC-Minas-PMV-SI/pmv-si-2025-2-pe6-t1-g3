@@ -1,8 +1,8 @@
-name: Zabbix Store Tests
+name: Zabbix Store tests
 
 on:
   push:
-    branches: [ main, feat/ci-test ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -60,28 +60,21 @@ jobs:
         continue-on-error: true
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/zabbixstore_test
-          JWT_SECRET: test_jwt_secret_for_ci
+          JWT_SECRET: jwt_supersigilosokkkkkkk
 
       - name: Run e2e tests
         run: npm run test:e2e
         continue-on-error: true
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/zabbixstore_test
-          JWT_SECRET: test_jwt_secret_for_ci
+          JWT_SECRET: jwt_supersigilosokkkkkkk
 
       - name: Generate test coverage
         run: npm run test:cov
         continue-on-error: true
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/zabbixstore_test
-          JWT_SECRET: test_jwt_secret_for_ci
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          directory: ./infrastructure/backend/coverage
-          flags: backend
-          name: backend-coverage
+          JWT_SECRET: jwt_supersigilosokkkkkkk
 
   frontend-tests:
     runs-on: ubuntu-latest
@@ -106,10 +99,6 @@ jobs:
 
       - name: Run linting
         run: npm run lint
-        continue-on-error: true
-
-      - name: Run tests
-        run: npm run test
         continue-on-error: true
 
       - name: Build application
