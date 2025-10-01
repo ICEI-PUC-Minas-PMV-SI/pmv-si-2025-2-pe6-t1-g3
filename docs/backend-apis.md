@@ -2608,7 +2608,7 @@ Atualizado em: 14/09/2025
 | Pedro / Ítalo    | Implantação                   | 01/09/2025  | 04/10/2005 |   ✔️   |  14/09/2025  |
 | Pedro            | Considerações de Segurança    | 01/09/2025  | 04/10/2005 |   ✔️   |  14/09/2025  |
 | Ítalo            | Testes                        | 01/09/2025  | 04/10/2005 |   ✔️   |  14/09/2025  |
-| Jully            | Montar a apresentação 2 Etapa | 01/09/2025  | 04/10/2025 |   📝   |              |
+| Jully            | Montar a apresentação 2 Etapa | 01/09/2025  | 04/10/2025 |   ✔️   |              |
 
 Legenda:
 
