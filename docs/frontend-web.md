@@ -1,6 +1,11 @@
 # Front-end Web
 
-[Inclua uma breve descrição do projeto e seus objetivos.]
+O **Zabbix Store** tem como objetivo oferecer uma **plataforma de e-commerce**, onde vendedores possam disponibilizar seus produtos e clientes possam pesquisar, comparar e realizar compras de maneira simples e rápida.  
+
+- **Facilitar a jornada do usuário**: desde a busca por produtos até o checkout.  
+- **Garantir usabilidade** em diferentes dispositivos (desktop, tablet, mobile).  
+- **Fornecer segurança** em todo o fluxo de navegação e compra.
+- **Disponibilizar análise de vendas para fornecedores**, auxiliando no acompanhamento de desempenho e estratégias comerciais. 
 
 ## Projeto da Interface Web
 
@@ -61,7 +66,7 @@ Atualizado em: 01/10/2025
 
 | Responsável          | Tarefa/Requisito                             | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----                |    :----                                     |      :----:    | :----:     | :----: | :----:          |
-| Jully                | Front-end Web                                | 01/10/2025     | 10/10/2025 | 📝    |                 |
+| Jully                | Front-end Web - Documentação                 | 01/10/2025     | 10/10/2025 | ✔️    |  03/10/2025     |
 | Vinicius/Jully       | Projeto da Interface Web                     | 01/10/2025     | 20/10/2025 | 📝    |                 |
 | Jully                | Wireframes                                   | 01/10/2025     | 20/10/2025 | 📝    |                 |
 | Vinicius             | Design Visual                                | 01/10/2025     | 20/10/2025 | 📝    |                 |
@@ -77,7 +82,7 @@ Atualizado em: 01/10/2025
 | Vinicius             | Implantação Page - Favoritos                 | 01/10/2025     | 26/10/2025 | 📝    |                 |
 | Pedro                | Implantação Page - Sobre nos                 | 01/10/2025     | 26/10/2025 | 📝    |                 |
 | Italo                | Testes                                       | 27/10/2025     | 01/11/2025 | ❌    |                 |
-
+| Jully                | Apresentação 3 Etapa                         | 27/10/2025     | 01/11/2025 | ❌    |                 |
 
 
 Legenda:
