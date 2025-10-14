@@ -22,10 +22,10 @@ A interface web da Zabbix Store será desenvolvida com foco em usabilidade, cons
 
 ### Layout das Páginas
 - **Página Inicial (Home):** banners promocionais, produtos em destaque, categorias e atalhos para seções principais.  
-- **Página de Categoria / Catálogo:** listagem de produtos com filtros por preço, marca, avaliação, categorias e ordenação dinâmica.  
+- **Página de Categoria / Catálogo:** listagem de produtos com filtros por preço, avaliação, categorias e ordenação dinâmica.  
 - **Página de Produto:** informações detalhadas, imagens em cards, preço, avaliações, descrições e botão de ação “Adicionar ao Carrinho”.  
-- **Carrinho e Checkout:** visualização clara dos produtos selecionados, cálculo de frete, seleção de método de pagamento e finalização da compra.  
-- **Painel do Usuário (Cliente):** histórico de pedidos, rastreamento de entregas, favoritos e configurações de perfil.  
+- **Carrinho e Checkout:** exibição organizada dos produtos selecionados, possibilidade de alterar quantidades ou remover itens, e finalização da compra de forma simples e intuitiva.
+- **Painel do Usuário (Cliente):** histórico de pedidos, favoritos e configurações de perfil.  
 - **Painel do Fornecedor:** cadastro e gerenciamento de produtos, controle de estoque e relatórios de vendas.
 
 
@@ -40,7 +40,7 @@ A interface web da Zabbix Store será desenvolvida com foco em usabilidade, cons
 ### Outros Aspectos Relevantes
 - **Design responsivo**, compatível com desktop, tablet e mobile.  
 - Integração com APIs do backend para exibição de dados e atualização de estoque em tempo real.  
-- **Segurança** no tratamento de informações do usuário, autenticação e pagamentos.  
+- **Segurança** no tratamento de informações do usuário e autenticação.  
 - Elementos de UI/UX que promovem **fluidez na jornada de compra**, desde a busca até o checkout.
 
 
