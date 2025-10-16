@@ -9,7 +9,40 @@ O **Zabbix Store** tem como objetivo oferecer uma **plataforma de e-commerce**, 
 
 ## Projeto da Interface Web
 
-[Descreva o projeto da interface Web da aplicação, incluindo o design visual, layout das páginas, interações do usuário e outros aspectos relevantes.]
+A interface web da Zabbix Store será desenvolvida com foco em usabilidade, consistência visual e experiência de compra fluida, garantindo que clientes e fornecedores realizem suas tarefas de forma intuitiva e segura.
+
+
+### Design Visual
+- Layout moderno e clean, priorizando **clareza e hierarquia visual**.  
+- Paleta de cores neutras com acentos para **destaques, estados e categorias**, transmitindo profissionalismo e confiança.  
+- Tipografia moderna: **Poppins** para títulos e elementos de destaque, **Montserrat** e **Inter** para textos complementares e descrições.  
+- Ícones padronizados (React Icons / Feather Icons) e componentes consistentes para facilitar a navegação.  
+- Sombras suaves, bordas arredondadas e transições de hover para melhorar percepção de interatividade.
+
+
+### Layout das Páginas
+- **Página Inicial (Home):** banners promocionais, produtos em destaque, categorias e atalhos para seções principais.  
+- **Página de Categoria / Catálogo:** listagem de produtos com filtros por preço, avaliação, categorias e ordenação dinâmica.  
+- **Página de Produto:** informações detalhadas, imagens em cards, preço, avaliações, descrições e botão de ação “Adicionar ao Carrinho”.  
+- **Carrinho e Checkout:** exibição organizada dos produtos selecionados, possibilidade de alterar quantidades ou remover itens, e finalização da compra de forma simples e intuitiva.
+- **Painel do Usuário (Cliente):** histórico de pedidos, favoritos e configurações de perfil.  
+- **Painel do Fornecedor:** cadastro e gerenciamento de produtos, controle de estoque e relatórios de vendas.
+
+
+### Interações do Usuário
+- Barra de navegação intuitiva, breadcrumbs e menus claros para fácil localização.  
+- Pesquisa dinâmica com **autocompletar**.  
+- Filtros e ordenações **dinâmicos**, atualizando produtos sem recarregar a página.  
+- Feedbacks visuais: notificações, loaders, mensagens de sucesso e alerta.  
+- Carrinho persistente, mantendo produtos adicionados mesmo após logout.
+
+
+### Outros Aspectos Relevantes
+- **Design responsivo**, compatível com desktop, tablet e mobile.  
+- Integração com APIs do backend para exibição de dados e atualização de estoque em tempo real.  
+- **Segurança** no tratamento de informações do usuário e autenticação.  
+- Elementos de UI/UX que promovem **fluidez na jornada de compra**, desde a busca até o checkout.
+
 
 ### Wireframes
 
