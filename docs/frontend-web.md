@@ -151,50 +151,24 @@ A página Sobre tem como objetivo apresentar a Zabbix Store, destacando sua prop
 
 #### Tipografia
 
-O projeto utiliza duas famílias de fontes principais para garantir uma tipografia moderna e legível:
+O projeto utiliza duas famílias de fontes principais para garantir uma tipografia moderna e legível, e uma de fallback para sistemas sem suporte:
 
 **Poppins**
-- URL: https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap
-- Utilizada principalmente em formulários de login e registro
-- Pesos disponíveis: 300 (Light) e 400 (Regular)
 - Aplicada em títulos e elementos de interface
 
 **Montserrat**
-- URL: https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-4,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap
-- Utilizada como fonte secundária para elementos complementares
-- Amplo range de pesos (100-900) e estilos (normal e itálico)
-- Ideal para textos longos e descrições
+- Utilizada como fonte secundária para elementos complementares, textos longos e descrições
 
-**Inter** (incluída no link do Montserrat)
-- Fonte padrão do sistema para o corpo do texto
-- Fallback para sistemas que não suportam as fontes customizadas
+**Inter**
+- Fallback
+
+<img src="../docs/img/tipografia.png" alt="Versão Mobile">
 
 #### Paleta de Cores
 
 A paleta de cores do ZabbixStore foi desenvolvida com base em um design minimalista e profissional, utilizando tons neutros com acentos em preto para criar contraste e hierarquia visual:
 
-**Cores Primárias:**
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #000000; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Preto (#000000 / rgba(0, 0, 0, 0.87))**: Cor principal para botões, textos importantes e elementos de destaque
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #ffffff; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Branco (#ffffff)**: Cor de fundo principal para cards e seções
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #fafafa; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Cinza Claro (#fafafa / whitesmoke)**: Fundo geral da aplicação e formulários
-
-**Cores Secundárias:**
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #706969; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Cinza Escuro (#706969)**: Títulos de produtos e textos secundários
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #c1c1c1; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Cinza Médio (#c1c1c1)**: Scrollbars e elementos de interface
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #f1f1f1; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Cinza Suave (#f1f1f1)**: Fundo de scrollbars e elementos neutros
-
-**Cores de Estado:**
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #99ff00; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Verde (#99ff00 / rgba(153, 255, 0, 0.915))**: Mensagens de sucesso
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #a52a2a; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Vermelho (#a52a2a / red)**: Mensagens de erro e alertas
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #eff6ff; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Azul Claro (#eff6ff)**: Categorias de eletrônicos
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #fdf2f8; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Rosa Claro (#fdf2f8)**: Categorias de moda
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #f0fdf4; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Verde Claro (#f0fdf4)**: Categorias de casa
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #fff7ed; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Laranja Claro (#fff7ed)**: Categorias de esportes
-
-**Cores de Interação:**
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #dadcd96c; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Hover Preto (#dadcd96c)**: Efeito hover em botões pretos
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: #a8a8a8; border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Hover Cinza (#a8a8a8)**: Efeito hover em elementos cinza
-- <span style="display: inline-block; width: 20px; height: 20px; background-color: rgba(0, 0, 0, 0.2); border: 1px solid #ccc; vertical-align: middle; margin-right: 8px;"></span> **Sombra Suave (rgba(0, 0, 0, 0.2))**: Sombras de cards e elementos flutuantes
+<img src="../docs/img/paleta_cores.png" alt="Versão Mobile">
 
 #### Elementos Gráficos
 
@@ -202,6 +176,8 @@ A paleta de cores do ZabbixStore foi desenvolvida com base em um design minimali
 - Utilização de React Icons (Feather Icons) para consistência visual
 - Ícones principais: FiShoppingBag, FiStar, FiTrendingUp, FiArrowRight
 - Tamanho padrão: 24px (w-6 h-6) para ícones de interface
+
+<img src="../docs/img/iconografia.png" alt="Versão Mobile">
 
 **Sombras e Efeitos:**
 - Sombras suaves com rgba(0, 0, 0, 0.1) para cards de produtos
@@ -214,9 +190,7 @@ A paleta de cores do ZabbixStore foi desenvolvida com base em um design minimali
 - Border-radius de 9px para formulários principais
 - Bordas sólidas pretas (#000000) para inputs e elementos de foco
 
-Esta paleta de cores foi escolhida para transmitir confiança, profissionalismo e modernidade, características essenciais para uma plataforma de e-commerce, mantendo a legibilidade e acessibilidade em todos os elementos da interface.
-
-
+Esta decisões foram definidas para transmitir confiança, profissionalismo e modernidade, características essenciais para uma plataforma de e-commerce, mantendo a legibilidade e acessibilidade em todos os elementos da interface.
 
 
 ## Fluxo de Dados
