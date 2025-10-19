@@ -251,9 +251,531 @@ Esta decisões foram definidas para transmitir confiança, profissionalismo e mo
 
 ## Fluxo de Dados
 
-[Diagrama ou descrição do fluxo de dados na aplicação.]
+## Fluxo de Dados da Aplicação
 
+O fluxo de dados da ZabbixStore é baseado em uma arquitetura cliente-servidor, onde o frontend React consome APIs REST do backend NestJS, que por sua vez interage com o banco de dados PostgreSQL através do Prisma ORM.
 
+### Arquitetura Geral
+
+```
+Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
+     ↓                    ↓                    ↓
+- Contextos React    - Controllers         - Prisma ORM
+- Hooks customizados - Services           - Schema definido
+- Componentes        - DTOs/Validação     - Migrations
+- LocalStorage       - JWT Auth           - Relacionamentos
+```
+
+### 1. Fluxo de Autenticação
+
+#### 1.1 Cadastro de Usuário
+**Entrada:** Nome, email, senha, confirmação de senha
+**Processamento:**
+- Validação de campos obrigatórios no frontend
+- Envio via POST `/auth/registro` para o backend
+- Validação de email único no banco de dados
+- Hash da senha com bcrypt (salt rounds: 12)
+- Criação do registro na tabela `pessoa`
+
+**Saída:** Dados do usuário criado (sem senha)
+**Persistência:** Dados salvos no PostgreSQL via Prisma
+
+#### 1.2 Login
+**Entrada:** Email e senha
+**Processamento:**
+- Validação de credenciais via POST `/auth/login`
+- Verificação de hash da senha no banco
+- Geração de token JWT com expiração de 24 horas
+- Armazenamento do token no localStorage
+
+**Saída:** Token JWT e dados do usuário
+**Persistência:** Token no localStorage, sessão ativa no contexto React
+
+#### 1.3 Validação de Token
+**Processamento:**
+- Verificação automática do token em cada requisição
+- Decodificação do JWT para extrair dados do usuário
+- Validação de expiração (24 horas)
+- Redirecionamento para login se token inválido
+
+### 2. Fluxo de Produtos
+
+#### 2.1 Listagem de Produtos (Home/Dashboard)
+**Entrada:** Requisição GET `/produto/listar`
+**Processamento:**
+- Busca todos os produtos ativos no banco
+- Aplicação de filtros opcionais (categoria)
+- Ordenação por relevância/preço
+- Paginação de resultados
+
+**Saída:** Array de produtos com dados básicos
+**Persistência:** Cache no contexto React, dados do PostgreSQL
+
+#### 2.2 Busca de Produtos
+**Entrada:** Termo de busca via GET `/produto/buscar`
+**Processamento:**
+- Busca por nome, descrição ou categoria
+- Filtros dinâmicos (preço, avaliação, disponibilidade)
+- Ordenação por relevância, preço, popularidade
+
+**Saída:** Lista filtrada de produtos
+**Persistência:** Resultados temporários no estado do componente
+
+#### 2.3 Detalhes do Produto
+**Entrada:** ID do produto via GET `/produto/buscar?CODPROD={id}`
+**Processamento:**
+- Busca produto específico no banco
+- Carregamento de informações detalhadas
+- Verificação de estoque disponível
+- Carregamento de avaliações relacionadas
+
+**Saída:** Dados completos do produto
+**Persistência:** Dados do PostgreSQL, cache no contexto
+
+#### 2.4 Cadastro/Edição de Produtos (Admin)
+**Entrada:** Dados do produto via POST/PUT `/produto/cadastrar` ou `/produto/atualizar`
+**Processamento:**
+- Validação de dados obrigatórios
+- Verificação de permissões (role ADMIN)
+- Upload de imagens (se aplicável)
+- Cálculo automático de campos derivados
+
+**Saída:** Produto criado/atualizado
+**Persistência:** Dados salvos no PostgreSQL via Prisma
+
+### 3. Fluxo de Carrinho de Compras
+
+#### 3.1 Adicionar ao Carrinho
+**Entrada:** ID do produto e quantidade
+**Processamento:**
+- Verificação de estoque disponível
+- Validação de dados do produto
+- Atualização do contexto do carrinho
+- Persistência no localStorage
+
+**Saída:** Item adicionado ao carrinho
+**Persistência:** localStorage + contexto React
+
+#### 3.2 Gerenciamento do Carrinho
+**Processamento:**
+- Atualização de quantidades
+- Remoção de itens
+- Cálculo automático de subtotal
+- Aplicação de descontos (se houver)
+- Validação de estoque em tempo real
+
+**Saída:** Carrinho atualizado
+**Persistência:** localStorage + contexto React
+
+#### 3.3 Visualização do Carrinho
+**Processamento:**
+- Carregamento de itens do localStorage
+- Busca de dados atualizados dos produtos
+- Cálculo de totais
+- Verificação de disponibilidade
+
+**Saída:** Lista de itens com totais
+**Persistência:** Dados do localStorage + PostgreSQL
+
+### 4. Fluxo de Pedidos
+
+#### 4.1 Criação de Pedido
+**Entrada:** Itens do carrinho + endereço de entrega
+**Processamento:**
+- Validação de dados obrigatórios
+- Verificação de estoque final
+- Cálculo de totais e impostos
+- Criação do pedido via POST `/pedido/cadastrar`
+- Atualização de estoque dos produtos
+
+**Saída:** Pedido criado com número de confirmação
+**Persistência:** Dados salvos no PostgreSQL, carrinho limpo
+
+#### 4.2 Acompanhamento de Pedidos
+**Entrada:** ID do usuário logado
+**Processamento:**
+- Busca de pedidos via GET `/pedido/listar`
+- Filtros por status, data, valor
+- Carregamento de detalhes de cada pedido
+
+**Saída:** Lista de pedidos com status
+**Persistência:** Dados do PostgreSQL
+
+#### 4.3 Atualização de Status
+**Entrada:** ID do pedido + novo status
+**Processamento:**
+- Validação de permissões
+- Atualização via PATCH `/pedido/atualizar`
+- Notificação ao cliente
+
+**Saída:** Status atualizado
+**Persistência:** Dados atualizados no PostgreSQL
+
+### 5. Fluxo de Endereços
+
+#### 5.1 Cadastro de Endereço
+**Entrada:** Dados do endereço (CEP, rua, número, etc.)
+**Processamento:**
+- Validação de CEP via API externa
+- Validação de campos obrigatórios
+- Criação via POST `/endereco/cadastrar`
+- Associação ao usuário logado
+
+**Saída:** Endereço cadastrado
+**Persistência:** Dados salvos no PostgreSQL
+
+#### 5.2 Gerenciamento de Endereços
+**Processamento:**
+- Listagem de endereços do usuário
+- Edição via PATCH `/endereco/atualizar`
+- Remoção via DELETE `/endereco/deletar`
+- Definição de endereço principal
+
+**Saída:** Lista de endereços atualizada
+**Persistência:** Dados do PostgreSQL
+
+### 6. Fluxo de Perfil do Usuário
+
+#### 6.1 Visualização de Perfil
+**Entrada:** ID do usuário logado
+**Processamento:**
+- Busca de dados via GET `/pessoa/buscar`
+- Carregamento de informações pessoais
+- Histórico de pedidos
+- Endereços cadastrados
+
+**Saída:** Dados completos do perfil
+**Persistência:** Dados do PostgreSQL
+
+#### 6.2 Atualização de Perfil
+**Entrada:** Dados atualizados do usuário
+**Processamento:**
+- Validação de campos
+- Atualização via POST `/pessoa/atualizar`
+- Verificação de unicidade (email)
+
+**Saída:** Perfil atualizado
+**Persistência:** Dados atualizados no PostgreSQL
+
+### 7. Fluxo de Favoritos
+
+#### 7.1 Adicionar/Remover Favoritos
+**Entrada:** ID do produto + ação (adicionar/remover)
+**Processamento:**
+- Verificação de autenticação
+- Atualização da lista de favoritos
+- Persistência no localStorage
+
+**Saída:** Lista de favoritos atualizada
+**Persistência:** localStorage + contexto React
+
+#### 7.2 Visualização de Favoritos
+**Processamento:**
+- Carregamento da lista do localStorage
+- Busca de dados atualizados dos produtos
+- Verificação de disponibilidade
+
+**Saída:** Lista de produtos favoritos
+**Persistência:** localStorage + dados do PostgreSQL
+
+### 8. Fluxo do Dashboard Administrativo
+
+#### 8.1 Métricas de Vendas
+**Entrada:** Filtros de data, categoria, fornecedor
+**Processamento:**
+- Agregação de dados de vendas
+- Cálculo de métricas (receita, quantidade, produtos mais vendidos)
+- Geração de relatórios
+- Visualização em gráficos
+
+**Saída:** Dashboard com métricas
+**Persistência:** Dados agregados do PostgreSQL
+
+#### 8.2 Gerenciamento de Produtos (Admin)
+**Processamento:**
+- Listagem de todos os produtos
+- Filtros por categoria, status, fornecedor
+- Ações em lote (ativar/desativar)
+- Upload de imagens
+
+**Saída:** Interface de gerenciamento
+**Persistência:** Dados do PostgreSQL
+
+### 9. Estados e Persistência
+
+#### 9.1 Estado Global da Aplicação
+- **AuthContext:** Dados do usuário logado, token JWT
+- **CartContext:** Itens do carrinho, totais, persistência no localStorage
+- **ProductContext:** Cache de produtos, filtros aplicados
+
+#### 9.2 Persistência Local
+- **localStorage:** Token JWT, carrinho, favoritos, preferências
+- **sessionStorage:** Dados temporários da sessão
+- **Context API:** Estado reativo da aplicação
+
+#### 9.3 Cache e Performance
+- Cache de produtos no contexto React
+- Debounce em buscas para otimizar requisições
+- Lazy loading de componentes pesados
+- Otimização de re-renders com useMemo/useCallback
+
+### 10. Tratamento de Erros
+
+#### 10.1 Validação de Dados
+- Validação no frontend (UX imediata)
+- Validação no backend (segurança)
+- Mensagens de erro padronizadas
+- Fallbacks para dados indisponíveis
+
+#### 10.2 Estados de Loading
+- Loading states para todas as operações assíncronas
+- Skeletons para melhor UX
+- Retry automático em falhas de rede
+- Timeout de requisições (30 segundos)
+
+### 11. Segurança no Fluxo de Dados
+
+#### 11.1 Autenticação
+- Tokens JWT com expiração de 24 horas
+- Refresh automático de tokens
+- Logout automático em token inválido
+- Proteção de rotas sensíveis
+
+#### 11.2 Autorização
+- Verificação de roles (USER/ADMIN)
+- Controle de acesso baseado em recursos
+- Validação de propriedade de dados
+- Rate limiting (100 req/min por IP)
+
+#### 11.3 Sanitização
+- Validação de entrada em todos os endpoints
+- Sanitização de dados do usuário
+- Proteção contra XSS e SQL injection
+- Headers de segurança (CORS, CSP)
+
+## Diagramas Visuais do Fluxo de Dados
+
+Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas visuais:
+
+### 1. Fluxograma de Autenticação
+
+```
+┌─────────────┐
+│   Usuário   │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Login/    │───►│ Validação   │───►│ Geração     │
+│  Cadastro   │    │ Credenciais │    │ Token JWT   │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Validação   │    │ Hash        │    │ Armazenar   │
+│ Frontend    │    │ Senha       │    │ localStorage│
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ POST /auth/ │    │ Salvar no   │    │ AuthContext │
+│ login       │    │ PostgreSQL  │    │ Ativo       │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+### 2. Fluxo de Compra (Produto → Carrinho → Pedido)
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Buscar      │───►│ Adicionar   │───►│ Finalizar   │
+│ Produtos    │    │ ao Carrinho │    │ Pedido      │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ GET /produto│    │ localStorage│    │ POST /pedido│
+│ /listar     │    │ + Context   │    │ /cadastrar  │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Cache       │    │ Validação   │    │ Atualizar   │
+│ React       │    │ Estoque     │    │ Estoque     │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+### 3. Diagrama de Estados da Aplicação
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                    Estados Globais                             │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│  ┌─────────────┐    ┌─────────────┐    ┌───────────────┐       │
+│  │ AuthContext │    │ CartContext │    │ ProductContext│       │
+│  │             │    │             │    │               │       │
+│  │ • user      │    │ • items     │    │ • products    │       │
+│  │ • token     │    │ • total     │    │ • filters     │       │
+│  │ • isAuth    │    │ • count     │    │ • loading     │       │
+│  └─────────────┘    └─────────────┘    └───────────────┘       │
+│                                                                │
+├────────────────────────────────────────────────────────────────┤
+│                    Persistência Local                          │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│  ┌─────────────┐    ┌───────────────┐    ┌──────────────┐      │
+│  │ localStorage│    │ sessionStorage│    │ Context API  │      │
+│  │             │    │               │    │              │      │
+│  │ • JWT token │    │ • temp data   │    │ • reactive   │      │
+│  │ • cart      │    │ • search      │    │ • state      │      │
+│  │ • favorites │    │ • filters     │    │ • cache      │      │
+│  └─────────────┘    └───────────────┘    └──────────────┘      │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### 4. Fluxo de Dados do Dashboard Administrativo
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Admin     │───►│ Filtros     │───►│ Agregação   │
+│ Dashboard   │    │ (Data/Cat)  │    │ de Dados    │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Verificação │    │ Queries     │    │ Cálculo     │
+│ Permissões  │    │ PostgreSQL  │    │ Métricas    │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Role ADMIN  │    │ JOIN Tables │    │ Gráficos    │
+│ Required    │    │ (Pedidos +  │    │ e Relatórios│
+│             │    │ Produtos)   │    │             │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+### 5. Diagrama de Segurança e Validação
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Camadas de Segurança                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
+│  │ Frontend    │    │ Backend     │    │ Database    │      │
+│  │             │    │             │    │             │      │
+│  │ • Validação │───►│ • JWT Auth  │───►│ • Constraints│     │
+│  │ • Sanitize  │    │ • Rate Limit│    │ • Indexes   │      │
+│  │ • XSS Prot. │    │ • CORS      │    │ • Relations │      │
+│  └─────────────┘    └─────────────┘    └─────────────┘      │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│                    Fluxo de Validação                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Input → Frontend Validation → API Request → Backend        │
+│    ↓              ↓              ↓              ↓           │
+│  Sanitize → DTO Validation → Service Logic → Database       │
+│    ↓              ↓              ↓              ↓           │
+│  Response ← JSON Response ← Business Rules ← Query Result   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 6. Fluxo de Tratamento de Erros
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Erro      │───►│ Tratamento  │───►│ Feedback    │
+│ Detectado   │    │ Centralizado│    │ Usuário     │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Try/Catch   │    │ Error       │    │ Toast/Alert │
+│ Blocks      │    │ Handler     │    │ Messages    │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Log Error   │    │ Status Code │    │ Retry Logic │
+│ Console     │    │ HTTP        │    │ (Optional)  │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+### 7. Diagrama de Performance e Cache
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Estratégias de Cache                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
+│  │ React Cache │    │ API Cache   │    │ DB Cache    │      │
+│  │             │    │             │    │             │      │
+│  │ • useMemo   │    │ • Debounce  │    │ • Indexes   │      │
+│  │ • useCallback│   │ • Throttle  │    │ • Views     │      │
+│  │ • Context   │    │ • Retry     │    │ • Pool      │      │
+│  └─────────────┘    └─────────────┘    └─────────────┘      │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│                    Otimizações de Performance               │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Lazy Loading → Code Splitting → Bundle Optimization        │
+│       ↓              ↓              ↓                       │
+│  Component → Route-based → Tree Shaking                     │
+│  Loading → Chunks → Dead Code                               │
+│       ↓              ↓              ↓                       │
+│  Skeleton → Dynamic → Minification                          │
+│  UI → Imports → Compression                                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 8. Fluxo de Navegação e Roteamento
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   Header    │───►│ Navigation  │───►│ Protected   │
+│ Component   │    │ Menu        │    │ Routes      │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ Logo Click  │    │ Category    │    │ Auth Guard  │
+│ → Home      │    │ Selection   │    │ Check       │
+└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
+       │                  │                  │
+       ▼                  ▼                  ▼
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ React       │    │ Product     │    │ Redirect    │
+│ Router      │    │ Filtering   │    │ to Login    │
+└─────────────┘    └─────────────┘    └─────────────┘
+```
+
+### 9. Diagrama de Integração Frontend-Backend
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Camada de Integração                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  Frontend (React)           Backend (NestJS)                │
+│  ┌─────────────────┐       ┌─────────────────┐              │
+│  │ • API Service   │◄─────►│ • Controllers   │              │
+│  │ • HTTP Client   │       │ • DTOs          │              │
+│  │ • Error Handler │       │ • Validation    │              │
+│  │ • Auth Headers  │       │ • Guards        │              │
+│  └─────────────────┘       └─────────────────┘              │
+│                                                             │
+│  ┌─────────────────┐       ┌─────────────────┐              │
+│  │ • Hooks         │◄─────►│ • Services      │              │
+│  │ • Context       │       │ • Business      │              │
+│  │ • State Mgmt    │       │   Logic         │              │
+│  │ • Local Storage │       │ • Database      │              │
+│  └─────────────────┘       └─────────────────┘              │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ## Tecnologias Utilizadas
 [Lista das tecnologias principais que serão utilizadas no projeto.]
