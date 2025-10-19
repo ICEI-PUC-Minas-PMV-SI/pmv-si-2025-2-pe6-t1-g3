@@ -184,18 +184,20 @@ A página Sobre tem como objetivo apresentar a Zabbix Store, destacando sua prop
 
 #### Tipografia
 
-O projeto utiliza duas famílias de fontes principais para garantir uma tipografia moderna e legível, e uma de fallback para sistemas sem suporte:
+O projeto adota uma combinação de fontes que equilibra modernidade, legibilidade e consistência visual em toda a interface. As famílias tipográficas foram selecionadas para oferecer contraste harmônico entre títulos, textos e elementos complementares.
 
 **Poppins**
-- Aplicada em títulos e elementos de interface
+- Utilizada em títulos, cabeçalhos e elementos de destaque da interface.
+- Transmite modernidade e clareza visual, reforçando a identidade do produto.
 
 **Montserrat**
-- Utilizada como fonte secundária para elementos complementares, textos longos e descrições
+- Aplicada em textos secundários, descrições e blocos de conteúdo mais extensos.
+- Oferece excelente leitura em tamanhos menores e complementa visualmente a Poppins.
 
 **Inter**
-- Fallback
+- Definida como fonte de fallback, garantindo compatibilidade e legibilidade em sistemas que não suportem as fontes principais.
 
-<img src="../docs/img/tipografia.png" alt="Versão Mobile">
+<img src="../docs/img/tipografia.png" alt="Exemplo de tipografia - versão mobile">
 
 #### Paleta de Cores
 
@@ -206,11 +208,32 @@ A paleta de cores do ZabbixStore foi desenvolvida com base em um design minimali
 #### Elementos Gráficos
 
 **Ícones:**
+
+A iconografia abaixo foi desenvolvida para garantir uma comunicação visual clara e padronizada em todas as telas do sistema. Cada ícone possui um significado específico, facilitando a navegação e a compreensão das ações disponíveis para o usuário.
+
 - Utilização de React Icons (Feather Icons) para consistência visual
 - Ícones principais: FiShoppingBag, FiStar, FiTrendingUp, FiArrowRight
 - Tamanho padrão: 24px (w-6 h-6) para ícones de interface
 
 <img src="../docs/img/iconografia.png" alt="Versão Mobile">
+
+| Nº  | Significado               | Descrição                                                                 |
+|-----|---------------------------|---------------------------------------------------------------------------|
+| 1   | Menu                      | Abre o menu lateral de navegação.                                         |
+| 2   | Perfil                    | Exibe as informações do usuário.                                          |
+| 3   | Logout                    | Encerra a sessão.                                                         |
+| 4   | Sacola de pedidos         | Permite visualizar os pedidos realizados ou em andamento.                 |
+| 5   | Produto / Item            | Representa produtos, pacotes ou estoque.                                  |
+| 6   | Carrinho                  | Adiciona ou visualiza itens no carrinho de compras.                       |
+| 7   | Remover dos favoritos     | Retira um item da lista de favoritos.                                     |
+| 8   | Favoritar                 | Adiciona um item aos favoritos.                                           |
+| 9   | Receita                   | Indica valores do painel de controle da área financeira.                  |
+| 10  | Painel administrativo     | Permite gerenciar produtos, pedidos e visualizar métricas.                |
+| 11  | Editar                    | Permite alterar ou modificar um item.                                     |
+| 12  | Excluir                   | Remove permanentemente um item.                                           |
+| 13  | Localização               | Exibe o endereço e o endereço de entrega.                                 |
+| 14  | Pedidos / Lista           | Mostra pedidos, tarefas ou histórico.                                     |
+| 15  | Atualizar / Sincronizar   | Atualiza os dados ou sincroniza informações.                              | 
 
 **Sombras e Efeitos:**
 - Sombras suaves com rgba(0, 0, 0, 0.1) para cards de produtos
@@ -275,10 +298,10 @@ Atualizado em: 01/10/2025
 
 | Responsável          | Tarefa/Requisito                             | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----                |    :----                                     |      :----:    | :----:     | :----: | :----:          |
-| Jully                | Front-end Web - Documentação                 | 01/10/2025     | 10/10/2025 | ✔️    |  03/10/2025     |
-| Vinicius/Jully       | Projeto da Interface Web                     | 01/10/2025     | 20/10/2025 | 📝    |                 |
-| Jully                | Wireframes                                   | 01/10/2025     | 20/10/2025 | 📝    |                 |
-| Vinicius             | Design Visual                                | 01/10/2025     | 20/10/2025 | 📝    |                 |
+| Jully                | Front-end Web - Documentação                 | 01/10/2025     | 10/10/2025 | ✔️     |  03/10/2025     |
+| Vinicius/Jully       | Projeto da Interface Web                     | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
+| Jully                | Wireframes                                   | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
+| Vinicius             | Design Visual                                | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
 | Lucas / Italo        | Fluxo de Dados                               | 01/01/2024     | 20/10/2025 | 📝    |                 |
 | Victor               | Tecnologias Utilizadas                       | 01/01/2024     | 20/10/2025 | 📝    |                 |
 | Lucas                | Considerações de Segurança                   | 01/01/2024     | 20/10/2025 | 📝    |                 |
