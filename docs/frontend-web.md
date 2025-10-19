@@ -266,7 +266,8 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 - LocalStorage       - JWT Auth           - Relacionamentos
 ```
 
-### 1. Fluxo de Autenticação
+<details>
+<summary><strong>🔐 1. Fluxo de Autenticação</strong></summary>
 
 #### 1.1 Cadastro de Usuário
 **Entrada:** Nome, email, senha, confirmação de senha
@@ -298,7 +299,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 - Validação de expiração (24 horas)
 - Redirecionamento para login se token inválido
 
-### 2. Fluxo de Produtos
+</details>
+
+<details>
+<summary><strong>🛍️ 2. Fluxo de Produtos</strong></summary>
 
 #### 2.1 Listagem de Produtos (Home/Dashboard)
 **Entrada:** Requisição GET `/produto/listar`
@@ -343,7 +347,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 **Saída:** Produto criado/atualizado
 **Persistência:** Dados salvos no PostgreSQL via Prisma
 
-### 3. Fluxo de Carrinho de Compras
+</details>
+
+<details>
+<summary><strong>🛒 3. Fluxo de Carrinho de Compras</strong></summary>
 
 #### 3.1 Adicionar ao Carrinho
 **Entrada:** ID do produto e quantidade
@@ -377,7 +384,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 **Saída:** Lista de itens com totais
 **Persistência:** Dados do localStorage + PostgreSQL
 
-### 4. Fluxo de Pedidos
+</details>
+
+<details>
+<summary><strong>📦 4. Fluxo de Pedidos</strong></summary>
 
 #### 4.1 Criação de Pedido
 **Entrada:** Itens do carrinho + endereço de entrega
@@ -411,7 +421,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 **Saída:** Status atualizado
 **Persistência:** Dados atualizados no PostgreSQL
 
-### 5. Fluxo de Endereços
+</details>
+
+<details>
+<summary><strong>📍 5. Fluxo de Endereços</strong></summary>
 
 #### 5.1 Cadastro de Endereço
 **Entrada:** Dados do endereço (CEP, rua, número, etc.)
@@ -434,7 +447,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 **Saída:** Lista de endereços atualizada
 **Persistência:** Dados do PostgreSQL
 
-### 6. Fluxo de Perfil do Usuário
+</details>
+
+<details>
+<summary><strong>👤 6. Fluxo de Perfil do Usuário</strong></summary>
 
 #### 6.1 Visualização de Perfil
 **Entrada:** ID do usuário logado
@@ -457,7 +473,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 **Saída:** Perfil atualizado
 **Persistência:** Dados atualizados no PostgreSQL
 
-### 7. Fluxo de Favoritos
+</details>
+
+<details>
+<summary><strong>❤️ 7. Fluxo de Favoritos</strong></summary>
 
 #### 7.1 Adicionar/Remover Favoritos
 **Entrada:** ID do produto + ação (adicionar/remover)
@@ -478,7 +497,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 **Saída:** Lista de produtos favoritos
 **Persistência:** localStorage + dados do PostgreSQL
 
-### 8. Fluxo do Dashboard Administrativo
+</details>
+
+<details>
+<summary><strong>📊 8. Fluxo do Dashboard Administrativo</strong></summary>
 
 #### 8.1 Métricas de Vendas
 **Entrada:** Filtros de data, categoria, fornecedor
@@ -501,7 +523,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 **Saída:** Interface de gerenciamento
 **Persistência:** Dados do PostgreSQL
 
-### 9. Estados e Persistência
+</details>
+
+<details>
+<summary><strong>💾 9. Estados e Persistência</strong></summary>
 
 #### 9.1 Estado Global da Aplicação
 - **AuthContext:** Dados do usuário logado, token JWT
@@ -519,7 +544,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 - Lazy loading de componentes pesados
 - Otimização de re-renders com useMemo/useCallback
 
-### 10. Tratamento de Erros
+</details>
+
+<details>
+<summary><strong>⚠️ 10. Tratamento de Erros</strong></summary>
 
 #### 10.1 Validação de Dados
 - Validação no frontend (UX imediata)
@@ -533,7 +561,10 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 - Retry automático em falhas de rede
 - Timeout de requisições (30 segundos)
 
-### 11. Segurança no Fluxo de Dados
+</details>
+
+<details>
+<summary><strong>🛡️ 11. Segurança no Fluxo de Dados</strong></summary>
 
 #### 11.1 Autenticação
 - Tokens JWT com expiração de 24 horas
@@ -553,11 +584,14 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 - Proteção contra XSS e SQL injection
 - Headers de segurança (CORS, CSP)
 
+</details>
+
 ## Diagramas Visuais do Fluxo de Dados
 
 Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas visuais:
 
-### 1. Fluxograma de Autenticação
+<details>
+<summary><strong>🔐 1. Fluxograma de Autenticação</strong></summary>
 
 ```
 ┌─────────────┐
@@ -583,7 +617,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-### 2. Fluxo de Compra (Produto → Carrinho → Pedido)
+</details>
+
+<details>
+<summary><strong>🛒 2. Fluxo de Compra (Produto → Carrinho → Pedido)</strong></summary>
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
@@ -604,7 +641,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-### 3. Diagrama de Estados da Aplicação
+</details>
+
+<details>
+<summary><strong>📱 3. Diagrama de Estados da Aplicação</strong></summary>
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -633,7 +673,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └────────────────────────────────────────────────────────────────┘
 ```
 
-### 4. Fluxo de Dados do Dashboard Administrativo
+</details>
+
+<details>
+<summary><strong>📊 4. Fluxo de Dados do Dashboard Administrativo</strong></summary>
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
@@ -655,7 +698,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-### 5. Diagrama de Segurança e Validação
+</details>
+
+<details>
+<summary><strong>🛡️ 5. Diagrama de Segurança e Validação</strong></summary>
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -682,7 +728,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 6. Fluxo de Tratamento de Erros
+</details>
+
+<details>
+<summary><strong>⚠️ 6. Fluxo de Tratamento de Erros</strong></summary>
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
@@ -703,7 +752,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-### 7. Diagrama de Performance e Cache
+</details>
+
+<details>
+<summary><strong>⚡ 7. Diagrama de Performance e Cache</strong></summary>
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -732,7 +784,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 8. Fluxo de Navegação e Roteamento
+</details>
+
+<details>
+<summary><strong>🧭 8. Fluxo de Navegação e Roteamento</strong></summary>
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
@@ -753,7 +808,10 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
-### 9. Diagrama de Integração Frontend-Backend
+</details>
+
+<details>
+<summary><strong>🔗 9. Diagrama de Integração Frontend-Backend</strong></summary>
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -776,6 +834,8 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 │  └─────────────────┘       └─────────────────┘              │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+</details>
 
 ## Tecnologias Utilizadas
 [Lista das tecnologias principais que serão utilizadas no projeto.]
