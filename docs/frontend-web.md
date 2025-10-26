@@ -267,322 +267,151 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 ```
 
 <details>
-<summary><strong>🔐 1. Fluxo de Autenticação</strong></summary>
+<summary><strong>🔝 Header</strong></summary>
 
-#### 1.1 Cadastro de Usuário
-**Entrada:** Nome, email, senha, confirmação de senha
-**Processamento:**
-- Validação de campos obrigatórios no frontend
-- Envio via POST `/auth/registro` para o backend
-- Validação de email único no banco de dados
-- Hash da senha com bcrypt (salt rounds: 12)
-- Criação do registro na tabela `pessoa`
+**Descrição:** Cabeçalho fixo presente em todas as páginas da plataforma, proporcionando navegação consistente e acesso rápido às principais funcionalidades.
 
-**Saída:** Dados do usuário criado (sem senha)
-**Persistência:** Dados salvos no PostgreSQL via Prisma
-
-#### 1.2 Login
-**Entrada:** Email e senha
-**Processamento:**
-- Validação de credenciais via POST `/auth/login`
-- Verificação de hash da senha no banco
-- Geração de token JWT com expiração de 24 horas
-- Armazenamento do token no localStorage
-
-**Saída:** Token JWT e dados do usuário
-**Persistência:** Token no localStorage, sessão ativa no contexto React
-
-#### 1.3 Validação de Token
-**Processamento:**
-- Verificação automática do token em cada requisição
-- Decodificação do JWT para extrair dados do usuário
-- Validação de expiração (24 horas)
-- Redirecionamento para login se token inválido
+**Fluxo de Dados:**
+- **Logo da Marca:** Imagem clicável que redireciona para página inicial
+- **Menu de Navegação:** Links para principais seções (Home, Produtos, Categorias, Sobre)
+- **Campo de Pesquisa:** Input para busca rápida de produtos com sugestões em tempo real
+- **Ícone de Carrinho:** Mostra contador de itens adicionados e ao clicar abre carrinho de compras
+- **Ícone de Perfil:** Ao clicar, exibe menu dropdown com opções (Login, Cadastro, Minha Conta, Sair)
+- **Badge de Notificações:** Indicador visual de novos pedidos ou mensagens (se aplicável)
 
 </details>
 
 <details>
-<summary><strong>🛍️ 2. Fluxo de Produtos</strong></summary>
+<summary><strong>🏠 Home</strong></summary>
 
-#### 2.1 Listagem de Produtos (Home/Dashboard)
-**Entrada:** Requisição GET `/produto/listar`
-**Processamento:**
-- Busca todos os produtos ativos no banco
-- Aplicação de filtros opcionais (categoria)
-- Ordenação por relevância/preço
-- Paginação de resultados
+**Descrição:** A página inicial serve como ponto de entrada principal da plataforma, apresentando produtos em destaque, categorias principais e banners promocionais.
 
-**Saída:** Array de produtos com dados básicos
-**Persistência:** Cache no contexto React, dados do PostgreSQL
-
-#### 2.2 Busca de Produtos
-**Entrada:** Termo de busca via GET `/produto/buscar`
-**Processamento:**
-- Busca por nome, descrição ou categoria
-- Filtros dinâmicos (preço, avaliação, disponibilidade)
-- Ordenação por relevância, preço, popularidade
-
-**Saída:** Lista filtrada de produtos
-**Persistência:** Resultados temporários no estado do componente
-
-#### 2.3 Detalhes do Produto
-**Entrada:** ID do produto via GET `/produto/buscar?CODPROD={id}`
-**Processamento:**
-- Busca produto específico no banco
-- Carregamento de informações detalhadas
-- Verificação de estoque disponível
-- Carregamento de avaliações relacionadas
-
-**Saída:** Dados completos do produto
-**Persistência:** Dados do PostgreSQL, cache no contexto
-
-#### 2.4 Cadastro/Edição de Produtos (Admin)
-**Entrada:** Dados do produto via POST/PUT `/produto/cadastrar` ou `/produto/atualizar`
-**Processamento:**
-- Validação de dados obrigatórios
-- Verificação de permissões (role ADMIN)
-- Upload de imagens (se aplicável)
-- Cálculo automático de campos derivados
-
-**Saída:** Produto criado/atualizado
-**Persistência:** Dados salvos no PostgreSQL via Prisma
+**Fluxo de Dados:**
+- **Barra de Navegação:** Contém links para página inicial, categorias, botão de carrinho com contador de itens e ícone de perfil do usuário
+- **Banner Promocional:** Imagem em destaque no topo da página que exibe ofertas e promoções principais
+- **Barra de Pesquisa:** Campo centralizado que permite buscar produtos por nome ou categoria
+- **Produtos em Destaque:** Cards com imagem, nome, preço e botão "Adicionar ao Carrinho" que permite selecionar produtos rapidamente
+- **Seção de Categorias:** Cards visuais com ícones representando diferentes categorias de produtos (Eletrônicos, Fashion, Esportes, etc.) que ao clicar redirecionam para listagem filtrada
+- **Rodapé:** Links institucionais, contatos e políticas da loja
 
 </details>
 
 <details>
-<summary><strong>🛒 3. Fluxo de Carrinho de Compras</strong></summary>
+<summary><strong>🔐 Área de Login</strong></summary>
 
-#### 3.1 Adicionar ao Carrinho
-**Entrada:** ID do produto e quantidade
-**Processamento:**
-- Verificação de estoque disponível
-- Validação de dados do produto
-- Atualização do contexto do carrinho
-- Persistência no localStorage
+**Descrição:** Interface de autenticação onde usuários fazem login ou cadastro na plataforma.
 
-**Saída:** Item adicionado ao carrinho
-**Persistência:** localStorage + contexto React
-
-#### 3.2 Gerenciamento do Carrinho
-**Processamento:**
-- Atualização de quantidades
-- Remoção de itens
-- Cálculo automático de subtotal
-- Aplicação de descontos (se houver)
-- Validação de estoque em tempo real
-
-**Saída:** Carrinho atualizado
-**Persistência:** localStorage + contexto React
-
-#### 3.3 Visualização do Carrinho
-**Processamento:**
-- Carregamento de itens do localStorage
-- Busca de dados atualizados dos produtos
-- Cálculo de totais
-- Verificação de disponibilidade
-
-**Saída:** Lista de itens com totais
-**Persistência:** Dados do localStorage + PostgreSQL
+**Fluxo de Dados:**
+- **Formulário de Login:** Campos para inserir e-mail e senha com validação visual em tempo real
+- **Botão "Entrar":** Ao clicar, valida os dados inseridos e autentica o usuário na plataforma
+- **Link "Esqueci minha senha":** Permite recuperar acesso à conta esquecida
+- **Botão "Cadastrar":** Redireciona para página de registro de novos usuários
+- **Mensagens de Feedback:** Exibe mensagens de erro caso as credenciais estejam incorretas ou sucesso ao fazer login
+- **Redirecionamento:** Após login bem-sucedido, o usuário é direcionado para a página inicial ou página que estava tentando acessar
 
 </details>
 
 <details>
-<summary><strong>📦 4. Fluxo de Pedidos</strong></summary>
+<summary><strong>👤 Área Logada</strong></summary>
 
-#### 4.1 Criação de Pedido
-**Entrada:** Itens do carrinho + endereço de entrega
-**Processamento:**
-- Validação de dados obrigatórios
-- Verificação de estoque final
-- Cálculo de totais e impostos
-- Criação do pedido via POST `/pedido/cadastrar`
-- Atualização de estoque dos produtos
+**Descrição:** Painel do usuário autenticado com acesso a funcionalidades personalizadas.
 
-**Saída:** Pedido criado com número de confirmação
-**Persistência:** Dados salvos no PostgreSQL, carrinho limpo
-
-#### 4.2 Acompanhamento de Pedidos
-**Entrada:** ID do usuário logado
-**Processamento:**
-- Busca de pedidos via GET `/pedido/listar`
-- Filtros por status, data, valor
-- Carregamento de detalhes de cada pedido
-
-**Saída:** Lista de pedidos com status
-**Persistência:** Dados do PostgreSQL
-
-#### 4.3 Atualização de Status
-**Entrada:** ID do pedido + novo status
-**Processamento:**
-- Validação de permissões
-- Atualização via PATCH `/pedido/atualizar`
-- Notificação ao cliente
-
-**Saída:** Status atualizado
-**Persistência:** Dados atualizados no PostgreSQL
+**Fluxo de Dados:**
+- **Menu Lateral:** Painel com opções de navegação como Perfil, Pedidos, Favoritos, Endereços e Logout
+- **Informações do Perfil:** Seção superior exibindo nome do usuário, e-mail e opção de editar dados pessoais
+- **Botão "Editar Dados":** Permite modificar informações pessoais como nome, e-mail e telefone
+- **Seção de Endereços:** Lista de endereços cadastrados com opção de adicionar novos ou editar existentes
+- **Botão "Adicionar Endereço":** Abre formulário para cadastro de novo endereço de entrega
+- **Botão "Sair":** Finaliza a sessão do usuário e retorna para página de login
 
 </details>
 
 <details>
-<summary><strong>📍 5. Fluxo de Endereços</strong></summary>
+<summary><strong>🛒 Carrinho de Compras</strong></summary>
 
-#### 5.1 Cadastro de Endereço
-**Entrada:** Dados do endereço (CEP, rua, número, etc.)
-**Processamento:**
-- Validação de CEP via API externa
-- Validação de campos obrigatórios
-- Criação via POST `/endereco/cadastrar`
-- Associação ao usuário logado
+**Descrição:** Interface para gerenciar produtos selecionados antes da finalização da compra.
 
-**Saída:** Endereço cadastrado
-**Persistência:** Dados salvos no PostgreSQL
-
-#### 5.2 Gerenciamento de Endereços
-**Processamento:**
-- Listagem de endereços do usuário
-- Edição via PATCH `/endereco/atualizar`
-- Remoção via DELETE `/endereco/deletar`
-- Definição de endereço principal
-
-**Saída:** Lista de endereços atualizada
-**Persistência:** Dados do PostgreSQL
+**Fluxo de Dados:**
+- **Lista de Produtos:** Cards exibindo imagem, nome, preço unitário e quantidade de cada item no carrinho
+- **Botões de Quantidade:** Botões "+" e "-" para aumentar ou diminuir a quantidade de cada produto
+- **Botão "Remover":** Ícone de lixeira em cada item que remove o produto do carrinho quando clicado
+- **Resumo do Pedido:** Painel lateral mostrando subtotal, frete e valor total da compra
+- **Botão "Finalizar Compra":** Direciona para página de checkout para concluir a compra
+- **Botão "Continuar Comprando":** Retorna para página de produtos para adicionar mais itens
 
 </details>
 
 <details>
-<summary><strong>👤 6. Fluxo de Perfil do Usuário</strong></summary>
+<summary><strong>📦 Produto Selecionado</strong></summary>
 
-#### 6.1 Visualização de Perfil
-**Entrada:** ID do usuário logado
-**Processamento:**
-- Busca de dados via GET `/pessoa/buscar`
-- Carregamento de informações pessoais
-- Histórico de pedidos
-- Endereços cadastrados
+**Descrição:** Página de detalhes de um produto específico com informações completas.
 
-**Saída:** Dados completos do perfil
-**Persistência:** Dados do PostgreSQL
-
-#### 6.2 Atualização de Perfil
-**Entrada:** Dados atualizados do usuário
-**Processamento:**
-- Validação de campos
-- Atualização via POST `/pessoa/atualizar`
-- Verificação de unicidade (email)
-
-**Saída:** Perfil atualizado
-**Persistência:** Dados atualizados no PostgreSQL
+**Fluxo de Dados:**
+- **Galeria de Imagens:** Carrossel mostrando diferentes ângulos e imagens do produto com botões de navegação
+- **Informações do Produto:** Nome, descrição detalhada, preço, estoque disponível e categoria
+- **Botão "Adicionar ao Carrinho":** Permite incluir o produto no carrinho com a quantidade desejada
+- **Seletor de Quantidade:** Campo numérico para definir quantas unidades do produto serão adicionadas
+- **Botão "Favoritar":** Ícone de coração para salvar o produto na lista de favoritos
+- **Seção de Avaliações:** Exibe comentários e avaliações de outros clientes sobre o produto
+- **Produtos Relacionados:** Sugestão de itens similares no final da página
 
 </details>
 
 <details>
-<summary><strong>❤️ 7. Fluxo de Favoritos</strong></summary>
+<summary><strong>❤️ Lista de Favoritos</strong></summary>
 
-#### 7.1 Adicionar/Remover Favoritos
-**Entrada:** ID do produto + ação (adicionar/remover)
-**Processamento:**
-- Verificação de autenticação
-- Atualização da lista de favoritos
-- Persistência no localStorage
+**Descrição:** Página onde usuários visualizam produtos marcados como favoritos.
 
-**Saída:** Lista de favoritos atualizada
-**Persistência:** localStorage + contexto React
-
-#### 7.2 Visualização de Favoritos
-**Processamento:**
-- Carregamento da lista do localStorage
-- Busca de dados atualizados dos produtos
-- Verificação de disponibilidade
-
-**Saída:** Lista de produtos favoritos
-**Persistência:** localStorage + dados do PostgreSQL
+**Fluxo de Dados:**
+- **Lista de Produtos Favoritos:** Cards com imagem, nome, preço e avaliação de cada produto salvo
+- **Botão "Remover dos Favoritos":** Ícone de coração preenchido que ao clicar remove o produto da lista
+- **Botão "Adicionar ao Carrinho":** Adiciona o produto diretamente ao carrinho de compras
+- **Botão "Ver Detalhes":** Redireciona para página de detalhes do produto
+- **Mensagem de Lista Vazia:** Exibe mensagem quando não há produtos favoritados
+- **Ordenação:** Opção de ordenar produtos por preço, nome ou data de adição aos favoritos
 
 </details>
 
 <details>
-<summary><strong>📊 8. Fluxo do Dashboard Administrativo</strong></summary>
+<summary><strong>📊 Painel Administrativo - Visão Geral</strong></summary>
 
-#### 8.1 Métricas de Vendas
-**Entrada:** Filtros de data, categoria, fornecedor
-**Processamento:**
-- Agregação de dados de vendas
-- Cálculo de métricas (receita, quantidade, produtos mais vendidos)
-- Geração de relatórios
-- Visualização em gráficos
+**Descrição:** Dashboard principal para fornecedores com métricas e visão geral das vendas.
 
-**Saída:** Dashboard com métricas
-**Persistência:** Dados agregados do PostgreSQL
-
-#### 8.2 Gerenciamento de Produtos (Admin)
-**Processamento:**
-- Listagem de todos os produtos
-- Filtros por categoria, status, fornecedor
-- Ações em lote (ativar/desativar)
-- Upload de imagens
-
-**Saída:** Interface de gerenciamento
-**Persistência:** Dados do PostgreSQL
+**Fluxo de Dados:**
+- **Métricas Principais:** Cards exibindo receita total, número de vendas, produtos vendidos e ticket médio
+- **Indicadores Visuais:** Uso de cores (verde para crescimento, vermelho para queda) para facilitar análise rápida
 
 </details>
 
 <details>
-<summary><strong>💾 9. Estados e Persistência</strong></summary>
+<summary><strong>📦 Painel Administrativo - Produtos</strong></summary>
 
-#### 9.1 Estado Global da Aplicação
-- **AuthContext:** Dados do usuário logado, token JWT
-- **CartContext:** Itens do carrinho, totais, persistência no localStorage
-- **ProductContext:** Cache de produtos, filtros aplicados
+**Descrição:** Interface para gerenciamento completo do catálogo de produtos.
 
-#### 9.2 Persistência Local
-- **localStorage:** Token JWT, carrinho, favoritos, preferências
-- **sessionStorage:** Dados temporários da sessão
-- **Context API:** Estado reativo da aplicação
-
-#### 9.3 Cache e Performance
-- Cache de produtos no contexto React
-- Debounce em buscas para otimizar requisições
-- Lazy loading de componentes pesados
-- Otimização de re-renders com useMemo/useCallback
+**Fluxo de Dados:**
+- **Lista de Produtos:** Tabela ou grid exibindo todos os produtos cadastrados com imagem, nome, preço, estoque e categoria
+- **Botão "Adicionar Produto":** Abre formulário para cadastrar novo produto no catálogo
+- **Botão "Editar":** Ícone de lápis em cada produto que abre formulário pré-preenchido para edição
+- **Botão "Excluir":** Ícone de lixeira que remove o produto do catálogo após confirmação
+- **Formulário de Produto:** Campos para nome, descrição, preço, categoria, quantidade em estoque e upload de imagens
+- **Upload de Imagens:** Área de arrastar e soltar ou botão para selecionar múltiplas imagens do produto
+- **Botão "Salvar":** Salva as alterações do produto e retorna para lista
+- **Botão "Cancelar":** Descarta as alterações e volta para lista sem salvar
 
 </details>
 
 <details>
-<summary><strong>⚠️ 10. Tratamento de Erros</strong></summary>
+<summary><strong>ℹ️ Sobre</strong></summary>
 
-#### 10.1 Validação de Dados
-- Validação no frontend (UX imediata)
-- Validação no backend (segurança)
-- Mensagens de erro padronizadas
-- Fallbacks para dados indisponíveis
+**Descrição:** Página institucional apresentando informações sobre a ZabbixStore.
 
-#### 10.2 Estados de Loading
-- Loading states para todas as operações assíncronas
-- Skeletons para melhor UX
-- Retry automático em falhas de rede
-- Timeout de requisições (30 segundos)
-
-</details>
-
-<details>
-<summary><strong>🛡️ 11. Segurança no Fluxo de Dados</strong></summary>
-
-#### 11.1 Autenticação
-- Tokens JWT com expiração de 24 horas
-- Refresh automático de tokens
-- Logout automático em token inválido
-- Proteção de rotas sensíveis
-
-#### 11.2 Autorização
-- Verificação de roles (USER/ADMIN)
-- Controle de acesso baseado em recursos
-- Validação de propriedade de dados
-- Rate limiting (100 req/min por IP)
-
-#### 11.3 Sanitização
-- Validação de entrada em todos os endpoints
-- Sanitização de dados do usuário
-- Proteção contra XSS e SQL injection
-- Headers de segurança (CORS, CSP)
+**Fluxo de Dados:**
+- **Apresentação da Empresa:** Seção descrevendo a história e missão da ZabbixStore
+- **Nossos Valores:** Cards destacando os principais valores da empresa
+- **Equipe:** Apresentação dos membros do time e suas funções
+- **Funcionalidades:** Lista das principais características e benefícios da plataforma
+- **Contato:** Formulário para envio de mensagens e canais de comunicação (email, telefone, endereço)
+- **Links Úteis:** Atalhos para áreas importantes da plataforma e recursos adicionais
 
 </details>
 
@@ -591,249 +420,72 @@ Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
 Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas visuais:
 
 <details>
-<summary><strong>🔐 1. Fluxograma de Autenticação</strong></summary>
+<summary><strong>🔝 Header</strong></summary>
 
-```
-┌─────────────┐
-│   Usuário   │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   Login/    │───►│ Validação   │───►│ Geração     │
-│  Cadastro   │    │ Credenciais │    │ Token JWT   │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Validação   │    │ Hash        │    │ Armazenar   │
-│ Frontend    │    │ Senha       │    │ localStorage│
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ POST /auth/ │    │ Salvar no   │    │ AuthContext │
-│ login       │    │ PostgreSQL  │    │ Ativo       │
-└─────────────┘    └─────────────┘    └─────────────┘
-```
+![Header](../docs/img/fluxo_dados/Header.png)
 
 </details>
 
 <details>
-<summary><strong>🛒 2. Fluxo de Compra (Produto → Carrinho → Pedido)</strong></summary>
+<summary><strong>🏠 Home</strong></summary>
 
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Buscar      │───►│ Adicionar   │───►│ Finalizar   │
-│ Produtos    │    │ ao Carrinho │    │ Pedido      │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ GET /produto│    │ localStorage│    │ POST /pedido│
-│ /listar     │    │ + Context   │    │ /cadastrar  │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Cache       │    │ Validação   │    │ Atualizar   │
-│ React       │    │ Estoque     │    │ Estoque     │
-└─────────────┘    └─────────────┘    └─────────────┘
-```
+![Home](../docs/img/fluxo_dados/home.png)
 
 </details>
 
 <details>
-<summary><strong>📱 3. Diagrama de Estados da Aplicação</strong></summary>
+<summary><strong>🔐 Área de Login</strong></summary>
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│                    Estados Globais                             │
-├────────────────────────────────────────────────────────────────┤
-│                                                                │
-│  ┌─────────────┐    ┌─────────────┐    ┌───────────────┐       │
-│  │ AuthContext │    │ CartContext │    │ ProductContext│       │
-│  │             │    │             │    │               │       │
-│  │ • user      │    │ • items     │    │ • products    │       │
-│  │ • token     │    │ • total     │    │ • filters     │       │
-│  │ • isAuth    │    │ • count     │    │ • loading     │       │
-│  └─────────────┘    └─────────────┘    └───────────────┘       │
-│                                                                │
-├────────────────────────────────────────────────────────────────┤
-│                    Persistência Local                          │
-├────────────────────────────────────────────────────────────────┤
-│                                                                │
-│  ┌─────────────┐    ┌───────────────┐    ┌──────────────┐      │
-│  │ localStorage│    │ sessionStorage│    │ Context API  │      │
-│  │             │    │               │    │              │      │
-│  │ • JWT token │    │ • temp data   │    │ • reactive   │      │
-│  │ • cart      │    │ • search      │    │ • state      │      │
-│  │ • favorites │    │ • filters     │    │ • cache      │      │
-│  └─────────────┘    └───────────────┘    └──────────────┘      │
-└────────────────────────────────────────────────────────────────┘
-```
+![Área de Login](../docs/img/fluxo_dados/area_de_login.png)
 
 </details>
 
 <details>
-<summary><strong>📊 4. Fluxo de Dados do Dashboard Administrativo</strong></summary>
+<summary><strong>👤 Área Logada</strong></summary>
 
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   Admin     │───►│ Filtros     │───►│ Agregação   │
-│ Dashboard   │    │ (Data/Cat)  │    │ de Dados    │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Verificação │    │ Queries     │    │ Cálculo     │
-│ Permissões  │    │ PostgreSQL  │    │ Métricas    │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Role ADMIN  │    │ JOIN Tables │    │ Gráficos    │
-│ Required    │    │ (Pedidos +  │    │ e Relatórios│
-│             │    │ Produtos)   │    │             │
-└─────────────┘    └─────────────┘    └─────────────┘
-```
+![Área Logada](../docs/img/fluxo_dados/area_logada.png)
 
 </details>
 
 <details>
-<summary><strong>🛡️ 5. Diagrama de Segurança e Validação</strong></summary>
+<summary><strong>🛒 Carrinho de Compras</strong></summary>
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Camadas de Segurança                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
-│  │ Frontend    │    │ Backend     │    │ Database    │      │
-│  │             │    │             │    │             │      │
-│  │ • Validação │───►│ • JWT Auth  │───►│ • Constraints│     │
-│  │ • Sanitize  │    │ • Rate Limit│    │ • Indexes   │      │
-│  │ • XSS Prot. │    │ • CORS      │    │ • Relations │      │
-│  └─────────────┘    └─────────────┘    └─────────────┘      │
-│                                                             │
-├─────────────────────────────────────────────────────────────┤
-│                    Fluxo de Validação                       │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  Input → Frontend Validation → API Request → Backend        │
-│    ↓              ↓              ↓              ↓           │
-│  Sanitize → DTO Validation → Service Logic → Database       │
-│    ↓              ↓              ↓              ↓           │
-│  Response ← JSON Response ← Business Rules ← Query Result   │
-└─────────────────────────────────────────────────────────────┘
-```
+![Carrinho de Compras](../docs/img/fluxo_dados/carrinho_de_compras.png)
 
 </details>
 
 <details>
-<summary><strong>⚠️ 6. Fluxo de Tratamento de Erros</strong></summary>
+<summary><strong>📦 Produto Selecionado</strong></summary>
 
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   Erro      │───►│ Tratamento  │───►│ Feedback    │
-│ Detectado   │    │ Centralizado│    │ Usuário     │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Try/Catch   │    │ Error       │    │ Toast/Alert │
-│ Blocks      │    │ Handler     │    │ Messages    │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Log Error   │    │ Status Code │    │ Retry Logic │
-│ Console     │    │ HTTP        │    │ (Optional)  │
-└─────────────┘    └─────────────┘    └─────────────┘
-```
+![Produto Selecionado](../docs/img/fluxo_dados/produto_selecionado.png)
 
 </details>
 
 <details>
-<summary><strong>⚡ 7. Diagrama de Performance e Cache</strong></summary>
+<summary><strong>❤️ Lista de Favoritos</strong></summary>
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Estratégias de Cache                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
-│  │ React Cache │    │ API Cache   │    │ DB Cache    │      │
-│  │             │    │             │    │             │      │
-│  │ • useMemo   │    │ • Debounce  │    │ • Indexes   │      │
-│  │ • useCallback│   │ • Throttle  │    │ • Views     │      │
-│  │ • Context   │    │ • Retry     │    │ • Pool      │      │
-│  └─────────────┘    └─────────────┘    └─────────────┘      │
-│                                                             │
-├─────────────────────────────────────────────────────────────┤
-│                    Otimizações de Performance               │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  Lazy Loading → Code Splitting → Bundle Optimization        │
-│       ↓              ↓              ↓                       │
-│  Component → Route-based → Tree Shaking                     │
-│  Loading → Chunks → Dead Code                               │
-│       ↓              ↓              ↓                       │
-│  Skeleton → Dynamic → Minification                          │
-│  UI → Imports → Compression                                 │
-└─────────────────────────────────────────────────────────────┘
-```
+![Lista de Favoritos](../docs/img/fluxo_dados/lista_de_favoritos.png)
 
 </details>
 
 <details>
-<summary><strong>🧭 8. Fluxo de Navegação e Roteamento</strong></summary>
+<summary><strong>📊 Painel Administrativo - Visão Geral</strong></summary>
 
-```
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│   Header    │───►│ Navigation  │───►│ Protected   │
-│ Component   │    │ Menu        │    │ Routes      │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Logo Click  │    │ Category    │    │ Auth Guard  │
-│ → Home      │    │ Selection   │    │ Check       │
-└──────┬──────┘    └──────┬──────┘    └──────┬──────┘
-       │                  │                  │
-       ▼                  ▼                  ▼
-┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ React       │    │ Product     │    │ Redirect    │
-│ Router      │    │ Filtering   │    │ to Login    │
-└─────────────┘    └─────────────┘    └─────────────┘
-```
+![Painel Administrativo - Visão Geral](../docs/img/fluxo_dados/painel_administrativo_visao_geral.png)
 
 </details>
 
 <details>
-<summary><strong>🔗 9. Diagrama de Integração Frontend-Backend</strong></summary>
+<summary><strong>📦 Painel Administrativo - Produtos</strong></summary>
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Camada de Integração                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  Frontend (React)           Backend (NestJS)                │
-│  ┌─────────────────┐       ┌─────────────────┐              │
-│  │ • API Service   │◄─────►│ • Controllers   │              │
-│  │ • HTTP Client   │       │ • DTOs          │              │
-│  │ • Error Handler │       │ • Validation    │              │
-│  │ • Auth Headers  │       │ • Guards        │              │
-│  └─────────────────┘       └─────────────────┘              │
-│                                                             │
-│  ┌─────────────────┐       ┌─────────────────┐              │
-│  │ • Hooks         │◄─────►│ • Services      │              │
-│  │ • Context       │       │ • Business      │              │
-│  │ • State Mgmt    │       │   Logic         │              │
-│  │ • Local Storage │       │ • Database      │              │
-│  └─────────────────┘       └─────────────────┘              │
-└─────────────────────────────────────────────────────────────┘
-```
+![Painel Administrativo - Produtos](../docs/img/fluxo_dados/painel_administrativo_produtos.png)
+
+</details>
+
+<details>
+<summary><strong>ℹ️ Sobre</strong></summary>
+
+![Sobre](../docs/img/fluxo_dados/sobre.png)
 
 </details>
 
