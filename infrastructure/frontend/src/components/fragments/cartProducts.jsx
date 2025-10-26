@@ -158,7 +158,9 @@ const CartProducts = ({ onTotalChange }) => {
                 <h3 className="text-lg font-medium text-gray-900 mb-2">{product.PRODUTO}</h3>
                 <div className="space-y-1 text-sm text-gray-600">
                   <p>Preço unitário: <span className="font-medium text-gray-900">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.VALOR)}</span></p>
-                  <p>Tamanho: <span className="font-medium text-gray-900">{product.size}</span></p>
+                  {product.size && (
+                    <p>Tamanho: <span className="font-medium text-gray-900">{product.size}</span></p>
+                  )}
                 </div>
 
                 <div className="flex items-center space-x-4 mt-4">

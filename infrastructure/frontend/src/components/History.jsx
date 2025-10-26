@@ -182,7 +182,8 @@ const History = () => {
                               {item.PRODUTO?.PRODUTO || 'Produto não encontrado'}
                             </h5>
                             <p className="text-sm text-gray-600">
-                              Quantidade: {item.QTD} | Tamanho: {item.TAMANHO}
+                              Quantidade: {item.QTD}
+                              {item.TAMANHO && ` | Tamanho: ${item.TAMANHO}`}
                             </p>
                           </div>
                         </div>

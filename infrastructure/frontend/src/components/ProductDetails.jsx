@@ -23,6 +23,11 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
 
+  // Helper function to check if product is from FASHION category
+  const isFashionProduct = () => {
+    return product?.CATEGORIAS?.CATEGORIA === 'FASHION';
+  };
+
   useEffect(() => {
     loadProduct();
     const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
@@ -60,18 +65,26 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
+    // Only require size selection for fashion products
+    if (isFashionProduct() && !selectedSize) {
       alert('Por favor, selecione um tamanho');
       return;
     }
-    addToCart({
+    
+    const cartItem = {
       CODPROD: product.CODPROD,
       PRODUTO: product.PRODUTO,
       VALOR: product.VALOR,
       IMAGEM: product.IMAGEM,
-      size: selectedSize,
       quantity: quantity
-    });
+    };
+    
+    // Only add size for fashion products
+    if (isFashionProduct() && selectedSize) {
+      cartItem.size = selectedSize;
+    }
+    
+    addToCart(cartItem);
     toast.success("Produto adicionado ao carrinho", {
           autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000
         });
@@ -175,26 +188,29 @@ const ProductDetails = () => {
               </span>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tamanho
-              </label>
-              <div className="flex space-x-2">
-                {sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 border rounded-lg font-medium transition-colors ${
-                      selectedSize === size
-                        ? 'border-gray-900 bg-gray-900 text-white'
-                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+            {/* Conditionally render size selector only for FASHION products */}
+            {isFashionProduct() && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tamanho
+                </label>
+                <div className="flex space-x-2">
+                  {sizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-4 py-2 border rounded-lg font-medium transition-colors ${
+                        selectedSize === size
+                          ? 'border-gray-900 bg-gray-900 text-white'
+                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -227,7 +243,7 @@ const ProductDetails = () => {
               <Button
                 className="w-full flex items-center justify-center"
                 onClick={handleAddToCart}
-                disabled={!selectedSize || product.ESTOQUE === 0}
+                disabled={(isFashionProduct() && !selectedSize) || product.ESTOQUE === 0}
               >
                 <FiShoppingCart className="mr-2" size={18} />
                 Adicionar ao carrinho
