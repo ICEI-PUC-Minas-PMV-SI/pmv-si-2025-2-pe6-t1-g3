@@ -9,7 +9,40 @@ O **Zabbix Store** tem como objetivo oferecer uma **plataforma de e-commerce**, 
 
 ## Projeto da Interface Web
 
-[Descreva o projeto da interface Web da aplicação, incluindo o design visual, layout das páginas, interações do usuário e outros aspectos relevantes.]
+A interface web da Zabbix Store será desenvolvida com foco em usabilidade, consistência visual e experiência de compra fluida, garantindo que clientes e fornecedores realizem suas tarefas de forma intuitiva e segura.
+
+
+### Design Visual
+- Layout moderno e clean, priorizando **clareza e hierarquia visual**.  
+- Paleta de cores neutras com acentos para **destaques, estados e categorias**, transmitindo profissionalismo e confiança.  
+- Tipografia moderna: **Poppins** para títulos e elementos de destaque, **Montserrat** e **Inter** para textos complementares e descrições.  
+- Ícones padronizados (React Icons / Feather Icons) e componentes consistentes para facilitar a navegação.  
+- Sombras suaves, bordas arredondadas e transições de hover para melhorar percepção de interatividade.
+
+
+### Layout das Páginas
+- **Página Inicial (Home):** banners promocionais, produtos em destaque, categorias e atalhos para seções principais.  
+- **Página de Categoria / Catálogo:** listagem de produtos com filtros por preço, avaliação, categorias e ordenação dinâmica.  
+- **Página de Produto:** informações detalhadas, imagens em cards, preço, avaliações, descrições e botão de ação “Adicionar ao Carrinho”.  
+- **Carrinho e Checkout:** exibição organizada dos produtos selecionados, possibilidade de alterar quantidades ou remover itens, e finalização da compra de forma simples e intuitiva.
+- **Painel do Usuário (Cliente):** histórico de pedidos, favoritos e configurações de perfil.  
+- **Painel do Fornecedor:** cadastro e gerenciamento de produtos, controle de estoque e relatórios de vendas.
+
+
+### Interações do Usuário
+- Barra de navegação intuitiva, breadcrumbs e menus claros para fácil localização.  
+- Pesquisa dinâmica com **autocompletar**.  
+- Filtros e ordenações **dinâmicos**, atualizando produtos sem recarregar a página.  
+- Feedbacks visuais: notificações, loaders, mensagens de sucesso e alerta.  
+- Carrinho persistente, mantendo produtos adicionados mesmo após logout.
+
+
+### Outros Aspectos Relevantes
+- **Design responsivo**, compatível com desktop, tablet e mobile.  
+- Integração com APIs do backend para exibição de dados e atualização de estoque em tempo real.  
+- **Segurança** no tratamento de informações do usuário e autenticação.  
+- Elementos de UI/UX que promovem **fluidez na jornada de compra**, desde a busca até o checkout.
+
 
 ### Wireframes
 
@@ -149,11 +182,312 @@ A página Sobre tem como objetivo apresentar a Zabbix Store, destacando sua prop
 
 ### Design Visual
 
-[Descreva o estilo visual da interface, incluindo paleta de cores, tipografia, ícones e outros elementos gráficos.]
+#### Tipografia
+
+O projeto adota uma combinação de fontes que equilibra modernidade, legibilidade e consistência visual em toda a interface. As famílias tipográficas foram selecionadas para oferecer contraste harmônico entre títulos, textos e elementos complementares.
+
+**Poppins**
+- Utilizada em títulos, cabeçalhos e elementos de destaque da interface.
+- Transmite modernidade e clareza visual, reforçando a identidade do produto.
+
+**Montserrat**
+- Aplicada em textos secundários, descrições e blocos de conteúdo mais extensos.
+- Oferece excelente leitura em tamanhos menores e complementa visualmente a Poppins.
+
+**Inter**
+- Definida como fonte de fallback, garantindo compatibilidade e legibilidade em sistemas que não suportem as fontes principais.
+
+<img src="../docs/img/tipografia.png" alt="Exemplo de tipografia - versão mobile">
+
+#### Paleta de Cores
+
+A paleta de cores do ZabbixStore foi desenvolvida com base em um design minimalista e profissional, utilizando tons neutros com acentos em preto para criar contraste e hierarquia visual:
+
+<img src="../docs/img/paleta_cores.png" alt="Versão Mobile">
+
+#### Elementos Gráficos
+
+**Ícones:**
+
+A iconografia abaixo foi desenvolvida para garantir uma comunicação visual clara e padronizada em todas as telas do sistema. Cada ícone possui um significado específico, facilitando a navegação e a compreensão das ações disponíveis para o usuário.
+
+- Utilização de React Icons (Feather Icons) para consistência visual
+- Ícones principais: FiShoppingBag, FiStar, FiTrendingUp, FiArrowRight
+- Tamanho padrão: 24px (w-6 h-6) para ícones de interface
+
+<img src="../docs/img/iconografia.png" alt="Versão Mobile">
+
+| Nº  | Significado               | Descrição                                                                 |
+|-----|---------------------------|---------------------------------------------------------------------------|
+| 1   | Menu                      | Abre o menu lateral de navegação.                                         |
+| 2   | Perfil                    | Exibe as informações do usuário.                                          |
+| 3   | Logout                    | Encerra a sessão.                                                         |
+| 4   | Sacola de pedidos         | Permite visualizar os pedidos realizados ou em andamento.                 |
+| 5   | Produto / Item            | Representa produtos, pacotes ou estoque.                                  |
+| 6   | Carrinho                  | Adiciona ou visualiza itens no carrinho de compras.                       |
+| 7   | Remover dos favoritos     | Retira um item da lista de favoritos.                                     |
+| 8   | Favoritar                 | Adiciona um item aos favoritos.                                           |
+| 9   | Receita                   | Indica valores do painel de controle da área financeira.                  |
+| 10  | Painel administrativo     | Permite gerenciar produtos, pedidos e visualizar métricas.                |
+| 11  | Editar                    | Permite alterar ou modificar um item.                                     |
+| 12  | Excluir                   | Remove permanentemente um item.                                           |
+| 13  | Localização               | Exibe o endereço e o endereço de entrega.                                 |
+| 14  | Pedidos / Lista           | Mostra pedidos, tarefas ou histórico.                                     |
+| 15  | Atualizar / Sincronizar   | Atualiza os dados ou sincroniza informações.                              | 
+
+**Sombras e Efeitos:**
+- Sombras suaves com rgba(0, 0, 0, 0.1) para cards de produtos
+- Sombras mais pronunciadas (rgba(0, 0, 0, 0.2)) para formulários
+- Transições suaves de 0.3s para todos os elementos interativos
+- Efeitos de hover com mudança de escala (scale-105) e sombra
+
+**Bordas e Cantos:**
+- Border-radius padrão de 5px para botões e inputs
+- Border-radius de 9px para formulários principais
+- Bordas sólidas pretas (#000000) para inputs e elementos de foco
+
+Esta decisões foram definidas para transmitir confiança, profissionalismo e modernidade, características essenciais para uma plataforma de e-commerce, mantendo a legibilidade e acessibilidade em todos os elementos da interface.
+
 
 ## Fluxo de Dados
 
-[Diagrama ou descrição do fluxo de dados na aplicação.]
+## Fluxo de Dados da Aplicação
+
+O fluxo de dados da ZabbixStore é baseado em uma arquitetura cliente-servidor, onde o frontend React consome APIs REST do backend NestJS, que por sua vez interage com o banco de dados PostgreSQL através do Prisma ORM.
+
+### Arquitetura Geral
+
+```
+Frontend (React) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
+     ↓                    ↓                    ↓
+- Contextos React    - Controllers         - Prisma ORM
+- Hooks customizados - Services           - Schema definido
+- Componentes        - DTOs/Validação     - Migrations
+- LocalStorage       - JWT Auth           - Relacionamentos
+```
+
+<details>
+<summary><strong>🔝 Header</strong></summary>
+
+**Descrição:** Cabeçalho fixo presente em todas as páginas da plataforma, proporcionando navegação consistente e acesso rápido às principais funcionalidades.
+
+**Fluxo de Dados:**
+- **Logo da Marca:** Imagem clicável que redireciona para página inicial
+- **Menu de Navegação:** Links para principais seções (Home, Produtos, Categorias, Sobre)
+- **Campo de Pesquisa:** Input para busca rápida de produtos com sugestões em tempo real
+- **Ícone de Carrinho:** Mostra contador de itens adicionados e ao clicar abre carrinho de compras
+- **Ícone de Perfil:** Ao clicar, exibe menu dropdown com opções (Login, Cadastro, Minha Conta, Sair)
+- **Badge de Notificações:** Indicador visual de novos pedidos ou mensagens (se aplicável)
+
+</details>
+
+<details>
+<summary><strong>🏠 Home</strong></summary>
+
+**Descrição:** A página inicial serve como ponto de entrada principal da plataforma, apresentando produtos em destaque, categorias principais e banners promocionais.
+
+**Fluxo de Dados:**
+- **Barra de Navegação:** Contém links para página inicial, categorias, botão de carrinho com contador de itens e ícone de perfil do usuário
+- **Banner Promocional:** Imagem em destaque no topo da página que exibe ofertas e promoções principais
+- **Barra de Pesquisa:** Campo centralizado que permite buscar produtos por nome ou categoria
+- **Produtos em Destaque:** Cards com imagem, nome, preço e botão "Adicionar ao Carrinho" que permite selecionar produtos rapidamente
+- **Seção de Categorias:** Cards visuais com ícones representando diferentes categorias de produtos (Eletrônicos, Fashion, Esportes, etc.) que ao clicar redirecionam para listagem filtrada
+- **Rodapé:** Links institucionais, contatos e políticas da loja
+
+</details>
+
+<details>
+<summary><strong>🔐 Área de Login</strong></summary>
+
+**Descrição:** Interface de autenticação onde usuários fazem login ou cadastro na plataforma.
+
+**Fluxo de Dados:**
+- **Formulário de Login:** Campos para inserir e-mail e senha com validação visual em tempo real
+- **Botão "Entrar":** Ao clicar, valida os dados inseridos e autentica o usuário na plataforma
+- **Link "Esqueci minha senha":** Permite recuperar acesso à conta esquecida
+- **Botão "Cadastrar":** Redireciona para página de registro de novos usuários
+- **Mensagens de Feedback:** Exibe mensagens de erro caso as credenciais estejam incorretas ou sucesso ao fazer login
+- **Redirecionamento:** Após login bem-sucedido, o usuário é direcionado para a página inicial ou página que estava tentando acessar
+
+</details>
+
+<details>
+<summary><strong>👤 Área Logada</strong></summary>
+
+**Descrição:** Painel do usuário autenticado com acesso a funcionalidades personalizadas.
+
+**Fluxo de Dados:**
+- **Menu Lateral:** Painel com opções de navegação como Perfil, Pedidos, Favoritos, Endereços e Logout
+- **Informações do Perfil:** Seção superior exibindo nome do usuário, e-mail e opção de editar dados pessoais
+- **Botão "Editar Dados":** Permite modificar informações pessoais como nome, e-mail e telefone
+- **Seção de Endereços:** Lista de endereços cadastrados com opção de adicionar novos ou editar existentes
+- **Botão "Adicionar Endereço":** Abre formulário para cadastro de novo endereço de entrega
+- **Botão "Sair":** Finaliza a sessão do usuário e retorna para página de login
+
+</details>
+
+<details>
+<summary><strong>🛒 Carrinho de Compras</strong></summary>
+
+**Descrição:** Interface para gerenciar produtos selecionados antes da finalização da compra.
+
+**Fluxo de Dados:**
+- **Lista de Produtos:** Cards exibindo imagem, nome, preço unitário e quantidade de cada item no carrinho
+- **Botões de Quantidade:** Botões "+" e "-" para aumentar ou diminuir a quantidade de cada produto
+- **Botão "Remover":** Ícone de lixeira em cada item que remove o produto do carrinho quando clicado
+- **Resumo do Pedido:** Painel lateral mostrando subtotal, frete e valor total da compra
+- **Botão "Finalizar Compra":** Direciona para página de checkout para concluir a compra
+- **Botão "Continuar Comprando":** Retorna para página de produtos para adicionar mais itens
+
+</details>
+
+<details>
+<summary><strong>📦 Produto Selecionado</strong></summary>
+
+**Descrição:** Página de detalhes de um produto específico com informações completas.
+
+**Fluxo de Dados:**
+- **Galeria de Imagens:** Carrossel mostrando diferentes ângulos e imagens do produto com botões de navegação
+- **Informações do Produto:** Nome, descrição detalhada, preço, estoque disponível e categoria
+- **Botão "Adicionar ao Carrinho":** Permite incluir o produto no carrinho com a quantidade desejada
+- **Seletor de Quantidade:** Campo numérico para definir quantas unidades do produto serão adicionadas
+- **Botão "Favoritar":** Ícone de coração para salvar o produto na lista de favoritos
+- **Seção de Avaliações:** Exibe comentários e avaliações de outros clientes sobre o produto
+- **Produtos Relacionados:** Sugestão de itens similares no final da página
+
+</details>
+
+<details>
+<summary><strong>❤️ Lista de Favoritos</strong></summary>
+
+**Descrição:** Página onde usuários visualizam produtos marcados como favoritos.
+
+**Fluxo de Dados:**
+- **Lista de Produtos Favoritos:** Cards com imagem, nome, preço e avaliação de cada produto salvo
+- **Botão "Remover dos Favoritos":** Ícone de coração preenchido que ao clicar remove o produto da lista
+- **Botão "Adicionar ao Carrinho":** Adiciona o produto diretamente ao carrinho de compras
+- **Botão "Ver Detalhes":** Redireciona para página de detalhes do produto
+- **Mensagem de Lista Vazia:** Exibe mensagem quando não há produtos favoritados
+- **Ordenação:** Opção de ordenar produtos por preço, nome ou data de adição aos favoritos
+
+</details>
+
+<details>
+<summary><strong>📊 Painel Administrativo - Visão Geral</strong></summary>
+
+**Descrição:** Dashboard principal para fornecedores com métricas e visão geral das vendas.
+
+**Fluxo de Dados:**
+- **Métricas Principais:** Cards exibindo receita total, número de vendas, produtos vendidos e ticket médio
+- **Indicadores Visuais:** Uso de cores (verde para crescimento, vermelho para queda) para facilitar análise rápida
+
+</details>
+
+<details>
+<summary><strong>📦 Painel Administrativo - Produtos</strong></summary>
+
+**Descrição:** Interface para gerenciamento completo do catálogo de produtos.
+
+**Fluxo de Dados:**
+- **Lista de Produtos:** Tabela ou grid exibindo todos os produtos cadastrados com imagem, nome, preço, estoque e categoria
+- **Botão "Adicionar Produto":** Abre formulário para cadastrar novo produto no catálogo
+- **Botão "Editar":** Ícone de lápis em cada produto que abre formulário pré-preenchido para edição
+- **Botão "Excluir":** Ícone de lixeira que remove o produto do catálogo após confirmação
+- **Formulário de Produto:** Campos para nome, descrição, preço, categoria, quantidade em estoque e upload de imagens
+- **Upload de Imagens:** Área de arrastar e soltar ou botão para selecionar múltiplas imagens do produto
+- **Botão "Salvar":** Salva as alterações do produto e retorna para lista
+- **Botão "Cancelar":** Descarta as alterações e volta para lista sem salvar
+
+</details>
+
+<details>
+<summary><strong>ℹ️ Sobre</strong></summary>
+
+**Descrição:** Página institucional apresentando informações sobre a ZabbixStore.
+
+**Fluxo de Dados:**
+- **Apresentação da Empresa:** Seção descrevendo a história e missão da ZabbixStore
+- **Nossos Valores:** Cards destacando os principais valores da empresa
+- **Equipe:** Apresentação dos membros do time e suas funções
+- **Funcionalidades:** Lista das principais características e benefícios da plataforma
+- **Contato:** Formulário para envio de mensagens e canais de comunicação (email, telefone, endereço)
+- **Links Úteis:** Atalhos para áreas importantes da plataforma e recursos adicionais
+
+</details>
+
+## Diagramas Visuais do Fluxo de Dados
+
+Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas visuais:
+
+<details>
+<summary><strong>🔝 Header</strong></summary>
+
+![Header](../docs/img/fluxo_dados/Header.png)
+
+</details>
+
+<details>
+<summary><strong>🏠 Home</strong></summary>
+
+![Home](../docs/img/fluxo_dados/home.png)
+
+</details>
+
+<details>
+<summary><strong>🔐 Área de Login</strong></summary>
+
+![Área de Login](../docs/img/fluxo_dados/area_de_login.png)
+
+</details>
+
+<details>
+<summary><strong>👤 Área Logada</strong></summary>
+
+![Área Logada](../docs/img/fluxo_dados/area_logada.png)
+
+</details>
+
+<details>
+<summary><strong>🛒 Carrinho de Compras</strong></summary>
+
+![Carrinho de Compras](../docs/img/fluxo_dados/carrinho_de_compras.png)
+
+</details>
+
+<details>
+<summary><strong>📦 Produto Selecionado</strong></summary>
+
+![Produto Selecionado](../docs/img/fluxo_dados/produto_selecionado.png)
+
+</details>
+
+<details>
+<summary><strong>❤️ Lista de Favoritos</strong></summary>
+
+![Lista de Favoritos](../docs/img/fluxo_dados/lista_de_favoritos.png)
+
+</details>
+
+<details>
+<summary><strong>📊 Painel Administrativo - Visão Geral</strong></summary>
+
+![Painel Administrativo - Visão Geral](../docs/img/fluxo_dados/painel_administrativo_visao_geral.png)
+
+</details>
+
+<details>
+<summary><strong>📦 Painel Administrativo - Produtos</strong></summary>
+
+![Painel Administrativo - Produtos](../docs/img/fluxo_dados/painel_administrativo_produtos.png)
+
+</details>
+
+<details>
+<summary><strong>ℹ️ Sobre</strong></summary>
+
+![Sobre](../docs/img/fluxo_dados/sobre.png)
+
+</details>
 
 ## Tecnologias Utilizadas
 [Lista das tecnologias principais que serão utilizadas no projeto.]
@@ -198,10 +532,10 @@ Atualizado em: 01/10/2025
 
 | Responsável          | Tarefa/Requisito                             | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----                |    :----                                     |      :----:    | :----:     | :----: | :----:          |
-| Jully                | Front-end Web - Documentação                 | 01/10/2025     | 10/10/2025 | ✔️    |  03/10/2025     |
-| Vinicius/Jully       | Projeto da Interface Web                     | 01/10/2025     | 20/10/2025 | 📝    |                 |
-| Jully                | Wireframes                                   | 01/10/2025     | 20/10/2025 | 📝    |                 |
-| Vinicius             | Design Visual                                | 01/10/2025     | 20/10/2025 | 📝    |                 |
+| Jully                | Front-end Web - Documentação                 | 01/10/2025     | 10/10/2025 | ✔️     |  03/10/2025     |
+| Vinicius/Jully       | Projeto da Interface Web                     | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
+| Jully                | Wireframes                                   | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
+| Vinicius             | Design Visual                                | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
 | Lucas / Italo        | Fluxo de Dados                               | 01/01/2024     | 20/10/2025 | 📝    |                 |
 | Victor               | Tecnologias Utilizadas                       | 01/01/2024     | 20/10/2025 | 📝    |                 |
 | Lucas                | Considerações de Segurança                   | 01/01/2024     | 20/10/2025 | 📝    |                 |

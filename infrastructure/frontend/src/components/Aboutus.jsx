@@ -29,10 +29,9 @@ const Aboutus = () => {
                 Nossa História
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                A Zabbix nasceu da visão de criar uma plataforma de e-commerce que combina 
-                tecnologia de ponta com uma experiência de usuário excepcional. Somos uma 
-                empresa focada em oferecer produtos de alta qualidade com um atendimento 
-                personalizado e eficiente.
+                A Zabbix nasceu com o propósito de transformar o e-commerce em uma experiência simples, inteligente e acessível para todos.
+                Somos uma plataforma completa, onde tecnologia, variedade e qualidade se encontram para oferecer tudo o que você precisa em um só lugar.
+                De eletrônicos a moda, de itens para casa a acessórios, trabalhamos para garantir produtos de confiança, ótimos preços e um atendimento que realmente entende o cliente.
               </p>
               <p className="text-lg text-gray-600">
                 Nossa missão é democratizar o acesso à moda, oferecendo peças que expressam 
@@ -46,7 +45,6 @@ const Aboutus = () => {
                   alt="Zabbix Logo" 
                   className="w-32 h-32 mx-auto mb-6 opacity-80 hover:opacity-100 transition-opacity"
                 />
-                <p className="text-gray-600 font-medium">Nossa Marca</p>
                 <p className="text-gray-500 text-sm mt-2">Qualidade e estilo em cada produto</p>
               </div>
             </div>
