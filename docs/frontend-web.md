@@ -508,13 +508,854 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 
 ## Testes
 
-[Descreva a estratégia de teste, incluindo os tipos de teste a serem realizados (unitários, integração, carga, etc.) e as ferramentas a serem utilizadas.]
+### Estratégia de Teste Frontend
 
-1. Crie casos de teste para cobrir todos os requisitos funcionais e não funcionais da aplicação.
-2. Implemente testes unitários para testar unidades individuais de código, como funções e classes.
-3. Realize testes de integração para verificar a interação correta entre os componentes da aplicação.
-4. Execute testes de carga para avaliar o desempenho da aplicação sob carga significativa.
-5. Utilize ferramentas de teste adequadas, como frameworks de teste e ferramentas de automação de teste, para agilizar o processo de teste.
+A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes com foco em testes unitários (70%), testes de integração (20%) e testes E2E (10%). Os testes são desenvolvidos utilizando React Testing Library para testes unitários e de integração, e Cypress para testes end-to-end.
+
+### Ferramentas Utilizadas
+
+- **React Testing Library**: Para testes unitários e de integração de componentes
+- **Jest**: Framework de teste principal
+- **Cypress**: Para testes end-to-end
+- **MSW (Mock Service Worker)**: Para mock de APIs
+- **Testing Library User Event**: Para simulação de interações do usuário
+
+### Casos de Teste por Funcionalidade
+
+<details>
+<summary><strong>🔝 Header/Navegação</strong></summary>
+
+**Teste de Renderização**
+- Deve renderizar o logo da marca clicável
+- Deve renderizar menu de navegação com links principais
+- Deve renderizar campo de pesquisa
+- Deve renderizar ícone de carrinho com contador
+- Deve renderizar ícone de perfil
+- Deve renderizar breadcrumbs quando aplicável
+
+**Teste de Interações**
+- Ao clicar no logo, deve redirecionar para página inicial
+- Ao clicar em "Home", deve navegar para página inicial
+- Ao clicar em "Categorias", deve navegar para página de categorias
+- Ao clicar em "Sobre", deve navegar para página sobre
+- Ao clicar no ícone de carrinho, deve abrir carrinho de compras
+- Ao clicar no ícone de perfil, deve exibir menu dropdown
+
+**Teste de Funcionalidades**
+- Campo de pesquisa deve permitir digitação
+- Campo de pesquisa deve exibir sugestões em tempo real
+- Contador do carrinho deve atualizar quando produtos são adicionados
+- Menu dropdown do perfil deve exibir opções corretas baseadas no estado de login
+- Pesquisa deve funcionar com teclado Enter
+- Pesquisa deve limpar campo ao clicar em "X"
+
+**Teste de Estados**
+- Deve exibir loading state durante pesquisa
+- Deve exibir mensagem de erro se pesquisa falhar
+- Deve exibir mensagem quando não há resultados de pesquisa
+- Deve manter estado de pesquisa após navegação
+
+**Teste de Responsividade**
+- Header deve adaptar-se corretamente em dispositivos móveis (320px, 768px, 1024px)
+- Menu deve colapsar em telas pequenas (< 768px)
+- Campo de pesquisa deve manter funcionalidade em mobile
+- Ícones devem manter tamanho adequado em diferentes resoluções
+- Menu hambúrguer deve funcionar corretamente em mobile
+
+**Teste de Acessibilidade**
+- Todos os elementos devem ter atributos aria-label apropriados
+- Navegação deve funcionar com teclado (Tab, Enter, Escape)
+- Campo de pesquisa deve ter aria-describedby para instruções
+- Contraste de cores deve atender WCAG 2.1 AA
+- Foco deve ser visível em todos os elementos interativos
+
+**Teste por Tipo de Usuário**
+- **Usuário não logado**: Deve exibir opções "Login" e "Cadastro"
+- **Cliente logado**: Deve exibir "Minha Conta", "Pedidos", "Favoritos", "Sair"
+- **Fornecedor logado**: Deve exibir "Dashboard", "Produtos", "Vendas", "Sair"
+- **Admin**: Deve exibir todas as opções anteriores mais "Administração"
+
+</details>
+
+<details>
+<summary><strong>🏠 Página Home</strong></summary>
+
+**Teste de Renderização**
+- Deve renderizar banner promocional
+- Deve renderizar barra de pesquisa centralizada
+- Deve renderizar seção de produtos em destaque
+- Deve renderizar seção de categorias
+- Deve renderizar rodapé com links institucionais
+- Deve renderizar seção de produtos mais vendidos
+- Deve renderizar seção de ofertas especiais
+
+**Teste de Interações**
+- Ao clicar em produto em destaque, deve navegar para página do produto
+- Ao clicar em categoria, deve navegar para listagem filtrada
+- Ao pesquisar na barra centralizada, deve exibir resultados
+- Botão "Adicionar ao Carrinho" deve adicionar produto ao carrinho
+- Banner promocional deve ser clicável e redirecionar para promoção
+- Produtos relacionados devem ser clicáveis
+
+**Teste de Estados**
+- Deve exibir loading state durante carregamento de produtos
+- Deve exibir mensagem de erro se falhar ao carregar produtos
+- Deve exibir mensagem quando não há produtos disponíveis
+- Deve exibir skeleton loading para produtos
+- Deve exibir estado vazio quando não há categorias
+
+**Teste de Responsividade**
+- Layout deve adaptar-se corretamente em mobile (320px)
+- Layout deve adaptar-se corretamente em tablet (768px)
+- Layout deve adaptar-se corretamente em desktop (1024px+)
+- Cards de produtos devem reorganizar-se em grid responsivo
+- Banner deve manter proporção em diferentes telas
+- Menu de categorias deve colapsar em mobile
+
+**Teste de Acessibilidade**
+- Todos os produtos devem ter alt text descritivo
+- Botões devem ter aria-label apropriado
+- Navegação por teclado deve funcionar em todas as seções
+- Contraste de cores deve atender WCAG 2.1 AA
+- Screen readers devem conseguir navegar pelo conteúdo
+
+**Teste de Performance**
+- Página deve carregar em menos de 3 segundos
+- Imagens devem ter lazy loading implementado
+- Produtos devem carregar progressivamente
+- Banner deve carregar primeiro (prioridade visual)
+
+**Teste por Tipo de Usuário**
+- **Usuário não logado**: Deve exibir produtos públicos e opções de login
+- **Cliente logado**: Deve exibir produtos personalizados baseados no histórico
+- **Fornecedor logado**: Deve exibir produtos próprios em destaque
+- **Admin**: Deve exibir todos os produtos incluindo os desativados
+
+</details>
+
+<details>
+<summary><strong>🔐 Autenticação (Login/Cadastro)</strong></summary>
+
+**Teste de Login**
+- Deve renderizar campos de email e senha
+- Deve validar formato de email em tempo real
+- Deve exibir mensagem de erro para credenciais inválidas
+- Deve redirecionar após login bem-sucedido
+- Deve manter usuário logado após refresh da página
+- Deve exibir loading state durante autenticação
+- Deve lembrar email do usuário (opcional)
+
+**Teste de Cadastro**
+- Deve renderizar formulário com campos obrigatórios
+- Deve validar campos em tempo real
+- Deve exibir mensagem de erro para email já cadastrado
+- Deve redirecionar para login após cadastro bem-sucedido
+- Deve validar força da senha
+- Deve exibir confirmação de cadastro
+- Deve enviar email de confirmação
+
+**Teste de Validações**
+- Campos obrigatórios devem ser destacados quando vazios
+- Email deve ter formato válido
+- Senha deve ter mínimo de 8 caracteres
+- Confirmação de senha deve coincidir com senha
+- Nome deve ter mínimo de 2 caracteres
+- Telefone deve ter formato válido (se aplicável)
+- CPF deve ter formato válido (se aplicável)
+
+**Teste de Estados**
+- Deve exibir loading state durante login/cadastro
+- Deve exibir mensagem de sucesso após operação bem-sucedida
+- Deve exibir mensagem de erro específica para cada tipo de erro
+- Deve desabilitar botões durante processamento
+- Deve exibir indicador de força da senha
+
+**Teste de Responsividade**
+- Formulários devem adaptar-se corretamente em mobile
+- Campos devem ter tamanho adequado para touch
+- Botões devem ter área de toque suficiente (44px mínimo)
+- Layout deve funcionar em orientação portrait e landscape
+
+**Teste de Acessibilidade**
+- Campos devem ter labels associados
+- Mensagens de erro devem ter aria-live
+- Formulários devem ter navegação por teclado
+- Contraste deve atender WCAG 2.1 AA
+- Foco deve ser visível em todos os campos
+
+**Teste de Segurança**
+- Senha não deve ser exibida em texto plano
+- Deve implementar rate limiting para tentativas de login
+- Deve validar CSRF tokens
+- Deve usar HTTPS para transmissão de dados
+- Deve implementar timeout de sessão
+
+**Teste por Tipo de Usuário**
+- **Cliente**: Deve permitir cadastro com dados básicos
+- **Fornecedor**: Deve exigir dados adicionais (CNPJ, etc.)
+- **Admin**: Deve ter processo de cadastro diferenciado
+- **Usuário existente**: Deve redirecionar para login
+
+</details>
+
+<details>
+<summary><strong>👤 Área Logada do Usuário</strong></summary>
+
+**Teste de Renderização**
+- Deve renderizar menu lateral com opções de navegação
+- Deve exibir informações do perfil do usuário
+- Deve renderizar seção de endereços cadastrados
+- Deve renderizar histórico de pedidos
+- Deve renderizar lista de favoritos
+- Deve renderizar configurações de conta
+
+**Teste de Interações**
+- Ao clicar em "Editar Dados", deve abrir formulário de edição
+- Ao clicar em "Adicionar Endereço", deve abrir formulário de endereço
+- Ao clicar em "Sair", deve fazer logout e redirecionar
+- Formulário de edição deve salvar alterações
+- Formulário de endereço deve validar CEP
+- Ao clicar em pedido, deve exibir detalhes
+- Ao clicar em produto favorito, deve navegar para página do produto
+
+**Teste de Estados**
+- Deve exibir loading durante carregamento de dados
+- Deve exibir mensagem de sucesso após alterações
+- Deve exibir mensagem de erro em caso de falha
+- Deve exibir estado vazio quando não há pedidos
+- Deve exibir estado vazio quando não há favoritos
+- Deve exibir skeleton loading para dados
+
+**Teste de Validações**
+- CEP deve ser validado em tempo real
+- Email deve manter formato válido
+- Telefone deve ter formato correto
+- Campos obrigatórios devem ser validados
+- Senha deve atender critérios de segurança
+
+**Teste de Responsividade**
+- Menu lateral deve colapsar em mobile
+- Formulários devem adaptar-se a diferentes telas
+- Tabelas devem ser responsivas
+- Botões devem ter tamanho adequado para touch
+
+**Teste de Acessibilidade**
+- Menu deve ter navegação por teclado
+- Formulários devem ter labels apropriados
+- Tabelas devem ter headers associados
+- Contraste deve atender WCAG 2.1 AA
+- Foco deve ser visível em todos os elementos
+
+**Teste de Segurança**
+- Dados sensíveis não devem ser exibidos em texto plano
+- Sessão deve expirar após inatividade
+- Alterações devem ser confirmadas
+- Logout deve limpar dados sensíveis
+
+**Teste por Tipo de Usuário**
+- **Cliente**: Deve exibir opções de pedidos, favoritos, endereços
+- **Fornecedor**: Deve exibir opções de produtos, vendas, relatórios
+- **Admin**: Deve exibir todas as opções anteriores mais administração
+- **Usuário inativo**: Deve exibir mensagem de conta suspensa
+
+</details>
+
+<details>
+<summary><strong>🛒 Carrinho de Compras</strong></summary>
+
+**Teste de Renderização**
+- Deve renderizar lista de produtos adicionados
+- Deve exibir imagem, nome, preço e quantidade de cada item
+- Deve renderizar resumo do pedido com subtotal e total
+- Deve renderizar botões de ação
+- Deve renderizar campo de cupom de desconto
+- Deve renderizar opções de frete
+- Deve renderizar botão de finalizar compra
+
+**Teste de Interações**
+- Botões "+" e "-" devem alterar quantidade
+- Ícone de lixeira deve remover item do carrinho
+- Botão "Finalizar Compra" deve navegar para checkout
+- Botão "Continuar Comprando" deve retornar para produtos
+- Alterações de quantidade devem atualizar total em tempo real
+- Campo de cupom deve aplicar desconto
+- Seleção de frete deve atualizar total
+
+**Teste de Estados**
+- Deve exibir mensagem quando carrinho está vazio
+- Deve persistir itens após logout/login
+- Deve atualizar contador no header
+- Deve exibir loading durante atualizações
+- Deve exibir mensagem de erro se item não disponível
+- Deve exibir mensagem de sucesso ao adicionar item
+
+**Teste de Validações**
+- Quantidade não pode ser menor que 1
+- Quantidade não pode exceder estoque disponível
+- Cupom deve ser válido e não expirado
+- Frete deve ser calculado corretamente
+- Total deve ser calculado com precisão
+
+**Teste de Responsividade**
+- Lista deve adaptar-se a diferentes telas
+- Botões devem ter tamanho adequado para touch
+- Resumo deve ser visível em mobile
+- Formulários devem ser responsivos
+
+**Teste de Acessibilidade**
+- Lista deve ter navegação por teclado
+- Botões devem ter aria-label apropriado
+- Totais devem ser anunciados por screen readers
+- Contraste deve atender WCAG 2.1 AA
+
+**Teste de Performance**
+- Atualizações de quantidade devem ser instantâneas
+- Cálculos devem ser feitos localmente quando possível
+- Deve persistir dados no localStorage
+- Deve sincronizar com servidor em background
+
+**Teste por Tipo de Usuário**
+- **Usuário não logado**: Deve permitir adicionar itens temporariamente
+- **Cliente logado**: Deve persistir carrinho entre sessões
+- **Fornecedor**: Deve exibir produtos próprios com preços especiais
+- **Admin**: Deve ter acesso a todos os produtos
+
+</details>
+
+<details>
+<summary><strong>📦 Página de Produtos</strong></summary>
+
+**Teste de Renderização**
+- Deve renderizar galeria de imagens com navegação
+- Deve exibir informações completas do produto
+- Deve renderizar seletor de quantidade
+- Deve renderizar botões de ação (Adicionar ao Carrinho, Favoritar)
+- Deve renderizar seção de avaliações
+- Deve renderizar produtos relacionados
+- Deve renderizar informações de estoque
+- Deve renderizar breadcrumbs
+
+**Teste de Interações**
+- Galeria de imagens deve permitir navegação
+- Seletor de quantidade deve aceitar valores válidos
+- Botão "Adicionar ao Carrinho" deve adicionar produto
+- Botão "Favoritar" deve adicionar/remover dos favoritos
+- Produtos relacionados devem ser clicáveis
+- Avaliações devem ser clicáveis para expandir
+- Zoom de imagens deve funcionar
+
+**Teste de Validações**
+- Quantidade não pode ser menor que 1
+- Quantidade não pode exceder estoque disponível
+- Produto sem estoque deve desabilitar botão de compra
+- Avaliações devem ter formato válido
+- Imagens devem carregar corretamente
+
+**Teste de Estados**
+- Deve exibir loading durante carregamento
+- Deve exibir erro se produto não encontrado
+- Deve exibir estado de produto indisponível
+- Deve exibir skeleton loading para imagens
+- Deve exibir loading durante adição ao carrinho
+
+**Teste de Responsividade**
+- Galeria deve adaptar-se a diferentes telas
+- Imagens devem manter proporção
+- Botões devem ter tamanho adequado para touch
+- Layout deve reorganizar-se em mobile
+- Zoom deve funcionar em dispositivos touch
+
+**Teste de Acessibilidade**
+- Imagens devem ter alt text descritivo
+- Galeria deve ter navegação por teclado
+- Botões devem ter aria-label apropriado
+- Informações de estoque devem ser anunciadas
+- Contraste deve atender WCAG 2.1 AA
+
+**Teste de Performance**
+- Imagens devem ter lazy loading
+- Página deve carregar em menos de 3 segundos
+- Produtos relacionados devem carregar progressivamente
+- Zoom deve ser otimizado para performance
+
+**Teste por Tipo de Usuário**
+- **Usuário não logado**: Deve exibir produto público
+- **Cliente logado**: Deve exibir preços e disponibilidade
+- **Fornecedor**: Deve exibir produtos próprios com opções de edição
+- **Admin**: Deve ter acesso a todos os produtos incluindo desativados
+
+</details>
+
+<details>
+<summary><strong>❤️ Lista de Favoritos</strong></summary>
+
+**Teste de Renderização**
+- Deve renderizar lista de produtos favoritados
+- Deve exibir imagem, nome, preço e avaliação de cada produto
+- Deve renderizar botões de ação para cada item
+- Deve renderizar opções de ordenação
+- Deve renderizar filtros por categoria
+- Deve renderizar contador de itens
+
+**Teste de Interações**
+- Botão "Remover dos Favoritos" deve remover item da lista
+- Botão "Adicionar ao Carrinho" deve adicionar produto ao carrinho
+- Botão "Ver Detalhes" deve navegar para página do produto
+- Opções de ordenação devem funcionar corretamente
+- Filtros por categoria devem funcionar
+- Seleção múltipla deve funcionar
+
+**Teste de Estados**
+- Deve exibir mensagem quando lista está vazia
+- Deve persistir favoritos após logout/login
+- Deve exibir loading durante carregamento
+- Deve exibir erro se falhar ao carregar
+- Deve exibir skeleton loading para produtos
+
+**Teste de Validações**
+- Produtos removidos devem ser atualizados em tempo real
+- Ordenação deve manter consistência
+- Filtros devem funcionar corretamente
+- Contador deve ser atualizado automaticamente
+
+**Teste de Responsividade**
+- Lista deve adaptar-se a diferentes telas
+- Cards devem reorganizar-se em grid responsivo
+- Botões devem ter tamanho adequado para touch
+- Filtros devem colapsar em mobile
+
+**Teste de Acessibilidade**
+- Lista deve ter navegação por teclado
+- Botões devem ter aria-label apropriado
+- Contador deve ser anunciado por screen readers
+- Contraste deve atender WCAG 2.1 AA
+
+**Teste de Performance**
+- Lista deve carregar rapidamente
+- Operações de remoção devem ser instantâneas
+- Filtros devem ser otimizados
+- Deve persistir dados no localStorage
+
+**Teste por Tipo de Usuário**
+- **Cliente**: Deve exibir favoritos pessoais
+- **Fornecedor**: Deve exibir produtos próprios favoritados
+- **Admin**: Deve ter acesso a todos os favoritos
+- **Usuário não logado**: Deve redirecionar para login
+
+</details>
+
+<details>
+<summary><strong>📊 Painel Administrativo</strong></summary>
+
+**Teste de Visão Geral**
+- Deve renderizar métricas principais (receita, vendas, produtos)
+- Deve exibir indicadores visuais com cores apropriadas
+- Deve permitir filtros por data e categoria
+- Deve renderizar gráficos de vendas
+- Deve renderizar tabela de produtos mais vendidos
+- Deve renderizar alertas de estoque baixo
+
+**Teste de Gerenciamento de Produtos**
+- Deve renderizar lista/tabela de produtos cadastrados
+- Botão "Adicionar Produto" deve abrir formulário
+- Botões "Editar" e "Excluir" devem funcionar corretamente
+- Formulário deve validar todos os campos obrigatórios
+- Upload de imagens deve funcionar corretamente
+- Deve permitir ativar/desativar produtos
+- Deve permitir gerenciar estoque
+
+**Teste de Validações**
+- Campos obrigatórios devem ser validados
+- Preços devem ser valores positivos
+- Quantidade em estoque não pode ser negativa
+- Imagens devem ter formatos válidos
+- Categorias devem ser selecionadas
+- Descrições devem ter tamanho mínimo
+
+**Teste de Estados**
+- Deve exibir loading durante carregamento de dados
+- Deve exibir mensagem de sucesso após operações
+- Deve exibir mensagem de erro em caso de falha
+- Deve exibir skeleton loading para tabelas
+- Deve exibir estado vazio quando não há produtos
+
+**Teste de Responsividade**
+- Dashboard deve adaptar-se a diferentes telas
+- Tabelas devem ser responsivas
+- Gráficos devem redimensionar corretamente
+- Formulários devem funcionar em mobile
+- Botões devem ter tamanho adequado para touch
+
+**Teste de Acessibilidade**
+- Gráficos devem ter descrições textuais
+- Tabelas devem ter headers associados
+- Formulários devem ter labels apropriados
+- Contraste deve atender WCAG 2.1 AA
+- Navegação por teclado deve funcionar
+
+**Teste de Segurança**
+- Acesso deve ser restrito a fornecedores
+- Dados sensíveis devem ser protegidos
+- Operações críticas devem ser confirmadas
+- Logs de ações devem ser mantidos
+
+**Teste de Performance**
+- Dashboard deve carregar em menos de 5 segundos
+- Gráficos devem ser otimizados
+- Tabelas devem ter paginação
+- Filtros devem ser otimizados
+
+**Teste por Tipo de Usuário**
+- **Fornecedor**: Deve ter acesso apenas aos próprios produtos
+- **Admin**: Deve ter acesso a todos os produtos e métricas
+- **Cliente**: Não deve ter acesso ao painel
+- **Usuário não logado**: Deve redirecionar para login
+
+</details>
+
+<details>
+<summary><strong>ℹ️ Página Sobre</strong></summary>
+
+**Teste de Renderização**
+- Deve renderizar seção de apresentação da empresa
+- Deve exibir cards com valores da empresa
+- Deve renderizar seção da equipe
+- Deve renderizar lista de funcionalidades
+- Deve renderizar formulário de contato
+- Deve renderizar links úteis
+- Deve renderizar informações de contato
+- Deve renderizar redes sociais
+
+**Teste de Interações**
+- Formulário de contato deve validar campos
+- Links úteis devem navegar corretamente
+- Formulário deve enviar dados corretamente
+- Links de redes sociais devem abrir em nova aba
+- Botões de ação devem funcionar
+- Navegação por seções deve funcionar
+
+**Teste de Validações**
+- Campos obrigatórios devem ser validados
+- Email deve ter formato válido
+- Mensagem deve ter tamanho mínimo
+- Nome deve ter tamanho mínimo
+- Telefone deve ter formato válido
+
+**Teste de Estados**
+- Deve exibir loading durante envio do formulário
+- Deve exibir mensagem de sucesso após envio
+- Deve exibir mensagem de erro em caso de falha
+- Deve exibir estado vazio quando não há dados
+- Deve exibir skeleton loading para conteúdo
+
+**Teste de Responsividade**
+- Layout deve adaptar-se a diferentes telas
+- Cards devem reorganizar-se em grid responsivo
+- Formulário deve funcionar em mobile
+- Imagens devem manter proporção
+- Texto deve ser legível em todas as telas
+
+**Teste de Acessibilidade**
+- Formulário deve ter labels associados
+- Links devem ter aria-label apropriado
+- Contraste deve atender WCAG 2.1 AA
+- Navegação por teclado deve funcionar
+- Screen readers devem conseguir navegar
+
+**Teste de Performance**
+- Página deve carregar rapidamente
+- Imagens devem ter lazy loading
+- Conteúdo deve ser otimizado
+- Formulário deve enviar dados eficientemente
+
+**Teste por Tipo de Usuário**
+- **Todos os usuários**: Deve ter acesso completo à página
+- **Usuário não logado**: Deve exibir opções de cadastro
+- **Cliente logado**: Deve exibir opções personalizadas
+- **Fornecedor**: Deve exibir opções de parceria
+
+</details>
+
+<details>
+<summary><strong>📋 Especificações de Dados de Teste</strong></summary>
+
+#### Dados de Usuário para Testes
+
+**Cliente de Teste**
+```javascript
+const testClient = {
+  id: 1,
+  name: "João Silva",
+  email: "joao.silva@teste.com",
+  password: "senha123456",
+  phone: "(11) 99999-9999",
+  cpf: "123.456.789-00",
+  addresses: [
+    {
+      id: 1,
+      street: "Rua das Flores, 123",
+      city: "São Paulo",
+      state: "SP",
+      zipCode: "01234-567",
+      isDefault: true
+    }
+  ]
+};
+```
+
+**Fornecedor de Teste**
+```javascript
+const testSupplier = {
+  id: 2,
+  name: "TechStore Ltda",
+  email: "contato@techstore.com",
+  password: "senha123456",
+  phone: "(11) 88888-8888",
+  cnpj: "12.345.678/0001-90",
+  businessName: "TechStore Tecnologia",
+  products: [
+    {
+      id: 1,
+      name: "Smartphone XYZ",
+      price: 999.99,
+      stock: 50,
+      category: "Eletrônicos"
+    }
+  ]
+};
+```
+
+**Admin de Teste**
+```javascript
+const testAdmin = {
+  id: 3,
+  name: "Admin Sistema",
+  email: "admin@zabbixstore.com",
+  password: "admin123456",
+  role: "ADMIN",
+  permissions: ["ALL"]
+};
+```
+
+#### Dados de Produto para Testes
+
+**Produto Completo**
+```javascript
+const testProduct = {
+  id: 1,
+  name: "Smartphone XYZ Pro",
+  description: "Smartphone com tela de 6.1 polegadas, câmera tripla e processador de última geração",
+  price: 1299.99,
+  originalPrice: 1499.99,
+  stock: 25,
+  category: "Eletrônicos",
+  subcategory: "Smartphones",
+  images: [
+    "https://example.com/product1-front.jpg",
+    "https://example.com/product1-back.jpg",
+    "https://example.com/product1-side.jpg"
+  ],
+  specifications: {
+    "Tela": "6.1 polegadas",
+    "Processador": "Snapdragon 888",
+    "Memória": "8GB RAM",
+    "Armazenamento": "128GB",
+    "Câmera": "Tripla 48MP"
+  },
+  reviews: [
+    {
+      id: 1,
+      user: "Maria Santos",
+      rating: 5,
+      comment: "Excelente produto, recomendo!",
+      date: "2024-01-15"
+    }
+  ],
+  isActive: true,
+  supplierId: 2
+};
+```
+
+#### Dados de Carrinho para Testes
+
+**Carrinho com Itens**
+```javascript
+const testCart = {
+  id: 1,
+  userId: 1,
+  items: [
+    {
+      productId: 1,
+      quantity: 2,
+      price: 999.99,
+      name: "Smartphone XYZ"
+    },
+    {
+      productId: 2,
+      quantity: 1,
+      price: 599.99,
+      name: "Tablet ABC"
+    }
+  ],
+  subtotal: 2599.97,
+  shipping: 15.00,
+  discount: 0,
+  total: 2614.97,
+  updatedAt: "2024-01-15T10:30:00Z"
+};
+```
+
+**Carrinho Vazio**
+```javascript
+const emptyCart = {
+  id: 1,
+  userId: 1,
+  items: [],
+  subtotal: 0,
+  shipping: 0,
+  discount: 0,
+  total: 0,
+  updatedAt: "2024-01-15T10:30:00Z"
+};
+```
+
+#### Dados de Pedido para Testes
+
+**Pedido Completo**
+```javascript
+const testOrder = {
+  id: 1,
+  userId: 1,
+  items: [
+    {
+      productId: 1,
+      quantity: 2,
+      price: 999.99,
+      name: "Smartphone XYZ"
+    }
+  ],
+  subtotal: 1999.98,
+  shipping: 15.00,
+  discount: 0,
+  total: 2014.98,
+  status: "pending",
+  shippingAddress: {
+    street: "Rua das Flores, 123",
+    city: "São Paulo",
+    state: "SP",
+    zipCode: "01234-567"
+  },
+  paymentMethod: "credit_card",
+  createdAt: "2024-01-15T10:30:00Z"
+};
+```
+
+</details>
+
+**Produto Sem Estoque**
+```javascript
+const outOfStockProduct = {
+  ...testProduct,
+  id: 2,
+  name: "Produto Esgotado",
+  stock: 0,
+  isActive: false
+};
+```
+
+#### Dados de Carrinho para Testes
+
+**Carrinho com Itens**
+```javascript
+const testCart = {
+  id: 1,
+  userId: 1,
+  items: [
+    {
+      productId: 1,
+      quantity: 2,
+      price: 1299.99,
+      total: 2599.98
+    },
+    {
+      productId: 2,
+      quantity: 1,
+      price: 299.99,
+      total: 299.99
+    }
+  ],
+  subtotal: 2899.97,
+  shipping: 15.00,
+  total: 2914.97,
+  coupon: null
+};
+```
+
+**Carrinho Vazio**
+```javascript
+const emptyCart = {
+  id: 1,
+  userId: 1,
+  items: [],
+  subtotal: 0,
+  shipping: 0,
+  total: 0,
+  coupon: null
+};
+```
+
+#### Dados de Pedido para Testes
+
+**Pedido Completo**
+```javascript
+const testOrder = {
+  id: 1,
+  userId: 1,
+  status: "PENDENTE",
+  items: [
+    {
+      productId: 1,
+      quantity: 2,
+      price: 1299.99,
+      total: 2599.98
+    }
+  ],
+  subtotal: 2599.98,
+  shipping: 15.00,
+  total: 2614.98,
+  shippingAddress: {
+    street: "Rua das Flores, 123",
+    city: "São Paulo",
+    state: "SP",
+    zipCode: "01234-567"
+  },
+  paymentMethod: "CREDIT_CARD",
+  createdAt: "2024-01-15T10:30:00Z",
+  updatedAt: "2024-01-15T10:30:00Z"
+};
+```
+
+
+### Cobertura de Testes
+
+A cobertura mínima estabelecida é de 80% para branches, functions, lines e statements. Os testes são executados automaticamente em cada commit através de GitHub Actions, garantindo que novas funcionalidades sejam testadas adequadamente.
+
+### Execução dos Testes
+
+```bash
+# Executar todos os testes
+npm test
+
+# Executar testes com cobertura
+npm run test:coverage
+
+# Executar testes E2E
+npm run test:e2e
+
+# Executar testes em modo watch
+npm run test:watch
+```
+
 
 # Referências
 
