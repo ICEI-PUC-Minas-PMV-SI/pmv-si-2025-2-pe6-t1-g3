@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Smartphone XYZ Pro",
+    "description": "Smartphone com tela de 6.1 polegadas",
+    "price": 1299.99,
+    "stock": 25,
+    "category": "Eletrônicos",
+    "images": ["https://example.com/product1.jpg"],
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "name": "Tablet ABC",
+    "description": "Tablet com tela de 10 polegadas",
+    "price": 599.99,
+    "stock": 15,
+    "category": "Eletrônicos",
+    "images": ["https://example.com/product2.jpg"],
+    "isActive": true
+  }
+]

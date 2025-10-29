@@ -619,11 +619,6 @@ A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes co
 - Contraste de cores deve atender WCAG 2.1 AA
 - Screen readers devem conseguir navegar pelo conteúdo
 
-**Teste de Performance**
-- Página deve carregar em menos de 3 segundos
-- Imagens devem ter lazy loading implementado
-- Produtos devem carregar progressivamente
-- Banner deve carregar primeiro (prioridade visual)
 
 **Teste por Tipo de Usuário**
 - **Usuário não logado**: Deve exibir produtos públicos e opções de login
@@ -808,11 +803,6 @@ A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes co
 - Totais devem ser anunciados por screen readers
 - Contraste deve atender WCAG 2.1 AA
 
-**Teste de Performance**
-- Atualizações de quantidade devem ser instantâneas
-- Cálculos devem ser feitos localmente quando possível
-- Deve persistir dados no localStorage
-- Deve sincronizar com servidor em background
 
 **Teste por Tipo de Usuário**
 - **Usuário não logado**: Deve permitir adicionar itens temporariamente
@@ -872,11 +862,6 @@ A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes co
 - Informações de estoque devem ser anunciadas
 - Contraste deve atender WCAG 2.1 AA
 
-**Teste de Performance**
-- Imagens devem ter lazy loading
-- Página deve carregar em menos de 3 segundos
-- Produtos relacionados devem carregar progressivamente
-- Zoom deve ser otimizado para performance
 
 **Teste por Tipo de Usuário**
 - **Usuário não logado**: Deve exibir produto público
@@ -930,11 +915,6 @@ A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes co
 - Contador deve ser anunciado por screen readers
 - Contraste deve atender WCAG 2.1 AA
 
-**Teste de Performance**
-- Lista deve carregar rapidamente
-- Operações de remoção devem ser instantâneas
-- Filtros devem ser otimizados
-- Deve persistir dados no localStorage
 
 **Teste por Tipo de Usuário**
 - **Cliente**: Deve exibir favoritos pessoais
@@ -999,11 +979,6 @@ A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes co
 - Operações críticas devem ser confirmadas
 - Logs de ações devem ser mantidos
 
-**Teste de Performance**
-- Dashboard deve carregar em menos de 5 segundos
-- Gráficos devem ser otimizados
-- Tabelas devem ter paginação
-- Filtros devem ser otimizados
 
 **Teste por Tipo de Usuário**
 - **Fornecedor**: Deve ter acesso apenas aos próprios produtos
@@ -1062,11 +1037,6 @@ A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes co
 - Navegação por teclado deve funcionar
 - Screen readers devem conseguir navegar
 
-**Teste de Performance**
-- Página deve carregar rapidamente
-- Imagens devem ter lazy loading
-- Conteúdo deve ser otimizado
-- Formulário deve enviar dados eficientemente
 
 **Teste por Tipo de Usuário**
 - **Todos os usuários**: Deve ter acesso completo à página

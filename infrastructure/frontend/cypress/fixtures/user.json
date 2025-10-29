@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "name": "João Silva",
+  "email": "teste@email.com",
+  "phone": "(11) 99999-9999",
+  "addresses": [
+    {
+      "id": 1,
+      "street": "Rua das Flores, 123",
+      "city": "São Paulo",
+      "state": "SP",
+      "zipCode": "01234-567",
+      "isDefault": true
+    }
+  ]
+}
