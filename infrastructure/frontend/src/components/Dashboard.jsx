@@ -10,6 +10,7 @@ const Dashboard = () => {
   const categories = [
     {
       name: "Eletrônicos",
+      slug: "eletronicos",
       description: "Tecnologia de ponta para seu dia a dia",
       icon: "🔌",
       items: "500+ produtos",
@@ -17,6 +18,7 @@ const Dashboard = () => {
     },
     {
       name: "Fashion",
+      slug: "fashion",
       description: "Roupas e acessórios para todos os estilos",
       icon: "👕",
       items: "300+ produtos",
@@ -24,6 +26,7 @@ const Dashboard = () => {
     },
     {
       name: "Casa",
+      slug: "casa",
       description: "Tudo para deixar sua casa mais bonita",
       icon: "🏠",
       items: "200+ produtos",
@@ -31,6 +34,7 @@ const Dashboard = () => {
     },
     {
       name: "Esportes",
+      slug: "esportes",
       description: "Equipamentos para sua vida ativa",
       icon: "⚽",
       items: "150+ produtos",
@@ -110,7 +114,7 @@ const Dashboard = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category, index) => (
-              <div key={index} className={`p-6 rounded-lg border-2 ${category.color} hover:shadow-lg transition-all cursor-pointer group`}>
+              <Link key={index} to={`/category/${category.slug}`} className={`p-6 rounded-lg border-2 ${category.color} hover:shadow-lg transition-all cursor-pointer group block`}>
                 <div className="text-4xl mb-4">{category.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{category.name}</h3>
                 <p className="text-gray-600 mb-3">{category.description}</p>
@@ -120,7 +124,7 @@ const Dashboard = () => {
                     Explorar <FiArrowRight className="ml-1 w-4 h-4" />
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

@@ -13,6 +13,7 @@ import Login from "./components/Auth/Login";
 import Likedproducts from "./components/Likedproducts";
 import ProductDetails from "./components/ProductDetails";
 import SearchResults from "./components/SearchResults";
+import Category from "./components/Category";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/aboutus" element={<Aboutus />} />
               <Route path="/favorites" element={<Likedproducts />} />
               <Route path="/product/:productId" element={<ProductDetails />} />
+              <Route path="/category/:categorySlug" element={<Category />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/register" element={<Register />} />
