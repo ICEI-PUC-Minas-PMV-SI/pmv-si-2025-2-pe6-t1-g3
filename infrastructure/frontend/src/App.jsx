@@ -14,6 +14,7 @@ import Likedproducts from "./components/Likedproducts";
 import ProductDetails from "./components/ProductDetails";
 import SearchResults from "./components/SearchResults";
 import Category from "./components/Category";
+import Products from "./components/Products";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/products" element={<Products />} />
               <Route path="/search" element={<SearchResults />} />
               <Route path="/account" element={<Account />} />
               <Route path="/aboutus" element={<Aboutus />} />
