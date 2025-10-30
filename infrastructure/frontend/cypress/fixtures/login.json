@@ -1,0 +1,9 @@
+{
+  "user": {
+    "id": 1,
+    "name": "João Silva",
+    "email": "teste@email.com",
+    "role": "CLIENT"
+  },
+  "token": "mock-jwt-token"
+}
