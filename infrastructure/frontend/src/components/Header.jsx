@@ -5,6 +5,7 @@ import { FiShoppingCart, FiUser, FiMenu, FiX, FiHeart, FiLogOut } from "react-ic
 import { MdAdminPanelSettings } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
 import SearchDropdown from "./UI/SearchDropdown";
+import Button from "./UI/Button";
 import zabbixLogo from "../assets/zabbixLogo.png";
 
 function Header() {
@@ -49,29 +50,36 @@ function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-            <Link 
-              to="/category/eletronicos" 
+            <Link
+              to="/search?category=ELETRÔNICOS"
               className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
             >
               Eletrônicos
             </Link>
-            
-            <Link 
-              to="/category/fashion" 
+
+            <Link
+              to="/search?category=FASHION"
               className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
             >
               Fashion
             </Link>
-            
-            <Link 
-              to="/category/casa" 
+
+            <Link
+              to="/search?category=CASA"
               className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
             >
               Casa
             </Link>
-            
-            <Link 
-              to="/aboutus" 
+
+            <Link
+              to="/search?category=ESPORTES"
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            >
+              Esportes
+            </Link>
+
+            <Link
+              to="/aboutus"
               className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
             >
               Sobre
@@ -177,32 +185,40 @@ function Header() {
             </div>
             
             <div className="flex flex-col space-y-3 px-4">
-              <Link 
-                to="/category/eletronicos" 
+              <Link
+                to="/search?category=ELETRÔNICOS"
                 className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
                 Eletrônicos
               </Link>
-              
-              <Link 
-                to="/category/fashion" 
+
+              <Link
+                to="/search?category=FASHION"
                 className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
                 Fashion
               </Link>
-              
-              <Link 
-                to="/category/casa" 
+
+              <Link
+                to="/search?category=CASA"
                 className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
                 Casa
               </Link>
-              
-              <Link 
-                to="/aboutus" 
+
+              <Link
+                to="/search?category=ESPORTES"
+                className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
+                onClick={closeMenu}
+              >
+                Esportes
+              </Link>
+
+              <Link
+                to="/aboutus"
                 className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
