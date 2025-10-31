@@ -103,7 +103,7 @@ const Dashboard = () => {
               >
                 <div className="space-y-4">
                   <h3 className="text-xl font-normal text-gray-900">
-                    {category.label}
+                    {category.name}
                   </h3>
                   <p className="text-sm text-gray-500">
                     {category.description}
@@ -229,7 +229,7 @@ const Dashboard = () => {
             error={error}
           />
         </div>
-      </section>
+      </div>
     </div>
   );
 };
