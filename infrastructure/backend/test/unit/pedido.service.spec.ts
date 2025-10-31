@@ -42,7 +42,14 @@ describe('PedidoService', () => {
       // Assert
       expect(prismaService.pedido.findFirst).toHaveBeenCalledWith({
         where: { CODPED: +buscarDto.CODPED },
-        include: { ITENSPEDIDO: true, ENDERECO: true },
+        include: { 
+          ITENSPEDIDO: { 
+            include: { 
+              Produtos: true 
+            } 
+          }, 
+          ENDERECO: true 
+        },
       });
       expect(result).toEqual(mockOrder);
     });
@@ -72,7 +79,15 @@ describe('PedidoService', () => {
       // Assert
       expect(prismaService.pedido.findMany).toHaveBeenCalledWith({
         where: { CODPES: +listarDto.CODPES },
-        include: { ITENSPEDIDO: true, ENDERECO: true },
+        orderBy: { DATAINC: 'desc' },
+        include: { 
+          ITENSPEDIDO: { 
+            include: { 
+              Produtos: true 
+            } 
+          }, 
+          ENDERECO: true 
+        },
       });
       expect(result).toEqual(mockOrders);
     });
@@ -119,7 +134,10 @@ describe('PedidoService', () => {
         ...newOrder,
         SUBTOTAL: 59.98,
         VALORTOTAL: 69.98,
-        ITENSPEDIDO: cadastrarDto.ITENS,
+        ITENSPEDIDO: cadastrarDto.ITENS.map(item => ({
+          ...item,
+          Produtos: mockProduct,
+        })),
         ENDERECO: mockAddress,
       };
 
@@ -142,14 +160,14 @@ describe('PedidoService', () => {
       });
 
       expect(prismaService.produtos.findFirst).toHaveBeenCalledWith({
-        where: { CODPROD: cadastrarDto.ITENS[0].CODPROD },
+        where: { CODPROD: +cadastrarDto.ITENS[0].CODPROD },
       });
 
       expect(prismaService.itensPedido.create).toHaveBeenCalledWith({
         data: {
           CODPED: newOrder.CODPED,
-          CODPROD: cadastrarDto.ITENS[0].CODPROD,
-          TAMANHO: cadastrarDto.ITENS[0].TAMANHO,
+          CODPROD: +cadastrarDto.ITENS[0].CODPROD,
+          TAMANHO: cadastrarDto.ITENS[0].TAMANHO || null,
           QTD: +cadastrarDto.ITENS[0].QTD,
         },
       });
@@ -160,7 +178,14 @@ describe('PedidoService', () => {
           SUBTOTAL: expect.closeTo(59.98, 2),
           VALORTOTAL: expect.closeTo(69.98, 2),
         },
-        include: { ITENSPEDIDO: true, ENDERECO: true },
+        include: { 
+          ITENSPEDIDO: { 
+            include: { 
+              Produtos: true 
+            } 
+          }, 
+          ENDERECO: true 
+        },
       });
 
       expect(result).toEqual(updatedOrder);
@@ -178,7 +203,7 @@ describe('PedidoService', () => {
 
       // Act & Assert
       await expect(service.cadastrar(invalidDto)).rejects.toThrow(
-        new HttpException('A propriedade ITENS deve ser um array.', HttpStatus.INTERNAL_SERVER_ERROR)
+        new HttpException('A propriedade ITENS deve ser um array.', HttpStatus.BAD_REQUEST)
       );
     });
 
@@ -193,7 +218,23 @@ describe('PedidoService', () => {
 
       // Act & Assert
       await expect(service.cadastrar(invalidDto)).rejects.toThrow(
-        new HttpException('A propriedade ITENS deve ser um array.', HttpStatus.INTERNAL_SERVER_ERROR)
+        new HttpException('A propriedade ITENS deve ser um array.', HttpStatus.BAD_REQUEST)
+      );
+    });
+
+    it('should throw error when ITENS array is empty', async () => {
+      // Arrange
+      const invalidDto = {
+        CODPES: 1,
+        CODEND: 1,
+        DESCONTO: 0,
+        FRETE: 10.00,
+        ITENS: [],
+      };
+
+      // Act & Assert
+      await expect(service.cadastrar(invalidDto)).rejects.toThrow(
+        new HttpException('O pedido deve conter pelo menos um item.', HttpStatus.BAD_REQUEST)
       );
     });
   });
@@ -239,15 +280,15 @@ describe('PedidoService', () => {
       });
 
       expect(prismaService.produtos.findFirst).toHaveBeenCalledWith({
-        where: { CODPROD: atualizarDto.ITENS[0].CODPROD },
+        where: { CODPROD: +atualizarDto.ITENS[0].CODPROD },
       });
 
       expect(prismaService.itensPedido.create).toHaveBeenCalledWith({
         data: {
           CODPED: existingOrder.CODPED,
-          CODPROD: atualizarDto.ITENS[0].CODPROD,
-          TAMANHO: atualizarDto.ITENS[0].TAMANHO,
-          QTD: atualizarDto.ITENS[0].QTD,
+          CODPROD: +atualizarDto.ITENS[0].CODPROD,
+          TAMANHO: atualizarDto.ITENS[0].TAMANHO || null,
+          QTD: +atualizarDto.ITENS[0].QTD,
         },
       });
 
@@ -257,7 +298,14 @@ describe('PedidoService', () => {
           SUBTOTAL: 89.97,
           VALORTOTAL: 99.97,
         },
-        include: { ITENSPEDIDO: true, ENDERECO: true },
+        include: { 
+          ITENSPEDIDO: { 
+            include: { 
+              Produtos: true 
+            } 
+          }, 
+          ENDERECO: true 
+        },
       });
 
       expect(result).toEqual(updatedOrder);
