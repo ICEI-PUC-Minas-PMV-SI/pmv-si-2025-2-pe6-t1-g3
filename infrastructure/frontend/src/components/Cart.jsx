@@ -100,17 +100,17 @@ const Cart = () => {
       try {
         const decodedToken = jwtDecode(token);
         const orderData = {
-          CODEND: selectedAddress,
+          CODEND: +selectedAddress,
           CODPES: decodedToken.CODPES,
           DESCONTO: 0,
           FRETE: 0,
           ITENS: cartItems.map((item) => ({
             CODPROD: item.CODPROD,
-            TAMANHO: item.TAMANHO,
-            QTD: item.QTD,
-          })),
+            TAMANHO: item.size || item.TAMANHO || null,
+            QTD: item.quantity || item.QTD || 1,
+          })).filter(item => item.CODPROD && item.QTD > 0),
         };
-        console.log(orderData);
+        console.log('Dados do pedido:', orderData);
 
         await orderService2.createOrder(orderData);
 
@@ -130,9 +130,11 @@ const Cart = () => {
           progress: undefined,
         });
       } catch (error) {
-        toast.error("Erro ao enviar pedido. Tente mais tarde!", {
+        console.error('Erro ao criar pedido:', error);
+        const errorMessage = error.response?.data?.message || error.message || "Erro ao enviar pedido. Tente mais tarde!";
+        toast.error(errorMessage, {
           position: "bottom-right",
-          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
+          autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,

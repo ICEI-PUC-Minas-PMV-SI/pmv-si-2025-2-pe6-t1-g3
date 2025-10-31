@@ -49,15 +49,33 @@ function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-            {categories.map((cat) => (
-              <Link
-                key={cat.name}
-                to={`/search?category=${cat.name}`}
-                className="text-xs uppercase tracking-wider text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                {cat.label}
-              </Link>
-            ))}
+            <Link 
+              to="/category/eletronicos" 
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            >
+              Eletrônicos
+            </Link>
+            
+            <Link 
+              to="/category/fashion" 
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            >
+              Fashion
+            </Link>
+            
+            <Link 
+              to="/category/casa" 
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            >
+              Casa
+            </Link>
+            
+            <Link 
+              to="/aboutus" 
+              className="text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            >
+              Sobre
+            </Link>
           </div>
 
           {/* Desktop Search */}
@@ -160,7 +178,7 @@ function Header() {
             
             <div className="flex flex-col space-y-3 px-4">
               <Link 
-                to="/" 
+                to="/category/eletronicos" 
                 className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
@@ -168,7 +186,7 @@ function Header() {
               </Link>
               
               <Link 
-                to="/" 
+                to="/category/fashion" 
                 className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
@@ -176,7 +194,7 @@ function Header() {
               </Link>
               
               <Link 
-                to="/" 
+                to="/category/casa" 
                 className="text-gray-700 hover:text-gray-900 transition-colors py-2 text-sm font-medium"
                 onClick={closeMenu}
               >
