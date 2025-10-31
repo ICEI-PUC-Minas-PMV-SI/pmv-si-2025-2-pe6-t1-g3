@@ -229,7 +229,7 @@ const Dashboard = () => {
             error={error}
           />
         </div>
-      </div>
+      </section>
     </div>
   );
 };
