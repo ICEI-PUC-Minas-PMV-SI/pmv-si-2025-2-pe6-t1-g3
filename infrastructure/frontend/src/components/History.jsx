@@ -158,17 +158,17 @@ const History = () => {
                 </div>
 
                 {/* Order Items */}
-                {pedido.ITENS && pedido.ITENS.length > 0 && (
+                {pedido.ITENSPEDIDO && pedido.ITENSPEDIDO.length > 0 && (
                   <div className="mt-6">
                     <h4 className="text-sm font-medium text-gray-900 mb-3">Itens do Pedido</h4>
                     <div className="space-y-3">
-                      {pedido.ITENS.map((item, index) => (
+                      {pedido.ITENSPEDIDO.map((item, index) => (
                         <div key={index} className="flex items-center space-x-4 py-3 border-b border-gray-100 last:border-b-0">
                           <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
-                            {item.PRODUTO?.IMAGEM ? (
+                            {item.Produtos?.IMAGEM ? (
                               <img 
-                                src={item.PRODUTO.IMAGEM} 
-                                alt={item.PRODUTO.PRODUTO}
+                                src={item.Produtos.IMAGEM} 
+                                alt={item.Produtos.PRODUTO}
                                 className="w-full h-full object-cover rounded-lg"
                               />
                             ) : (
@@ -179,7 +179,7 @@ const History = () => {
                           </div>
                           <div className="flex-1">
                             <h5 className="text-sm font-medium text-gray-900">
-                              {item.PRODUTO?.PRODUTO || 'Produto não encontrado'}
+                              {item.Produtos?.PRODUTO || 'Produto não encontrado'}
                             </h5>
                             <p className="text-sm text-gray-600">
                               Quantidade: {item.QTD}

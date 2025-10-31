@@ -1,15 +1,24 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/services/prisma.service';
 
 @Injectable()
 export class PedidoService {
+  private readonly logger = new Logger(PedidoService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async buscar(body: any) {
     try {
       const buscaPedido = await this.prisma.pedido.findFirst({
         where: { CODPED: +body.CODPED },
-        include: { ITENSPEDIDO: true, ENDERECO: true },
+        include: { 
+          ITENSPEDIDO: { 
+            include: { 
+              Produtos: true 
+            } 
+          }, 
+          ENDERECO: true 
+        },
       });
 
       if (!buscaPedido) {
@@ -27,7 +36,15 @@ export class PedidoService {
       if (body.CODPES) {
         const buscaPedido = await this.prisma.pedido.findMany({
           where: { CODPES: +body.CODPES },
-          include: { ITENSPEDIDO: true, ENDERECO: true },
+          orderBy: { DATAINC: 'desc' },
+          include: { 
+            ITENSPEDIDO: { 
+              include: { 
+                Produtos: true 
+              } 
+            }, 
+            ENDERECO: true 
+          },
         });
 
         return buscaPedido;
@@ -45,43 +62,117 @@ export class PedidoService {
   async cadastrar(body: any) {
     try {
       if (!body.ITENS || !Array.isArray(body.ITENS)) {
-        throw new Error('A propriedade ITENS deve ser um array.');
+        throw new HttpException(
+          'A propriedade ITENS deve ser um array.',
+          HttpStatus.BAD_REQUEST,
+        );
       }
+
+      if (body.ITENS.length === 0) {
+        throw new HttpException(
+          'O pedido deve conter pelo menos um item.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      this.logger.log(
+        `Criando pedido para usuário ${body.CODPES} com ${body.ITENS.length} itens`,
+      );
 
       const cadastrar = await this.prisma.pedido.create({
         data: {
           CODEND: +body.CODEND,
           CODPES: +body.CODPES,
-          DESCONTO: body.DESCONTO,
-          FRETE: body.FRETE,
+          DESCONTO: body.DESCONTO || 0,
+          FRETE: body.FRETE || 0,
         },
       });
 
       let subtotal = 0;
+      const produtosNaoEncontrados: number[] = [];
+
       for (let index = 0; index < body.ITENS.length; index++) {
         const item = body.ITENS[index];
 
+        // Normalizar CODPROD e QTD
+        const codprod = +item.CODPROD;
+        const qtd = +item.QTD;
+
+        if (!codprod || !qtd || qtd <= 0 || isNaN(codprod) || isNaN(qtd)) {
+          this.logger.warn(
+            `Item ${index} inválido: CODPROD=${item.CODPROD}, QTD=${item.QTD}`,
+          );
+          continue;
+        }
+
         const buscaProduto = await this.prisma.produtos.findFirst({
-          where: { CODPROD: item.CODPROD },
+          where: { CODPROD: codprod },
         });
 
-        if (buscaProduto) {
-          const valorqtd = buscaProduto.VALOR * item.QTD;
-          subtotal += valorqtd;
+        if (!buscaProduto) {
+          this.logger.error(
+            `Produto com CODPROD ${codprod} não encontrado`,
+          );
+          produtosNaoEncontrados.push(codprod);
+          continue;
         }
+
+        if (!buscaProduto.VALOR || buscaProduto.VALOR <= 0) {
+          this.logger.warn(
+            `Produto ${codprod} possui valor inválido: ${buscaProduto.VALOR}`,
+          );
+        }
+
+        const valorqtd = buscaProduto.VALOR * qtd;
+        subtotal += valorqtd;
+
+        this.logger.debug(
+          `Item ${index}: Produto ${codprod}, QTD ${qtd}, Valor unitário ${buscaProduto.VALOR}, Subtotal item: ${valorqtd}`,
+        );
 
         await this.prisma.itensPedido.create({
           data: {
             CODPED: cadastrar.CODPED,
-            CODPROD: item.CODPROD,
-            TAMANHO: item.TAMANHO,
-            QTD: +item.QTD,
+            CODPROD: codprod,
+            TAMANHO: item.TAMANHO || null,
+            QTD: qtd,
           },
         });
       }
 
-      let valortotal = 0;
-      valortotal = subtotal - cadastrar.DESCONTO + cadastrar.FRETE;
+      if (produtosNaoEncontrados.length > 0) {
+        this.logger.error(
+          `Produtos não encontrados: ${produtosNaoEncontrados.join(', ')}`,
+        );
+        throw new HttpException(
+          `Um ou mais produtos não foram encontrados: ${produtosNaoEncontrados.join(', ')}`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (subtotal <= 0) {
+        this.logger.error(
+          `Subtotal inválido calculado: ${subtotal}. Verifique os valores dos produtos.`,
+        );
+        throw new HttpException(
+          'Não foi possível calcular o valor do pedido. Verifique se os produtos possuem valores válidos.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const desconto = cadastrar.DESCONTO || 0;
+      const frete = cadastrar.FRETE || 0;
+      const valortotal = subtotal - desconto + frete;
+
+      if (valortotal < 0) {
+        this.logger.warn(
+          `Valor total negativo calculado: ${valortotal}. Subtotal: ${subtotal}, Desconto: ${desconto}, Frete: ${frete}`,
+        );
+      }
+
+      this.logger.log(
+        `Pedido ${cadastrar.CODPED} - Subtotal: ${subtotal}, Desconto: ${desconto}, Frete: ${frete}, Total: ${valortotal}`,
+      );
 
       const atualiza = await this.prisma.pedido.update({
         where: { CODPED: cadastrar.CODPED },
@@ -89,17 +180,49 @@ export class PedidoService {
           SUBTOTAL: subtotal,
           VALORTOTAL: valortotal,
         },
-        include: { ITENSPEDIDO: true, ENDERECO: true },
+        include: {
+          ITENSPEDIDO: {
+            include: {
+              Produtos: true,
+            },
+          },
+          ENDERECO: true,
+        },
       });
+
+      // Validação final dos valores salvos
+      if (!atualiza.SUBTOTAL || !atualiza.VALORTOTAL) {
+        this.logger.error(
+          `Valores não foram salvos corretamente no pedido ${cadastrar.CODPED}`,
+        );
+        throw new HttpException(
+          'Erro ao salvar valores do pedido',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
 
       return atualiza;
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      this.logger.error(`Erro ao cadastrar pedido: ${error.message}`, error.stack);
+      throw new HttpException(
+        error.message || 'Erro interno do servidor',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async atualizar(body: any) {
     try {
+      if (!body.ITENS || !Array.isArray(body.ITENS)) {
+        throw new HttpException(
+          'A propriedade ITENS deve ser um array.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const buscapedido = await this.prisma.pedido.findFirst({
         where: { CODPED: +body.CODPED },
       });
@@ -107,35 +230,100 @@ export class PedidoService {
       if (!buscapedido) {
         throw new HttpException('Pedido não encontrado', HttpStatus.NOT_FOUND);
       }
+
+      this.logger.log(
+        `Atualizando pedido ${body.CODPED} com ${body.ITENS.length} itens`,
+      );
+
       await this.prisma.itensPedido.deleteMany({
         where: { CODPED: buscapedido.CODPED },
       });
 
       let subtotal = 0;
+      const produtosNaoEncontrados: number[] = [];
+
       for (let index = 0; index < body.ITENS.length; index++) {
         const item = body.ITENS[index];
 
+        // Normalizar CODPROD e QTD
+        const codprod = +item.CODPROD;
+        const qtd = +item.QTD;
+
+        if (!codprod || !qtd || qtd <= 0 || isNaN(codprod) || isNaN(qtd)) {
+          this.logger.warn(
+            `Item ${index} inválido: CODPROD=${item.CODPROD}, QTD=${item.QTD}`,
+          );
+          continue;
+        }
+
         const buscaProduto = await this.prisma.produtos.findFirst({
-          where: { CODPROD: item.CODPROD },
+          where: { CODPROD: codprod },
         });
 
-        if (buscaProduto) {
-          const valorqtd = buscaProduto.VALOR * item.QTD;
-          subtotal += valorqtd;
+        if (!buscaProduto) {
+          this.logger.error(
+            `Produto com CODPROD ${codprod} não encontrado`,
+          );
+          produtosNaoEncontrados.push(codprod);
+          continue;
         }
+
+        if (!buscaProduto.VALOR || buscaProduto.VALOR <= 0) {
+          this.logger.warn(
+            `Produto ${codprod} possui valor inválido: ${buscaProduto.VALOR}`,
+          );
+        }
+
+        const valorqtd = buscaProduto.VALOR * qtd;
+        subtotal += valorqtd;
+
+        this.logger.debug(
+          `Item ${index}: Produto ${codprod}, QTD ${qtd}, Valor unitário ${buscaProduto.VALOR}, Subtotal item: ${valorqtd}`,
+        );
 
         await this.prisma.itensPedido.create({
           data: {
             CODPED: buscapedido.CODPED,
-            CODPROD: item.CODPROD,
-            TAMANHO: item.TAMANHO,
-            QTD: item.QTD,
+            CODPROD: codprod,
+            TAMANHO: item.TAMANHO || null,
+            QTD: qtd,
           },
         });
       }
 
-      let valortotal = 0;
-      valortotal = subtotal - buscapedido.DESCONTO + buscapedido.FRETE;
+      if (produtosNaoEncontrados.length > 0) {
+        this.logger.error(
+          `Produtos não encontrados: ${produtosNaoEncontrados.join(', ')}`,
+        );
+        throw new HttpException(
+          `Um ou mais produtos não foram encontrados: ${produtosNaoEncontrados.join(', ')}`,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (subtotal <= 0) {
+        this.logger.error(
+          `Subtotal inválido calculado: ${subtotal}. Verifique os valores dos produtos.`,
+        );
+        throw new HttpException(
+          'Não foi possível calcular o valor do pedido. Verifique se os produtos possuem valores válidos.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const desconto = buscapedido.DESCONTO || 0;
+      const frete = buscapedido.FRETE || 0;
+      const valortotal = subtotal - desconto + frete;
+
+      if (valortotal < 0) {
+        this.logger.warn(
+          `Valor total negativo calculado: ${valortotal}. Subtotal: ${subtotal}, Desconto: ${desconto}, Frete: ${frete}`,
+        );
+      }
+
+      this.logger.log(
+        `Pedido ${body.CODPED} atualizado - Subtotal: ${subtotal}, Desconto: ${desconto}, Frete: ${frete}, Total: ${valortotal}`,
+      );
 
       const atualiza = await this.prisma.pedido.update({
         where: { CODPED: buscapedido.CODPED },
@@ -143,12 +331,40 @@ export class PedidoService {
           SUBTOTAL: subtotal,
           VALORTOTAL: valortotal,
         },
-        include: { ITENSPEDIDO: true, ENDERECO: true },
+        include: {
+          ITENSPEDIDO: {
+            include: {
+              Produtos: true,
+            },
+          },
+          ENDERECO: true,
+        },
       });
+
+      // Validação final dos valores salvos
+      if (!atualiza.SUBTOTAL || !atualiza.VALORTOTAL) {
+        this.logger.error(
+          `Valores não foram salvos corretamente no pedido ${body.CODPED}`,
+        );
+        throw new HttpException(
+          'Erro ao salvar valores do pedido',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
 
       return atualiza;
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      this.logger.error(
+        `Erro ao atualizar pedido: ${error.message}`,
+        error.stack,
+      );
+      throw new HttpException(
+        error.message || 'Erro interno do servidor',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
