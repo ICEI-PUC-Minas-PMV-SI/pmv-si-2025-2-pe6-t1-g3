@@ -51,7 +51,7 @@ export const orderService = {
 export const userService = {
   getProfile: (codpes) => api.get('/pessoa/buscar', { params: { CODPES: codpes } }),
   updateProfile: (data) => api.put('/pessoa/atualizar', data),
-  changePassword: (data) => api.post('/alterar/senha', data),
+  changePassword: (data) => api.post('/auth/change-password', data),
 };
 
 export const addressService = {
@@ -64,6 +64,12 @@ export const orderService2 = {
   getOrdersByUser: (codpes) => api.get('/pedido/listar', { params: { CODPES: codpes } }),
   createOrder: (order) => api.post('/pedido/cadastrar', order),
   getOrderById: (id) => api.get(`/pedido/buscar`, { params: { CODPED: id } }),
+};
+
+export const reviewService = {
+  getReviews: (productId) => api.get('/avaliacao/listar', { params: { CODPROD: productId } }),
+  createReview: (review) => api.post('/avaliacao/criar', review),
+  checkPurchase: (productId) => api.get('/avaliacao/verificar-compra', { params: { CODPROD: productId } }),
 };
 
 export const externalService = {

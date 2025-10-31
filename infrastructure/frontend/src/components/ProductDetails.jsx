@@ -3,12 +3,12 @@ import { useCart } from '../contexts/CartContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { productService } from '../services/api';
-import Card from './UI/Card';
-import Button from './UI/Button';
 import LoadingSpinner from './UI/LoadingSpinner';
-import { FiMinus, FiPlus, FiShoppingCart, FiEdit, FiTrash2, FiHeart } from 'react-icons/fi';
+import SizeGuide from './Product/SizeGuide';
+import { FiMinus, FiPlus, FiEdit, FiTrash2, FiHeart } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProductReviews from './Product/ProductReviews';
 
 const ProductDetails = () => {
   const { addToCart } = useCart();
@@ -22,10 +22,19 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
 
-  // Helper function to check if product is from FASHION category
+  // Helper function to check if product is from MODA category
   const isFashionProduct = () => {
-    return product?.CATEGORIAS?.CATEGORIA === 'FASHION';
+    return product?.CATEGORIAS?.CATEGORIA === 'MODA';
+  };
+
+  // Helper function to check if product is footwear
+  const isFootwear = () => {
+    const footwearKeywords = ['tênis', 'tenis', 'sapato', 'sandália', 'sandalia', 'bota', 'chinelo'];
+    return footwearKeywords.some(keyword =>
+      product?.PRODUTO?.toLowerCase().includes(keyword)
+    );
   };
 
   useEffect(() => {
@@ -117,17 +126,18 @@ const ProductDetails = () => {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card>
-          <div className="text-center py-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {error || 'Produto não encontrado'}
-            </h2>
-            <Button onClick={() => navigate('/')}>
-              Voltar à loja
-            </Button>
-          </div>
-        </Card>
+      <div className="min-h-screen flex items-center justify-center bg-white px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-xl font-light text-gray-900 mb-6">
+            {error || 'Produto não encontrado'}
+          </h2>
+          <button
+            onClick={() => navigate('/')}
+            className="px-8 py-3 bg-black text-white text-sm uppercase tracking-wider hover:bg-gray-800 transition-colors"
+          >
+            Voltar à loja
+          </button>
+        </div>
       </div>
     );
   }
@@ -139,15 +149,24 @@ const ProductDetails = () => {
     }).format(price);
   };
 
-  const sizes = ['P', 'M', 'G', 'GG'];
+  // Define sizes based on product type
+  const getSizes = () => {
+    if (isFootwear()) {
+      return ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44'];
+    }
+    return ['PP', 'P', 'M', 'G', 'GG'];
+  };
+
+  const sizes = getSizes();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-white">
       <ToastContainer />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="overflow-hidden">
-            <div className="aspect-square relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+          {/* Product Image */}
+          <div className="relative">
+            <div className="aspect-square bg-gray-50 overflow-hidden">
               <img
                 src={product.IMAGEM}
                 alt={product.PRODUTO}
@@ -156,148 +175,160 @@ const ProductDetails = () => {
                   e.target.src = '/api/placeholder/600/600';
                 }}
               />
-              <button
-                onClick={handleToggleFavorite}
-                className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
-              >
-                <FiHeart
-                  size={22}
-                  className={isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'}
-                />
-
-              </button>
             </div>
-          </Card>
+            <button
+              onClick={handleToggleFavorite}
+              className="absolute top-4 right-4 p-2 transition-opacity hover:opacity-70"
+              aria-label="Adicionar aos favoritos"
+            >
+              <FiHeart
+                size={20}
+                className={isFavorite ? 'text-black fill-black' : 'text-gray-400'}
+              />
+            </button>
+          </div>
 
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          {/* Product Info */}
+          <div className="lg:pt-8">
+            <div className="space-y-6">
+              {/* Category */}
+              <div className="text-xs tracking-wider text-gray-500 uppercase">
+                {product.CATEGORIAS?.CATEGORIA || 'Produto'}
+              </div>
+
+              {/* Title */}
+              <h1 className="text-2xl lg:text-3xl font-light text-gray-900 tracking-tight">
                 {product.PRODUTO}
               </h1>
-              <p className="text-gray-600 text-lg">
-                {product.DESCRICAO}
-              </p>
-            </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-3xl font-bold text-gray-900">
+              {/* Price */}
+              <div className="text-2xl font-normal text-gray-900">
                 {formatPrice(product.VALOR)}
-              </span>
-              <span className="text-sm text-gray-500">
-                {product.ESTOQUE} em estoque
-              </span>
-            </div>
+              </div>
 
-            {/* Conditionally render size selector only for FASHION products */}
-            {isFashionProduct() && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tamanho
-                </label>
-                <div className="flex space-x-2">
-                  {sizes.map((size) => (
+              {/* Description */}
+              {product.DESCRICAO && (
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {product.DESCRICAO}
+                </p>
+              )}
+
+              {/* Size selector for fashion products */}
+              {isFashionProduct() && (
+                <div className="pt-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs uppercase tracking-wider text-gray-900">
+                      Tamanho
+                    </span>
                     <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 border rounded-lg font-medium transition-colors ${
-                        selectedSize === size
-                          ? 'border-gray-900 bg-gray-900 text-white'
-                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                      }`}
+                      onClick={() => setShowSizeGuide(true)}
+                      className="text-xs text-gray-500 hover:text-gray-900 underline transition-colors"
                     >
-                      {size}
+                      Guia de tamanhos
                     </button>
-                  ))}
+                  </div>
+                  <div className={`grid gap-2 ${isFootwear() ? 'grid-cols-5' : 'grid-cols-5'}`}>
+                    {sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`py-3 text-sm border transition-colors ${
+                          selectedSize === size
+                            ? 'border-black bg-black text-white'
+                            : 'border-gray-300 text-gray-900 hover:border-gray-900'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                  {!selectedSize && (
+                    <p className="text-xs text-gray-400 mt-2">
+                      Selecione um tamanho
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* Quantity */}
+              <div className="pt-4">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs uppercase tracking-wider text-gray-900">
+                    Quantidade
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {product.ESTOQUE} disponíveis
+                  </span>
+                </div>
+                <div className="inline-flex items-center border border-gray-300">
+                  <button
+                    onClick={() => handleQuantityChange(-1)}
+                    disabled={quantity <= 1}
+                    className="px-4 py-3 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <FiMinus size={14} />
+                  </button>
+                  <span className="px-6 py-3 text-sm min-w-[60px] text-center border-x border-gray-300">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => handleQuantityChange(1)}
+                    disabled={quantity >= product.ESTOQUE}
+                    className="px-4 py-3 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <FiPlus size={14} />
+                  </button>
                 </div>
               </div>
-            )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Quantidade
-              </label>
-              <div className="flex items-center space-x-3">
-                <Button
-                  variant="outline"
-                  size="small"
-                  onClick={() => handleQuantityChange(-1)}
-                  disabled={quantity <= 1}
+              {/* Add to cart button */}
+              <div className="pt-6">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={(isFashionProduct() && !selectedSize) || product.ESTOQUE === 0}
+                  className="w-full bg-black text-white py-4 text-sm uppercase tracking-wider hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                 >
-                  <FiMinus size={16} />
-                </Button>
-                <span className="px-4 py-2 text-lg font-medium">
-                  {quantity}
-                </span>
-                <Button
-                  variant="outline"
-                  size="small"
-                  onClick={() => handleQuantityChange(1)}
-                  disabled={quantity >= product.ESTOQUE}
-                >
-                  <FiPlus size={16} />
-                </Button>
+                  {product.ESTOQUE === 0 ? 'Indisponível' : 'Adicionar ao carrinho'}
+                </button>
               </div>
-            </div>
 
-            <div className="space-y-3">
-              <Button
-                className="w-full flex items-center justify-center"
-                onClick={handleAddToCart}
-                disabled={(isFashionProduct() && !selectedSize) || product.ESTOQUE === 0}
-              >
-                <FiShoppingCart className="mr-2" size={18} />
-                Adicionar ao carrinho
-              </Button>
-
+              {/* Admin actions */}
               {user?.isAdmin && (
-                <div className="flex space-x-3">
-                  <Button
-                    variant="outline"
-                    className="flex-1 flex items-center justify-center"
-                    onClick={handleEdit}
-                  >
-                    <FiEdit className="mr-2" size={16} />
-                    Editar
-                  </Button>
-                  <Button
-                    variant="danger"
-                    className="flex-1 flex items-center justify-center"
-                    onClick={handleDelete}
-                  >
-                    <FiTrash2 className="mr-2" size={16} />
-                    Excluir
-                  </Button>
+                <div className="pt-6 border-t border-gray-200">
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleEdit}
+                      className="flex-1 flex items-center justify-center gap-2 py-2 text-xs text-gray-600 border border-gray-300 hover:border-gray-900 transition-colors"
+                    >
+                      <FiEdit size={14} />
+                      Editar
+                    </button>
+                    <button
+                      onClick={handleDelete}
+                      className="flex-1 flex items-center justify-center gap-2 py-2 text-xs text-red-600 border border-red-300 hover:border-red-600 transition-colors"
+                    >
+                      <FiTrash2 size={14} />
+                      Excluir
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
-
-            <div className="pt-6 border-t border-gray-200">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-medium text-gray-900 mb-2">
-                    Categoria
-                  </h3>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                    {product.CATEGORIAS?.CATEGORIA || 'Sem categoria'}
-                  </span>
-                </div>
-
-                <div>
-                  <h3 className="font-medium text-gray-900 mb-2">
-                    Informações do produto
-                  </h3>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>Material de alta qualidade</li>
-                    <li>Confortável para uso diário</li>
-                    <li>Fácil manutenção</li>
-                    <li>Envio rápido e seguro</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
+
+        {/* Reviews section */}
+        <div className="mt-16 lg:mt-24 max-w-4xl">
+          <ProductReviews productId={productId} />
+        </div>
       </div>
+
+      {/* Size Guide Modal */}
+      <SizeGuide
+        isOpen={showSizeGuide}
+        onClose={() => setShowSizeGuide(false)}
+        isFootwear={isFootwear()}
+      />
     </div>
   );
 };

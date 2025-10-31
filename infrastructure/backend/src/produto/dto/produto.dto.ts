@@ -55,9 +55,9 @@ export class CreateProductDto {
   VALOR: number;
 
   @ApiProperty({
-    description: 'Categoria do produto (MASCULINO ou FEMININO)',
-    example: 'MASCULINO',
-    enum: ['MASCULINO', 'FEMININO'],
+    description: 'Categoria do produto',
+    example: 'MODA',
+    enum: ['MODA', 'ELETRONICOS', 'CASA', 'ESPORTES'],
   })
   @IsString({ message: 'CATEGORIA deve ser uma string' })
   @IsNotEmpty({ message: 'CATEGORIA é obrigatória' })
@@ -124,9 +124,9 @@ export class UpdateProductDto {
   VALOR?: number;
 
   @ApiProperty({
-    description: 'Categoria do produto (MASCULINO ou FEMININO)',
-    example: 'MASCULINO',
-    enum: ['MASCULINO', 'FEMININO'],
+    description: 'Categoria do produto',
+    example: 'MODA',
+    enum: ['MODA', 'ELETRONICOS', 'CASA', 'ESPORTES'],
     required: false,
   })
   @IsString({ message: 'CATEGORIA deve ser uma string' })
@@ -167,9 +167,9 @@ export class FindProductDto {
 
 export class ListProductsDto {
   @ApiProperty({
-    description: 'Categoria para filtrar (MASCULINO ou FEMININO)',
-    example: 'MASCULINO',
-    enum: ['MASCULINO', 'FEMININO'],
+    description: 'Categoria para filtrar produtos',
+    example: 'MODA',
+    enum: ['MODA', 'ELETRONICOS', 'CASA', 'ESPORTES'],
     required: false,
   })
   @IsString({ message: 'CATEGORIA deve ser uma string' })

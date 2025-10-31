@@ -133,8 +133,8 @@ const Aboutus = () => {
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
             Explore nossa coleção e encontre peças que combinem com seu estilo único.
           </p>
-          <a 
-            href="/products" 
+          <a
+            href="/"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800 transition-colors"
           >
             Ver Produtos
