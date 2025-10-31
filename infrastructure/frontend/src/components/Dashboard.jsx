@@ -1,6 +1,6 @@
 import { useProducts } from "../hooks/useProducts";
 import ProductGrid from "./Product/ProductGrid";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiShoppingBag, FiStar, FiTrendingUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
@@ -194,7 +194,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       <div className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
