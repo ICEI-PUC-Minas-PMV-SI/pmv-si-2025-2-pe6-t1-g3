@@ -15,9 +15,9 @@ const Profile = () => {
   });
 
   const [userPassword, setUserPassword] = useState({
-    EMAIL: "",
-    SENHA: "",
-    CONFIRMAR_SENHA: "",
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [passwordError, setPasswordError] = useState("");
@@ -45,10 +45,6 @@ const Profile = () => {
             },
           };
 
-          setUserPassword({
-            ...userPassword,
-            EMAIL: decodedToken.EMAIL,
-          });
 
           const response = await userService.getProfile(decodedToken.CODPES);
           const user = response.data;
@@ -109,38 +105,46 @@ const Profile = () => {
 
   const updatePassword = async (e) => {
     e.preventDefault();
-    if (userPassword.SENHA !== userPassword.CONFIRMAR_SENHA) {
+    if (userPassword.newPassword !== userPassword.confirmPassword) {
       setPasswordError("As senhas não coincidem. Por favor, verifique.");
       return;
-    } else {
-      setIsLoading(true);
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const passwordData = { ...userPassword };
-          delete passwordData.CONFIRMAR_SENHA;
-          const res = await userService.changePassword(passwordData);
-          toast.success("Senha atualizada com sucesso!", {
-            position: "bottom-right",
-            autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          setPasswordError("");
-          setUserPassword({ ...userPassword, SENHA: "", CONFIRMAR_SENHA: "" });
-        } catch (error) {
-          console.error("Erro ao atualizar a senha:", error);
-          toast.error("Erro ao atualizar senha!", {
-            position: "bottom-right",
-            autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
-          });
-        } finally {
-          setIsLoading(false);
-        }
-      }
+    }
+
+    setPasswordError("");
+    setIsLoading(true);
+
+    try {
+      const passwordData = {
+        oldPassword: userPassword.oldPassword,
+        newPassword: userPassword.newPassword
+      };
+
+      await userService.changePassword(passwordData);
+
+      toast.success("Senha atualizada com sucesso!", {
+        position: "bottom-right",
+        autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setUserPassword({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: ""
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar a senha:", error);
+      const errorMessage = error.response?.data?.message || "Erro ao atualizar senha!";
+      toast.error(errorMessage, {
+        position: "bottom-right",
+        autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -260,12 +264,27 @@ const Profile = () => {
             <form onSubmit={updatePassword} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Senha Atual
+                </label>
+                <input
+                  type="password"
+                  name="oldPassword"
+                  value={userPassword.oldPassword}
+                  onChange={handleSetPassword}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
+                  placeholder="Digite sua senha atual"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Nova Senha
                 </label>
                 <input
                   type="password"
-                  name="SENHA"
-                  value={userPassword.SENHA}
+                  name="newPassword"
+                  value={userPassword.newPassword}
                   onChange={handleSetPassword}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
                   placeholder="Digite sua nova senha"
@@ -279,8 +298,8 @@ const Profile = () => {
                 </label>
                 <input
                   type="password"
-                  name="CONFIRMAR_SENHA"
-                  value={userPassword.CONFIRMAR_SENHA}
+                  name="confirmPassword"
+                  value={userPassword.confirmPassword}
                   onChange={handleSetPassword}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
                   placeholder="Confirme sua nova senha"

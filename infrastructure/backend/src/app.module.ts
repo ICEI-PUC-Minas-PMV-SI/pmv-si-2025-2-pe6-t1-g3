@@ -18,6 +18,8 @@ import { ProdutoController } from './produto/produto.controller';
 import { PedidoController } from './pedido/pedido.controller';
 import { PedidoService } from './pedido/pedido.service';
 import { HealthController } from './health/health.controller';
+import { AvaliacaoController } from './avaliacao/avaliacao.controller';
+import { AvaliacaoService } from './avaliacao/avaliacao.service';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { HealthController } from './health/health.controller';
     ProdutoController,
     PedidoController,
     HealthController,
+    AvaliacaoController,
   ],
   providers: [
     AppService,
@@ -47,6 +50,7 @@ import { HealthController } from './health/health.controller';
     PessoaService,
     ProdutoService,
     PedidoService,
+    AvaliacaoService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

@@ -30,7 +30,8 @@ model Pessoa {
   USUARIO   Login      @relation(fields: [CODUSU], references: [CODUSU])
   ENDERECOS Endereco[]
 
-  PEDIDOS Pedido[]
+  PEDIDOS    Pedido[]
+  AVALIACOES Avaliacao[]
 
   @@map("INFOS")
 }
@@ -74,8 +75,26 @@ model Produtos {
   CODCAT     Int?
 
   ITENSPEDIDO ItensPedido[]
+  AVALIACOES  Avaliacao[]
 
   @@map("PRODUTO")
+}
+
+model Avaliacao {
+  CODAVA Int @id @default(autoincrement())
+
+  NOTA       Int
+  COMENTARIO String?
+
+  PRODUTO Produtos @relation(fields: [CODPROD], references: [CODPROD])
+  CODPROD Int
+  PESSOA  Pessoa   @relation(fields: [CODPES], references: [CODPES])
+  CODPES  Int
+
+  DATAINC DateTime @default(now())
+
+  @@unique([CODPROD, CODPES])
+  @@map("AVALIACOES")
 }
 
 model Pedido {

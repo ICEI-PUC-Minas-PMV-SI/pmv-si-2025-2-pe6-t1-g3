@@ -17,7 +17,7 @@ const ProductManagement = ({ onProductChange }) => {
     IMAGEM: '',
     VALOR: '',
     ESTOQUE: '',
-    CATEGORIA: 'MASCULINO'
+    CATEGORIA: 'MODA'
   });
   const [errors, setErrors] = useState({});
 
@@ -110,7 +110,7 @@ const ProductManagement = ({ onProductChange }) => {
       IMAGEM: product.IMAGEM || '',
       VALOR: product.VALOR.toString(),
       ESTOQUE: product.ESTOQUE.toString(),
-      CATEGORIA: product.CATEGORIAS?.CATEGORIA || 'MASCULINO'
+      CATEGORIA: product.CATEGORIAS?.CATEGORIA || 'MODA'
     });
     setShowForm(true);
   };
@@ -136,7 +136,7 @@ const ProductManagement = ({ onProductChange }) => {
       IMAGEM: '',
       VALOR: '',
       ESTOQUE: '',
-      CATEGORIA: 'MASCULINO'
+      CATEGORIA: 'MODA'
     });
     setEditingProduct(null);
     setShowForm(false);
@@ -199,8 +199,10 @@ const ProductManagement = ({ onProductChange }) => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                   required
                 >
-                  <option value="MASCULINO">Masculino</option>
-                  <option value="FEMININO">Feminino</option>
+                  <option value="MODA">Moda</option>
+                  <option value="ELETRONICOS">Eletrônicos</option>
+                  <option value="CASA">Casa</option>
+                  <option value="ESPORTES">Esportes</option>
                 </select>
               </div>
             </div>

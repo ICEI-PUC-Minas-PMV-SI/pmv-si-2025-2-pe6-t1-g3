@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
 import { Link, useNavigate } from "react-router-dom";
-import { FiShoppingCart, FiUser, FiLogOut, FiMenu, FiX, FiSearch, FiHeart } from "react-icons/fi";
+import { FiShoppingCart, FiUser, FiMenu, FiX, FiHeart, FiLogOut } from "react-icons/fi";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
-import Button from "./UI/Button";
 import SearchDropdown from "./UI/SearchDropdown";
 import zabbixLogo from "../assets/zabbixLogo.png";
 
@@ -24,22 +23,31 @@ function Header() {
     setIsMenuOpen(false);
   };
 
+  const categories = [
+    { name: 'FASHION', label: 'Moda' },
+    { name: 'ELETRÔNICOS', label: 'Eletrônicos' },
+    { name: 'CASA', label: 'Casa' },
+    { name: 'ESPORTES', label: 'Esportes' }
+  ];
+
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link 
-            to="/" 
-            className="flex items-center hover:opacity-80 transition-opacity"
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex items-center"
             onClick={closeMenu}
           >
-            <img 
-              src={zabbixLogo} 
-              alt="Zabbix" 
-              className="h-10 w-auto"
+            <img
+              src={zabbixLogo}
+              alt="Zabbix Store"
+              className="h-8 w-auto"
             />
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             <Link 
               to="/category/eletronicos" 
@@ -70,74 +78,77 @@ function Header() {
             </Link>
           </div>
 
-          <div className="hidden md:flex flex-1 max-w-lg mx-8">
-            <SearchDropdown 
-              placeholder="Buscar produtos..."
+          {/* Desktop Search */}
+          <div className="hidden md:flex flex-1 max-w-md mx-8">
+            <SearchDropdown
+              placeholder="Buscar..."
               className="w-full"
             />
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Icons */}
+          <div className="hidden md:flex items-center space-x-6">
             {isAuthenticated ? (
               <>
-                <Link 
-                  to="/account" 
-                  className="text-gray-600 hover:text-gray-900 transition-colors p-2"
+                <Link
+                  to="/account"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                   title="Perfil"
                 >
-                  <FiUser size={20} />
+                  <FiUser size={18} />
                 </Link>
-                
-                <Link 
+
+                <Link
                   to="/favorites"
-                  className="text-gray-600 hover:text-gray-900 transition-colors p-2"
-                  title="Favoritos">
-                  <FiHeart size={20} />
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                  title="Favoritos"
+                >
+                  <FiHeart size={18} />
                 </Link>
-                
-                <Link 
-                  to="/cart" 
-                  className="text-gray-600 hover:text-gray-900 transition-colors p-2 relative"
+
+                <Link
+                  to="/cart"
+                  className="text-gray-600 hover:text-gray-900 transition-colors relative"
                   title="Carrinho"
                 >
-                  <FiShoppingCart size={20} />
+                  <FiShoppingCart size={18} />
                   {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
+                    <span className="absolute -top-2 -right-2 bg-black text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
                       {cartCount}
                     </span>
                   )}
                 </Link>
-                
+
                 {user?.isAdmin && (
-                  <Link 
-                    to="/admin" 
-                    className="text-gray-600 hover:text-gray-900 transition-colors p-2"
+                  <Link
+                    to="/admin"
+                    className="text-gray-600 hover:text-gray-900 transition-colors"
                     title="Admin"
                   >
-                    <MdAdminPanelSettings size={20} />
+                    <MdAdminPanelSettings size={18} />
                   </Link>
                 )}
-                
-                <Button 
-                  variant="outline" 
-                  size="small" 
+
+                <button
                   onClick={handleLogout}
-                  className="ml-2"
+                  className="text-xs uppercase tracking-wider text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Sair
-                </Button>
+                </button>
               </>
             ) : (
-              <div className="flex items-center space-x-3">
-                <Link to="/register">
-                  <Button variant="outline" size="small">
-                    Cadastrar
-                  </Button>
+              <div className="flex items-center space-x-6">
+                <Link
+                  to="/login"
+                  className="text-xs uppercase tracking-wider text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Entrar
                 </Link>
-                <Link to="/login">
-                  <Button variant="primary" size="small">
-                    Entrar
-                  </Button>
+                <Link
+                  to="/register"
+                  className="text-xs uppercase tracking-wider text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Cadastrar
                 </Link>
               </div>
             )}
@@ -146,10 +157,10 @@ function Header() {
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="md:hidden p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 text-gray-600 hover:text-gray-900"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            {isMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
         </div>
 

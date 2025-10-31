@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { useScrollToTop } from "./hooks/useScrollToTop";
 import Dashboard from "./components/Dashboard";
 import Account from "./components/Account";
 import AdminDashboard from "./components/Admin/AdminDashboard";
@@ -16,10 +17,16 @@ import SearchResults from "./components/SearchResults";
 import Category from "./components/Category";
 import Products from "./components/Products";
 
+function ScrollToTop() {
+  useScrollToTop();
+  return null;
+}
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-1">

@@ -119,8 +119,10 @@ const ProductRegistration = () => {
             <label htmlFor="category">Categoria:</label>
             <select name="CATEGORIA" id="category" value={product.CATEGORIA} onChange={handleChange} className="form-control" required>
               <option value="">Selecione a categoria</option>
-              <option value="FEMININO">FEMININO</option>
-              <option value="MASCULINO">MASCULINO</option>
+              <option value="MODA">Moda</option>
+              <option value="ELETRONICOS">Eletrônicos</option>
+              <option value="CASA">Casa</option>
+              <option value="ESPORTES">Esportes</option>
             </select>
           </div>
           <div className="form-group">

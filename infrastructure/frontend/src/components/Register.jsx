@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { authService } from '../services/api';
-import Input from './UI/Input';
-import Button from './UI/Button';
-import Card from './UI/Card';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +15,7 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -124,213 +121,211 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">
+    <div className="min-h-screen bg-white flex items-center justify-center py-12 px-4">
+      <div className="max-w-2xl w-full">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-light text-gray-900 tracking-tight mb-2">
             Criar Conta
-          </h2>
-          <p className="mt-2 text-gray-600">
-            Cadastre-se para acessar sua conta
+          </h1>
+          <p className="text-sm text-gray-600">
+            Cadastre-se para acessar a loja
           </p>
         </div>
 
-        <Card>
-          <div className="mb-8">
-            <div className="flex items-center justify-between text-sm font-medium text-gray-600 mb-4">
-              <span className="flex items-center">
-                <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-xs mr-2">1</span>
-                Pessoais
-              </span>
-              <span className="flex items-center">
-                <span className="w-6 h-6 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-xs mr-2">2</span>
-                Contato
-              </span>
-              <span className="flex items-center">
-                <span className="w-6 h-6 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-xs mr-2">3</span>
-                Segurança
-              </span>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {errors.general && (
+            <div className={`border p-4 text-sm ${
+              errors.general.type === 'success'
+                ? 'border-black bg-black text-white'
+                : 'border-gray-300 bg-gray-50 text-gray-900'
+            }`}>
+              {errors.general.message}
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-gray-900 h-2 rounded-full transition-all duration-300" style={{width: '33.33%'}}></div>
+          )}
+
+          <div className="space-y-6">
+            <div className="border-b border-gray-200 pb-3">
+              <h2 className="text-xs uppercase tracking-wider text-gray-900">
+                Informações Pessoais
+              </h2>
             </div>
-          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {errors.general && (
-              <div className={`border rounded-lg p-4 ${
-                errors.general.type === 'success' 
-                  ? 'bg-green-50 border-green-200' 
-                  : 'bg-red-50 border-red-200'
-              }`}>
-                <p className={`text-sm ${
-                  errors.general.type === 'success' 
-                    ? 'text-green-600' 
-                    : 'text-red-600'
-                }`}>
-                  {errors.general.message}
-                </p>
-              </div>
-            )}
-
-            <div className="space-y-4">
-              <div className="border-b border-gray-200 pb-2">
-                <h3 className="text-lg font-medium text-gray-900 flex items-center">
-                  <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
-                    1
-                  </span>
-                  Informações Pessoais
-                </h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Dados básicos para identificação
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  label="Nome"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="nome" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                  Nome
+                </label>
+                <input
                   type="text"
                   name="NOME"
+                  id="nome"
                   value={formData.NOME}
                   onChange={handleChange}
-                  error={errors.NOME}
                   placeholder="Seu primeiro nome"
                   required
+                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
                 />
+                {errors.NOME && (
+                  <p className="mt-1 text-xs text-gray-600">{errors.NOME}</p>
+                )}
+              </div>
 
-                <Input
-                  label="Sobrenome"
+              <div>
+                <label htmlFor="sobrenome" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                  Sobrenome
+                </label>
+                <input
                   type="text"
                   name="SOBRENOME"
+                  id="sobrenome"
                   value={formData.SOBRENOME}
                   onChange={handleChange}
-                  error={errors.SOBRENOME}
                   placeholder="Seu sobrenome"
                   required
+                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
                 />
+                {errors.SOBRENOME && (
+                  <p className="mt-1 text-xs text-gray-600">{errors.SOBRENOME}</p>
+                )}
               </div>
+            </div>
 
-              <Input
-                label="CPF"
+            <div>
+              <label htmlFor="cpf" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                CPF
+              </label>
+              <input
                 type="text"
                 name="CPF"
+                id="cpf"
                 value={formData.CPF}
                 onChange={handleChange}
-                error={errors.CPF}
                 placeholder="000.000.000-00"
                 required
+                className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
               />
+              {errors.CPF && (
+                <p className="mt-1 text-xs text-gray-600">{errors.CPF}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="border-b border-gray-200 pb-3">
+              <h2 className="text-xs uppercase tracking-wider text-gray-900">
+                Contato
+              </h2>
             </div>
 
-            <div className="space-y-4">
-              <div className="border-b border-gray-200 pb-2">
-                <h3 className="text-lg font-medium text-gray-900 flex items-center">
-                  <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
-                    2
-                  </span>
-                  Informações de Contato
-                </h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Como podemos entrar em contato com você
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  label="Email"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="email" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                  Email
+                </label>
+                <input
                   type="email"
                   name="EMAIL"
+                  id="email"
                   value={formData.EMAIL}
                   onChange={handleChange}
-                  error={errors.EMAIL}
                   placeholder="seu@email.com"
                   required
+                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
                 />
+                {errors.EMAIL && (
+                  <p className="mt-1 text-xs text-gray-600">{errors.EMAIL}</p>
+                )}
+              </div>
 
-                <Input
-                  label="Telefone"
+              <div>
+                <label htmlFor="telefone" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                  Telefone
+                </label>
+                <input
                   type="tel"
                   name="TELEFONE"
+                  id="telefone"
                   value={formData.TELEFONE}
                   onChange={handleChange}
-                  error={errors.TELEFONE}
                   placeholder="(11) 99999-9999"
                   required
+                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
                 />
+                {errors.TELEFONE && (
+                  <p className="mt-1 text-xs text-gray-600">{errors.TELEFONE}</p>
+                )}
               </div>
             </div>
+          </div>
 
-            <div className="space-y-4">
-              <div className="border-b border-gray-200 pb-2">
-                <h3 className="text-lg font-medium text-gray-900 flex items-center">
-                  <span className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
-                    3
-                  </span>
-                  Segurança da Conta
-                </h3>
-                <p className="mt-1 text-sm text-gray-600">
-                  Crie uma senha forte para proteger sua conta
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  label="Senha"
+          <div className="space-y-6">
+            <div className="border-b border-gray-200 pb-3">
+              <h2 className="text-xs uppercase tracking-wider text-gray-900">
+                Segurança
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="senha" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                  Senha
+                </label>
+                <input
                   type="password"
                   name="SENHA"
+                  id="senha"
                   value={formData.SENHA}
                   onChange={handleChange}
-                  error={errors.SENHA}
                   placeholder="Mínimo 6 caracteres"
                   required
+                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
                 />
+                {errors.SENHA && (
+                  <p className="mt-1 text-xs text-gray-600">{errors.SENHA}</p>
+                )}
+              </div>
 
-                <Input
-                  label="Confirmar Senha"
+              <div>
+                <label htmlFor="confSenha" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                  Confirmar Senha
+                </label>
+                <input
                   type="password"
                   name="confSenha"
+                  id="confSenha"
                   value={formData.confSenha}
                   onChange={handleChange}
-                  error={errors.confSenha}
                   placeholder="Digite a senha novamente"
                   required
+                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
                 />
-              </div>
-              
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-blue-900 mb-2">
-                  Dicas para uma senha forte:
-                </h4>
-                <ul className="text-sm text-blue-700 space-y-1">
-                  <li>Pelo menos 6 caracteres</li>
-                  <li>Use letras maiúsculas e minúsculas</li>
-                  <li>Inclua números e símbolos</li>
-                  <li>Evite informações pessoais óbvias</li>
-                </ul>
+                {errors.confSenha && (
+                  <p className="mt-1 text-xs text-gray-600">{errors.confSenha}</p>
+                )}
               </div>
             </div>
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Cadastrando...' : 'Criar Conta'}
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">
-              Já tem uma conta?{' '}
-              <Link 
-                to="/login" 
-                className="text-gray-900 font-medium hover:text-gray-700 transition-colors"
-              >
-                Fazer login
-              </Link>
-            </p>
           </div>
-        </Card>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-black text-white py-4 text-sm uppercase tracking-wider hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          >
+            {isLoading ? 'Cadastrando...' : 'Criar Conta'}
+          </button>
+        </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-600">
+            Já tem uma conta?{' '}
+            <Link
+              to="/login"
+              className="text-gray-900 hover:text-gray-600 transition-colors underline"
+            >
+              Fazer login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

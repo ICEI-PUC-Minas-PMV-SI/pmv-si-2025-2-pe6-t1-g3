@@ -24,6 +24,8 @@ export class ProdutoService {
 
   async listar(body: any) {
     try {
+      let buscaProduto;
+
       if (body.CATEGORIA) {
         const categoria = await this.prisma.categorias.findFirst({
           where: { CATEGORIA: body.CATEGORIA },
@@ -36,20 +38,38 @@ export class ProdutoService {
           );
         }
 
-        const buscaProduto = await this.prisma.produtos.findMany({
+        buscaProduto = await this.prisma.produtos.findMany({
           where: { CODCAT: categoria.CODCAT },
-          include: { CATEGORIAS: true },
+          include: {
+            CATEGORIAS: true,
+            AVALIACOES: true,
+          },
         });
-
-        return buscaProduto;
       } else {
-        const buscaProduto = await this.prisma.produtos.findMany({
+        buscaProduto = await this.prisma.produtos.findMany({
           where: {},
-          include: { CATEGORIAS: true },
+          include: {
+            CATEGORIAS: true,
+            AVALIACOES: true,
+          },
         });
-
-        return buscaProduto;
       }
+
+      // Calculate average rating for each product
+      const produtosComMedia = buscaProduto.map(produto => {
+        const avaliacoes = produto.AVALIACOES || [];
+        const mediaNotas = avaliacoes.length > 0
+          ? avaliacoes.reduce((sum, av) => sum + av.NOTA, 0) / avaliacoes.length
+          : 0;
+
+        return {
+          ...produto,
+          MEDIA_AVALIACOES: Math.round(mediaNotas * 10) / 10,
+          TOTAL_AVALIACOES: avaliacoes.length,
+        };
+      });
+
+      return produtosComMedia;
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

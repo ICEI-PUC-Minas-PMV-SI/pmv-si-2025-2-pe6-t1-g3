@@ -131,14 +131,17 @@ const CartProductsLiked = () => {
       </div>
 
       <div className="space-y-4">
-        {products.map((product) => (
+        {products.filter(product => product.IMAGEM).map((product) => (
           <div key={product.CODPROD} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-start space-x-4">
               <div className="flex-shrink-0">
-                <img 
-                  src={product.IMAGEM} 
+                <img
+                  src={product.IMAGEM}
                   alt={product.PRODUTO}
                   className="w-20 h-20 object-cover rounded-lg"
+                  onError={(e) => {
+                    e.target.parentElement.parentElement.parentElement.style.display = 'none';
+                  }}
                 />
               </div>
 

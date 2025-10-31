@@ -2,9 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { authService } from '../../services/api';
-import Input from '../UI/Input';
-import Button from '../UI/Button';
-import Card from '../UI/Card';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +10,7 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -33,26 +30,26 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.EMAIL) {
       newErrors.EMAIL = 'Email é obrigatório';
     } else if (!/\S+@\S+\.\S+/.test(formData.EMAIL)) {
       newErrors.EMAIL = 'Email inválido';
     }
-    
+
     if (!formData.SENHA) {
       newErrors.SENHA = 'Senha é obrigatória';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
     try {
       const response = await authService.login(formData);
@@ -68,68 +65,82 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-light text-gray-900 tracking-tight mb-2">
             Entrar
-          </h2>
-          <p className="mt-2 text-gray-600">
+          </h1>
+          <p className="text-sm text-gray-600">
             Acesse sua conta
           </p>
         </div>
 
-        <Card>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {errors.general && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-red-600 text-sm">{errors.general}</p>
-              </div>
-            )}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {errors.general && (
+            <div className="border border-gray-300 bg-gray-50 p-4 text-sm text-gray-900">
+              {errors.general}
+            </div>
+          )}
 
-            <Input
-              label="Email"
+          <div>
+            <label htmlFor="email" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+              Email
+            </label>
+            <input
               type="email"
               name="EMAIL"
+              id="email"
               value={formData.EMAIL}
               onChange={handleChange}
-              error={errors.EMAIL}
               placeholder="seu@email.com"
               required
+              className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
             />
+            {errors.EMAIL && (
+              <p className="mt-1 text-xs text-gray-600">{errors.EMAIL}</p>
+            )}
+          </div>
 
-            <Input
-              label="Senha"
+          <div>
+            <label htmlFor="senha" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+              Senha
+            </label>
+            <input
               type="password"
               name="SENHA"
+              id="senha"
               value={formData.SENHA}
               onChange={handleChange}
-              error={errors.SENHA}
               placeholder="Digite sua senha"
               required
+              className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
             />
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Entrando...' : 'Entrar'}
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">
-              Não tem uma conta?{' '}
-              <Link 
-                to="/register" 
-                className="text-gray-900 font-medium hover:text-gray-700 transition-colors"
-              >
-                Cadastre-se
-              </Link>
-            </p>
+            {errors.SENHA && (
+              <p className="mt-1 text-xs text-gray-600">{errors.SENHA}</p>
+            )}
           </div>
-        </Card>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-black text-white py-4 text-sm uppercase tracking-wider hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          >
+            {isLoading ? 'Entrando...' : 'Entrar'}
+          </button>
+        </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-600">
+            Não tem uma conta?{' '}
+            <Link
+              to="/register"
+              className="text-gray-900 hover:text-gray-600 transition-colors underline"
+            >
+              Cadastre-se
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

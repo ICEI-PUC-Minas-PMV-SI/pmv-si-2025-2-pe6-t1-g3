@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "../css/Login.css";
-import Inputs from "./fragments/Inputs";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const retrievetoken = localStorage.getItem("token");
   useEffect(() => {
@@ -32,6 +31,9 @@ const Login = () => {
 
   const handleValidateLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setMessage(null);
+
     try {
       const res = await api.post('/login', loginData);
       if (res.status === 201 || res.status === 204 || res.status === 200) {
@@ -42,35 +44,100 @@ const Login = () => {
         window.location.reload();
       }
     } catch (error) {
-      if (error.response.status === 404) {
+      if (error.response?.status === 404) {
         setMessage("Usuário ou senha incorretos.");
       } else {
+        setMessage("Erro ao fazer login. Tente novamente.");
         console.error("Erro ao fazer login:", error);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData({ ...loginData, [name]: value });
+    setMessage(null);
   };
 
   return (
-    <div className="container-register">
-      <div className="container-register-form">
-        <form className="form-register-login" onSubmit={handleValidateLogin}>
-          {message && <p className={isSuccess ? "status-success" : "status-error"}>{message}</p>}
-          <h1>Faça login aqui!</h1>
-          <div className="inputs-register">
-            <div className="textfield-register">
-              <Inputs label="Email:" type="text" name="EMAIL" id="email" placeholder="Seu e-mail" onChange={handleChange} required />
-              <Inputs label="Senha:" type="password" name="SENHA" id="senha" placeholder="Sua senha" onChange={handleChange} required />
+    <div className="min-h-screen bg-white flex items-center justify-center py-12 px-4">
+      <div className="max-w-md w-full">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-light text-gray-900 tracking-tight mb-2">
+            Entrar
+          </h1>
+          <p className="text-sm text-gray-600">
+            Acesse sua conta
+          </p>
+        </div>
+
+        <form onSubmit={handleValidateLogin} className="space-y-6">
+          {message && (
+            <div className={`border p-4 text-sm ${
+              isSuccess
+                ? 'border-black bg-black text-white'
+                : 'border-gray-300 bg-gray-50 text-gray-900'
+            }`}>
+              {message}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                name="EMAIL"
+                id="email"
+                value={loginData.EMAIL}
+                onChange={handleChange}
+                placeholder="seu@email.com"
+                required
+                className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="senha" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+                Senha
+              </label>
+              <input
+                type="password"
+                name="SENHA"
+                id="senha"
+                value={loginData.SENHA}
+                onChange={handleChange}
+                placeholder="Sua senha"
+                required
+                className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
+              />
             </div>
           </div>
-          <div className="submit-login">
-            <input type="submit" value="Login" />
-          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-black text-white py-4 text-sm uppercase tracking-wider hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          >
+            {isLoading ? 'Entrando...' : 'Entrar'}
+          </button>
         </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-600">
+            Não tem uma conta?{' '}
+            <Link
+              to="/register"
+              className="text-gray-900 hover:text-gray-600 transition-colors underline"
+            >
+              Cadastre-se
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
