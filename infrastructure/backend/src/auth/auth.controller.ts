@@ -8,7 +8,12 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RegistroDto, ChangePasswordDto } from './dto/login.dto';
+import {
+  LoginDto,
+  RegistroDto,
+  ChangePasswordDto,
+  GoogleLoginDto,
+} from './dto/login.dto';
 import { Public } from './decorators/public.decorator';
 import { AuthGuard } from './auth.guard';
 import { Request } from 'express';
@@ -88,6 +93,32 @@ export class AuthController {
   })
   login(@Body() body: LoginDto) {
     return this.authService.login(body);
+  }
+
+  @Public()
+  @Post('google')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Autenticar usuario com Google',
+    description:
+      'Utiliza a credencial do Google Identity Services para autenticar o usuario e gerar um token JWT',
+    operationId: 'googleLogin',
+  })
+  @ApiBody({ type: GoogleLoginDto })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Login com Google realizado com sucesso',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Token ou email do Google invalido',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Erro ao validar credencial do Google',
+  })
+  loginWithGoogle(@Body() body: GoogleLoginDto) {
+    return this.authService.loginWithGoogle(body);
   }
 
   @Public()

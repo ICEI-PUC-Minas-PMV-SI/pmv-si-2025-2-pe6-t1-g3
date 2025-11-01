@@ -31,6 +31,7 @@ api.interceptors.response.use(
 
 export const authService = {
   login: (credentials) => api.post('/auth/login', credentials),
+  loginWithGoogle: (payload) => api.post('/auth/google', payload),
   register: (userData) => api.post('/auth/registro', userData),
 };
 

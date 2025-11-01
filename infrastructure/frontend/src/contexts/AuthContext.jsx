@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -21,15 +22,16 @@ export const AuthProvider = ({ children }) => {
       try {
         const decodedToken = jwtDecode(token);
         const currentTime = Date.now() / 1000;
-        
+
         if (decodedToken.exp > currentTime) {
+          const email = decodedToken.EMAIL || decodedToken.email;
           setUser({
             id: decodedToken.CODUSU,
-            email: decodedToken.EMAIL,
+            email,
             name: decodedToken.NOME,
             lastName: decodedToken.SOBRENOME,
             role: decodedToken.PERMISSAO,
-            isAdmin: decodedToken.PERMISSAO === 'ADMIN'
+            isAdmin: decodedToken.PERMISSAO === 'ADMIN',
           });
         } else {
           localStorage.removeItem('token');
@@ -45,13 +47,14 @@ export const AuthProvider = ({ children }) => {
   const login = (token) => {
     localStorage.setItem('token', token);
     const decodedToken = jwtDecode(token);
+    const email = decodedToken.EMAIL || decodedToken.email;
     setUser({
       id: decodedToken.CODUSU,
-      email: decodedToken.EMAIL,
+      email,
       name: decodedToken.NOME,
       lastName: decodedToken.SOBRENOME,
       role: decodedToken.PERMISSAO,
-      isAdmin: decodedToken.PERMISSAO === 'ADMIN'
+      isAdmin: decodedToken.PERMISSAO === 'ADMIN',
     });
   };
 
@@ -65,12 +68,13 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     isLoading,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+

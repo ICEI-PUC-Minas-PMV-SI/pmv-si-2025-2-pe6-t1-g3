@@ -29,5 +29,6 @@ export const ENV = {
   GITHUB_REPOSITORY_URL: () => getEnvVar('VITE_GITHUB_REPOSITORY_URL', 'https://github.com/ICEI-PUC-Minas-PMV-SI/pmv-si-2025-2-pe6-t1-g3'),
   TOAST_AUTOCLOSE_DURATION: () => parseInt(getEnvVar('VITE_TOAST_AUTOCLOSE_DURATION', '3000')),
   SEARCH_DEBOUNCE_MS: () => parseInt(getEnvVar('VITE_SEARCH_DEBOUNCE_MS', '500')),
-  CEP_FETCH_DELAY_MS: () => parseInt(getEnvVar('VITE_CEP_FETCH_DELAY_MS', '500'))
+  CEP_FETCH_DELAY_MS: () => parseInt(getEnvVar('VITE_CEP_FETCH_DELAY_MS', '500')),
+  GOOGLE_CLIENT_ID: () => getEnvVar('VITE_GOOGLE_CLIENT_ID', '')
 };
