@@ -490,21 +490,109 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 </details>
 
 ## Tecnologias Utilizadas
-[Lista das tecnologias principais que serão utilizadas no projeto.]
+
+A aplicação foi desenvolvida utilizando um conjunto de tecnologias modernas, visando desempenho, escalabilidade e uma ótima experiência do usuário:
+
+Frontend
+
+- **Figma** — Utilizado para modelagem dos wireframes, prototipação visual e definição da interface da aplicação.
+- **React** — Biblioteca utilizada para construção da interface web e criação de componentes reutilizáveis.
+- **Vite** — Ferramenta de build rápida, oferecendo tempo de desenvolvimento reduzido e otimizações para produção.
+- **TypeScript** — Linguagem com tipagem estática, garantindo mais segurança, previsibilidade e manutenção no código.
+- **Tailwind CSS** — Framework CSS utilitário que possibilita estilização rápida, responsiva e consistente.
+- **Axios / Fetch API** — Camada de comunicação com o backend, responsável pelo consumo das APIs REST, autenticação e envio de dados.
+- **Cypress / Testing Library** — Ferramentas utilizadas para testes de interface e integração, garantindo qualidade e estabilidade da aplicação.
+
 
 ## Considerações de Segurança
 
-[Discuta as considerações de segurança relevantes para a aplicação distribuída, como autenticação, autorização, proteção contra ataques, etc.]
+Como se trata de uma aplicação distribuída, foram implementadas práticas essenciais de segurança para proteger dados e usuários:
+
+- **Autenticação via JWT** com tokens assíncronos e tempo de expiração definido.
+- **Autorização baseada em perfis** (cliente, fornecedor, administrador).
+- **Comunicação via HTTPS** para evitar interceptação de dados sensíveis.
+- **CORS configurado** para permitir acesso apenas de domínios autorizados.
+- **Hash de senhas** utilizando bcrypt ou argon2.
+- **Proteção contra ataques comuns**, como:
+  - **SQL Injection** (mitigado pelo Prisma e validações)
+  - **XSS** (sanitização de entradas e modo estrito do React)
+  - **CSRF** (uso de tokens e cabeçalhos seguros)
+- **Rate Limiting** e bloqueio após tentativas excessivas de login.
+- **Logs e monitoramento** de atividades suspeitas.
 
 ## Implantação
 
-[Instruções para implantar a aplicação distribuída em um ambiente de produção.]
+### Infraestrutura na Hetzner
 
-1. Defina os requisitos de hardware e software necessários para implantar a aplicação em um ambiente de produção.
-2. Escolha uma plataforma de hospedagem adequada, como um provedor de nuvem ou um servidor dedicado.
-3. Configure o ambiente de implantação, incluindo a instalação de dependências e configuração de variáveis de ambiente.
-4. Faça o deploy da aplicação no ambiente escolhido, seguindo as instruções específicas da plataforma de hospedagem.
-5. Realize testes para garantir que a aplicação esteja funcionando corretamente no ambiente de produção.
+A aplicação Zabbix Store está hospedada na Hetzner Cloud, um provedor europeu conhecido pelo excelente custo-benefício. O projeto utiliza um servidor CX21 com 2 vCPUs e 4GB de RAM, configuração adequada para o volume inicial de usuários esperado.
+
+![Configuração Hetzner](img/implementation_hetzner.png)
+
+### Containerização com Docker
+
+O projeto utiliza Docker para garantir consistência entre os ambientes de desenvolvimento e produção. Esta abordagem elimina problemas de compatibilidade e facilita a manutenção da aplicação.
+
+![Configuração Docker](img/implementation_docker.png)
+
+A arquitetura é composta por três containers principais: frontend React, API NestJS e banco de dados PostgreSQL, todos gerenciados através do Docker Compose.
+
+### Automação com GitHub Actions
+
+O projeto implementa um pipeline automatizado que gerencia todo o fluxo desde o desenvolvimento até a produção. A cada alteração na branch principal, o sistema executa testes, constrói as imagens Docker e realiza o deploy automaticamente.
+
+![Pipeline GitHub Actions](img/implementation_github_actions.png)
+
+O processo funciona em três etapas: execução de testes para garantir qualidade, construção e envio das imagens para o DockerHub, e deploy no servidor. Caso alguma etapa falhe, o processo é interrompido automaticamente.
+
+A estratégia de branches é simples: a branch principal sempre reflete o ambiente de produção. O desenvolvimento ocorre em branches de funcionalidade, com merge apenas após aprovação dos testes. Correções urgentes utilizam branches específicas com deploy direto.
+
+### Gestão de Imagens no DockerHub
+
+As imagens Docker do projeto são armazenadas no DockerHub, escolhido pela simplicidade de integração com o GitHub Actions e por ser gratuito para repositórios públicos.
+
+![DockerHub Registry](img/implementation_dockerhub.png)
+
+O sistema mantém duas imagens principais: uma para o frontend React/Vite e outra para a API NestJS.
+
+#### Configuração de Segurança
+
+O pipeline utiliza secrets configurados no GitHub para gerenciar credenciais de acesso ao DockerHub, servidor Hetzner e variáveis sensíveis da aplicação, garantindo que informações confidenciais não sejam expostas no código.
+
+### Configuração do Servidor
+
+A preparação do servidor Hetzner seguiu um processo padrão, iniciando com uma instalação limpa do Ubuntu 24.04. O ambiente foi configurado para receber deploys automatizados através da instalação do Docker e criação de um usuário específico para operações de deploy.
+
+#### Processo de Deploy
+
+![Processo de Deployment](img/implementation_deployment.png)
+
+O deploy ocorre automaticamente quando há alterações na branch principal, seguindo esta sequência:
+
+1. **Execução de testes** - Processo interrompido em caso de falha
+2. **Construção de imagens** - Frontend e backend processados em paralelo
+3. **Envio para DockerHub** - Novas versões disponibilizadas
+4. **Deploy no servidor** - Conexão SSH atualiza os containers
+5. **Verificação** - Health check confirma funcionamento
+
+#### Monitoramento e Manutenção
+
+O sistema implementa monitoramento através de health checks e logs do Docker para acompanhamento em tempo real.
+
+### Vantagens da Solução Implementada
+
+A arquitetura escolhida prioriza simplicidade e confiabilidade, evitando ferramentas complexas desnecessárias para o volume atual da aplicação. O Docker Compose atende às necessidades do projeto sem adicionar complexidade excessiva.
+
+**Benefícios obtidos:**
+- **Deploy contínuo**: Atualizações sem interrupção do serviço
+- **Desenvolvimento ágil**: Ciclo rápido do código até o usuário final
+- **Custo otimizado**: Combinação de Hetzner, DockerHub gratuito e GitHub Actions
+
+**Aspectos de segurança:**
+- Autenticação via chaves SSH
+- Isolamento através de containers
+
+A solução permite que qualquer membro da equipe realize deploys com segurança, desde que os testes sejam aprovados, garantindo confiabilidade no processo de entrega.
+
 
 ## Testes
 
