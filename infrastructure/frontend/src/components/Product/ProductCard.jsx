@@ -21,8 +21,8 @@ const ProductCard = ({ product }) => {
   const discountedPrice = hasDiscount ? price - (price * discount / 100) : price;
 
   const categoryLabel = {
-    'MODA': 'Moda',
-    'ELETRONICOS': 'Eletrônicos',
+    'FASHION': 'Fashion',
+    'ELETRÔNICOS': 'Eletrônicos',
     'CASA': 'Casa',
     'ESPORTES': 'Esportes'
   }[product.CATEGORIAS?.CATEGORIA] || '';
@@ -35,8 +35,9 @@ const ProductCard = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // Check if it's a fashion product and needs size selection
-    if (product.CATEGORIAS?.CATEGORIA === 'MODA') {
+    // Check if product has sizes and needs size selection
+    const hasProductSizes = product.TAMANHOS && product.TAMANHOS !== null;
+    if (hasProductSizes) {
       navigate(`/product/${product.CODPROD}`);
       return;
     }
@@ -112,7 +113,7 @@ const ProductCard = ({ product }) => {
               className="flex-1 bg-white text-gray-900 py-2 px-3 text-xs uppercase tracking-wider hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
             >
               <FiShoppingCart size={14} />
-              {product.CATEGORIAS?.CATEGORIA === 'MODA' ? 'Ver opções' : 'Adicionar'}
+              {(product.TAMANHOS && product.TAMANHOS !== null) ? 'Ver opções' : 'Adicionar'}
             </button>
             <button
               onClick={handleToggleFavorite}

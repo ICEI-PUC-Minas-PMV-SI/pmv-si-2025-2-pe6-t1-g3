@@ -155,7 +155,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 79.99,
       ESTOQUE: 50,
-      CODCAT: categoriaFashion.CODCAT
+      CODCAT: categoriaFashion.CODCAT,
+      TAMANHOS: JSON.stringify(['P', 'M', 'G', 'GG'])
     },
     {
       PRODUTO: 'Jaqueta Jeans Vintage',
@@ -163,7 +164,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1544966503-7cc5ac882d5e?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 189.99,
       ESTOQUE: 25,
-      CODCAT: categoriaFashion.CODCAT
+      CODCAT: categoriaFashion.CODCAT,
+      TAMANHOS: JSON.stringify(['P', 'M', 'G', 'GG'])
     },
     {
       PRODUTO: 'Tênis Esportivo Nike Air',
@@ -171,7 +173,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 399.99,
       ESTOQUE: 30,
-      CODCAT: categoriaFashion.CODCAT
+      CODCAT: categoriaFashion.CODCAT,
+      TAMANHOS: JSON.stringify(['35', '36', '37', '38', '39', '40', '41', '42', '43', '44'])
     },
     {
       PRODUTO: 'Vestido Midi Floral',
@@ -179,7 +182,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 149.99,
       ESTOQUE: 22,
-      CODCAT: categoriaFashion.CODCAT
+      CODCAT: categoriaFashion.CODCAT,
+      TAMANHOS: JSON.stringify(['P', 'M', 'G', 'GG'])
     },
     {
       PRODUTO: 'Moletom Oversize Cinza',
@@ -187,7 +191,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 129.99,
       ESTOQUE: 35,
-      CODCAT: categoriaFashion.CODCAT
+      CODCAT: categoriaFashion.CODCAT,
+      TAMANHOS: JSON.stringify(['P', 'M', 'G', 'GG'])
     },
 
     // CASA
@@ -271,7 +276,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 599.99,
       ESTOQUE: 25,
-      CODCAT: categoriaEsportes.CODCAT
+      CODCAT: categoriaEsportes.CODCAT,
+      TAMANHOS: JSON.stringify(['35', '36', '37', '38', '39', '40', '41', '42', '43', '44'])
     },
     {
       PRODUTO: 'Kit Yoga Completo',

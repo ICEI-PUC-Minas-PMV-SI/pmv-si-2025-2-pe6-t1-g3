@@ -47,6 +47,7 @@ export const orderService = {
   getOrders: () => api.get('/pedido/listar'),
   createOrder: (order) => api.post('/pedido/cadastrar', order),
   getOrderById: (id) => api.get(`/pedido/buscar`, { params: { CODPED: id } }),
+  updateOrder: (order) => api.patch('/pedido/atualizar', order),
 };
 
 export const userService = {

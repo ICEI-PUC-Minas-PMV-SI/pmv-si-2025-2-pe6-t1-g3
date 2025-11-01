@@ -33,27 +33,30 @@ export class PedidoService {
 
   async listar(body: any) {
     try {
-      if (body.CODPES) {
-        const buscaPedido = await this.prisma.pedido.findMany({
-          where: { CODPES: +body.CODPES },
-          orderBy: { DATAINC: 'desc' },
-          include: { 
-            ITENSPEDIDO: { 
-              include: { 
-                Produtos: true 
-              } 
-            }, 
-            ENDERECO: true 
-          },
-        });
+      const where = body.CODPES ? { CODPES: +body.CODPES } : {};
 
-        return buscaPedido;
-      } else {
-        throw new HttpException(
-          'É necessario passar CODPES',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+      const buscaPedido = await this.prisma.pedido.findMany({
+        where,
+        orderBy: { DATAINC: 'desc' },
+        include: {
+          ITENSPEDIDO: {
+            include: {
+              Produtos: true
+            }
+          },
+          ENDERECO: true,
+          PESSOA: {
+            select: {
+              NOME: true,
+              SOBRENOME: true,
+              CPF: true,
+              TELEFONE: true
+            }
+          }
+        },
+      });
+
+      return buscaPedido;
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -233,19 +236,37 @@ export class PedidoService {
 
   async atualizar(body: any) {
     try {
-      if (!body.ITENS || !Array.isArray(body.ITENS)) {
-        throw new HttpException(
-          'A propriedade ITENS deve ser um array.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
       const buscapedido = await this.prisma.pedido.findFirst({
         where: { CODPED: +body.CODPED },
       });
 
       if (!buscapedido) {
         throw new HttpException('Pedido não encontrado', HttpStatus.NOT_FOUND);
+      }
+
+      if (body.STATUS !== undefined) {
+        const atualiza = await this.prisma.pedido.update({
+          where: { CODPED: buscapedido.CODPED },
+          data: {
+            STATUS: body.STATUS,
+          },
+          include: {
+            ITENSPEDIDO: {
+              include: {
+                Produtos: true,
+              },
+            },
+            ENDERECO: true,
+          },
+        });
+        return atualiza;
+      }
+
+      if (!body.ITENS || !Array.isArray(body.ITENS)) {
+        throw new HttpException(
+          'A propriedade ITENS deve ser um array.',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       this.logger.log(

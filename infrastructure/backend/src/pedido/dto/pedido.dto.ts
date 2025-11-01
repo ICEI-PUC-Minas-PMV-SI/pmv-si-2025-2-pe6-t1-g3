@@ -96,14 +96,24 @@ export class AtualizarPedidoDto {
   CODPED: number;
 
   @ApiProperty({
+    description: 'Status do pedido',
+    example: 'Pendente',
+    required: false,
+  })
+  @IsString({ message: 'STATUS deve ser uma string' })
+  @IsOptional()
+  STATUS?: string;
+
+  @ApiProperty({
     description: 'Itens do pedido',
     type: [ItemPedidoDto],
+    required: false,
   })
   @IsArray({ message: 'ITENS deve ser um array' })
   @ValidateNested({ each: true })
   @Type(() => ItemPedidoDto)
-  @IsNotEmpty({ message: 'ITENS é obrigatório' })
-  ITENS: ItemPedidoDto[];
+  @IsOptional()
+  ITENS?: ItemPedidoDto[];
 }
 
 export class BuscarPedidoDto {

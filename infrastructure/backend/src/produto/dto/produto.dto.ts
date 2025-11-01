@@ -62,6 +62,15 @@ export class CreateProductDto {
   @IsString({ message: 'CATEGORIA deve ser uma string' })
   @IsNotEmpty({ message: 'CATEGORIA é obrigatória' })
   CATEGORIA: string;
+
+  @ApiProperty({
+    description: 'Tamanhos disponíveis (JSON)',
+    example: '["P", "M", "G", "GG"]',
+    required: false,
+  })
+  @IsString({ message: 'TAMANHOS deve ser uma string' })
+  @IsOptional()
+  TAMANHOS?: string;
 }
 
 export class UpdateProductDto {
@@ -143,6 +152,24 @@ export class UpdateProductDto {
   @IsOptional()
   @Min(0, { message: 'DESCONTO não pode ser negativo' })
   DESCONTO?: number;
+
+  @ApiProperty({
+    description: 'Código da categoria',
+    example: 2,
+    required: false,
+  })
+  @IsNumber({}, { message: 'CODCAT deve ser um número' })
+  @IsOptional()
+  CODCAT?: number;
+
+  @ApiProperty({
+    description: 'Tamanhos disponíveis (JSON)',
+    example: '["P", "M", "G", "GG"]',
+    required: false,
+  })
+  @IsString({ message: 'TAMANHOS deve ser uma string' })
+  @IsOptional()
+  TAMANHOS?: string;
 }
 
 export class DeleteProductDto {

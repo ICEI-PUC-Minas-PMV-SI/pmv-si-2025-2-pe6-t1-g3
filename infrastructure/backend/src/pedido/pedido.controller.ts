@@ -20,6 +20,12 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { PedidoService } from './pedido.service';
+import {
+  CadastrarPedidoDto,
+  AtualizarPedidoDto,
+  BuscarPedidoDto,
+  ListarPedidosDto,
+} from './dto/pedido.dto';
 
 @Controller('pedido')
 @ApiTags('Pedido')
@@ -134,7 +140,7 @@ export class PedidoController {
       },
     },
   })
-  cadastrar(@Body() body: any) {
+  cadastrar(@Body() body: CadastrarPedidoDto) {
     return this.pedidoService.cadastrar(body);
   }
 
@@ -261,7 +267,8 @@ export class PedidoController {
       },
     },
   })
-  atualizar(@Body() body: any) {
+  atualizar(@Body() body: AtualizarPedidoDto) {
+    // Updated to use AtualizarPedidoDto for validation
     return this.pedidoService.atualizar(body);
   }
 
@@ -488,9 +495,9 @@ export class PedidoController {
   @ApiQuery({
     name: 'CODPES',
     type: 'number',
-    required: true,
+    required: false,
     example: 1,
-    description: 'ID do usuário para listar os pedidos',
+    description: 'ID do usuário para listar os pedidos (opcional - se não informado, lista todos)',
   })
   @ApiQuery({
     name: 'STATUS',

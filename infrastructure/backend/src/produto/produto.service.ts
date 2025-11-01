@@ -89,21 +89,33 @@ export class ProdutoService {
         }
       }
 
-      const categoria = await this.prisma.categorias.findFirst({
-        where: { CATEGORIA: body.CATEGORIA },
-      });
+      let codcat = body.CODCAT;
 
-      if (!categoria) {
+      if (!codcat && body.CATEGORIA) {
+        const categoria = await this.prisma.categorias.findFirst({
+          where: { CATEGORIA: body.CATEGORIA },
+        });
+
+        if (!categoria) {
+          throw new HttpException(
+            'Categoria não encontrada, tente "MASCULINO" ou "FEMININO"',
+            HttpStatus.NOT_FOUND,
+          );
+        }
+        codcat = categoria.CODCAT;
+      }
+
+      if (!codcat) {
         throw new HttpException(
-          'Categoria não encontrada, tente "MASCULINO" ou "FEMININO"',
-          HttpStatus.NOT_FOUND,
+          'CODCAT ou CATEGORIA é obrigatório',
+          HttpStatus.BAD_REQUEST,
         );
       }
 
       const buscaproduto = await this.prisma.produtos.findFirst({
         where: {
           PRODUTO: body.PRODUTO,
-          CODCAT: categoria.CODCAT,
+          CODCAT: codcat,
         },
       });
 
@@ -118,8 +130,9 @@ export class ProdutoService {
           IMAGEM: body.IMAGEM,
           ESTOQUE: body.ESTOQUE,
           VALOR: body.VALOR,
-          CODCAT: categoria.CODCAT,
-          DESCONTO: 0,
+          CODCAT: codcat,
+          DESCONTO: body.DESCONTO || 0,
+          TAMANHOS: body.TAMANHOS || null,
         },
       });
       return cadastrar;
@@ -138,9 +151,9 @@ export class ProdutoService {
         throw new HttpException('Produto não encontrado', HttpStatus.NOT_FOUND);
       }
 
-      let codcat = null;
+      let codcat = body.CODCAT !== undefined ? body.CODCAT : null;
 
-      if (body.CATEGORIA) {
+      if (body.CATEGORIA && !codcat) {
         const categoria = await this.prisma.categorias.findFirst({
           where: { CATEGORIA: body.CATEGORIA },
         });
@@ -154,17 +167,19 @@ export class ProdutoService {
         codcat = categoria.CODCAT;
       }
 
+      const updateData: any = {};
+      if (body.PRODUTO !== undefined) updateData.PRODUTO = body.PRODUTO;
+      if (body.DESCRICAO !== undefined) updateData.DESCRICAO = body.DESCRICAO;
+      if (body.IMAGEM !== undefined) updateData.IMAGEM = body.IMAGEM;
+      if (body.ESTOQUE !== undefined) updateData.ESTOQUE = +body.ESTOQUE;
+      if (body.VALOR !== undefined) updateData.VALOR = +body.VALOR;
+      if (codcat !== null) updateData.CODCAT = codcat;
+      if (body.DESCONTO !== undefined) updateData.DESCONTO = body.DESCONTO;
+      if (body.TAMANHOS !== undefined) updateData.TAMANHOS = body.TAMANHOS;
+
       const atualizar = await this.prisma.produtos.update({
         where: { CODPROD: +body.CODPROD },
-        data: {
-          PRODUTO: body.PRODUTO,
-          DESCRICAO: body.DESCRICAO,
-          IMAGEM: body.IMAGEM,
-          ESTOQUE: +body.ESTOQUE,
-          VALOR: +body.VALOR,
-          CODCAT: codcat,
-          DESCONTO: body.DESCONTO,
-        },
+        data: updateData,
       });
       return atualizar;
     } catch (error) {
