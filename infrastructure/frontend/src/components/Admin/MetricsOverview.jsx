@@ -21,21 +21,24 @@ const MetricsOverview = ({ metrics, onRefresh }) => {
       value: metrics.totalProducts,
       icon: FiPackage,
       color: 'text-blue-600',
-      bgColor: 'bg-blue-50'
+      bgColor: 'bg-blue-50',
+      formatter: (value) => value
     },
     {
       title: 'Total de Pedidos',
       value: metrics.totalOrders,
       icon: FiShoppingCart,
       color: 'text-green-600',
-      bgColor: 'bg-green-50'
+      bgColor: 'bg-green-50',
+      formatter: (value) => value
     },
     {
       title: 'Receita Total',
-      value: formatCurrency(metrics.totalRevenue),
+      value: metrics.totalRevenue,
       icon: FiDollarSign,
       color: 'text-purple-600',
-      bgColor: 'bg-purple-50'
+      bgColor: 'bg-purple-50',
+      formatter: (value) => formatCurrency(value || 0)
     }
   ];
 
@@ -68,7 +71,7 @@ const MetricsOverview = ({ metrics, onRefresh }) => {
                     {metric.title}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {metric.value}
+                    {metric.formatter ? metric.formatter(metric.value) : metric.value}
                   </p>
                 </div>
               </div>

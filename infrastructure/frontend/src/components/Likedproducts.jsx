@@ -98,11 +98,23 @@ const Likedproducts = () => {
           CODPES: decodedToken.CODPES,
           DESCONTO: 0,
           FRETE: 0,
-          ITENS: cartItems.map((item) => ({
-            CODPROD: item.CODPROD,
-            TAMANHO: item.TAMANHO,
-            QTD: item.QTD,
-          })),
+          ITENS: cartItems
+            .map((item) => {
+              const quantity = Number(
+                item.QUANTIDADE ??
+                item.QTD ??
+                item.quantity ??
+                item.qtd ??
+                1
+              );
+
+              return {
+                CODPROD: item.CODPROD,
+                TAMANHO: item.TAMANHO,
+                QUANTIDADE: Number.isNaN(quantity) ? 0 : quantity,
+              };
+            })
+            .filter((item) => item.CODPROD && item.QUANTIDADE > 0),
         };
         console.log(orderData);
 
