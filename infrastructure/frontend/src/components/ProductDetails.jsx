@@ -24,9 +24,13 @@ const ProductDetails = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
 
-  // Helper function to check if product is from MODA category
+  // Helper function to check if product is from FASHION category
   const isFashionProduct = () => {
-    return product?.CATEGORIAS?.CATEGORIA === 'MODA';
+    return product?.CATEGORIAS?.CATEGORIA === 'FASHION';
+  };
+
+  const hasProductSizes = () => {
+    return product?.TAMANHOS && product.TAMANHOS !== null;
   };
 
   // Helper function to check if product is footwear
@@ -74,12 +78,12 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = () => {
-    // Only require size selection for fashion products
-    if (isFashionProduct() && !selectedSize) {
+    // Only require size selection for products with sizes
+    if (hasProductSizes() && !selectedSize) {
       alert('Por favor, selecione um tamanho');
       return;
     }
-    
+
     const cartItem = {
       CODPROD: product.CODPROD,
       PRODUTO: product.PRODUTO,
@@ -87,12 +91,12 @@ const ProductDetails = () => {
       IMAGEM: product.IMAGEM,
       quantity: quantity
     };
-    
-    // Only add size for fashion products
-    if (isFashionProduct() && selectedSize) {
+
+    // Only add size for products with sizes
+    if (hasProductSizes() && selectedSize) {
       cartItem.size = selectedSize;
     }
-    
+
     addToCart(cartItem);
     toast.success("Produto adicionado ao carrinho", {
           autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 3000
@@ -149,12 +153,17 @@ const ProductDetails = () => {
     }).format(price);
   };
 
-  // Define sizes based on product type
+  // Get sizes from product data
   const getSizes = () => {
-    if (isFootwear()) {
-      return ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44'];
+    if (!hasProductSizes()) {
+      return [];
     }
-    return ['PP', 'P', 'M', 'G', 'GG'];
+    try {
+      return JSON.parse(product.TAMANHOS);
+    } catch (error) {
+      console.error('Error parsing sizes:', error);
+      return [];
+    }
   };
 
   const sizes = getSizes();
@@ -213,19 +222,21 @@ const ProductDetails = () => {
                 </p>
               )}
 
-              {/* Size selector for fashion products */}
-              {isFashionProduct() && (
+              {/* Size selector for products with sizes */}
+              {hasProductSizes() && sizes.length > 0 && (
                 <div className="pt-4">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs uppercase tracking-wider text-gray-900">
                       Tamanho
                     </span>
-                    <button
-                      onClick={() => setShowSizeGuide(true)}
-                      className="text-xs text-gray-500 hover:text-gray-900 underline transition-colors"
-                    >
-                      Guia de tamanhos
-                    </button>
+                    {isFashionProduct() && (
+                      <button
+                        onClick={() => setShowSizeGuide(true)}
+                        className="text-xs text-gray-500 hover:text-gray-900 underline transition-colors"
+                      >
+                        Guia de tamanhos
+                      </button>
+                    )}
                   </div>
                   <div className={`grid gap-2 ${isFootwear() ? 'grid-cols-5' : 'grid-cols-5'}`}>
                     {sizes.map((size) => (
@@ -285,7 +296,7 @@ const ProductDetails = () => {
               <div className="pt-6">
                 <button
                   onClick={handleAddToCart}
-                  disabled={(isFashionProduct() && !selectedSize) || product.ESTOQUE === 0}
+                  disabled={(hasProductSizes() && !selectedSize) || product.ESTOQUE === 0}
                   className="w-full bg-black text-white py-4 text-sm uppercase tracking-wider hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                 >
                   {product.ESTOQUE === 0 ? 'Indisponível' : 'Adicionar ao carrinho'}

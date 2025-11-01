@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "PEDIDOS" ADD COLUMN     "STATUS" TEXT DEFAULT 'Pendente';
