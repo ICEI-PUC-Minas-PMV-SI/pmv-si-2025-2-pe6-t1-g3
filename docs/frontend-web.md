@@ -1329,7 +1329,32 @@ npm run test:watch
 
 # Referências
 
-Inclua todas as referências (livros, artigos, sites, etc) utilizados no desenvolvimento do trabalho.
+## Documentação Oficial
+
+- [React Documentation](https://react.dev/) – Biblioteca para interfaces de usuário
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) – Framework CSS para design responsivo
+- [Vite Documentation](https://vitejs.dev/) – Build tool para frontend moderno
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/) – Superset do JavaScript com tipagem
+- [Docker Documentation](https://docs.docker.com/) – Containerização de ambientes (opcional para frontend fullstack)
+
+## Ferramentas e Testes
+
+- [Jest Documentation](https://jestjs.io/docs/) – Testes unitários
+- [Cypress Documentation](https://www.cypress.io/) – Testes end-to-end
+- [Testing Library](https://testing-library.com/) – Testes focados na interação do usuário
+
+## Padrões e Boas Práticas
+
+- [REST API Design Best Practices](https://restfulapi.net/) – Integração com APIs do backend
+- [JWT.io](https://jwt.io/) – Autenticação via JSON Web Tokens
+- [OWASP API Security](https://owasp.org/www-project-api-security/)– Segurança em frontend ao consumir APIs
+
+## UI/UX e Design
+
+- [Material Design](https://material.io/) – Guia de design para interfaces
+- [UX Design Principles ](https://www.nngroup.com/articles/definition-user-experience/)– Princípios de experiência do usuário
+- [Responsive Web Design](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design) –  Design responsivo para múltiplos dispositivos
+
 
 # Planejamento
 
@@ -1347,19 +1372,19 @@ Atualizado em: 01/10/2025
 | Vinicius/Jully       | Projeto da Interface Web                     | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
 | Jully                | Wireframes                                   | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
 | Vinicius             | Design Visual                                | 01/10/2025     | 20/10/2025 | ✔️     |   10/10/2025    |
-| Lucas / Italo        | Fluxo de Dados                               | 01/01/2024     | 20/10/2025 | 📝    |                 |
-| Victor               | Tecnologias Utilizadas                       | 01/01/2024     | 20/10/2025 | 📝    |                 |
-| Lucas                | Considerações de Segurança                   | 01/01/2024     | 20/10/2025 | 📝    |                 |
-| Pedro                | Implantação                                  | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Jully                | Implantação Page - Home                      | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Lucas                | Implantação Page - Cadastro de usuarios      | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Italo                | Implantação Page - Cadastro de produtos      | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Pedro                | Implantação Page - Produtos                  | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Victor               | Implantação Page - Carrinho                  | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Vinicius             | Implantação Page - Favoritos                 | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Pedro                | Implantação Page - Sobre nos                 | 01/10/2025     | 26/10/2025 | 📝    |                 |
-| Italo                | Testes                                       | 27/10/2025     | 01/11/2025 | ❌    |                 |
-| Jully                | Apresentação 3 Etapa                         | 27/10/2025     | 01/11/2025 | ❌    |                 |
+| Lucas / Italo        | Fluxo de Dados                               | 01/01/2024     | 20/10/2025 | ✔️     |   20/10/2025    |
+| Victor               | Tecnologias Utilizadas                       | 01/01/2024     | 20/10/2025 | ✔️     |   20/10/2025    |
+| Lucas                | Considerações de Segurança                   | 01/01/2024     | 20/10/2025 | ✔️     |  20/10/2025     |
+| Pedro                | Implantação                                  | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Jully                | Implantação Page - Home                      | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Lucas                | Implantação Page - Cadastro de usuarios      | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Italo                | Implantação Page - Cadastro de produtos      | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Pedro                | Implantação Page - Produtos                  | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Victor               | Implantação Page - Carrinho                  | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Vinicius             | Implantação Page - Favoritos                 | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Pedro                | Implantação Page - Sobre nos                 | 01/10/2025     | 26/10/2025 | ✔️     |   20/10/2025    |
+| Italo                | Testes                                       | 27/10/2025     | 01/11/2025 | ✔️     |  01/11/2025     |
+| Jully                | Apresentação 3 Etapa                         | 27/10/2025     | 02/11/2025 | ✔️     |  02/11/2025     |
 
 
 Legenda:
