@@ -1,17 +1,25 @@
+import { randomBytes } from 'crypto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/services/prisma.service';
-import { LoginDto, RegistroDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { OAuth2Client } from 'google-auth-library';
 import * as bcrypt from 'bcryptjs';
 import { EnderecoService } from 'src/endereco/endereco.service';
+import { PrismaService } from 'src/services/prisma.service';
+import { GoogleLoginDto, LoginDto, RegistroDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly googleClient?: OAuth2Client;
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly enderecoService: EnderecoService,
-    private jwt: JwtService,
-  ) {}
+    private readonly jwt: JwtService,
+  ) {
+    if (process.env.GOOGLE_CLIENT_ID) {
+      this.googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    }
+  }
 
   async login(body: LoginDto) {
     try {
@@ -22,7 +30,7 @@ export class AuthService {
 
       if (!user) {
         throw new HttpException(
-          'Credenciais inválidas',
+          'Credenciais invalidas',
           HttpStatus.UNAUTHORIZED,
         );
       }
@@ -30,7 +38,7 @@ export class AuthService {
       const isPasswordValid = await bcrypt.compare(body.SENHA, user.SENHA);
       if (!isPasswordValid) {
         throw new HttpException(
-          'Credenciais inválidas',
+          'Credenciais invalidas',
           HttpStatus.UNAUTHORIZED,
         );
       }
@@ -74,6 +82,145 @@ export class AuthService {
     }
   }
 
+  async loginWithGoogle(body: GoogleLoginDto) {
+    if (!this.googleClient || !process.env.GOOGLE_CLIENT_ID) {
+      throw new HttpException(
+        'Login com Google nao esta configurado',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    try {
+      const ticket = await this.googleClient.verifyIdToken({
+        idToken: body.credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+
+      if (!payload || !payload.email) {
+        throw new HttpException(
+          'Token do Google invalido',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      if (payload.email_verified === false) {
+        throw new HttpException(
+          'Email do Google nao verificado',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+
+      const email = payload.email.toLowerCase();
+
+      let user = await this.prisma.login.findUnique({
+        where: { EMAIL: email },
+        include: { PESSOA: true },
+      });
+
+      if (!user) {
+        const randomPassword = randomBytes(32).toString('hex');
+        const hashedPassword = await bcrypt.hash(randomPassword, 12);
+
+        const createdUser = await this.prisma.login.create({
+          data: {
+            EMAIL: email,
+            SENHA: hashedPassword,
+            PERMISSAO: 'CLIENTE',
+          },
+        });
+
+        const firstName = (
+          payload.given_name ||
+          payload.name?.split(' ')?.[0] ||
+          'Cliente'
+        ).slice(0, 50);
+        const lastName = (
+          payload.family_name ||
+          payload.name?.split(' ')?.slice(1).join(' ') ||
+          'Google'
+        ).slice(0, 50);
+
+        try {
+          await this.prisma.pessoa.create({
+            data: {
+              NOME: firstName,
+              SOBRENOME: lastName,
+              CPF: '00000000000',
+              TELEFONE: '0000000000',
+              CODUSU: createdUser.CODUSU,
+            },
+          });
+        } catch {
+          // Usuario podera complementar os dados depois
+        }
+
+        user = await this.prisma.login.findUnique({
+          where: { EMAIL: email },
+          include: { PESSOA: true },
+        });
+
+        if (!user) {
+          throw new HttpException(
+            'Nao foi possivel concluir o login com Google',
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
+        }
+      }
+
+      const token = await this.generateToken({
+        CODUSU: user.CODUSU,
+        EMAIL: user.EMAIL,
+        PERMISSAO: user.PERMISSAO,
+        CODPES: user.PESSOA?.CODPES,
+        NOME: user.PESSOA?.NOME || payload.given_name || payload.name,
+        SOBRENOME: user.PESSOA?.SOBRENOME || payload.family_name || '',
+        TELEFONE: user.PESSOA?.TELEFONE,
+        CPF: user.PESSOA?.CPF,
+      });
+
+      const profileFromDatabase = user.PESSOA
+        ? {
+            id: user.PESSOA.CODPES,
+            name: user.PESSOA.NOME,
+            lastName: user.PESSOA.SOBRENOME,
+            phone: user.PESSOA.TELEFONE,
+            cpf: user.PESSOA.CPF,
+          }
+        : null;
+
+      const profileFromPayload = payload
+        ? {
+            id: null,
+            name: payload.given_name || payload.name || '',
+            lastName: payload.family_name || '',
+            phone: null,
+            cpf: null,
+          }
+        : null;
+
+      return {
+        token,
+        user: {
+          id: user.CODUSU,
+          email: user.EMAIL,
+          permission: user.PERMISSAO,
+          profile: profileFromDatabase || profileFromPayload,
+        },
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Nao foi possivel concluir o login com Google',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async changePassword(
     userId: number,
     oldPassword: string,
@@ -85,7 +232,7 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+        throw new HttpException('Usuario nao encontrado', HttpStatus.NOT_FOUND);
       }
 
       const isOldPasswordValid = await bcrypt.compare(oldPassword, user.SENHA);
@@ -115,7 +262,6 @@ export class AuthService {
 
   async registro(body: RegistroDto) {
     try {
-      // Normalize email
       const email = body.EMAIL.toLowerCase();
 
       const existingUser = await this.prisma.login.findFirst({
@@ -123,13 +269,11 @@ export class AuthService {
       });
 
       if (existingUser) {
-        throw new HttpException('Email já está em uso', HttpStatus.CONFLICT);
+        throw new HttpException('Email ja esta em uso', HttpStatus.CONFLICT);
       }
 
-      // Hash password
       const hashedPassword = await bcrypt.hash(body.SENHA, 12);
 
-      // Create user
       const newUser = await this.prisma.login.create({
         data: {
           EMAIL: email,
@@ -138,12 +282,11 @@ export class AuthService {
         },
       });
 
-      // Create profile
       const newProfile = await this.prisma.pessoa.create({
         data: {
           NOME: body.NOME.trim(),
           SOBRENOME: body.SOBRENOME.trim(),
-          CPF: body.CPF.replace(/\D/g, ''), // Remove non-numeric characters
+          CPF: body.CPF.replace(/\D/g, ''),
           CODUSU: newUser.CODUSU,
           TELEFONE: body.TELEFONE.replace(/\D/g, ''),
         },
@@ -161,7 +304,7 @@ export class AuthService {
           RUA: body.ENDERECO.RUA,
         });
       }
-      // Return user without password
+
       return {
         id: newUser.CODUSU,
         email: newUser.EMAIL,
@@ -188,7 +331,6 @@ export class AuthService {
     CPF?: string;
     TELEFONE?: string;
   }) {
-    // Don't include sensitive data in JWT
     const tokenPayload = {
       sub: payload.CODUSU,
       email: payload.EMAIL,
@@ -214,7 +356,7 @@ export class AuthService {
       });
       return decoded;
     } catch (error) {
-      throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Token invalido', HttpStatus.UNAUTHORIZED);
     }
   }
 }

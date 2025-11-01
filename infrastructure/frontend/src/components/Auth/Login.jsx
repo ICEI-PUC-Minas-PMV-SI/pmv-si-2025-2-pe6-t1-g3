@@ -2,67 +2,104 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { authService } from '../../services/api';
+import GoogleLoginButton from './GoogleLoginButton';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     EMAIL: '',
-    SENHA: ''
+    SENHA: '',
   });
-  const [errors, setErrors] = useState({});
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [generalError, setGeneralError] = useState('');
+  const [googleError, setGoogleError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    if (errors[name]) {
-      setErrors(prev => ({
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: '',
       }));
+    }
+    if (generalError) {
+      setGeneralError('');
     }
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const errors = {};
 
     if (!formData.EMAIL) {
-      newErrors.EMAIL = 'Email é obrigatório';
+      errors.EMAIL = 'Email e obrigatorio';
     } else if (!/\S+@\S+\.\S+/.test(formData.EMAIL)) {
-      newErrors.EMAIL = 'Email inválido';
+      errors.EMAIL = 'Email invalido';
     }
 
     if (!formData.SENHA) {
-      newErrors.SENHA = 'Senha é obrigatória';
+      errors.SENHA = 'Senha e obrigatoria';
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      return;
+    }
 
     setIsLoading(true);
+    setGeneralError('');
+    setGoogleError('');
+
     try {
       const response = await authService.login(formData);
       login(response.data.token);
       navigate('/');
     } catch (error) {
-      setErrors({
-        general: error.response?.data?.message || 'Erro ao fazer login'
-      });
+      const message =
+        error.response?.data?.message || 'Nao foi possivel fazer login.';
+      setGeneralError(message);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleGoogleCredential = async (credential) => {
+    setGoogleError('');
+    setGeneralError('');
+    setIsGoogleLoading(true);
+
+    try {
+      const response = await authService.loginWithGoogle({ credential });
+      login(response.data.token);
+      navigate('/');
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        'Nao foi possivel entrar com Google.';
+      setGoogleError(message);
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
+  const handleGoogleError = (message) => {
+    setGoogleError(message);
+  };
+
+  const isSubmitting = isLoading || isGoogleLoading;
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center py-12 px-4">
@@ -71,20 +108,27 @@ const Login = () => {
           <h1 className="text-3xl font-light text-gray-900 tracking-tight mb-2">
             Entrar
           </h1>
-          <p className="text-sm text-gray-600">
-            Acesse sua conta
-          </p>
+          <p className="text-sm text-gray-600">Acesse sua conta</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {errors.general && (
-            <div className="border border-gray-300 bg-gray-50 p-4 text-sm text-gray-900">
-              {errors.general}
+          {generalError && (
+            <div className="border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              {generalError}
+            </div>
+          )}
+
+          {googleError && !generalError && (
+            <div className="border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+              {googleError}
             </div>
           )}
 
           <div>
-            <label htmlFor="email" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-xs uppercase tracking-wider text-gray-900 mb-2"
+            >
               Email
             </label>
             <input
@@ -97,13 +141,16 @@ const Login = () => {
               required
               className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
             />
-            {errors.EMAIL && (
-              <p className="mt-1 text-xs text-gray-600">{errors.EMAIL}</p>
+            {fieldErrors.EMAIL && (
+              <p className="mt-1 text-xs text-gray-600">{fieldErrors.EMAIL}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="senha" className="block text-xs uppercase tracking-wider text-gray-900 mb-2">
+            <label
+              htmlFor="senha"
+              className="block text-xs uppercase tracking-wider text-gray-900 mb-2"
+            >
               Senha
             </label>
             <input
@@ -116,23 +163,42 @@ const Login = () => {
               required
               className="w-full px-4 py-3 border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-900 transition-colors"
             />
-            {errors.SENHA && (
-              <p className="mt-1 text-xs text-gray-600">{errors.SENHA}</p>
+            {fieldErrors.SENHA && (
+              <p className="mt-1 text-xs text-gray-600">{fieldErrors.SENHA}</p>
             )}
           </div>
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isSubmitting}
             className="w-full bg-black text-white py-4 text-sm uppercase tracking-wider hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             {isLoading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
 
+        <div className="flex items-center my-8">
+          <span className="flex-1 h-px bg-gray-200" />
+          <span className="px-4 text-xs uppercase tracking-widest text-gray-400">
+            ou
+          </span>
+          <span className="flex-1 h-px bg-gray-200" />
+        </div>
+
+        <GoogleLoginButton
+          onCredential={handleGoogleCredential}
+          onError={handleGoogleError}
+          isSubmitting={isSubmitting}
+        />
+        {isGoogleLoading && (
+          <p className="text-xs text-gray-500 text-center mt-2">
+            Entrando com Google...
+          </p>
+        )}
+
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            Não tem uma conta?{' '}
+            Nao tem uma conta?{' '}
             <Link
               to="/register"
               className="text-gray-900 hover:text-gray-600 transition-colors underline"
