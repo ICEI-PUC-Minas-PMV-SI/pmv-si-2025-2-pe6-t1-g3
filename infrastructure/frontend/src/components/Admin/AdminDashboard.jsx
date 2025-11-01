@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { productService, orderService } from '../../services/api';
 import Card from '../UI/Card';
@@ -10,7 +11,10 @@ import OrderManagement from './OrderManagement';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [editProduct, setEditProduct] = useState(null);
   const [metrics, setMetrics] = useState({
     totalProducts: 0,
     totalOrders: 0,
@@ -27,6 +31,23 @@ const AdminDashboard = () => {
     }
     loadData();
   }, [user]);
+
+  useEffect(() => {
+    // Verifica se há estado de navegação para abrir o formulário de edição
+    if (location.state?.editProduct && location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+      setEditProduct(location.state.editProduct);
+      // Limpa o estado da navegação para evitar que abra novamente
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
+
+  useEffect(() => {
+    // Limpa o produto de edição quando mudar de aba para evitar que abra novamente
+    if (activeTab !== 'products') {
+      setEditProduct(null);
+    }
+  }, [activeTab]);
 
   const loadData = async () => {
     setLoading(true);
@@ -132,7 +153,10 @@ const AdminDashboard = () => {
             )}
 
             {activeTab === 'products' && (
-              <ProductManagement onProductChange={loadData} />
+              <ProductManagement 
+                onProductChange={loadData}
+                initialProductToEdit={editProduct}
+              />
             )}
 
             {activeTab === 'orders' && (

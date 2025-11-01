@@ -6,7 +6,7 @@ import Input from '../UI/Input';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { FiPlus, FiEdit, FiTrash2, FiPackage, FiSearch, FiFilter, FiX, FiImage, FiAlertCircle } from 'react-icons/fi';
 
-const ProductManagement = ({ onProductChange }) => {
+const ProductManagement = ({ onProductChange, initialProductToEdit }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -49,6 +49,34 @@ const ProductManagement = ({ onProductChange }) => {
   useEffect(() => {
     loadProducts();
   }, []);
+
+  useEffect(() => {
+    // Se houver um produto inicial para editar, abre o formulário automaticamente
+    if (initialProductToEdit) {
+      let sizes = [];
+      if (initialProductToEdit.TAMANHOS) {
+        try {
+          sizes = JSON.parse(initialProductToEdit.TAMANHOS);
+        } catch (e) {
+          sizes = [];
+        }
+      }
+
+      setEditingProduct(initialProductToEdit);
+      setFormData({
+        PRODUTO: initialProductToEdit.PRODUTO,
+        DESCRICAO: initialProductToEdit.DESCRICAO,
+        IMAGEM: initialProductToEdit.IMAGEM || '',
+        VALOR: initialProductToEdit.VALOR.toString(),
+        ESTOQUE: initialProductToEdit.ESTOQUE.toString(),
+        DESCONTO: initialProductToEdit.DESCONTO?.toString() || '',
+        CODCAT: initialProductToEdit.CODCAT?.toString() || '2',
+        TAMANHOS: sizes
+      });
+      setShowForm(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [initialProductToEdit]);
 
   useEffect(() => {
     if (formData.IMAGEM) {

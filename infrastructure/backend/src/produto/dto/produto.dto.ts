@@ -55,13 +55,34 @@ export class CreateProductDto {
   VALOR: number;
 
   @ApiProperty({
+    description: 'Código da categoria',
+    example: 2,
+    required: false,
+  })
+  @IsNumber({}, { message: 'CODCAT deve ser um número' })
+  @IsOptional()
+  CODCAT?: number;
+
+  @ApiProperty({
     description: 'Categoria do produto',
     example: 'MODA',
     enum: ['MODA', 'ELETRONICOS', 'CASA', 'ESPORTES'],
+    required: false,
   })
   @IsString({ message: 'CATEGORIA deve ser uma string' })
-  @IsNotEmpty({ message: 'CATEGORIA é obrigatória' })
-  CATEGORIA: string;
+  @IsOptional()
+  CATEGORIA?: string;
+
+  @ApiProperty({
+    description: 'Valor do desconto',
+    example: 10.5,
+    minimum: 0,
+    required: false,
+  })
+  @IsNumber({}, { message: 'DESCONTO deve ser um número' })
+  @IsOptional()
+  @Min(0, { message: 'DESCONTO não pode ser negativo' })
+  DESCONTO?: number;
 
   @ApiProperty({
     description: 'Tamanhos disponíveis (JSON)',

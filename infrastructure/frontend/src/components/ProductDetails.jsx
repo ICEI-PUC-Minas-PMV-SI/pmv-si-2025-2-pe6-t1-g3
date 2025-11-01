@@ -104,7 +104,9 @@ const ProductDetails = () => {
   };
 
   const handleEdit = () => {
-    navigate(`/admin/products/edit/${productId}`);
+    navigate('/admin', {
+      state: { editProduct: product, activeTab: 'products' }
+    });
   };
 
   const handleDelete = async () => {
