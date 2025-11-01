@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { productService } from '../../services/api';
 import Card from '../UI/Card';
 import Button from '../UI/Button';
@@ -28,7 +29,20 @@ const ProductManagement = ({ onProductChange }) => {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const response = await productService.getProducts();
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        throw new Error('Token de autenticação não encontrado');
+      }
+
+      const decodedToken = jwtDecode(token);
+      const codpes = decodedToken?.CODPES;
+
+      if (!codpes) {
+        throw new Error('Token inválido: CODPES não informado');
+      }
+
+      const response = await productService.getProducts({ CODPES: codpes });
       setProducts(response.data);
     } catch (error) {
       console.error('Erro ao carregar produtos:', error);

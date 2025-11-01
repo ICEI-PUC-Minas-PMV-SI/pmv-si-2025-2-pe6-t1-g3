@@ -158,11 +158,25 @@ const History = () => {
                 </div>
 
                 {/* Order Items */}
-                {pedido.ITENSPEDIDO && pedido.ITENSPEDIDO.length > 0 && (
+                {(() => {
+                  const orderItems = pedido.ITENSPEDIDO || pedido.ITENS || [];
+                  if (orderItems.length === 0) {
+                    return null;
+                  }
+
+                  return (
                   <div className="mt-6">
                     <h4 className="text-sm font-medium text-gray-900 mb-3">Itens do Pedido</h4>
                     <div className="space-y-3">
-                      {pedido.ITENSPEDIDO.map((item, index) => (
+                      {orderItems.map((item, index) => {
+                        const quantity =
+                          item.QUANTIDADE ??
+                          item.QTD ??
+                          item.quantidade ??
+                          item.qtd ??
+                          0;
+
+                        return (
                         <div key={index} className="flex items-center space-x-4 py-3 border-b border-gray-100 last:border-b-0">
                           <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
                             {item.Produtos?.IMAGEM ? (
@@ -182,15 +196,17 @@ const History = () => {
                               {item.Produtos?.PRODUTO || 'Produto não encontrado'}
                             </h5>
                             <p className="text-sm text-gray-600">
-                              Quantidade: {item.QTD}
+                              Quantidade: {quantity}
                               {item.TAMANHO && ` | Tamanho: ${item.TAMANHO}`}
                             </p>
                           </div>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
-                )}
+                  );
+                })()}
 
                 {/* Action Buttons */}
                 <div className="mt-6 flex justify-end space-x-3">

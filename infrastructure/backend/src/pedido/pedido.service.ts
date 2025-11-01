@@ -94,16 +94,33 @@ export class PedidoService {
       for (let index = 0; index < body.ITENS.length; index++) {
         const item = body.ITENS[index];
 
-        // Normalizar CODPROD e QTD
-        const codprod = +item.CODPROD;
-        const qtd = +item.QTD;
+        // Normalizar CODPROD e QUANTIDADE
+        const codprodRaw = item.CODPROD ?? item.codprod;
+        const quantidadeRaw =
+          item.QUANTIDADE ??
+          item.QTD ??
+          item.quantidade ??
+          item.qtd ??
+          1;
 
-        if (!codprod || !qtd || qtd <= 0 || isNaN(codprod) || isNaN(qtd)) {
+        const codprod = Number.parseInt(String(codprodRaw), 10);
+        const qtd = Number.parseInt(String(quantidadeRaw), 10);
+
+        if (
+          !Number.isFinite(codprod) ||
+          !Number.isFinite(qtd) ||
+          codprod <= 0 ||
+          qtd <= 0
+        ) {
           this.logger.warn(
-            `Item ${index} inválido: CODPROD=${item.CODPROD}, QTD=${item.QTD}`,
+            `Item ${index} inválido: CODPROD=${codprodRaw}, QUANTIDADE=${quantidadeRaw}`,
           );
           continue;
         }
+
+        this.logger.debug(
+          `Item normalizado ${index}: CODPROD=${codprod}, QUANTIDADE=${qtd}`,
+        );
 
         const buscaProduto = await this.prisma.produtos.findFirst({
           where: { CODPROD: codprod },
@@ -127,7 +144,7 @@ export class PedidoService {
         subtotal += valorqtd;
 
         this.logger.debug(
-          `Item ${index}: Produto ${codprod}, QTD ${qtd}, Valor unitário ${buscaProduto.VALOR}, Subtotal item: ${valorqtd}`,
+          `Item ${index}: Produto ${codprod}, QUANTIDADE ${qtd}, Valor unitário ${buscaProduto.VALOR}, Subtotal item: ${valorqtd}`,
         );
 
         await this.prisma.itensPedido.create({
@@ -245,16 +262,33 @@ export class PedidoService {
       for (let index = 0; index < body.ITENS.length; index++) {
         const item = body.ITENS[index];
 
-        // Normalizar CODPROD e QTD
-        const codprod = +item.CODPROD;
-        const qtd = +item.QTD;
+        // Normalizar CODPROD e QUANTIDADE
+        const codprodRaw = item.CODPROD ?? item.codprod;
+        const quantidadeRaw =
+          item.QUANTIDADE ??
+          item.QTD ??
+          item.quantidade ??
+          item.qtd ??
+          1;
 
-        if (!codprod || !qtd || qtd <= 0 || isNaN(codprod) || isNaN(qtd)) {
+        const codprod = Number.parseInt(String(codprodRaw), 10);
+        const qtd = Number.parseInt(String(quantidadeRaw), 10);
+
+        if (
+          !Number.isFinite(codprod) ||
+          !Number.isFinite(qtd) ||
+          codprod <= 0 ||
+          qtd <= 0
+        ) {
           this.logger.warn(
-            `Item ${index} inválido: CODPROD=${item.CODPROD}, QTD=${item.QTD}`,
+            `Item ${index} inválido: CODPROD=${codprodRaw}, QUANTIDADE=${quantidadeRaw}`,
           );
           continue;
         }
+
+        this.logger.debug(
+          `Item normalizado ${index}: CODPROD=${codprod}, QUANTIDADE=${qtd}`,
+        );
 
         const buscaProduto = await this.prisma.produtos.findFirst({
           where: { CODPROD: codprod },
@@ -278,7 +312,7 @@ export class PedidoService {
         subtotal += valorqtd;
 
         this.logger.debug(
-          `Item ${index}: Produto ${codprod}, QTD ${qtd}, Valor unitário ${buscaProduto.VALOR}, Subtotal item: ${valorqtd}`,
+          `Item ${index}: Produto ${codprod}, QUANTIDADE ${qtd}, Valor unitário ${buscaProduto.VALOR}, Subtotal item: ${valorqtd}`,
         );
 
         await this.prisma.itensPedido.create({

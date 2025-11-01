@@ -104,11 +104,23 @@ const Cart = () => {
           CODPES: decodedToken.CODPES,
           DESCONTO: 0,
           FRETE: 0,
-          ITENS: cartItems.map((item) => ({
-            CODPROD: item.CODPROD,
-            TAMANHO: item.size || item.TAMANHO || null,
-            QTD: item.quantity || item.QTD || 1,
-          })).filter(item => item.CODPROD && item.QTD > 0),
+          ITENS: cartItems
+            .map((item) => {
+              const quantity = Number(
+                item.quantity ??
+                item.QUANTIDADE ??
+                item.QTD ??
+                item.qtd ??
+                1
+              );
+
+              return {
+                CODPROD: item.CODPROD,
+                TAMANHO: item.size || item.TAMANHO || null,
+                QUANTIDADE: Number.isNaN(quantity) ? 0 : quantity,
+              };
+            })
+            .filter((item) => item.CODPROD && item.QUANTIDADE > 0),
         };
         console.log('Dados do pedido:', orderData);
 

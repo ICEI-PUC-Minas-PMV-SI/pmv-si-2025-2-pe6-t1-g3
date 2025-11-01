@@ -39,7 +39,7 @@ export const productService = {
   getProduct: (id) => api.get(`/produto/buscar`, { params: { CODPROD: id } }),
   createProduct: (product) => api.post('/produto/cadastrar', product),
   updateProduct: (product) => api.put('/produto/atualizar', product),
-  deleteProduct: (id) => api.delete('/produto/remover', { data: { CODPROD: id } }),
+  deleteProduct: (id) => api.delete('/produto/remover', { params: { CODPROD: id } }),
 };
 
 export const orderService = {
