@@ -429,7 +429,7 @@ Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas 
 <details>
 <summary><strong>🏠 Home</strong></summary>
 
-![Home](../docs/img/fluxo_dados/home.png)
+![Home](../docs/img/fluxo_dados/home_novo.png)
 
 </details>
 
