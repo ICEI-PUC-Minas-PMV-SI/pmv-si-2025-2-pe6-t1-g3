@@ -1,12 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import Likedproducts from '../Likedproducts';
 import { mockUser, mockSupplier, mockAdmin, mockProduct, mockScreenSize, BREAKPOINTS } from '../../test-utils';
 
 // Mock dos componentes filhos
-jest.mock('../components/fragments/cartProductsLiked', () => {
-  return function MockCartProductsLiked({ onCartItemsChange }) {
+jest.mock('../fragments/cartProductsLiked', () => {
+  const React = require('react');
+  return function MockCartProductsLiked({ items, onCartItemsChange }) {
     const mockFavorites = [
       { id: 1, name: 'Smartphone XYZ', price: 999.99, rating: 4.5 },
       { id: 2, name: 'Tablet ABC', price: 599.99, rating: 4.0 },
@@ -14,7 +14,9 @@ jest.mock('../components/fragments/cartProductsLiked', () => {
     ];
     
     React.useEffect(() => {
-      onCartItemsChange(mockFavorites);
+      if (onCartItemsChange) {
+        onCartItemsChange(mockFavorites);
+      }
     }, [onCartItemsChange]);
     
     return (
@@ -54,18 +56,14 @@ jest.mock('jwt-decode', () => ({
   }))
 }));
 
-// Mock dos serviços
-const mockUserService = {
-  getProfile: jest.fn(),
-};
-
-const mockOrderService = {
-  createOrder: jest.fn(),
-};
-
+// Mock dos serviços - deve ser definido dentro do jest.mock() devido ao hoisting
 jest.mock('../../services/api', () => ({
-  userService: mockUserService,
-  orderService2: mockOrderService,
+  userService: {
+    getProfile: jest.fn(),
+  },
+  orderService2: {
+    createOrder: jest.fn(),
+  },
 }));
 
 // Mock do react-toastify
@@ -78,14 +76,9 @@ jest.mock('react-toastify', () => ({
   },
 }));
 
-// Mock do window.location
-const mockLocation = {
-  href: '',
-};
-Object.defineProperty(window, 'location', {
-  value: mockLocation,
-  writable: true,
-});
+// Importar componentes e serviços mockados para uso nos testes
+import Likedproducts from '../Likedproducts';
+import { userService as mockUserService, orderService2 as mockOrderService } from '../../services/api';
 
 // Mock do localStorage
 const mockLocalStorage = {
@@ -335,18 +328,6 @@ describe('Likedproducts Component (Favorites List)', () => {
 
   describe('Estados', () => {
     it('deve exibir mensagem quando lista está vazia', () => {
-      // Mock para lista vazia
-      jest.mock('../components/fragments/cartProductsLiked', () => {
-        return function MockCartProductsLikedEmpty() {
-          return (
-            <div data-testid="favorites-list">
-              <h2>Meus Favoritos</h2>
-              <div data-testid="empty-message">Nenhum produto favoritado ainda</div>
-            </div>
-          );
-        };
-      });
-      
       renderLikedproducts();
       
       expect(screen.getByTestId('toast-container')).toBeInTheDocument();
@@ -600,10 +581,9 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       expect(screen.getByTestId('toast-container')).toBeInTheDocument();
       
-      // Verificar se redirecionamento é agendado
-      setTimeout(() => {
-        expect(mockLocation.href).toBe('/login');
-      }, 3000);
+      // O componente deve renderizar, mas não deve exibir favoritos sem autenticação
+      // O redirecionamento é tratado internamente pelo componente
+      expect(mockLocalStorage.getItem).toHaveBeenCalledWith('token');
     });
   });
 

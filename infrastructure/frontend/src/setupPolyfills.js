@@ -221,3 +221,38 @@ if (typeof global.fetch === 'undefined') {
   };
 }
 
+// Polyfill para import.meta (necessário para Jest)
+// Define process.env com valores padrão para variáveis VITE usadas nos componentes
+if (typeof global.process === 'undefined' || !global.process.env) {
+  global.process = global.process || {};
+  global.process.env = global.process.env || {};
+}
+
+// Define valores padrão para variáveis de ambiente VITE usadas nos testes
+global.process.env.VITE_TOAST_AUTOCLOSE_DURATION = global.process.env.VITE_TOAST_AUTOCLOSE_DURATION || '3000';
+global.process.env.VITE_API_URL = global.process.env.VITE_API_URL || 'http://localhost:3000';
+global.process.env.VITE_GITHUB_REPOSITORY_URL = global.process.env.VITE_GITHUB_REPOSITORY_URL || 'https://github.com/ICEI-PUC-Minas-PMV-SI/pmv-si-2025-2-pe6-t1-g3';
+global.process.env.VITE_CONTACT_EMAIL = global.process.env.VITE_CONTACT_EMAIL || 'contato@zabbix.com.br';
+global.process.env.VITE_SEARCH_DEBOUNCE_MS = global.process.env.VITE_SEARCH_DEBOUNCE_MS || '500';
+global.process.env.VITE_CEP_FETCH_DELAY_MS = global.process.env.VITE_CEP_FETCH_DELAY_MS || '500';
+
+// Polyfill para window.location.reload - permite mockar no Jest/JSDOM
+// No JSDOM, window.location é somente leitura, então precisamos definir como configurable
+if (typeof window !== 'undefined' && window.location) {
+  try {
+    // Salvar a referência original se existir
+    const originalReload = window.location.reload;
+    
+    // Tentar definir como configurable para permitir mocks nos testes
+    Object.defineProperty(window.location, 'reload', {
+      configurable: true,
+      value: originalReload || (() => {}),
+      writable: true,
+    });
+  } catch (err) {
+    // Se falhar, window.location pode ser totalmente somente leitura
+    // Nesse caso, não há muito o que fazer, mas pelo menos não quebra os testes
+    console.warn('Não foi possível definir window.location.reload como configurable:', err.message);
+  }
+}
+
