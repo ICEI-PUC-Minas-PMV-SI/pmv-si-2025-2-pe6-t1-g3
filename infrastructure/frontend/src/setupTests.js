@@ -50,6 +50,20 @@ global.ResizeObserver = class ResizeObserver {
   unobserve() {}
 };
 
+// Mock do HTMLFormElement.prototype.requestSubmit (não implementado no jsdom)
+if (typeof HTMLFormElement !== 'undefined' && HTMLFormElement.prototype) {
+  HTMLFormElement.prototype.requestSubmit = function(submitter) {
+    if (submitter) {
+      submitter.click();
+    } else {
+      const submitButton = this.querySelector('button[type="submit"], input[type="submit"]');
+      if (submitButton) {
+        submitButton.click();
+      }
+    }
+  };
+}
+
 // Configurar MSW
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());

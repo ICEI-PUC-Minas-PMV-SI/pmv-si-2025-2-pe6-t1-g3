@@ -2,8 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import ProductDetails from '../ProductDetails';
-import { AuthProvider } from '../../contexts/AuthContext';
-import { CartProvider } from '../../contexts/CartContext';
 import { mockUser, mockSupplier, mockAdmin, mockProduct, mockScreenSize, BREAKPOINTS } from '../../test-utils';
 
 // Mock do react-router-dom
@@ -74,31 +72,41 @@ Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
+// Mock do useAuth e useCart
+const mockUseAuth = jest.fn();
+const mockUseCart = jest.fn();
+
+jest.mock('../../contexts/AuthContext', () => ({
+  ...jest.requireActual('../../contexts/AuthContext'),
+  useAuth: () => mockUseAuth(),
+}));
+
+jest.mock('../../contexts/CartContext', () => ({
+  ...jest.requireActual('../../contexts/CartContext'),
+  useCart: () => mockUseCart(),
+}));
+
 // Wrapper para renderizar ProductDetails com contextos necessários
 const renderProductDetails = (initialAuth = null, initialCart = { cartCount: 0 }) => {
-  const MockAuthProvider = ({ children }) => {
-    const authValue = {
-      user: initialAuth,
-      isAuthenticated: !!initialAuth,
-      logout: jest.fn(),
-      login: jest.fn(),
-      register: jest.fn(),
-    };
-    
-    return (
-      <AuthProvider value={authValue}>
-        <CartProvider value={{ cartCount: initialCart.cartCount, addToCart: jest.fn() }}>
-          {children}
-        </CartProvider>
-      </AuthProvider>
-    );
-  };
+  mockUseAuth.mockReturnValue({
+    user: initialAuth,
+    isAuthenticated: !!initialAuth,
+    logout: jest.fn(),
+    login: jest.fn(),
+    register: jest.fn(),
+    isLoading: false,
+  });
+  
+  mockUseCart.mockReturnValue({
+    cartCount: initialCart.cartCount,
+    cartItems: [],
+    addToCart: jest.fn(),
+    setCartItems: jest.fn(),
+  });
 
   return render(
     <BrowserRouter>
-      <MockAuthProvider>
-        <ProductDetails />
-      </MockAuthProvider>
+      <ProductDetails />
     </BrowserRouter>
   );
 };
@@ -106,6 +114,8 @@ const renderProductDetails = (initialAuth = null, initialCart = { cartCount: 0 }
 describe('ProductDetails Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseAuth.mockClear();
+    mockUseCart.mockClear();
     mockNavigate.mockClear();
     mockProductService.getProduct.mockResolvedValue({
       data: {
@@ -230,26 +240,25 @@ describe('ProductDetails Component', () => {
       const user = userEvent.setup();
       const mockAddToCart = jest.fn();
       
-      const MockCartProvider = ({ children }) => {
-        const cartValue = {
-          cartCount: 0,
-          addToCart: mockAddToCart,
-        };
-        
-        return (
-          <CartProvider value={cartValue}>
-            {children}
-          </CartProvider>
-        );
-      };
+      mockUseAuth.mockReturnValue({
+        user: mockUser,
+        isAuthenticated: true,
+        logout: jest.fn(),
+        login: jest.fn(),
+        register: jest.fn(),
+        isLoading: false,
+      });
+      
+      mockUseCart.mockReturnValue({
+        cartCount: 0,
+        cartItems: [],
+        addToCart: mockAddToCart,
+        setCartItems: jest.fn(),
+      });
 
       render(
         <BrowserRouter>
-          <AuthProvider value={{ user: mockUser, isAuthenticated: true }}>
-            <MockCartProvider>
-              <ProductDetails />
-            </MockCartProvider>
-          </AuthProvider>
+          <ProductDetails />
         </BrowserRouter>
       );
       

@@ -2,8 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import Cart from '../Cart';
-import { AuthProvider } from '../../contexts/AuthContext';
-import { CartProvider } from '../../contexts/CartContext';
 import { mockUser, mockSupplier, mockAdmin, mockCart, mockScreenSize, BREAKPOINTS } from '../../test-utils';
 
 // Mock dos componentes filhos
@@ -91,31 +89,41 @@ Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
+// Mock do useAuth e useCart
+const mockUseAuth = jest.fn();
+const mockUseCart = jest.fn();
+
+jest.mock('../../contexts/AuthContext', () => ({
+  ...jest.requireActual('../../contexts/AuthContext'),
+  useAuth: () => mockUseAuth(),
+}));
+
+jest.mock('../../contexts/CartContext', () => ({
+  ...jest.requireActual('../../contexts/CartContext'),
+  useCart: () => mockUseCart(),
+}));
+
 // Wrapper para renderizar Cart com contextos necessários
 const renderCart = (initialAuth = mockUser, initialCart = { cartCount: 2 }) => {
-  const MockAuthProvider = ({ children }) => {
-    const authValue = {
-      user: initialAuth,
-      isAuthenticated: !!initialAuth,
-      logout: jest.fn(),
-      login: jest.fn(),
-      register: jest.fn(),
-    };
-    
-    return (
-      <AuthProvider value={authValue}>
-        <CartProvider value={{ cartCount: initialCart.cartCount }}>
-          {children}
-        </CartProvider>
-      </AuthProvider>
-    );
-  };
+  mockUseAuth.mockReturnValue({
+    user: initialAuth,
+    isAuthenticated: !!initialAuth,
+    logout: jest.fn(),
+    login: jest.fn(),
+    register: jest.fn(),
+    isLoading: false,
+  });
+  
+  mockUseCart.mockReturnValue({
+    cartCount: initialCart.cartCount,
+    cartItems: [],
+    addToCart: jest.fn(),
+    setCartItems: jest.fn(),
+  });
 
   return render(
     <BrowserRouter>
-      <MockAuthProvider>
-        <Cart />
-      </MockAuthProvider>
+      <Cart />
     </BrowserRouter>
   );
 };
@@ -123,6 +131,8 @@ const renderCart = (initialAuth = mockUser, initialCart = { cartCount: 2 }) => {
 describe('Cart Component (Shopping Cart)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseAuth.mockClear();
+    mockUseCart.mockClear();
     mockLocalStorage.getItem.mockReturnValue('mock-token');
     mockUserService.getProfile.mockResolvedValue({
       data: {

@@ -2,8 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import Account from '../Account';
-import { AuthProvider } from '../../contexts/AuthContext';
-import { CartProvider } from '../../contexts/CartContext';
 import { mockUser, mockSupplier, mockAdmin, mockScreenSize, BREAKPOINTS } from '../../test-utils';
 
 // Mock dos componentes filhos
@@ -77,31 +75,41 @@ jest.mock('react-toastify', () => ({
   },
 }));
 
+// Mock do useAuth e useCart
+const mockUseAuth = jest.fn();
+const mockUseCart = jest.fn();
+
+jest.mock('../../contexts/AuthContext', () => ({
+  ...jest.requireActual('../../contexts/AuthContext'),
+  useAuth: () => mockUseAuth(),
+}));
+
+jest.mock('../../contexts/CartContext', () => ({
+  ...jest.requireActual('../../contexts/CartContext'),
+  useCart: () => mockUseCart(),
+}));
+
 // Wrapper para renderizar Account com contextos necessários
 const renderAccount = (initialAuth = mockUser, initialCart = { cartCount: 0 }) => {
-  const MockAuthProvider = ({ children }) => {
-    const authValue = {
-      user: initialAuth,
-      isAuthenticated: !!initialAuth,
-      logout: jest.fn(),
-      login: jest.fn(),
-      register: jest.fn(),
-    };
-    
-    return (
-      <AuthProvider value={authValue}>
-        <CartProvider value={{ cartCount: initialCart.cartCount }}>
-          {children}
-        </CartProvider>
-      </AuthProvider>
-    );
-  };
+  mockUseAuth.mockReturnValue({
+    user: initialAuth,
+    isAuthenticated: !!initialAuth,
+    logout: jest.fn(),
+    login: jest.fn(),
+    register: jest.fn(),
+    isLoading: false,
+  });
+  
+  mockUseCart.mockReturnValue({
+    cartCount: initialCart.cartCount,
+    cartItems: [],
+    addToCart: jest.fn(),
+    setCartItems: jest.fn(),
+  });
 
   return render(
     <BrowserRouter>
-      <MockAuthProvider>
-        <Account />
-      </MockAuthProvider>
+      <Account />
     </BrowserRouter>
   );
 };
@@ -109,6 +117,8 @@ const renderAccount = (initialAuth = mockUser, initialCart = { cartCount: 0 }) =
 describe('Account Component (User Area)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseAuth.mockClear();
+    mockUseCart.mockClear();
     localStorage.clear();
   });
 
@@ -116,23 +126,23 @@ describe('Account Component (User Area)', () => {
     it('deve renderizar menu lateral com opções de navegação', () => {
       renderAccount();
       
-      expect(screen.getByText('Minha Conta')).toBeInTheDocument();
-      expect(screen.getByText('Endereços')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Minha Conta' })).toBeInTheDocument();
+      expect(screen.getAllByText('Endereços').length).toBeGreaterThan(0);
       expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
     });
 
     it('deve exibir informações do perfil do usuário', () => {
       renderAccount();
       
-      expect(screen.getByText('Minha Conta')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Minha Conta' })).toBeInTheDocument();
       expect(screen.getByText('Gerencie suas informações, endereços e pedidos')).toBeInTheDocument();
     });
 
     it('deve renderizar seção de endereços', () => {
       renderAccount();
       
-      const addressTab = screen.getByText('Endereços');
-      expect(addressTab).toBeInTheDocument();
+      const addressTabs = screen.getAllByText('Endereços');
+      expect(addressTabs.length).toBeGreaterThan(0);
     });
 
     it('deve renderizar histórico de pedidos', () => {
@@ -174,8 +184,9 @@ describe('Account Component (User Area)', () => {
       const user = userEvent.setup();
       renderAccount();
       
-      // Navegar para aba de endereços
-      const addressTab = screen.getByText('Endereços');
+      // Navegar para aba de endereços - buscar o botão, não o h2
+      const addressTabs = screen.getAllByText('Endereços');
+      const addressTab = addressTabs.find(tab => tab.closest('button')) || addressTabs[0];
       await user.click(addressTab);
       
       expect(screen.getByTestId('address-component')).toBeInTheDocument();
@@ -190,29 +201,25 @@ describe('Account Component (User Area)', () => {
       const user = userEvent.setup();
       const mockLogout = jest.fn();
       
-      const MockAuthProvider = ({ children }) => {
-        const authValue = {
-          user: mockUser,
-          isAuthenticated: true,
-          logout: mockLogout,
-          login: jest.fn(),
-          register: jest.fn(),
-        };
-        
-        return (
-          <AuthProvider value={authValue}>
-            <CartProvider value={{ cartCount: 0 }}>
-              {children}
-            </CartProvider>
-          </AuthProvider>
-        );
-      };
+      mockUseAuth.mockReturnValue({
+        user: mockUser,
+        isAuthenticated: true,
+        logout: mockLogout,
+        login: jest.fn(),
+        register: jest.fn(),
+        isLoading: false,
+      });
+      
+      mockUseCart.mockReturnValue({
+        cartCount: 0,
+        cartItems: [],
+        addToCart: jest.fn(),
+        setCartItems: jest.fn(),
+      });
 
       render(
         <BrowserRouter>
-          <MockAuthProvider>
-            <Account />
-          </MockAuthProvider>
+          <Account />
         </BrowserRouter>
       );
       
@@ -224,8 +231,9 @@ describe('Account Component (User Area)', () => {
       const user = userEvent.setup();
       renderAccount();
       
-      // Navegar para aba de endereços
-      const addressTab = screen.getByText('Endereços');
+      // Navegar para aba de endereços - buscar o botão, não o h2
+      const addressTabs = screen.getAllByText('Endereços');
+      const addressTab = addressTabs.find(tab => tab.closest('button')) || addressTabs[0];
       await user.click(addressTab);
       
       expect(screen.getByTestId('address-component')).toBeInTheDocument();
@@ -291,12 +299,13 @@ describe('Account Component (User Area)', () => {
       expect(saveButton).toBeInTheDocument();
     });
 
-    it('deve exibir estado vazio quando não há pedidos', () => {
+    it('deve exibir estado vazio quando não há pedidos', async () => {
+      const user = userEvent.setup();
       renderAccount();
       
       // Navegar para aba de histórico
       const historyTab = screen.getByText('Meus Pedidos');
-      userEvent.click(historyTab);
+      await user.click(historyTab);
       
       expect(screen.getByTestId('history-component')).toBeInTheDocument();
     });
@@ -321,8 +330,9 @@ describe('Account Component (User Area)', () => {
       const user = userEvent.setup();
       renderAccount();
       
-      // Navegar para aba de endereços
-      const addressTab = screen.getByText('Endereços');
+      // Navegar para aba de endereços - buscar o botão, não o h2
+      const addressTabs = screen.getAllByText('Endereços');
+      const addressTab = addressTabs.find(tab => tab.closest('button')) || addressTabs[0];
       await user.click(addressTab);
       
       expect(screen.getByTestId('address-component')).toBeInTheDocument();
@@ -374,8 +384,8 @@ describe('Account Component (User Area)', () => {
       mockScreenSize(BREAKPOINTS.MOBILE);
       renderAccount();
       
-      expect(screen.getByText('Minha Conta')).toBeInTheDocument();
-      expect(screen.getByText('Endereços')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Minha Conta' })).toBeInTheDocument();
+      expect(screen.getAllByText('Endereços').length).toBeGreaterThan(0);
       expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
     });
 
@@ -386,13 +396,14 @@ describe('Account Component (User Area)', () => {
       expect(screen.getByTestId('profile-form')).toBeInTheDocument();
     });
 
-    it('deve tornar tabelas responsivas', () => {
+    it('deve tornar tabelas responsivas', async () => {
+      const user = userEvent.setup();
       mockScreenSize(BREAKPOINTS.MOBILE);
       renderAccount();
       
       // Navegar para aba de histórico
       const historyTab = screen.getByText('Meus Pedidos');
-      userEvent.click(historyTab);
+      await user.click(historyTab);
       
       expect(screen.getByTestId('history-component')).toBeInTheDocument();
     });
@@ -424,12 +435,13 @@ describe('Account Component (User Area)', () => {
       expect(screen.getByTestId('input-email')).toBeInTheDocument();
     });
 
-    it('deve ter headers associados nas tabelas', () => {
+    it('deve ter headers associados nas tabelas', async () => {
+      const user = userEvent.setup();
       renderAccount();
       
       // Navegar para aba de histórico
       const historyTab = screen.getByText('Meus Pedidos');
-      userEvent.click(historyTab);
+      await user.click(historyTab);
       
       expect(screen.getByTestId('history-component')).toBeInTheDocument();
     });
@@ -437,7 +449,7 @@ describe('Account Component (User Area)', () => {
     it('deve ter contraste adequado', () => {
       renderAccount();
       
-      expect(screen.getByText('Minha Conta')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Minha Conta' })).toBeInTheDocument();
       expect(screen.getByText('Gerencie suas informações, endereços e pedidos')).toBeInTheDocument();
     });
 
@@ -487,24 +499,24 @@ describe('Account Component (User Area)', () => {
     it('deve exibir opções corretas para cliente', () => {
       renderAccount(mockUser);
       
-      expect(screen.getByText('Minha Conta')).toBeInTheDocument();
-      expect(screen.getByText('Endereços')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Minha Conta' })).toBeInTheDocument();
+      expect(screen.getAllByText('Endereços').length).toBeGreaterThan(0);
       expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
     });
 
     it('deve exibir opções corretas para fornecedor', () => {
       renderAccount(mockSupplier);
       
-      expect(screen.getByText('Minha Conta')).toBeInTheDocument();
-      expect(screen.getByText('Endereços')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Minha Conta' })).toBeInTheDocument();
+      expect(screen.getAllByText('Endereços').length).toBeGreaterThan(0);
       expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
     });
 
     it('deve exibir opções corretas para admin', () => {
       renderAccount(mockAdmin);
       
-      expect(screen.getByText('Minha Conta')).toBeInTheDocument();
-      expect(screen.getByText('Endereços')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Minha Conta' })).toBeInTheDocument();
+      expect(screen.getAllByText('Endereços').length).toBeGreaterThan(0);
       expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
     });
 
@@ -524,8 +536,9 @@ describe('Account Component (User Area)', () => {
       // Verificar aba padrão
       expect(screen.getByTestId('profile-component')).toBeInTheDocument();
       
-      // Clicar na aba de endereços
-      const addressTab = screen.getByText('Endereços');
+      // Clicar na aba de endereços - buscar o botão, não o h2
+      const addressTabs = screen.getAllByText('Endereços');
+      const addressTab = addressTabs.find(tab => tab.closest('button')) || addressTabs[0];
       await user.click(addressTab);
       
       expect(screen.getByTestId('address-component')).toBeInTheDocument();
@@ -536,8 +549,9 @@ describe('Account Component (User Area)', () => {
       
       expect(screen.getByTestId('history-component')).toBeInTheDocument();
       
-      // Voltar para perfil
-      const profileTab = screen.getByText('Minha Conta');
+      // Voltar para perfil - buscar pelo botão que não é o heading
+      const profileTabs = screen.getAllByText('Minha Conta');
+      const profileTab = profileTabs.find(tab => tab.tagName !== 'H1') || profileTabs[1];
       await user.click(profileTab);
       
       expect(screen.getByTestId('profile-component')).toBeInTheDocument();
@@ -547,11 +561,16 @@ describe('Account Component (User Area)', () => {
       const user = userEvent.setup();
       renderAccount();
       
-      const addressTab = screen.getByText('Endereços');
+      // Buscar o botão de endereços, não o h2
+      const addressTabs = screen.getAllByText('Endereços');
+      const addressTab = addressTabs.find(tab => tab.closest('button')) || addressTabs[0];
       await user.click(addressTab);
       
-      // Verificar se a aba está ativa
-      expect(addressTab).toHaveClass('border-black', 'text-black');
+      // Verificar se a aba está ativa - buscar novamente após o click para pegar o estado atualizado
+      const updatedAddressTabs = screen.getAllByText('Endereços');
+      const updatedAddressTab = updatedAddressTabs.find(tab => tab.closest('button')) || updatedAddressTabs[0];
+      expect(updatedAddressTab.closest('button')).toHaveClass('border-black');
+      expect(updatedAddressTab.closest('button')).toHaveClass('text-black');
     });
 
     it('deve renderizar componente correto para cada aba', async () => {
@@ -561,8 +580,10 @@ describe('Account Component (User Area)', () => {
       // Aba de perfil
       expect(screen.getByTestId('profile-component')).toBeInTheDocument();
       
-      // Aba de endereços
-      await user.click(screen.getByText('Endereços'));
+      // Aba de endereços - buscar o botão, não o h2
+      const addressTabs = screen.getAllByText('Endereços');
+      const addressTab = addressTabs.find(tab => tab.closest('button')) || addressTabs[0];
+      await user.click(addressTab);
       expect(screen.getByTestId('address-component')).toBeInTheDocument();
       
       // Aba de histórico
