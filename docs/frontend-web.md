@@ -51,7 +51,7 @@ A interface web da Zabbix Store será desenvolvida com foco em usabilidade, cons
 
   <p><code>Versão Web_Desktop e Web_Mobile</code></p>
 
-  <img src="../docs/img/wireframes/Desktop_home.png" width="600" alt="Versão Desktop">
+  <img src="../docs/img/wireframes/Desktop_home_novo.png" width="600" alt="Versão Desktop">
   <img src="../docs/img/wireframes/Mobile_home.png" width="100" alt="Versão Mobile">
 
 A tela inicial foi desenvolvida como o ponto de entrada principal da plataforma, oferecendo uma navegação moderna, intuitiva e organizada. Seu objetivo é destacar os principais produtos e categorias, facilitando o acesso rápido às áreas de interesse do usuário.
