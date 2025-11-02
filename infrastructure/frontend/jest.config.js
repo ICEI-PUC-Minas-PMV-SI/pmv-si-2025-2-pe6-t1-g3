@@ -1,5 +1,6 @@
 export default {
   testEnvironment: 'jsdom',
+  setupFiles: ['<rootDir>/src/setupPolyfills.js'],
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
@@ -7,8 +8,11 @@ export default {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest'
+    '^.+\\.(js|jsx|mjs)$': 'babel-jest'
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$|@testing-library|@heroicons|@headlessui|msw|@mswjs|until-async))'
+  ],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{js,jsx}',
     '<rootDir>/src/**/*.{test,spec}.{js,jsx}'
@@ -34,8 +38,11 @@ export default {
     '<rootDir>/node_modules/',
     '<rootDir>/cypress/'
   ],
-  moduleFileExtensions: ['js', 'jsx', 'json'],
-  transformIgnorePatterns: [
-    'node_modules/(?!(.*\\.mjs$|@testing-library|@heroicons|@headlessui))'
-  ]
+  moduleFileExtensions: ['js', 'jsx', 'json', 'mjs'],
+  extensionsToTreatAsEsm: ['.jsx'],
+  globals: {
+    'babel-jest': {
+      useESM: true
+    }
+  }
 };

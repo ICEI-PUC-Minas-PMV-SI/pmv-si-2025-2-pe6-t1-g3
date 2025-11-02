@@ -2,8 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import Likedproducts from '../Likedproducts';
-import { AuthProvider } from '../../contexts/AuthContext';
-import { CartProvider } from '../../contexts/CartContext';
 import { mockUser, mockSupplier, mockAdmin, mockProduct, mockScreenSize, BREAKPOINTS } from '../../test-utils';
 
 // Mock dos componentes filhos
@@ -100,31 +98,41 @@ Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
+// Mock do useAuth e useCart
+const mockUseAuth = jest.fn();
+const mockUseCart = jest.fn();
+
+jest.mock('../../contexts/AuthContext', () => ({
+  ...jest.requireActual('../../contexts/AuthContext'),
+  useAuth: () => mockUseAuth(),
+}));
+
+jest.mock('../../contexts/CartContext', () => ({
+  ...jest.requireActual('../../contexts/CartContext'),
+  useCart: () => mockUseCart(),
+}));
+
 // Wrapper para renderizar Likedproducts com contextos necessários
 const renderLikedproducts = (initialAuth = mockUser, initialCart = { cartCount: 0 }) => {
-  const MockAuthProvider = ({ children }) => {
-    const authValue = {
-      user: initialAuth,
-      isAuthenticated: !!initialAuth,
-      logout: jest.fn(),
-      login: jest.fn(),
-      register: jest.fn(),
-    };
-    
-    return (
-      <AuthProvider value={authValue}>
-        <CartProvider value={{ cartCount: initialCart.cartCount }}>
-          {children}
-        </CartProvider>
-      </AuthProvider>
-    );
-  };
+  mockUseAuth.mockReturnValue({
+    user: initialAuth,
+    isAuthenticated: !!initialAuth,
+    logout: jest.fn(),
+    login: jest.fn(),
+    register: jest.fn(),
+    isLoading: false,
+  });
+  
+  mockUseCart.mockReturnValue({
+    cartCount: initialCart.cartCount,
+    cartItems: [],
+    addToCart: jest.fn(),
+    setCartItems: jest.fn(),
+  });
 
   return render(
     <BrowserRouter>
-      <MockAuthProvider>
-        <Likedproducts />
-      </MockAuthProvider>
+      <Likedproducts />
     </BrowserRouter>
   );
 };
@@ -132,6 +140,8 @@ const renderLikedproducts = (initialAuth = mockUser, initialCart = { cartCount: 
 describe('Likedproducts Component (Favorites List)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseAuth.mockClear();
+    mockUseCart.mockClear();
     mockLocalStorage.getItem.mockReturnValue('mock-token');
     mockUserService.getProfile.mockResolvedValue({
       data: {

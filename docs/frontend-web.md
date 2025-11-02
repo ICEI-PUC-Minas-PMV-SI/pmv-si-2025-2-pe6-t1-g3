@@ -598,13 +598,12 @@ A solução permite que qualquer membro da equipe realize deploys com segurança
 
 ### Estratégia de Teste Frontend
 
-A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes com foco em testes unitários (70%), testes de integração (20%) e testes E2E (10%). Os testes são desenvolvidos utilizando React Testing Library para testes unitários e de integração, e Cypress para testes end-to-end.
+A estratégia de teste do frontend da ZabbixStore segue a pirâmide de testes com foco em testes unitários (70%) e testes de integração (30%). Os testes são desenvolvidos utilizando React Testing Library para testes unitários e de integração.
 
 ### Ferramentas Utilizadas
 
 - **React Testing Library**: Para testes unitários e de integração de componentes
 - **Jest**: Framework de teste principal
-- **Cypress**: Para testes end-to-end
 - **MSW (Mock Service Worker)**: Para mock de APIs
 - **Testing Library User Event**: Para simulação de interações do usuário
 
@@ -1308,8 +1307,6 @@ const testOrder = {
 };
 ```
 
-</details>
-
 **Produto Sem Estoque**
 ```javascript
 const outOfStockProduct = {
@@ -1321,77 +1318,7 @@ const outOfStockProduct = {
 };
 ```
 
-#### Dados de Carrinho para Testes
-
-**Carrinho com Itens**
-```javascript
-const testCart = {
-  id: 1,
-  userId: 1,
-  items: [
-    {
-      productId: 1,
-      quantity: 2,
-      price: 1299.99,
-      total: 2599.98
-    },
-    {
-      productId: 2,
-      quantity: 1,
-      price: 299.99,
-      total: 299.99
-    }
-  ],
-  subtotal: 2899.97,
-  shipping: 15.00,
-  total: 2914.97,
-  coupon: null
-};
-```
-
-**Carrinho Vazio**
-```javascript
-const emptyCart = {
-  id: 1,
-  userId: 1,
-  items: [],
-  subtotal: 0,
-  shipping: 0,
-  total: 0,
-  coupon: null
-};
-```
-
-#### Dados de Pedido para Testes
-
-**Pedido Completo**
-```javascript
-const testOrder = {
-  id: 1,
-  userId: 1,
-  status: "PENDENTE",
-  items: [
-    {
-      productId: 1,
-      quantity: 2,
-      price: 1299.99,
-      total: 2599.98
-    }
-  ],
-  subtotal: 2599.98,
-  shipping: 15.00,
-  total: 2614.98,
-  shippingAddress: {
-    street: "Rua das Flores, 123",
-    city: "São Paulo",
-    state: "SP",
-    zipCode: "01234-567"
-  },
-  paymentMethod: "CREDIT_CARD",
-  createdAt: "2024-01-15T10:30:00Z",
-  updatedAt: "2024-01-15T10:30:00Z"
-};
-```
+</details>
 
 
 ### Cobertura de Testes
@@ -1407,12 +1334,13 @@ npm test
 # Executar testes com cobertura
 npm run test:coverage
 
-# Executar testes E2E
-npm run test:e2e
-
 # Executar testes em modo watch
 npm run test:watch
 ```
+
+### Resultado dos Testes
+
+![Resultados dos Testes Frontend](../docs/img/tests/testes_front_end.png)
 
 
 # Referências
@@ -1428,7 +1356,6 @@ npm run test:watch
 ## Ferramentas e Testes
 
 - [Jest Documentation](https://jestjs.io/docs/) – Testes unitários
-- [Cypress Documentation](https://www.cypress.io/) – Testes end-to-end
 - [Testing Library](https://testing-library.com/) – Testes focados na interação do usuário
 
 ## Padrões e Boas Práticas
