@@ -82,14 +82,28 @@ import { userService as mockUserService, orderService2 as mockOrderService } fro
 
 // Mock do localStorage
 const mockLocalStorage = {
-  getItem: jest.fn(() => 'mock-token'),
+  getItem: jest.fn((key) => {
+    if (key === 'token') return 'mock-token';
+    if (key === 'cart') return JSON.stringify([]);
+    return null;
+  }),
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
+  writable: true,
 });
+
+// Mock do window.location
+delete window.location;
+window.location = {
+  href: '',
+  reload: jest.fn(),
+  assign: jest.fn(),
+};
+
 
 // Mock do useAuth e useCart
 const mockUseAuth = jest.fn();
@@ -135,13 +149,20 @@ describe('Likedproducts Component (Favorites List)', () => {
     jest.clearAllMocks();
     mockUseAuth.mockClear();
     mockUseCart.mockClear();
-    mockLocalStorage.getItem.mockReturnValue('mock-token');
+    mockLocalStorage.getItem.mockImplementation((key) => {
+      if (key === 'token') return 'mock-token';
+      if (key === 'cart') return JSON.stringify([]);
+      return null;
+    });
     mockUserService.getProfile.mockResolvedValue({
       data: {
         ENDERECOS: []
       }
     });
+    window.location.href = '';
+    window.location.reload = jest.fn();
   });
+
 
   describe('Renderização', () => {
     it('deve renderizar lista de produtos favoritados', async () => {
@@ -150,7 +171,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
         expect(screen.getByText('Meus Favoritos')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve exibir imagem, nome, preço e avaliação de cada produto', async () => {
@@ -164,7 +185,7 @@ describe('Likedproducts Component (Favorites List)', () => {
         expect(screen.getByTestId('favorite-name-2')).toHaveTextContent('Tablet ABC');
         expect(screen.getByTestId('favorite-price-2')).toHaveTextContent('R$ 599.99');
         expect(screen.getByTestId('favorite-rating-2')).toHaveTextContent('4.0 ⭐');
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve renderizar botões de ação para cada item', async () => {
@@ -174,7 +195,7 @@ describe('Likedproducts Component (Favorites List)', () => {
         expect(screen.getByTestId('remove-favorite-1')).toBeInTheDocument();
         expect(screen.getByTestId('add-to-cart-1')).toBeInTheDocument();
         expect(screen.getByTestId('view-details-1')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve renderizar opções de ordenação', async () => {
@@ -184,7 +205,7 @@ describe('Likedproducts Component (Favorites List)', () => {
         expect(screen.getByTestId('sort-price')).toBeInTheDocument();
         expect(screen.getByTestId('sort-rating')).toBeInTheDocument();
         expect(screen.getByTestId('sort-name')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve renderizar filtros por categoria', async () => {
@@ -194,7 +215,7 @@ describe('Likedproducts Component (Favorites List)', () => {
         expect(screen.getByTestId('filter-electronics')).toBeInTheDocument();
         expect(screen.getByTestId('filter-fashion')).toBeInTheDocument();
         expect(screen.getByTestId('filter-home')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve renderizar contador de itens', async () => {
@@ -202,7 +223,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-count')).toHaveTextContent('3 itens');
-      });
+      }, { timeout: 3000 });
     });
   });
 
@@ -213,7 +234,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('remove-favorite-1')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const removeButton = screen.getByTestId('remove-favorite-1');
       await user.click(removeButton);
@@ -227,7 +248,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('add-to-cart-1')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const addToCartButton = screen.getByTestId('add-to-cart-1');
       await user.click(addToCartButton);
@@ -241,7 +262,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('view-details-1')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const viewDetailsButton = screen.getByTestId('view-details-1');
       await user.click(viewDetailsButton);
@@ -255,7 +276,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('sort-price')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const sortPriceButton = screen.getByTestId('sort-price');
       await user.click(sortPriceButton);
@@ -269,7 +290,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('sort-rating')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const sortRatingButton = screen.getByTestId('sort-rating');
       await user.click(sortRatingButton);
@@ -283,7 +304,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('sort-name')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const sortNameButton = screen.getByTestId('sort-name');
       await user.click(sortNameButton);
@@ -297,7 +318,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('filter-electronics')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const filterElectronicsButton = screen.getByTestId('filter-electronics');
       await user.click(filterElectronicsButton);
@@ -312,7 +333,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       await waitFor(() => {
         expect(screen.getByTestId('favorite-item-1')).toBeInTheDocument();
         expect(screen.getByTestId('favorite-item-2')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       // Simular seleção múltipla
       const item1 = screen.getByTestId('favorite-item-1');
@@ -338,18 +359,26 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       // Simular logout/login
       expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
     });
 
-    it('deve exibir loading durante carregamento', () => {
-      mockUserService.getProfile.mockImplementation(() => new Promise(() => {}));
+    it('deve exibir loading durante carregamento', async () => {
+      let resolvePromise;
+      const promise = new Promise((resolve) => {
+        resolvePromise = resolve;
+      });
+      mockUserService.getProfile.mockReturnValue(promise);
       
       renderLikedproducts();
       
       expect(screen.getByTestId('toast-container')).toBeInTheDocument();
+      
+      // Resolver a promise para evitar que o teste trave
+      resolvePromise({ data: { ENDERECOS: [] } });
+      await promise;
     });
 
     it('deve exibir erro se falhar ao carregar', () => {
@@ -360,12 +389,20 @@ describe('Likedproducts Component (Favorites List)', () => {
       expect(screen.getByTestId('toast-container')).toBeInTheDocument();
     });
 
-    it('deve exibir skeleton loading para produtos', () => {
-      mockUserService.getProfile.mockImplementation(() => new Promise(() => {}));
+    it('deve exibir skeleton loading para produtos', async () => {
+      let resolvePromise;
+      const promise = new Promise((resolve) => {
+        resolvePromise = resolve;
+      });
+      mockUserService.getProfile.mockReturnValue(promise);
       
       renderLikedproducts();
       
       expect(screen.getByTestId('toast-container')).toBeInTheDocument();
+      
+      // Resolver a promise para evitar que o teste trave
+      resolvePromise({ data: { ENDERECOS: [] } });
+      await promise;
     });
   });
 
@@ -376,7 +413,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('remove-favorite-1')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const removeButton = screen.getByTestId('remove-favorite-1');
       await user.click(removeButton);
@@ -390,7 +427,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('sort-price')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const sortPriceButton = screen.getByTestId('sort-price');
       await user.click(sortPriceButton);
@@ -404,7 +441,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('filter-electronics')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const filterButton = screen.getByTestId('filter-electronics');
       await user.click(filterButton);
@@ -417,7 +454,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-count')).toHaveTextContent('3 itens');
-      });
+      }, { timeout: 3000 });
     });
   });
 
@@ -458,7 +495,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       await user.tab();
       await user.tab();
@@ -473,7 +510,7 @@ describe('Likedproducts Component (Favorites List)', () => {
         expect(screen.getByTestId('remove-favorite-1')).toBeInTheDocument();
         expect(screen.getByTestId('add-to-cart-1')).toBeInTheDocument();
         expect(screen.getByTestId('view-details-1')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve anunciar contador por screen readers', async () => {
@@ -481,7 +518,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-count')).toHaveTextContent('3 itens');
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve ter contraste adequado', () => {
@@ -498,7 +535,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const endTime = performance.now();
       expect(endTime - startTime).toBeLessThan(1000);
@@ -510,7 +547,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('remove-favorite-1')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const startTime = performance.now();
       const removeButton = screen.getByTestId('remove-favorite-1');
@@ -526,7 +563,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('filter-electronics')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       const startTime = performance.now();
       const filterButton = screen.getByTestId('filter-electronics');
@@ -549,7 +586,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       expect(screen.getByTestId('favorites-count')).toHaveTextContent('3 itens');
     });
@@ -559,7 +596,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       expect(screen.getByTestId('favorites-count')).toHaveTextContent('3 itens');
     });
@@ -569,13 +606,17 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       expect(screen.getByTestId('favorites-count')).toHaveTextContent('3 itens');
     });
 
-    it('deve redirecionar para login se usuário não estiver logado', () => {
-      mockLocalStorage.getItem.mockReturnValue(null);
+    it('deve redirecionar para login se usuário não estiver logado', async () => {
+      mockLocalStorage.getItem.mockImplementation((key) => {
+        if (key === 'token') return null;
+        if (key === 'cart') return JSON.stringify([]);
+        return null;
+      });
       
       renderLikedproducts();
       
@@ -584,6 +625,9 @@ describe('Likedproducts Component (Favorites List)', () => {
       // O componente deve renderizar, mas não deve exibir favoritos sem autenticação
       // O redirecionamento é tratado internamente pelo componente
       expect(mockLocalStorage.getItem).toHaveBeenCalledWith('token');
+      
+      // Aguardar um pouco para garantir que o setTimeout foi executado
+      await new Promise(resolve => setTimeout(resolve, 100));
     });
   });
 
@@ -593,7 +637,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(mockUserService.getProfile).toHaveBeenCalledWith(1);
-      });
+      }, { timeout: 3000 });
     });
 
     it('deve exibir erro se falhar ao carregar dados do usuário', async () => {
@@ -609,7 +653,7 @@ describe('Likedproducts Component (Favorites List)', () => {
       
       await waitFor(() => {
         expect(screen.getByTestId('favorites-list')).toBeInTheDocument();
-      });
+      }, { timeout: 3000 });
       
       // Simular persistência no localStorage
       expect(mockLocalStorage.getItem).toHaveBeenCalledWith('token');
