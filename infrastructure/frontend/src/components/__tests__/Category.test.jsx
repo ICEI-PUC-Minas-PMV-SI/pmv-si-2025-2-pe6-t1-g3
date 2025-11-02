@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter, Routes, Route } from 'react-router-dom';
 import Category from '../Category';
 import { mockUser, mockProduct, mockScreenSize, BREAKPOINTS } from '../../test-utils';
 
@@ -20,7 +20,7 @@ const mockProducts = [
   },
 ];
 
-const mockUseInfiniteProducts = jest.fn(() => ({
+const mockUseInfiniteProductsReturn = {
   products: mockProducts,
   loading: false,
   loadingMore: false,
@@ -28,10 +28,15 @@ const mockUseInfiniteProducts = jest.fn(() => ({
   hasMore: true,
   loadMore: jest.fn(),
   allProductsCount: 2,
+};
+
+let mockUseInfiniteProductsImpl = jest.fn(() => ({
+  ...mockUseInfiniteProductsReturn,
+  loadMore: jest.fn(),
 }));
 
 jest.mock('../../hooks/useInfiniteProducts', () => ({
-  useInfiniteProducts: () => mockUseInfiniteProducts(),
+  useInfiniteProducts: (filters) => mockUseInfiniteProductsImpl(filters),
 }));
 
 // Mock do ProductGrid
@@ -40,9 +45,17 @@ jest.mock('../Product/ProductGrid', () => {
     if (loading) return <div data-testid="loading">Carregando produtos...</div>;
     if (error) return <div data-testid="error">Erro ao carregar produtos</div>;
     
+    if (!products || products.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">Nenhum produto encontrado</p>
+        </div>
+      );
+    }
+    
     return (
       <div data-testid="product-grid">
-        {products && products.map(product => (
+        {products.map(product => (
           <div key={product.CODPROD} data-testid={`product-${product.CODPROD}`}>
             <h3>{product.PRODUTO || product.NOME}</h3>
           </div>
@@ -63,7 +76,9 @@ jest.mock('../UI/LoadingSpinner', () => {
 const renderCategory = (categorySlug = 'eletronicos') => {
   return render(
     <MemoryRouter initialEntries={[`/category/${categorySlug}`]}>
-      <Category />
+      <Routes>
+        <Route path="/category/:categorySlug" element={<Category />} />
+      </Routes>
     </MemoryRouter>
   );
 };
@@ -71,14 +86,9 @@ const renderCategory = (categorySlug = 'eletronicos') => {
 describe('Category Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseInfiniteProducts.mockReturnValue({
-      products: mockProducts,
-      loading: false,
-      loadingMore: false,
-      error: null,
-      hasMore: true,
+    mockUseInfiniteProductsImpl.mockReturnValue({
+      ...mockUseInfiniteProductsReturn,
       loadMore: jest.fn(),
-      allProductsCount: 2,
     });
   });
 
@@ -151,16 +161,6 @@ describe('Category Component', () => {
 
   describe('Filtros por Categoria', () => {
     it('deve renderizar produtos da categoria ELETRÔNICOS', () => {
-      mockUseInfiniteProducts.mockReturnValue({
-        products: mockProducts,
-        loading: false,
-        loadingMore: false,
-        error: null,
-        hasMore: true,
-        loadMore: jest.fn(),
-        allProductsCount: 2,
-      });
-
       renderCategory('eletronicos');
       
       expect(screen.getByText('Eletrônicos')).toBeInTheDocument();
@@ -188,7 +188,7 @@ describe('Category Component', () => {
 
   describe('Estados', () => {
     it('deve exibir loading state durante carregamento inicial', () => {
-      mockUseInfiniteProducts.mockReturnValue({
+      mockUseInfiniteProductsImpl.mockReturnValueOnce({
         products: [],
         loading: true,
         loadingMore: false,
@@ -205,7 +205,7 @@ describe('Category Component', () => {
 
     it('deve exibir mensagem de erro se falhar ao carregar produtos', () => {
       const errorMessage = 'Erro ao carregar produtos';
-      mockUseInfiniteProducts.mockReturnValue({
+      mockUseInfiniteProductsImpl.mockReturnValueOnce({
         products: [],
         loading: false,
         loadingMore: false,
@@ -221,7 +221,7 @@ describe('Category Component', () => {
     });
 
     it('deve exibir estado vazio quando não há produtos na categoria', () => {
-      mockUseInfiniteProducts.mockReturnValue({
+      mockUseInfiniteProductsImpl.mockReturnValueOnce({
         products: [],
         loading: false,
         loadingMore: false,
@@ -233,6 +233,7 @@ describe('Category Component', () => {
 
       renderCategory('eletronicos');
       
+      expect(screen.getByText('Nenhum produto encontrado')).toBeInTheDocument();
       expect(screen.queryByTestId('product-grid')).not.toBeInTheDocument();
     });
   });
@@ -242,14 +243,9 @@ describe('Category Component', () => {
       const user = userEvent.setup();
       const mockLoadMore = jest.fn();
       
-      mockUseInfiniteProducts.mockReturnValue({
-        products: mockProducts,
-        loading: false,
-        loadingMore: false,
-        error: null,
-        hasMore: true,
+      mockUseInfiniteProductsImpl.mockReturnValueOnce({
+        ...mockUseInfiniteProductsReturn,
         loadMore: mockLoadMore,
-        allProductsCount: 2,
       });
 
       renderCategory('eletronicos');
@@ -261,14 +257,10 @@ describe('Category Component', () => {
     });
 
     it('deve desabilitar botão "Ver mais" durante carregamento', () => {
-      mockUseInfiniteProducts.mockReturnValue({
-        products: mockProducts,
-        loading: false,
+      mockUseInfiniteProductsImpl.mockReturnValueOnce({
+        ...mockUseInfiniteProductsReturn,
         loadingMore: true,
-        error: null,
-        hasMore: true,
         loadMore: jest.fn(),
-        allProductsCount: 2,
       });
 
       renderCategory('eletronicos');
@@ -278,14 +270,10 @@ describe('Category Component', () => {
     });
 
     it('deve exibir mensagem quando todos os produtos foram carregados', () => {
-      mockUseInfiniteProducts.mockReturnValue({
-        products: mockProducts,
-        loading: false,
-        loadingMore: false,
-        error: null,
+      mockUseInfiniteProductsImpl.mockReturnValueOnce({
+        ...mockUseInfiniteProductsReturn,
         hasMore: false,
         loadMore: jest.fn(),
-        allProductsCount: 2,
       });
 
       renderCategory('eletronicos');
@@ -353,14 +341,10 @@ describe('Category Component', () => {
     });
 
     it('deve atualizar contagem quando produtos mudam', () => {
-      mockUseInfiniteProducts.mockReturnValue({
-        products: mockProducts,
-        loading: false,
-        loadingMore: false,
-        error: null,
-        hasMore: true,
-        loadMore: jest.fn(),
+      mockUseInfiniteProductsImpl.mockReturnValueOnce({
+        ...mockUseInfiniteProductsReturn,
         allProductsCount: 10,
+        loadMore: jest.fn(),
       });
 
       renderCategory('eletronicos');

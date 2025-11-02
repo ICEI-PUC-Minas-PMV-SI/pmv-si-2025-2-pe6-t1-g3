@@ -119,7 +119,8 @@ describe('Header Component', () => {
     });
 
     it('deve renderizar ícone de carrinho com contador', () => {
-      renderHeader(null, { cartCount: 3 });
+      // O contador só aparece quando o usuário está autenticado
+      renderHeader(mockUser, { cartCount: 3 });
       
       const cartLink = screen.getByTitle('Carrinho');
       expect(cartLink).toBeInTheDocument();
@@ -191,11 +192,19 @@ describe('Header Component', () => {
       mockScreenSize(BREAKPOINTS.MOBILE);
       renderHeader();
       
-      const menuButton = screen.getByRole('button');
-      await user.click(menuButton);
+      const menuButtons = screen.getAllByRole('button');
+      const menuButton = menuButtons.find(btn => 
+        btn.className.includes('md:hidden') || btn.querySelector('svg')
+      );
+      expect(menuButton).toBeTruthy();
       
-      // Verificar se o menu mobile aparece
-      expect(screen.getByText('Eletrônicos')).toBeInTheDocument();
+      if (menuButton) {
+        await user.click(menuButton);
+        
+        // Verificar se o menu mobile aparece através do placeholder único do mobile
+        const mobileSearchInput = screen.getByPlaceholderText('Buscar produtos...');
+        expect(mobileSearchInput).toBeInTheDocument();
+      }
     });
 
     it('deve fechar menu mobile ao clicar no X', async () => {
@@ -228,7 +237,8 @@ describe('Header Component', () => {
     });
 
     it('deve atualizar contador do carrinho quando produtos são adicionados', () => {
-      renderHeader(null, { cartCount: 5 });
+      // O contador só aparece quando o usuário está autenticado
+      renderHeader(mockUser, { cartCount: 5 });
       
       expect(screen.getByText('5')).toBeInTheDocument();
     });

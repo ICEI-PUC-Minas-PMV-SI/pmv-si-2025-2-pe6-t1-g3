@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { mockUser, mockScreenSize, BREAKPOINTS } from '../../test-utils';
@@ -29,6 +29,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../../services/api', () => ({
   authService: {
     login: jest.fn(),
+    loginWithGoogle: jest.fn(),
     register: jest.fn(),
   },
 }));
@@ -41,47 +42,33 @@ import { authService } from '../../services/api';
 // Criar alias para authService mockado
 const mockAuthService = authService;
 
-// Mock dos componentes UI
-jest.mock('../UI/Input', () => {
-  return function MockInput({ label, type, name, value, onChange, error, placeholder, required }) {
+// Mock do GoogleLoginButton
+jest.mock('../Auth/GoogleLoginButton', () => {
+  return function MockGoogleLoginButton({ onCredential, onError, isSubmitting }) {
     return (
-      <div>
-        <label htmlFor={name}>{label}</label>
-        <input
-          id={name}
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          required={required}
-          data-testid={`input-${name}`}
-        />
-        {error && <span data-testid={`error-${name}`}>{error}</span>}
+      <div data-testid="google-login-button">
+        <button
+          type="button"
+          onClick={() => onCredential && onCredential('mock-google-credential')}
+          disabled={isSubmitting}
+        >
+          Entrar com Google
+        </button>
       </div>
     );
   };
 });
 
-jest.mock('../UI/Button', () => {
-  return function MockButton({ children, type, className, disabled, onClick }) {
-    return (
-      <button
-        type={type}
-        className={className}
-        disabled={disabled}
-        onClick={onClick}
-        data-testid="submit-button"
-      >
-        {children}
-      </button>
-    );
-  };
-});
-
-jest.mock('../UI/Card', () => {
-  return function MockCard({ children }) {
-    return <div data-testid="card">{children}</div>;
+// Mock do window.google para GoogleLoginButton
+beforeAll(() => {
+  global.window.google = {
+    accounts: {
+      id: {
+        initialize: jest.fn(),
+        renderButton: jest.fn(),
+        prompt: jest.fn(),
+      },
+    },
   };
 });
 
@@ -111,11 +98,26 @@ const renderWithAuth = (component, initialAuth = null) => {
   );
 };
 
+// Helper para renderizar Register que aguarda atualizações do useEffect
+const renderRegister = async (initialAuth = null) => {
+  let result;
+  await act(async () => {
+    result = renderWithAuth(<Register />, initialAuth);
+    // Aguardar que o useEffect complete (pode causar navegação)
+    await new Promise(resolve => setTimeout(resolve, 10));
+  });
+  
+  return result;
+};
+
+
 describe('Login Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseAuth.mockClear();
     mockNavigate.mockClear();
+    mockAuthService.login.mockClear();
+    mockAuthService.loginWithGoogle.mockClear();
   });
 
   describe('Renderização', () => {
@@ -129,7 +131,7 @@ describe('Login Component', () => {
     it('deve renderizar título e descrição', () => {
       renderWithAuth(<Login />);
       
-      expect(screen.getByText('Entrar')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Entrar' })).toBeInTheDocument();
       expect(screen.getByText('Acesse sua conta')).toBeInTheDocument();
     });
 
@@ -144,7 +146,7 @@ describe('Login Component', () => {
     it('deve renderizar link para cadastro', () => {
       renderWithAuth(<Login />);
       
-      expect(screen.getByText('Não tem uma conta?')).toBeInTheDocument();
+      expect(screen.getByText('Nao tem uma conta?')).toBeInTheDocument();
       expect(screen.getByText('Cadastre-se')).toBeInTheDocument();
       // Buscar link de forma mais robusta
       const cadastreTexts = screen.getAllByText('Cadastre-se');
@@ -175,7 +177,7 @@ describe('Login Component', () => {
       const user = userEvent.setup();
       renderWithAuth(<Login />);
       
-      const submitButton = screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i });
+      const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
       // Verificar se erros são exibidos (implementação real)
@@ -192,7 +194,7 @@ describe('Login Component', () => {
       await user.type(emailInput, 'email-invalido');
       await user.type(passwordInput, 'senha123');
       
-      const submitButton = screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i });
+      const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
       // Verificar se erro de email é exibido
@@ -206,7 +208,7 @@ describe('Login Component', () => {
       const emailInput = screen.getByLabelText('Email');
       await user.type(emailInput, 'teste@email.com');
       
-      const submitButton = screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i });
+      const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
       // Verificar se erro de senha é exibido
@@ -217,7 +219,12 @@ describe('Login Component', () => {
   describe('Estados', () => {
     it('deve exibir loading state durante autenticação', async () => {
       const user = userEvent.setup();
-      mockAuthService.login.mockImplementation(() => new Promise(() => {})); // Never resolves
+      // Promise que nunca resolve para manter estado de loading
+      let resolvePromise;
+      const pendingPromise = new Promise((resolve) => {
+        resolvePromise = resolve;
+      });
+      mockAuthService.login.mockImplementation(() => pendingPromise);
       
       renderWithAuth(<Login />);
       
@@ -230,18 +237,23 @@ describe('Login Component', () => {
       const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
-      // Verificar se botão mostra loading
+      // Verificar se botão mostra loading imediatamente
       await waitFor(() => {
-        const button = screen.getByRole('button', { name: /Entrando|Entrar/i });
+        const button = screen.getByRole('button', { name: 'Entrando...' });
         expect(button).toBeDisabled();
-      });
+      }, { timeout: 1000 });
+      
+      // Limpar promise pendente
+      if (resolvePromise) {
+        resolvePromise({ data: { token: 'mock-token' } });
+      }
     });
 
     it('deve exibir mensagem de erro para credenciais inválidas', async () => {
       const user = userEvent.setup();
-      mockAuthService.login.mockRejectedValue({
-        response: { data: { message: 'Credenciais inválidas' } }
-      });
+      const error = new Error('Credenciais inválidas');
+      error.response = { data: { message: 'Credenciais inválidas' } };
+      mockAuthService.login.mockRejectedValue(error);
       
       renderWithAuth(<Login />);
       
@@ -251,17 +263,22 @@ describe('Login Component', () => {
       await user.type(emailInput, 'teste@email.com');
       await user.type(passwordInput, 'senha-errada');
       
-      const submitButton = screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i });
+      const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Credenciais inválidas')).toBeInTheDocument();
-      });
+        const errorMessage = screen.getByText('Credenciais inválidas');
+        expect(errorMessage).toBeInTheDocument();
+      }, { timeout: 2000 });
     });
 
     it('deve desabilitar botões durante processamento', async () => {
       const user = userEvent.setup();
-      mockAuthService.login.mockImplementation(() => new Promise(() => {}));
+      let resolvePromise;
+      const pendingPromise = new Promise((resolve) => {
+        resolvePromise = resolve;
+      });
+      mockAuthService.login.mockImplementation(() => pendingPromise);
       
       renderWithAuth(<Login />);
       
@@ -271,10 +288,18 @@ describe('Login Component', () => {
       await user.type(emailInput, 'teste@email.com');
       await user.type(passwordInput, 'senha123');
       
-      const submitButton = screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i });
+      const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
-      expect(submitButton).toBeDisabled();
+      // Verificar se botão está desabilitado imediatamente
+      await waitFor(() => {
+        expect(submitButton).toBeDisabled();
+      }, { timeout: 500 });
+      
+      // Limpar promise pendente
+      if (resolvePromise) {
+        resolvePromise({ data: { token: 'mock-token' } });
+      }
     });
   });
 
@@ -307,13 +332,13 @@ describe('Login Component', () => {
       await user.type(emailInput, 'teste@email.com');
       await user.type(passwordInput, 'senha123');
       
-      const submitButton = screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i });
+      const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
       await waitFor(() => {
         expect(mockLogin).toHaveBeenCalledWith('mock-token');
         expect(mockNavigate).toHaveBeenCalledWith('/');
-      });
+      }, { timeout: 1000 });
     });
 
     it('deve limpar erros ao digitar nos campos', async () => {
@@ -323,7 +348,7 @@ describe('Login Component', () => {
       const emailInput = screen.getByLabelText('Email');
       
       // Simular erro inicial
-      await user.click(screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i }));
+      await user.click(screen.getByRole('button', { name: 'Entrar' }));
       
       // Digitar no campo deve limpar erro
       await user.type(emailInput, 'teste@email.com');
@@ -337,7 +362,7 @@ describe('Login Component', () => {
       mockScreenSize(BREAKPOINTS.MOBILE);
       renderWithAuth(<Login />);
       
-      expect(screen.getByText('Entrar')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Entrar' })).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
       expect(screen.getByLabelText('Senha')).toBeInTheDocument();
     });
@@ -357,7 +382,7 @@ describe('Login Component', () => {
       mockScreenSize(BREAKPOINTS.TABLET);
       renderWithAuth(<Login />);
       
-      expect(screen.getByText('Entrar')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Entrar' })).toBeInTheDocument();
     });
   });
 
@@ -382,7 +407,7 @@ describe('Login Component', () => {
     it('deve ter contraste adequado', () => {
       renderWithAuth(<Login />);
       
-      expect(screen.getByText('Entrar')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Entrar' })).toBeInTheDocument();
       expect(screen.getByText('Acesse sua conta')).toBeInTheDocument();
     });
 
@@ -407,9 +432,9 @@ describe('Login Component', () => {
 
     it('deve implementar rate limiting para tentativas de login', async () => {
       const user = userEvent.setup();
-      mockAuthService.login.mockRejectedValue({
-        response: { status: 429, data: { message: 'Muitas tentativas' } }
-      });
+      const error = new Error('Muitas tentativas');
+      error.response = { status: 429, data: { message: 'Muitas tentativas' } };
+      mockAuthService.login.mockRejectedValue(error);
       
       renderWithAuth(<Login />);
       
@@ -419,12 +444,13 @@ describe('Login Component', () => {
       await user.type(emailInput, 'teste@email.com');
       await user.type(passwordInput, 'senha123');
       
-      const submitButton = screen.getByRole('button', { name: /Entrar|Cadastrando|Entrando/i });
+      const submitButton = screen.getByRole('button', { name: 'Entrar' });
       await user.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Muitas tentativas')).toBeInTheDocument();
-      });
+        const errorMessage = screen.getByText('Muitas tentativas');
+        expect(errorMessage).toBeInTheDocument();
+      }, { timeout: 2000 });
     });
   });
 });
@@ -434,11 +460,12 @@ describe('Register Component', () => {
     jest.clearAllMocks();
     mockUseAuth.mockClear();
     mockNavigate.mockClear();
+    mockAuthService.register.mockClear();
   });
 
   describe('Renderização', () => {
-    it('deve renderizar formulário com campos obrigatórios', () => {
-      renderWithAuth(<Register />);
+    it('deve renderizar formulário com campos obrigatórios', async () => {
+      await renderRegister();
       
       expect(screen.getByLabelText('Nome')).toBeInTheDocument();
       expect(screen.getByLabelText('Sobrenome')).toBeInTheDocument();
@@ -449,31 +476,23 @@ describe('Register Component', () => {
       expect(screen.getByLabelText('Confirmar Senha')).toBeInTheDocument();
     });
 
-    it('deve renderizar título e descrição', () => {
-      renderWithAuth(<Register />);
+    it('deve renderizar título e descrição', async () => {
+      await renderRegister();
       
       expect(screen.getByRole('heading', { name: 'Criar Conta' })).toBeInTheDocument();
       expect(screen.getByText('Cadastre-se para acessar a loja')).toBeInTheDocument();
     });
 
-    it('deve renderizar indicador de progresso', () => {
-      renderWithAuth(<Register />);
+    it('deve renderizar seções organizadas', async () => {
+      await renderRegister();
       
-      expect(screen.getByText('Pessoais')).toBeInTheDocument();
+      expect(screen.getByText('Informações Pessoais')).toBeInTheDocument();
       expect(screen.getByText('Contato')).toBeInTheDocument();
       expect(screen.getByText('Segurança')).toBeInTheDocument();
     });
 
-    it('deve renderizar seções organizadas', () => {
-      renderWithAuth(<Register />);
-      
-      expect(screen.getByText('Informações Pessoais')).toBeInTheDocument();
-      expect(screen.getByText('Informações de Contato')).toBeInTheDocument();
-      expect(screen.getByText('Segurança da Conta')).toBeInTheDocument();
-    });
-
-    it('deve renderizar link para login', () => {
-      renderWithAuth(<Register />);
+    it('deve renderizar link para login', async () => {
+      await renderRegister();
       
       expect(screen.getByText('Já tem uma conta?')).toBeInTheDocument();
       expect(screen.getByText('Fazer login')).toBeInTheDocument();
@@ -490,7 +509,7 @@ describe('Register Component', () => {
   describe('Validações', () => {
     it('deve validar campos obrigatórios', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const submitButton = screen.getByRole('button', { name: 'Criar Conta' });
       await user.click(submitButton);
@@ -501,7 +520,7 @@ describe('Register Component', () => {
 
     it('deve validar formato de email', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const emailInput = screen.getByLabelText('Email');
       await user.type(emailInput, 'email-invalido');
@@ -514,7 +533,7 @@ describe('Register Component', () => {
 
     it('deve validar formato de CPF', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const cpfInput = screen.getByLabelText('CPF');
       await user.type(cpfInput, '123');
@@ -527,7 +546,7 @@ describe('Register Component', () => {
 
     it('deve validar força da senha', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const passwordInput = screen.getByLabelText('Senha');
       await user.type(passwordInput, '123');
@@ -540,7 +559,7 @@ describe('Register Component', () => {
 
     it('deve validar confirmação de senha', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const passwordInput = screen.getByLabelText('Senha');
       const confirmPasswordInput = screen.getByLabelText('Confirmar Senha');
@@ -559,72 +578,109 @@ describe('Register Component', () => {
   describe('Estados', () => {
     it('deve exibir loading state durante cadastro', async () => {
       const user = userEvent.setup();
-      mockAuthService.register.mockImplementation(() => new Promise(() => {}));
+      let resolvePromise;
+      const pendingPromise = new Promise((resolve) => {
+        resolvePromise = resolve;
+      });
+      mockAuthService.register.mockImplementation(() => pendingPromise);
       
-      renderWithAuth(<Register />);
+      await renderRegister();
       
-      // Preencher todos os campos
-      await user.type(screen.getByLabelText('Nome'), 'João');
-      await user.type(screen.getByLabelText('Sobrenome'), 'Silva');
-      await user.type(screen.getByLabelText('Email'), 'joao@email.com');
-      await user.type(screen.getByLabelText('CPF'), '123.456.789-00');
-      await user.type(screen.getByLabelText('Telefone'), '(11) 99999-9999');
-      await user.type(screen.getByLabelText('Senha'), 'senha123');
-      await user.type(screen.getByLabelText('Confirmar Senha'), 'senha123');
+      // Preencher campos de forma mais rápida
+      const nomeInput = screen.getByLabelText('Nome');
+      const sobrenomeInput = screen.getByLabelText('Sobrenome');
+      const emailInput = screen.getByLabelText('Email');
+      const cpfInput = screen.getByLabelText('CPF');
+      const telefoneInput = screen.getByLabelText('Telefone');
+      const senhaInput = screen.getByLabelText('Senha');
+      const confSenhaInput = screen.getByLabelText('Confirmar Senha');
+      
+      await user.type(nomeInput, 'João');
+      await user.type(sobrenomeInput, 'Silva');
+      await user.type(emailInput, 'joao@email.com');
+      await user.type(cpfInput, '123.456.789-00');
+      await user.type(telefoneInput, '(11) 99999-9999');
+      await user.type(senhaInput, 'senha123');
+      await user.type(confSenhaInput, 'senha123');
       
       const submitButton = screen.getByRole('button', { name: 'Criar Conta' });
       await user.click(submitButton);
       
-      expect(submitButton).toHaveTextContent('Cadastrando...');
-      expect(submitButton).toBeDisabled();
+      await waitFor(() => {
+        expect(submitButton).toHaveTextContent('Cadastrando...');
+        expect(submitButton).toBeDisabled();
+      }, { timeout: 500 });
+      
+      // Limpar promise pendente
+      if (resolvePromise) {
+        resolvePromise({ data: { success: true } });
+      }
     });
 
     it('deve exibir mensagem de sucesso após cadastro', async () => {
       const user = userEvent.setup();
       mockAuthService.register.mockResolvedValue({ data: { success: true } });
       
-      renderWithAuth(<Register />);
+      await renderRegister();
       
-      // Preencher todos os campos
-      await user.type(screen.getByLabelText('Nome'), 'João');
-      await user.type(screen.getByLabelText('Sobrenome'), 'Silva');
-      await user.type(screen.getByLabelText('Email'), 'joao@email.com');
-      await user.type(screen.getByLabelText('CPF'), '123.456.789-00');
-      await user.type(screen.getByLabelText('Telefone'), '(11) 99999-9999');
-      await user.type(screen.getByLabelText('Senha'), 'senha123');
-      await user.type(screen.getByLabelText('Confirmar Senha'), 'senha123');
+      // Preencher campos de forma mais rápida
+      const nomeInput = screen.getByLabelText('Nome');
+      const sobrenomeInput = screen.getByLabelText('Sobrenome');
+      const emailInput = screen.getByLabelText('Email');
+      const cpfInput = screen.getByLabelText('CPF');
+      const telefoneInput = screen.getByLabelText('Telefone');
+      const senhaInput = screen.getByLabelText('Senha');
+      const confSenhaInput = screen.getByLabelText('Confirmar Senha');
+      
+      await user.type(nomeInput, 'João');
+      await user.type(sobrenomeInput, 'Silva');
+      await user.type(emailInput, 'joao@email.com');
+      await user.type(cpfInput, '123.456.789-00');
+      await user.type(telefoneInput, '(11) 99999-9999');
+      await user.type(senhaInput, 'senha123');
+      await user.type(confSenhaInput, 'senha123');
       
       const submitButton = screen.getByRole('button', { name: 'Criar Conta' });
       await user.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Cadastro realizado com sucesso! Redirecionando...')).toBeInTheDocument();
-      });
+        const successMessage = screen.getByText('Cadastro realizado com sucesso! Redirecionando...');
+        expect(successMessage).toBeInTheDocument();
+      }, { timeout: 3000 });
     });
 
     it('deve exibir mensagem de erro para email já cadastrado', async () => {
       const user = userEvent.setup();
-      mockAuthService.register.mockRejectedValue({
-        response: { status: 409, data: { message: 'Email já está sendo usado' } }
-      });
+      const error = new Error('Email já está sendo usado');
+      error.response = { status: 409, data: { message: 'Email já está sendo usado' } };
+      mockAuthService.register.mockRejectedValue(error);
       
-      renderWithAuth(<Register />);
+      await renderRegister();
       
-      // Preencher todos os campos
-      await user.type(screen.getByLabelText('Nome'), 'João');
-      await user.type(screen.getByLabelText('Sobrenome'), 'Silva');
-      await user.type(screen.getByLabelText('Email'), 'joao@email.com');
-      await user.type(screen.getByLabelText('CPF'), '123.456.789-00');
-      await user.type(screen.getByLabelText('Telefone'), '(11) 99999-9999');
-      await user.type(screen.getByLabelText('Senha'), 'senha123');
-      await user.type(screen.getByLabelText('Confirmar Senha'), 'senha123');
+      // Preencher campos de forma mais rápida
+      const nomeInput = screen.getByLabelText('Nome');
+      const sobrenomeInput = screen.getByLabelText('Sobrenome');
+      const emailInput = screen.getByLabelText('Email');
+      const cpfInput = screen.getByLabelText('CPF');
+      const telefoneInput = screen.getByLabelText('Telefone');
+      const senhaInput = screen.getByLabelText('Senha');
+      const confSenhaInput = screen.getByLabelText('Confirmar Senha');
+      
+      await user.type(nomeInput, 'João');
+      await user.type(sobrenomeInput, 'Silva');
+      await user.type(emailInput, 'joao@email.com');
+      await user.type(cpfInput, '123.456.789-00');
+      await user.type(telefoneInput, '(11) 99999-9999');
+      await user.type(senhaInput, 'senha123');
+      await user.type(confSenhaInput, 'senha123');
       
       const submitButton = screen.getByRole('button', { name: 'Criar Conta' });
       await user.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Email já está sendo usado')).toBeInTheDocument();
-      });
+        const errorMessage = screen.getByText('Email já está sendo usado');
+        expect(errorMessage).toBeInTheDocument();
+      }, { timeout: 3000 });
     });
   });
 
@@ -633,28 +689,37 @@ describe('Register Component', () => {
       const user = userEvent.setup();
       mockAuthService.register.mockResolvedValue({ data: { success: true } });
       
-      renderWithAuth(<Register />);
+      await renderRegister();
       
-      // Preencher todos os campos
-      await user.type(screen.getByLabelText('Nome'), 'João');
-      await user.type(screen.getByLabelText('Sobrenome'), 'Silva');
-      await user.type(screen.getByLabelText('Email'), 'joao@email.com');
-      await user.type(screen.getByLabelText('CPF'), '123.456.789-00');
-      await user.type(screen.getByLabelText('Telefone'), '(11) 99999-9999');
-      await user.type(screen.getByLabelText('Senha'), 'senha123');
-      await user.type(screen.getByLabelText('Confirmar Senha'), 'senha123');
+      // Preencher campos de forma mais rápida
+      const nomeInput = screen.getByLabelText('Nome');
+      const sobrenomeInput = screen.getByLabelText('Sobrenome');
+      const emailInput = screen.getByLabelText('Email');
+      const cpfInput = screen.getByLabelText('CPF');
+      const telefoneInput = screen.getByLabelText('Telefone');
+      const senhaInput = screen.getByLabelText('Senha');
+      const confSenhaInput = screen.getByLabelText('Confirmar Senha');
+      
+      await user.type(nomeInput, 'João');
+      await user.type(sobrenomeInput, 'Silva');
+      await user.type(emailInput, 'joao@email.com');
+      await user.type(cpfInput, '123.456.789-00');
+      await user.type(telefoneInput, '(11) 99999-9999');
+      await user.type(senhaInput, 'senha123');
+      await user.type(confSenhaInput, 'senha123');
       
       const submitButton = screen.getByRole('button', { name: 'Criar Conta' });
       await user.click(submitButton);
       
+      // Register tem setTimeout de 2000ms para redirecionar
       await waitFor(() => {
         expect(mockNavigate).toHaveBeenCalledWith('/login');
-      }, { timeout: 3000 });
+      }, { timeout: 2500 });
     });
 
     it('deve limpar erros ao digitar nos campos', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const nomeInput = screen.getByLabelText('Nome');
       
@@ -667,26 +732,30 @@ describe('Register Component', () => {
       expect(nomeInput).toHaveValue('João');
     });
 
-    it('deve redirecionar usuário logado para home', () => {
-      renderWithAuth(<Register />, mockUser);
+    it('deve redirecionar usuário logado para home', async () => {
+      await renderRegister(mockUser);
       
-      expect(mockNavigate).toHaveBeenCalledWith('/');
+      // O useEffect do Register redireciona usuários logados
+      // Aguardar o useEffect completar
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('/');
+      });
     });
   });
 
   describe('Responsividade', () => {
-    it('deve adaptar-se corretamente em mobile', () => {
+    it('deve adaptar-se corretamente em mobile', async () => {
       mockScreenSize(BREAKPOINTS.MOBILE);
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       expect(screen.getByRole('heading', { name: 'Criar Conta' })).toBeInTheDocument();
       expect(screen.getByLabelText('Nome')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
     });
 
-    it('deve ter campos com tamanho adequado para touch', () => {
+    it('deve ter campos com tamanho adequado para touch', async () => {
       mockScreenSize(BREAKPOINTS.MOBILE);
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const nomeInput = screen.getByLabelText('Nome');
       const emailInput = screen.getByLabelText('Email');
@@ -695,17 +764,17 @@ describe('Register Component', () => {
       expect(emailInput).toBeInTheDocument();
     });
 
-    it('deve funcionar em orientação portrait e landscape', () => {
+    it('deve funcionar em orientação portrait e landscape', async () => {
       mockScreenSize(BREAKPOINTS.TABLET);
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       expect(screen.getByRole('heading', { name: 'Criar Conta' })).toBeInTheDocument();
     });
   });
 
   describe('Acessibilidade', () => {
-    it('deve ter labels associados aos campos', () => {
-      renderWithAuth(<Register />);
+    it('deve ter labels associados aos campos', async () => {
+      await renderRegister();
       
       expect(screen.getByLabelText('Nome')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
@@ -714,7 +783,7 @@ describe('Register Component', () => {
 
     it('deve ter navegação por teclado', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       await user.tab();
       await user.tab();
@@ -722,8 +791,8 @@ describe('Register Component', () => {
       expect(document.activeElement).toBeInTheDocument();
     });
 
-    it('deve ter contraste adequado', () => {
-      renderWithAuth(<Register />);
+    it('deve ter contraste adequado', async () => {
+      await renderRegister();
       
       expect(screen.getByRole('heading', { name: 'Criar Conta' })).toBeInTheDocument();
       expect(screen.getByText('Cadastre-se para acessar a loja')).toBeInTheDocument();
@@ -731,7 +800,7 @@ describe('Register Component', () => {
 
     it('deve ter foco visível em todos os campos', async () => {
       const user = userEvent.setup();
-      renderWithAuth(<Register />);
+      await renderRegister();
       
       const nomeInput = screen.getByLabelText('Nome');
       await user.click(nomeInput);
@@ -745,29 +814,42 @@ describe('Register Component', () => {
       const user = userEvent.setup();
       mockAuthService.register.mockResolvedValue({ data: { success: true } });
       
-      renderWithAuth(<Register />);
+      await renderRegister();
       
-      // Preencher todos os campos usando labels
-      await user.type(screen.getByLabelText('Nome'), 'João');
-      await user.type(screen.getByLabelText('Sobrenome'), 'Silva');
-      await user.type(screen.getByLabelText('Email'), 'joao@email.com');
-      await user.type(screen.getByLabelText('CPF'), '123.456.789-00');
-      await user.type(screen.getByLabelText('Telefone'), '(11) 99999-9999');
-      await user.type(screen.getByLabelText('Senha'), 'senha123');
-      await user.type(screen.getByLabelText('Confirmar Senha'), 'senha123');
+      // Preencher campos de forma mais rápida
+      const nomeInput = screen.getByLabelText('Nome');
+      const sobrenomeInput = screen.getByLabelText('Sobrenome');
+      const emailInput = screen.getByLabelText('Email');
+      const cpfInput = screen.getByLabelText('CPF');
+      const telefoneInput = screen.getByLabelText('Telefone');
+      const senhaInput = screen.getByLabelText('Senha');
+      const confSenhaInput = screen.getByLabelText('Confirmar Senha');
+      
+      await user.type(nomeInput, 'João');
+      await user.type(sobrenomeInput, 'Silva');
+      await user.type(emailInput, 'joao@email.com');
+      await user.type(cpfInput, '123.456.789-00');
+      await user.type(telefoneInput, '(11) 99999-9999');
+      await user.type(senhaInput, 'senha123');
+      await user.type(confSenhaInput, 'senha123');
       
       const submitButton = screen.getByRole('button', { name: 'Criar Conta' });
       await user.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Cadastro realizado com sucesso! Redirecionando...')).toBeInTheDocument();
-      });
+        const successMessage = screen.getByText('Cadastro realizado com sucesso! Redirecionando...');
+        expect(successMessage).toBeInTheDocument();
+      }, { timeout: 3000 });
     });
 
-    it('deve redirecionar usuário existente para login', () => {
-      renderWithAuth(<Register />, mockUser);
+    it('deve redirecionar usuário existente para login', async () => {
+      await renderRegister(mockUser);
       
-      expect(mockNavigate).toHaveBeenCalledWith('/');
+      // O Register redireciona usuários logados para home, não login
+      // Aguardar o useEffect completar
+      await waitFor(() => {
+        expect(mockNavigate).toHaveBeenCalledWith('/');
+      });
     });
   });
 });

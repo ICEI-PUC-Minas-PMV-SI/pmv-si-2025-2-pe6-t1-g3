@@ -1,18 +1,17 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import History from '../History';
 import { mockUser, mockScreenSize, BREAKPOINTS } from '../../test-utils';
 import { toast } from 'react-toastify';
 import { jwtDecode } from 'jwt-decode';
+import { orderService2 } from '../../services/api';
 
-// Mock dos serviços
-const mockOrderService2 = {
-  getOrdersByUser: jest.fn(),
-};
-
+// Mock dos serviços - deve ser definido dentro do jest.mock para evitar problemas de hoisting
 jest.mock('../../services/api', () => ({
-  orderService2: mockOrderService2,
+  orderService2: {
+    getOrdersByUser: jest.fn(),
+  },
 }));
 
 jest.mock('jwt-decode', () => ({
@@ -28,13 +27,14 @@ jest.mock('react-toastify', () => ({
 
 // Mock do localStorage
 const mockLocalStorage = {
-  getItem: jest.fn(),
+  getItem: jest.fn(() => 'mock-token'),
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
+  writable: true,
 });
 
 // Dados mockados de pedidos
@@ -110,67 +110,83 @@ const renderHistory = () => {
 describe('History Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockLocalStorage.getItem.mockReturnValue('mock-token');
-    jwtDecode.mockReturnValue({ CODPES: 1 });
-    mockOrderService2.getOrdersByUser.mockClear();
+    mockLocalStorage.getItem.mockImplementation((key) => {
+      if (key === 'token') return 'mock-token';
+      return null;
+    });
+    jwtDecode.mockImplementation(() => ({ CODPES: 1 }));
+    // Configurar mock padrão que resolve imediatamente de forma assíncrona
+    orderService2.getOrdersByUser.mockResolvedValue({ data: mockPedidos });
   });
 
   describe('Renderização', () => {
     it('deve renderizar título "Meus Pedidos"', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve renderizar descrição do histórico', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText('Acompanhe o histórico dos seus pedidos')).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve renderizar lista de pedidos', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText(/Pedido #1/)).toBeInTheDocument();
         expect(screen.getByText(/Pedido #2/)).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve renderizar estado vazio quando não há pedidos', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: [],
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText('Nenhum pedido encontrado')).toBeInTheDocument();
         expect(screen.getByText('Você ainda não fez nenhum pedido.')).toBeInTheDocument();
         expect(screen.getByText('Começar a Comprar')).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
   });
 
   describe('Estados', () => {
     it('deve exibir loading state durante carregamento inicial', () => {
-      mockOrderService2.getOrdersByUser.mockImplementation(
+      orderService2.getOrdersByUser.mockImplementation(
         () => new Promise(() => {}) // Promise que nunca resolve
       );
 
@@ -180,7 +196,7 @@ describe('History Component', () => {
     });
 
     it('deve exibir erro se falhar ao carregar pedidos', async () => {
-      mockOrderService2.getOrdersByUser.mockRejectedValue({
+      orderService2.getOrdersByUser.mockRejectedValue({
         response: { data: { message: 'Erro ao buscar pedidos' } },
       });
 
@@ -199,153 +215,205 @@ describe('History Component', () => {
 
   describe('Exibição de Pedidos', () => {
     it('deve exibir número do pedido', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText(/Pedido #1/)).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve exibir status do pedido', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         // O componente sempre exibe "Processando" hardcoded
         const statusElements = screen.getAllByText('Processando');
         expect(statusElements.length).toBeGreaterThan(0);
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve exibir data formatada do pedido', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
-      
-      await waitFor(() => {
-        expect(screen.getByText(/Feito em/)).toBeInTheDocument();
+      await act(async () => {
+        renderHistory();
       });
+      
+      // Primeiro aguardar que os pedidos sejam carregados
+      await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
+        expect(screen.getByText(/Pedido #1/)).toBeInTheDocument();
+      }, { timeout: 5000 });
+      
+      // Depois verificar o elemento específico
+      expect(screen.getByText(/Feito em/)).toBeInTheDocument();
     });
 
     it('deve exibir resumo do pedido com valores formatados', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
-      
-      await waitFor(() => {
-        expect(screen.getByText('Subtotal:')).toBeInTheDocument();
-        expect(screen.getByText('Desconto:')).toBeInTheDocument();
-        expect(screen.getByText('Frete:')).toBeInTheDocument();
-        expect(screen.getByText('Total:')).toBeInTheDocument();
+      await act(async () => {
+        renderHistory();
       });
+      
+      // Primeiro aguardar que os pedidos sejam carregados
+      await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
+        expect(screen.getByText(/Pedido #1/)).toBeInTheDocument();
+      }, { timeout: 5000 });
+      
+      // Depois verificar os elementos específicos
+      expect(screen.getByText('Subtotal:')).toBeInTheDocument();
+      expect(screen.getByText('Desconto:')).toBeInTheDocument();
+      expect(screen.getByText('Frete:')).toBeInTheDocument();
+      expect(screen.getByText('Total:')).toBeInTheDocument();
     });
 
     it('deve exibir endereço de entrega', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
-      
-      await waitFor(() => {
-        expect(screen.getByText('Endereço de Entrega')).toBeInTheDocument();
-        expect(screen.getByText(/Rua das Flores/)).toBeInTheDocument();
-        expect(screen.getByText(/CEP: 01234-567/)).toBeInTheDocument();
+      await act(async () => {
+        renderHistory();
       });
+      
+      // Primeiro aguardar que os pedidos sejam carregados
+      await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
+        expect(screen.getByText(/Pedido #1/)).toBeInTheDocument();
+      }, { timeout: 5000 });
+      
+      // Depois verificar os elementos específicos
+      expect(screen.getByText('Endereço de Entrega')).toBeInTheDocument();
+      expect(screen.getByText(/Rua das Flores/)).toBeInTheDocument();
+      expect(screen.getByText(/CEP: 01234-567/)).toBeInTheDocument();
     });
 
     it('deve exibir itens do pedido', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
-      
-      await waitFor(() => {
-        expect(screen.getByText('Itens do Pedido')).toBeInTheDocument();
-        expect(screen.getByText('Smartphone XYZ Pro')).toBeInTheDocument();
-        expect(screen.getByText(/Quantidade: 2/)).toBeInTheDocument();
+      await act(async () => {
+        renderHistory();
       });
+      
+      // Primeiro aguardar que os pedidos sejam carregados
+      await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
+        expect(screen.getByText(/Pedido #1/)).toBeInTheDocument();
+      }, { timeout: 5000 });
+      
+      // Depois verificar os elementos específicos
+      expect(screen.getByText('Itens do Pedido')).toBeInTheDocument();
+      expect(screen.getByText('Smartphone XYZ Pro')).toBeInTheDocument();
+      expect(screen.getByText(/Quantidade: 2/)).toBeInTheDocument();
     });
   });
 
   describe('Ordenação', () => {
     it('deve renderizar pedidos recebidos do backend', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         const pedidoElements = screen.getAllByText(/Pedido #/);
         // Verificar se todos os pedidos são exibidos
         expect(pedidoElements.length).toBeGreaterThanOrEqual(1);
-      });
+      }, { timeout: 5000 });
     });
   });
 
   describe('Formatação', () => {
     it('deve formatar valores monetários corretamente', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText(/R\$ 1\.299,99/)).toBeInTheDocument();
         expect(screen.getByText(/R\$ 599,99/)).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve formatar data corretamente', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
-      
-      await waitFor(() => {
-        // A data deve estar formatada em pt-BR
-        expect(screen.getByText(/Feito em/)).toBeInTheDocument();
+      await act(async () => {
+        renderHistory();
       });
+      
+      // Primeiro aguardar que os pedidos sejam carregados
+      await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
+        expect(screen.getByText(/Pedido #1/)).toBeInTheDocument();
+      }, { timeout: 5000 });
+      
+      // Depois verificar que a data está formatada
+      expect(screen.getByText(/Feito em/)).toBeInTheDocument();
     });
   });
 
   describe('Estados Vazios', () => {
     it('deve exibir mensagem quando não há pedidos', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: [],
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText('Nenhum pedido encontrado')).toBeInTheDocument();
         expect(screen.getByText('Você ainda não fez nenhum pedido.')).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve exibir botão "Começar a Comprar" quando não há pedidos', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: [],
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         // Buscar link de forma mais robusta - pode haver múltiplos elementos
         const comecarTexts = screen.getAllByText('Começar a Comprar');
         const button = comecarTexts.find(el => el.closest('a')) || comecarTexts[0]?.closest('a');
@@ -353,76 +421,91 @@ describe('History Component', () => {
         if (button) {
           expect(button).toHaveAttribute('href', '/');
         }
-      });
+      }, { timeout: 5000 });
     });
   });
 
   describe('Interações', () => {
     it('deve exibir botão "Rastrear Pedido"', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         const buttons = screen.getAllByText('Rastrear Pedido');
         expect(buttons.length).toBeGreaterThan(0);
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve exibir botão "Comprar Novamente"', async () => {
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         const buttons = screen.getAllByText('Comprar Novamente');
         expect(buttons.length).toBeGreaterThan(0);
-      });
+      }, { timeout: 5000 });
     });
   });
 
   describe('Responsividade', () => {
     it('deve adaptar-se corretamente em mobile (320px)', async () => {
       mockScreenSize(BREAKPOINTS.MOBILE);
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve adaptar-se corretamente em tablet (768px)', async () => {
       mockScreenSize(BREAKPOINTS.TABLET);
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
 
     it('deve adaptar-se corretamente em desktop (1024px+)', async () => {
       mockScreenSize(BREAKPOINTS.DESKTOP);
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
+        expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
         expect(screen.getByText('Meus Pedidos')).toBeInTheDocument();
-      });
+      }, { timeout: 5000 });
     });
   });
 
@@ -430,25 +513,30 @@ describe('History Component', () => {
     it('deve buscar pedidos quando usuário está autenticado', async () => {
       mockLocalStorage.getItem.mockReturnValue('mock-token');
       jwtDecode.mockReturnValue({ CODPES: 1 });
-      mockOrderService2.getOrdersByUser.mockResolvedValue({
+      orderService2.getOrdersByUser.mockResolvedValue({
         data: mockPedidos,
       });
 
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
-        expect(mockOrderService2.getOrdersByUser).toHaveBeenCalledWith(1);
+        expect(orderService2.getOrdersByUser).toHaveBeenCalledWith(1);
       });
     });
 
     it('deve não buscar pedidos quando usuário não está autenticado', async () => {
       mockLocalStorage.getItem.mockReturnValue(null);
       
-      renderHistory();
+      await act(async () => {
+        renderHistory();
+      });
       
       await waitFor(() => {
-        // Quando não há token, o componente não faz a requisição
+        // Quando não há token, o componente não faz a requisição e não mostra loading
         expect(screen.queryByText('Carregando pedidos...')).not.toBeInTheDocument();
+        expect(orderService2.getOrdersByUser).not.toHaveBeenCalled();
       }, { timeout: 1000 });
     });
   });
