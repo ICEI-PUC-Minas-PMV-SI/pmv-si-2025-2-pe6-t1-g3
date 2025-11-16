@@ -47,6 +47,7 @@ export const SCREEN_NAMES = {
   // Products
   PRODUCTS: 'ProductsList',
   PRODUCT_DETAILS: 'ProductDetails',
+  CATEGORY: 'Category',
   SEARCH_RESULTS: 'SearchResults',
   // Cart
   CART: 'Cart',

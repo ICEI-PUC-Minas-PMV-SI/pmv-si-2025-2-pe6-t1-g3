@@ -61,7 +61,7 @@ const DashboardScreen = () => {
   ];
 
   const handleCategoryPress = (category) => {
-    navigation.navigate('SearchResults', { category: category.name });
+    navigation.navigate('Category', { categorySlug: category.slug || category.name });
   };
 
   const handleViewProducts = () => {
