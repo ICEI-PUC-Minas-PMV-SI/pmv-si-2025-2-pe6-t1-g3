@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useInfiniteProducts } from '../../hooks/useInfiniteProducts';
 import ProductGrid from '../../components/product/ProductGrid';
 import { colors, spacing } from '../../theme';
-import { mapCategoryToBackend, mapBackendToCategoryName } from '../../utils/categoryMapper';
+import { mapCategoryToBackend } from '../../utils/categoryMapper';
 import Button from '../../components/common/Button';
 
 const CategoryScreen = () => {
@@ -59,59 +59,21 @@ const CategoryScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <Text style={styles.title}>{heading}</Text>
-          <Text style={styles.subtitle}>
-            Explore os melhores produtos de {heading.toLowerCase()}.
-            {allProductsCount > 0 && ` ${allProductsCount} produto${allProductsCount !== 1 ? 's' : ''} disponível${allProductsCount !== 1 ? 'eis' : ''}`}
-          </Text>
-        </View>
+        <Text style={styles.title}>{heading}</Text>
+        <Text style={styles.subtitle}>
+          Explore os melhores produtos de {heading.toLowerCase()}.
+          {allProductsCount > 0 && ` ${allProductsCount} produto${allProductsCount !== 1 ? 's' : ''} disponível${allProductsCount !== 1 ? 'eis' : ''}`}
+        </Text>
       </View>
 
-      {/* Products */}
-      <ScrollView
-        style={styles.content}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        {loading && products.length === 0 ? (
-          <View style={styles.centerContainer}>
-            <ActivityIndicator size="large" color={colors.black} />
-            <Text style={styles.loadingText}>Carregando produtos...</Text>
-          </View>
-        ) : error ? (
-          <View style={styles.centerContainer}>
-            <Ionicons name="alert-circle-outline" size={48} color={colors.red600} />
-            <Text style={styles.errorTitle}>Erro ao carregar produtos</Text>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        ) : (
-          <>
-            <ProductGrid products={products} loading={false} error={null} />
-            
-            {hasMore && (
-              <View style={styles.loadMoreContainer}>
-                <Button
-                  variant="primary"
-                  onPress={loadMore}
-                  disabled={loadingMore}
-                  style={styles.loadMoreButton}
-                >
-                  {loadingMore ? 'Carregando...' : 'Ver mais'}
-                </Button>
-              </View>
-            )}
-            
-            {!hasMore && products.length > 0 && (
-              <View style={styles.endContainer}>
-                <Text style={styles.endText}>Todos os produtos foram carregados</Text>
-              </View>
-            )}
-          </>
-        )}
-      </ScrollView>
+      <ProductGrid
+        products={products}
+        loading={loading}
+        error={error}
+        onEndReached={hasMore ? loadMore : null}
+        onEndReachedThreshold={0.5}
+      />
     </View>
   );
 };
@@ -125,42 +87,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray50,
     borderBottomWidth: 1,
     borderBottomColor: colors.gray200,
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing.md,
-  },
-  headerContent: {
-    maxWidth: 600,
-    alignSelf: 'center',
-    width: '100%',
+    padding: spacing.lg,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
     color: colors.gray900,
-    marginBottom: spacing.sm,
+    marginBottom: spacing.xs,
   },
   subtitle: {
-    fontSize: 16,
-    color: colors.gray600,
-    lineHeight: 24,
-  },
-  content: {
-    flex: 1,
-  },
-  contentContainer: {
-    padding: spacing.md,
-    flexGrow: 1,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: spacing.xl,
-    minHeight: 300,
-  },
-  loadingText: {
-    marginTop: spacing.md,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.gray600,
   },
   errorContainer: {
@@ -186,23 +122,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     marginTop: spacing.md,
-  },
-  loadMoreContainer: {
-    marginTop: spacing.lg,
-    alignItems: 'center',
-    paddingVertical: spacing.md,
-  },
-  loadMoreButton: {
-    minWidth: 150,
-  },
-  endContainer: {
-    marginTop: spacing.lg,
-    alignItems: 'center',
-    paddingVertical: spacing.md,
-  },
-  endText: {
-    fontSize: 14,
-    color: colors.gray500,
   },
 });
 
