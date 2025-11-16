@@ -8,6 +8,7 @@ import CartScreen from '../screens/Cart/CartScreen';
 import AccountScreen from '../screens/Account/AccountScreen';
 import ProductDetailsScreen from '../screens/Products/ProductDetailsScreen';
 import SearchResultsScreen from '../screens/Products/SearchResultsScreen';
+import CategoryScreen from '../screens/Products/CategoryScreen';
 import ProfileScreen from '../screens/Account/ProfileScreen';
 import AddressScreen from '../screens/Account/AddressScreen';
 import HistoryScreen from '../screens/Account/HistoryScreen';
@@ -31,6 +32,11 @@ function HomeStack() {
         options={{ title: 'Detalhes do Produto' }}
       />
       <Stack.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={{ title: 'Categoria' }}
+      />
+      <Stack.Screen
         name="SearchResults"
         component={SearchResultsScreen}
         options={{ title: 'Resultados da Busca' }}
@@ -51,6 +57,11 @@ function ProductsStack() {
         name="ProductDetails"
         component={ProductDetailsScreen}
         options={{ title: 'Detalhes do Produto' }}
+      />
+      <Stack.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={{ title: 'Categoria' }}
       />
       <Stack.Screen
         name="SearchResults"

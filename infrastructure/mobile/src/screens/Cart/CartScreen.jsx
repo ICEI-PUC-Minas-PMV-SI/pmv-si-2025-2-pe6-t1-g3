@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -18,6 +19,7 @@ const CartScreen = () => {
   const { cartItems, setCartItems, removeFromCart, updateCartItem } = useCart();
   const { user } = useAuth();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   
   const [products, setProducts] = useState([]);
   const [addresses, setAddresses] = useState([]);
@@ -53,7 +55,12 @@ const CartScreen = () => {
         const decodedToken = jwtDecode(token);
         const response = await userService.getProfile(decodedToken.CODPES);
         const userData = response.data;
-        setAddresses(userData.ENDERECOS || []);
+        const mappedAddresses = (userData.ENDERECOS || []).map((address) => ({
+          ...address,
+          LOGRADOURO: address.RUA || address.LOGRADOURO || '',
+          UF: address.UF || '',
+        }));
+        setAddresses(mappedAddresses);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -182,13 +189,14 @@ const CartScreen = () => {
         ITENS: cartItems
           .map((item) => {
             const quantity = Number(item.quantity ?? item.QUANTIDADE ?? item.QTD ?? item.qtd ?? 1);
+            const tamanho = item.size || item.TAMANHO || null;
             return {
               CODPROD: item.CODPROD,
-              TAMANHO: item.size || item.TAMANHO || null,
-              QUANTIDADE: Number.isNaN(quantity) ? 0 : quantity,
+              QTD: Number.isNaN(quantity) ? 0 : quantity,
+              ...(tamanho && { TAMANHO: tamanho }),
             };
           })
-          .filter((item) => item.CODPROD && item.QUANTIDADE > 0),
+          .filter((item) => item.CODPROD && item.QTD > 0),
       };
 
       await orderService2.createOrder(orderData);
@@ -250,7 +258,11 @@ const CartScreen = () => {
   }
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView 
+      style={styles.container} 
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingTop: insets.top }}
+    >
       <View style={styles.content}>
         {/* Cart Items */}
         <View style={styles.itemsContainer}>

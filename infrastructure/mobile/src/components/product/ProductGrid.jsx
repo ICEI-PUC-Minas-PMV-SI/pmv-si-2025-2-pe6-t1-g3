@@ -5,7 +5,7 @@ import ProductCard from './ProductCard';
 import { colors, spacing } from '../../theme';
 import Button from '../common/Button';
 
-const ProductGrid = ({ products, loading, error, onEndReached, onEndReachedThreshold = 0.5, refetch }) => {
+const ProductGrid = ({ products, loading, error, onEndReached, onEndReachedThreshold = 0.5, refetch, variant }) => {
   if (loading && products.length === 0) {
     return (
       <View style={styles.centerContainer}>
@@ -54,17 +54,19 @@ const ProductGrid = ({ products, loading, error, onEndReached, onEndReachedThres
 
   // If inside ScrollView, render directly instead of using FlatList
   if (onEndReached === undefined) {
+    const isDashboard = variant === 'dashboard';
     return (
-      <View style={styles.gridContainer}>
+      <View style={[styles.gridContainer, isDashboard && styles.gridContainerDashboard]}>
         {products.map((product, index) => (
           <View
             key={product.CODPROD.toString()}
             style={[
               styles.productWrapper,
-              index % 2 === 0 ? styles.productLeft : styles.productRight,
+              isDashboard && styles.productWrapperDashboard,
+              !isDashboard && (index % 2 === 0 ? styles.productLeft : styles.productRight),
             ]}
           >
-            <ProductCard product={product} />
+            <ProductCard product={product} variant={variant} />
           </View>
         ))}
         {loading && products.length > 0 && (
@@ -79,7 +81,7 @@ const ProductGrid = ({ products, loading, error, onEndReached, onEndReachedThres
   return (
     <FlatList
       data={products}
-      renderItem={({ item }) => <ProductCard product={item} />}
+      renderItem={({ item }) => <ProductCard product={item} variant={variant} />}
       keyExtractor={(item) => item.CODPROD.toString()}
       numColumns={2}
       contentContainerStyle={styles.list}
@@ -140,9 +142,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     padding: spacing.sm,
   },
+  gridContainerDashboard: {
+    padding: spacing.md,
+  },
   productWrapper: {
     width: '48%',
     marginBottom: spacing.sm,
+  },
+  productWrapperDashboard: {
+    width: '100%',
+    marginBottom: spacing.md,
   },
   productLeft: {
     marginRight: '2%',
@@ -154,7 +163,8 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
   },
   row: {
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    paddingHorizontal: spacing.xs,
   },
   footer: {
     padding: spacing.lg,

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { useProducts } from '../../hooks/useProducts';
 import ProductGrid from '../../components/product/ProductGrid';
 import { colors, spacing } from '../../theme';
+import { mapCategoryToBackend, mapBackendToCategoryName } from '../../utils/categoryMapper';
 
 const SearchResultsScreen = () => {
   const route = useRoute();
@@ -12,16 +13,27 @@ const SearchResultsScreen = () => {
   const [searchQuery, setSearchQuery] = useState(query || '');
   const [filters, setFilters] = useState({});
 
+  const backendCategory = useMemo(() => {
+    if (!category) return null;
+    return mapCategoryToBackend(category);
+  }, [category]);
+
+  const categoryDisplayName = useMemo(() => {
+    if (!backendCategory) return category;
+    return mapBackendToCategoryName(backendCategory) || category;
+  }, [backendCategory, category]);
+
   useEffect(() => {
     const newFilters = {};
-    if (category) {
-      newFilters.categoria = category;
+    // Usa CATEGORIA (maiúsculo) como esperado pelo backend
+    if (backendCategory) {
+      newFilters.CATEGORIA = backendCategory;
     }
     if (searchQuery) {
       newFilters.search = searchQuery;
     }
     setFilters(newFilters);
-  }, [category, searchQuery]);
+  }, [backendCategory, searchQuery]);
 
   const { products, loading, error } = useProducts(filters);
 
@@ -51,14 +63,18 @@ const SearchResultsScreen = () => {
             </TouchableOpacity>
           )}
         </View>
-        {category && (
+        {categoryDisplayName && (
           <View style={styles.categoryBadge}>
-            <Text style={styles.categoryText}>{category}</Text>
+            <Text style={styles.categoryText}>{categoryDisplayName}</Text>
           </View>
         )}
       </View>
 
-      <View style={styles.resultsContainer}>
+      <ScrollView 
+        style={styles.resultsContainer}
+        contentContainerStyle={styles.resultsContent}
+        showsVerticalScrollIndicator={false}
+      >
         {loading && products.length === 0 ? (
           <View style={styles.centerContainer}>
             <Text style={styles.loadingText}>Buscando produtos...</Text>
@@ -83,7 +99,7 @@ const SearchResultsScreen = () => {
             <ProductGrid products={products} loading={loading} error={error} />
           </>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -136,7 +152,10 @@ const styles = StyleSheet.create({
   },
   resultsContainer: {
     flex: 1,
+  },
+  resultsContent: {
     padding: spacing.md,
+    flexGrow: 1,
   },
   centerContainer: {
     flex: 1,

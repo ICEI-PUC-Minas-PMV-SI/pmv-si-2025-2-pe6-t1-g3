@@ -1,15 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useInfiniteProducts } from '../../hooks/useInfiniteProducts';
 import ProductGrid from '../../components/product/ProductGrid';
 import { colors, spacing } from '../../theme';
 
 const ProductsScreen = () => {
   const { products, loading, loadingMore, error, hasMore, loadMore, allProductsCount } = useInfiniteProducts();
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + spacing.lg }]}>
         <Text style={styles.title}>Todos os Produtos</Text>
         <Text style={styles.subtitle}>
           Explore nossa seleção completa de {allProductsCount > 0 ? `${allProductsCount} produtos` : 'produtos'}

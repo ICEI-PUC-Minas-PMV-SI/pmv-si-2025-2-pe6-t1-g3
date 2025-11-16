@@ -8,11 +8,13 @@ import { colors, spacing } from '../../theme';
 import { storage } from '../../services/storage';
 import Toast from 'react-native-toast-message';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, variant }) => {
   const [imageError, setImageError] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const { addToCart } = useCart();
   const navigation = useNavigation();
+  
+  const isDashboard = variant === 'dashboard';
 
   useEffect(() => {
     const loadFavorite = async () => {
@@ -109,13 +111,13 @@ const ProductCard = ({ product }) => {
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, isDashboard && styles.containerDashboard]}
       onPress={handlePress}
       activeOpacity={0.7}
     >
       <View style={styles.card}>
         {/* Image Container */}
-        <View style={styles.imageContainer}>
+        <View style={[styles.imageContainer, isDashboard && styles.imageContainerDashboard]}>
           <Image
             source={{ uri: product.IMAGEM }}
             style={styles.image}
@@ -138,19 +140,21 @@ const ProductCard = ({ product }) => {
           )}
 
           {/* Action Buttons */}
-          <View style={styles.actionButtons}>
+          <View style={[styles.actionButtons, isDashboard && styles.actionButtonsDashboard]}>
             <TouchableOpacity
-              style={styles.addButton}
+              style={[styles.addButton, isDashboard && styles.addButtonDashboard]}
               onPress={handleQuickAdd}
               activeOpacity={0.7}
             >
               <Ionicons name="cart-outline" size={16} color={colors.gray900} />
-              <Text style={styles.addButtonText}>
-                {hasProductSizes ? 'Ver opções' : 'Adicionar'}
-              </Text>
+              {!isDashboard && (
+                <Text style={styles.addButtonText}>
+                  {hasProductSizes ? 'Ver opções' : 'Adicionar'}
+                </Text>
+              )}
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.favoriteButton}
+              style={[styles.favoriteButton, isDashboard && styles.favoriteButtonDashboard]}
               onPress={handleToggleFavorite}
               activeOpacity={0.7}
             >
@@ -204,8 +208,14 @@ const ProductCard = ({ product }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: spacing.xs,
+    marginVertical: spacing.sm,
+    minWidth: 0, // Allows flex to work properly
+  },
+  containerDashboard: {
     margin: spacing.sm,
-    maxWidth: '48%',
+    maxWidth: '100%',
+    width: '100%',
   },
   card: {
     backgroundColor: colors.white,
@@ -222,6 +232,9 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     backgroundColor: colors.gray100,
     position: 'relative',
+  },
+  imageContainerDashboard: {
+    aspectRatio: 1.8,
   },
   image: {
     width: '100%',
@@ -265,6 +278,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.xs,
   },
+  actionButtonsDashboard: {
+    gap: spacing.xs,
+  },
   addButton: {
     flex: 1,
     backgroundColor: colors.white,
@@ -275,6 +291,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     borderRadius: 4,
     gap: spacing.xs,
+  },
+  addButtonDashboard: {
+    flex: 0,
+    paddingHorizontal: spacing.xs,
+    minWidth: 40,
   },
   addButtonText: {
     fontSize: 10,
@@ -289,6 +310,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  favoriteButtonDashboard: {
+    padding: spacing.xs / 1.5,
+    minWidth: 40,
   },
   infoContainer: {
     padding: spacing.md,

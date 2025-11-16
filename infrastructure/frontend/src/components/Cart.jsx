@@ -113,14 +113,14 @@ const Cart = () => {
                 item.qtd ??
                 1
               );
-
+              const tamanho = item.size || item.TAMANHO || null;
               return {
                 CODPROD: item.CODPROD,
-                TAMANHO: item.size || item.TAMANHO || null,
-                QUANTIDADE: Number.isNaN(quantity) ? 0 : quantity,
+                QTD: Number.isNaN(quantity) ? 0 : quantity,
+                ...(tamanho && { TAMANHO: tamanho }),
               };
             })
-            .filter((item) => item.CODPROD && item.QUANTIDADE > 0),
+            .filter((item) => item.CODPROD && item.QTD > 0),
         };
         console.log('Dados do pedido:', orderData);
 

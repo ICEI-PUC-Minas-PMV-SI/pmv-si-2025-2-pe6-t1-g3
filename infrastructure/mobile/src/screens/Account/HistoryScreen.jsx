@@ -43,6 +43,7 @@ const HistoryScreen = () => {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'Data não disponível';
     return new Date(dateString).toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
@@ -52,15 +53,18 @@ const HistoryScreen = () => {
     });
   };
 
-  const getStatusBadge = (status = 'Processando') => {
+  const getStatusBadge = (status = 'Pendente') => {
     const statusConfig = {
+      'Pendente': { color: colors.warning, bg: '#FFF7ED' },
+      'Confirmado': { color: colors.info, bg: '#EFF6FF' },
+      'Em Preparação': { color: colors.info, bg: '#EFF6FF' },
       'Processando': { color: colors.warning, bg: '#FFF7ED' },
       'Enviado': { color: colors.info, bg: '#EFF6FF' },
       'Entregue': { color: colors.success, bg: '#F0FDF4' },
       'Cancelado': { color: colors.error, bg: '#FEF2F2' },
     };
     
-    return statusConfig[status] || statusConfig['Processando'];
+    return statusConfig[status] || statusConfig['Pendente'];
   };
 
   if (loading) {
@@ -97,34 +101,43 @@ const HistoryScreen = () => {
           <View style={styles.ordersContainer}>
             {pedidos.map((pedido) => {
               const statusConfig = getStatusBadge(pedido.STATUS);
-              const total = Number(pedido.VALOR_TOTAL) || 0;
+              const total = Number(pedido.VALORTOTAL || pedido.VALOR_TOTAL) || 0;
+              const orderDate = pedido.DATAINC || pedido.DATA_PEDIDO || pedido.DATA;
+              
+              const orderItems = pedido.ITENSPEDIDO || pedido.ITENS || [];
 
               return (
                 <View key={pedido.CODPED} style={styles.orderCard}>
                   <View style={styles.orderHeader}>
                     <View>
                       <Text style={styles.orderId}>Pedido #{pedido.CODPED}</Text>
-                      <Text style={styles.orderDate}>{formatDate(pedido.DATA_PEDIDO)}</Text>
+                      <Text style={styles.orderDate}>{formatDate(orderDate)}</Text>
                     </View>
                     <View style={[styles.statusBadge, { backgroundColor: statusConfig.bg }]}>
                       <Text style={[styles.statusText, { color: statusConfig.color }]}>
-                        {pedido.STATUS || 'Processando'}
+                        {pedido.STATUS || 'Pendente'}
                       </Text>
                     </View>
                   </View>
 
                   <View style={styles.orderItems}>
-                    {pedido.ITENS && pedido.ITENS.length > 0 ? (
-                      pedido.ITENS.map((item, index) => (
-                        <View key={index} style={styles.orderItem}>
-                          <Text style={styles.itemName}>
-                            {item.PRODUTO?.PRODUTO || 'Produto'} x{item.QUANTIDADE || 1}
-                          </Text>
-                          {item.TAMANHO && (
-                            <Text style={styles.itemSize}>Tamanho: {item.TAMANHO}</Text>
-                          )}
-                        </View>
-                      ))
+                    {orderItems.length > 0 ? (
+                      orderItems.map((item, index) => {
+                        const product = item.Produtos || item.PRODUTO || item.produto || {};
+                        const productName = product.PRODUTO || product.produto || 'Produto';
+                        const quantity = item.QTD || item.QUANTIDADE || item.quantidade || item.qtd || 1;
+
+                        return (
+                          <View key={index} style={styles.orderItem}>
+                            <Text style={styles.itemName}>
+                              {productName} x{quantity}
+                            </Text>
+                            {item.TAMANHO && (
+                              <Text style={styles.itemSize}>Tamanho: {item.TAMANHO}</Text>
+                            )}
+                          </View>
+                        );
+                      })
                     ) : (
                       <Text style={styles.noItems}>Nenhum item encontrado</Text>
                     )}

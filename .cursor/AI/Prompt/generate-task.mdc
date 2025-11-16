@@ -24,7 +24,7 @@ Template para gerar arquivo `current-work.md` estruturado com tarefas e sub-tare
 
 <programmerInput>
 ### Problema Identificado
-[O programador deve descrever aqui o problema encontrado durante a execução]
+[O programador deve descrever aqui o problema encontrado durante a execução]   
 
 ### Informações Técnicas
 - **Arquivo(s) afetado(s)**: [Lista de arquivos]
@@ -32,12 +32,12 @@ Template para gerar arquivo `current-work.md` estruturado com tarefas e sub-tare
 - **Contexto da execução**: [Em qual fase/etapa o problema ocorreu]
 
 ### Informações Adicionais
-- **Logs relevantes**: [Logs de erro ou debug]
-- **Configurações**: [Configurações específicas que podem estar causando o problema]
-- **Dependências**: [Dependências que podem estar relacionadas]
+- **Logs relevantes**: [Logs de erro ou informações relevantes]
+- **Configurações**: [Configurações específicas relacionadas ao problema]
+- **Dependências**: [Dependências relacionadas ao problema]
 
 ### Solução Proposta
-[Descrição da solução que o programador propõe ou precisa de ajuda para implementar]
+[Descrição da solução proposta ou abordagem para resolver o problema]
 </programmerInput>
 </problemDescription>
 
