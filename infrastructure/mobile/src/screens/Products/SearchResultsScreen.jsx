@@ -13,13 +13,11 @@ const SearchResultsScreen = () => {
   const [searchQuery, setSearchQuery] = useState(query || '');
   const [filters, setFilters] = useState({});
 
-  // Mapeia a categoria do frontend para o valor do backend
   const backendCategory = useMemo(() => {
     if (!category) return null;
     return mapCategoryToBackend(category);
   }, [category]);
 
-  // Nome da categoria para exibição
   const categoryDisplayName = useMemo(() => {
     if (!backendCategory) return category;
     return mapBackendToCategoryName(backendCategory) || category;

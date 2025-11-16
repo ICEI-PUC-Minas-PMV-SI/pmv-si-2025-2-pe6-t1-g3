@@ -13,14 +13,12 @@ const CategoryScreen = () => {
   const navigation = useNavigation();
   const { categorySlug } = route.params || {};
 
-  // Mapeia o slug da categoria para o valor do backend
   const backendCategory = useMemo(() => {
     if (!categorySlug) return null;
     const key = String(categorySlug).toLowerCase();
     return mapCategoryToBackend(key);
   }, [categorySlug]);
 
-  // Nome da categoria para exibição
   const heading = useMemo(() => {
     if (!categorySlug) return '';
     const map = {
