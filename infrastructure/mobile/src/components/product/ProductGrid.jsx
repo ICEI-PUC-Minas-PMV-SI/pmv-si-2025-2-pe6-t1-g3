@@ -163,7 +163,8 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
   },
   row: {
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    paddingHorizontal: spacing.xs,
   },
   footer: {
     padding: spacing.lg,

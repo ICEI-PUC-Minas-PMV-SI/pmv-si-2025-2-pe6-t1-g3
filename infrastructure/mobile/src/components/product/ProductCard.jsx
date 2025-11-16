@@ -208,8 +208,9 @@ const ProductCard = ({ product, variant }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: spacing.sm,
-    maxWidth: '48%',
+    marginHorizontal: spacing.xs,
+    marginVertical: spacing.sm,
+    minWidth: 0, // Allows flex to work properly
   },
   containerDashboard: {
     margin: spacing.sm,
