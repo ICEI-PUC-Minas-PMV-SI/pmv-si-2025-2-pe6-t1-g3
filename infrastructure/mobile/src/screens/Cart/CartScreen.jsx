@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -18,6 +19,7 @@ const CartScreen = () => {
   const { cartItems, setCartItems, removeFromCart, updateCartItem } = useCart();
   const { user } = useAuth();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   
   const [products, setProducts] = useState([]);
   const [addresses, setAddresses] = useState([]);
@@ -256,7 +258,11 @@ const CartScreen = () => {
   }
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView 
+      style={styles.container} 
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingTop: insets.top }}
+    >
       <View style={styles.content}>
         {/* Cart Items */}
         <View style={styles.itemsContainer}>

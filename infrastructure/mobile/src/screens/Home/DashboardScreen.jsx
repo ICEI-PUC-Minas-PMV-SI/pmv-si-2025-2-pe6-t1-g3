@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useProducts } from '../../hooks/useProducts';
 import ProductGrid from '../../components/product/ProductGrid';
@@ -10,6 +11,7 @@ import Button from '../../components/common/Button';
 const DashboardScreen = () => {
   const { products, loading, error, refetch } = useProducts();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   const categories = [
     {
@@ -69,9 +71,17 @@ const DashboardScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Hero Section */}
-      <View style={styles.heroSection}>
+    <View style={styles.container}>
+      {/* Safe Area Header (invisível fixo) */}
+      <View style={[styles.safeAreaHeader, { height: insets.top }]} />
+      
+      <ScrollView 
+        style={styles.scrollView} 
+        contentContainerStyle={{ paddingTop: insets.top }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Hero Section */}
+        <View style={styles.heroSection}>
         <View style={styles.heroContent}>
           <Text style={styles.heroTitle}>
             Descubra produtos{'\n'}
@@ -142,7 +152,8 @@ const DashboardScreen = () => {
 
         <ProductGrid products={products} loading={loading} error={error} refetch={refetch} variant="dashboard" />
       </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -150,6 +161,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  safeAreaHeader: {
+    backgroundColor: colors.white,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+  },
+  scrollView: {
+    flex: 1,
   },
   heroSection: {
     padding: spacing.lg,

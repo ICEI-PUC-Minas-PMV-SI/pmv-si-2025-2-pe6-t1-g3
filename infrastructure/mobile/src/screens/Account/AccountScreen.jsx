@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { colors, spacing } from '../../theme';
@@ -10,6 +11,7 @@ const AccountScreen = () => {
   const navigation = useNavigation();
   const { user, logout, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -89,7 +91,7 @@ const AccountScreen = () => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + spacing.lg }]}>
         <Text style={styles.title}>Minha Conta</Text>
         <Text style={styles.subtitle}>
           Gerencie suas informações, endereços e pedidos
