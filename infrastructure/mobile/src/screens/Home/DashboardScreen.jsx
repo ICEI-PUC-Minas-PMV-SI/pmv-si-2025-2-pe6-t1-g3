@@ -92,7 +92,7 @@ const DashboardScreen = () => {
       </View>
 
       {/* Categories */}
-      <View style={styles.section}>
+      <View style={[styles.section, styles.categoriesSection]}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionLabel}>Categorias</Text>
           <Text style={styles.sectionTitle}>Explore por categoria</Text>
@@ -111,7 +111,7 @@ const DashboardScreen = () => {
               <Text style={styles.categoryDescription}>{category.description}</Text>
               <View style={styles.categoryAction}>
                 <Text style={styles.categoryActionText}>Explorar</Text>
-                <Ionicons name="arrow-forward" size={14} color={colors.gray900} />
+                <Ionicons name="arrow-forward" size={14} color={colors.gray900} style={styles.categoryActionIcon} />
               </View>
             </TouchableOpacity>
           ))}
@@ -132,7 +132,7 @@ const DashboardScreen = () => {
       </View>
 
       {/* Products */}
-      <View style={styles.section}>
+      <View style={[styles.section, styles.productsSection]}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Produtos em Destaque</Text>
           <Text style={styles.sectionSubtitle}>
@@ -185,6 +185,9 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     borderTopWidth: 1,
     borderTopColor: colors.gray200,
+    position: 'relative',
+    zIndex: 0,
+    overflow: 'hidden',
   },
   sectionHeader: {
     marginBottom: spacing.lg,
@@ -210,11 +213,10 @@ const styles = StyleSheet.create({
   categoriesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.sm,
+    justifyContent: 'space-between',
   },
   categoryCard: {
-    flex: 1,
-    minWidth: '48%',
+    width: '48%',
     padding: spacing.md,
     borderRadius: 8,
     marginBottom: spacing.sm,
@@ -237,7 +239,6 @@ const styles = StyleSheet.create({
   categoryAction: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.xs,
     marginTop: 'auto',
   },
   categoryActionText: {
@@ -245,18 +246,23 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: colors.gray900,
   },
+  categoryActionIcon: {
+    marginLeft: spacing.xs,
+  },
   featuresSection: {
     backgroundColor: colors.gray50,
+    marginBottom: 0,
+    zIndex: 0,
   },
   featuresGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.md,
+    justifyContent: 'space-between',
   },
   featureCard: {
-    flex: 1,
-    minWidth: '30%',
+    width: '31%',
     alignItems: 'center',
+    marginBottom: spacing.md,
   },
   featureTitle: {
     fontSize: 14,
@@ -270,6 +276,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.gray600,
     textAlign: 'center',
+  },
+  categoriesSection: {
+    zIndex: 0,
+  },
+  productsSection: {
+    marginTop: 0,
+    zIndex: 0,
   },
 });
 
