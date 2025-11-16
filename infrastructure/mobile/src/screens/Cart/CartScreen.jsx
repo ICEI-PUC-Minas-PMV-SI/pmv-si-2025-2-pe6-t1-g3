@@ -53,7 +53,12 @@ const CartScreen = () => {
         const decodedToken = jwtDecode(token);
         const response = await userService.getProfile(decodedToken.CODPES);
         const userData = response.data;
-        setAddresses(userData.ENDERECOS || []);
+        const mappedAddresses = (userData.ENDERECOS || []).map((address) => ({
+          ...address,
+          LOGRADOURO: address.RUA || address.LOGRADOURO || '',
+          UF: address.UF || '',
+        }));
+        setAddresses(mappedAddresses);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);

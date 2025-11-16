@@ -53,7 +53,12 @@ const AddressScreen = () => {
         const decodedToken = jwtDecode(token);
         const response = await userService.getProfile(decodedToken.CODPES);
         const userData = response.data;
-        setAddresses(userData.ENDERECOS || []);
+        const mappedAddresses = (userData.ENDERECOS || []).map((address) => ({
+          ...address,
+          LOGRADOURO: address.RUA || address.LOGRADOURO || '',
+          UF: address.UF || '',
+        }));
+        setAddresses(mappedAddresses);
         setAddressInfo({ ...addressInfo, CODPES: userData.CODPES });
       }
     } catch (error) {
@@ -114,14 +119,20 @@ const AddressScreen = () => {
 
     setIsLoading(true);
     try {
+      const addressData = {
+        ...addressInfo,
+        RUA: addressInfo.LOGRADOURO,
+      };
+      delete addressData.LOGRADOURO;
+
       if (editedAddress) {
-        await addressService.updateAddress(addressInfo);
+        await addressService.updateAddress(addressData);
         Toast.show({
           type: 'success',
           text1: 'Endereço atualizado com sucesso!',
         });
       } else {
-        await addressService.createAddress(addressInfo);
+        await addressService.createAddress(addressData);
         Toast.show({
           type: 'success',
           text1: 'Endereço cadastrado com sucesso!',
@@ -160,12 +171,12 @@ const AddressScreen = () => {
       CODPES: address.CODPES,
       CODEND: address.CODEND,
       CEP: address.CEP,
-      LOGRADOURO: address.LOGRADOURO,
+      LOGRADOURO: address.LOGRADOURO || address.RUA || '',
       BAIRRO: address.BAIRRO,
       CIDADE: address.CIDADE,
       COMPLEMENTO: address.COMPLEMENTO || '',
       NUMERO: address.NUMERO,
-      UF: address.UF,
+      UF: address.UF || '',
       DESCRICAO: address.DESCRICAO || '',
     });
     setCep(address.CEP);
