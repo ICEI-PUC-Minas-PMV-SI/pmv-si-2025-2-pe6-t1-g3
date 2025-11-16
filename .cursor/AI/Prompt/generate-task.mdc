@@ -24,20 +24,50 @@ Template para gerar arquivo `current-work.md` estruturado com tarefas e sub-tare
 
 <programmerInput>
 ### Problema Identificado
-[O programador deve descrever aqui o problema encontrado durante a execução]
+Ao clicar em uma categoria na tela inicial (DashboardScreen/home), nenhum produto está sendo exibido corretamente no mobile. Quando o usuário seleciona uma categoria a partir da home (ex: "Eletrônicos", "Fashion", "Casa", "Esportes") através do card de categoria, a navegação leva para a tela de resultados, mas a lista de produtos aparece vazia mesmo quando existem produtos naquela categoria no banco de dados.
 
 ### Informações Técnicas
-- **Arquivo(s) afetado(s)**: [Lista de arquivos]
-- **Erro específico**: [Mensagem de erro ou comportamento inesperado]
-- **Contexto da execução**: [Em qual fase/etapa o problema ocorreu]
+- **Arquivo(s) afetado(s)**: 
+  - `infrastructure/mobile/src/screens/Home/DashboardScreen.jsx` (ponto de entrada - home)
+  - `infrastructure/mobile/src/screens/Products/SearchResultsScreen.jsx` (tela de destino)
+  - `infrastructure/mobile/src/hooks/useProducts.js`
+  - `infrastructure/mobile/src/services/api.js`
+- **Erro específico**: Produtos não são exibidos quando filtrados por categoria no mobile, resultando em lista vazia após navegação a partir da home
+- **Contexto da execução**: O problema ocorre no seguinte fluxo:
+  1. Usuário está na tela inicial/home (`DashboardScreen`)
+  2. Usuário clica em um card de categoria (ex: "Eletrônicos", "Fashion", "Casa", "Esportes") - função `handleCategoryPress` na linha 63
+  3. A navegação é acionada com `navigation.navigate('SearchResults', { category: category.name })` passando o nome da categoria (linha 64)
+  4. A tela `SearchResultsScreen` recebe o parâmetro via `route.params.category` (linha 11)
+  5. O `SearchResultsScreen` cria um filtro com `newFilters.categoria = category` (linha 18)
+  6. O hook `useProducts` envia o filtro para a API via `productService.getProducts(filters)` (linha 26)
+  7. A API não retorna produtos porque há incompatibilidade entre o parâmetro enviado e o esperado pelo backend
 
 ### Informações Adicionais
-- **Logs relevantes**: [Logs de erro ou debug]
-- **Configurações**: [Configurações específicas que podem estar causando o problema]
-- **Dependências**: [Dependências que podem estar relacionadas]
+- **Logs relevantes**: Não há logs de erro explícitos, mas a API pode estar retornando array vazio ou erro silencioso
+- **Configurações**: 
+  - **DashboardScreen (home)**: Define categorias com `name` formatado para exibição ("Eletrônicos", "Fashion", "Casa", "Esportes") e ao clicar passa `category.name` para navegação (linha 64)
+  - **Backend espera**: Parâmetro `CATEGORIA` (maiúsculo) como query parameter com valores específicos: 'MODA', 'ELETRONICOS', 'CASA', 'ESPORTES' (conforme DTO em `infrastructure/backend/src/produto/dto/produto.dto.ts`)
+  - **Frontend mobile está enviando**: `categoria` (minúsculo) com valores como "Eletrônicos", "Fashion", "Casa", "Esportes" (valores de exibição do DashboardScreen)
+  - **Incompatibilidades identificadas**:
+    - `DashboardScreen` passa `category.name` que contém valores formatados para exibição (ex: "Eletrônicos" com acento, "Fashion" em inglês)
+    - `SearchResultsScreen` usa `newFilters.categoria` (minúsculo) ao invés de `CATEGORIA` (maiúsculo) esperado pelo backend
+    - Valores de categoria não correspondem: "Eletrônicos" ≠ "ELETRONICOS", "Fashion" ≠ "MODA", etc.
+    - `api.js` método `getProducts` envia parâmetros como query params, mas não faz transformação do nome do parâmetro nem dos valores
+- **Dependências**: 
+  - React Native
+  - Axios para requisições HTTP
+  - Backend NestJS com endpoint `/produto/listar`
+  - Prisma para acesso ao banco de dados
 
 ### Solução Proposta
-[Descrição da solução que o programador propõe ou precisa de ajuda para implementar]
+Corrigir a incompatibilidade entre os parâmetros enviados pelo mobile (a partir do DashboardScreen/home) e os esperados pelo backend. Abordagens:
+1. **Mapear valores de categoria no DashboardScreen**: Criar um mapeamento entre os nomes de categoria exibidos na home ("Eletrônicos", "Fashion", "Casa", "Esportes") e os valores esperados pelo backend ("ELETRONICOS", "MODA", "CASA", "ESPORTES"). Opções:
+   - Adicionar campo `backendValue` ou `apiValue` no array de categorias do `DashboardScreen`
+   - Ou passar o `slug` ao invés do `name` e mapear o slug para o valor do backend
+2. **Corrigir nome do parâmetro no SearchResultsScreen**: Alterar `categoria` (minúsculo) para `CATEGORIA` (maiúsculo) no objeto de filtros antes de enviar para a API
+3. **Centralizar mapeamento**: Criar uma função utilitária ou constante para mapear categorias do frontend para o backend, evitando duplicação de código e facilitando manutenção
+4. **Validar resposta da API**: Adicionar logs ou tratamento de erro para identificar se a API está retornando erro ou array vazio quando filtrada por categoria
+5. **Testar integração completa**: Verificar se o endpoint `/produto/listar?CATEGORIA=ELETRONICOS` retorna produtos corretamente no backend, e então testar o fluxo completo: DashboardScreen → clicar categoria → SearchResultsScreen → exibir produtos
 </programmerInput>
 </problemDescription>
 
