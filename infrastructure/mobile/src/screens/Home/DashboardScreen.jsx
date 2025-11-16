@@ -140,7 +140,7 @@ const DashboardScreen = () => {
           </Text>
         </View>
 
-        <ProductGrid products={products} loading={loading} error={error} refetch={refetch} />
+        <ProductGrid products={products} loading={loading} error={error} refetch={refetch} variant="dashboard" />
       </View>
     </ScrollView>
   );
