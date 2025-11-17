@@ -143,7 +143,8 @@ const Cart = () => {
         });
       } catch (error) {
         console.error('Erro ao criar pedido:', error);
-        const errorMessage = error.response?.data?.message || error.message || "Erro ao enviar pedido. Tente mais tarde!";
+        console.error('Resposta completa do erro:', error.response?.data);
+        const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || "Erro ao enviar pedido. Tente mais tarde!";
         toast.error(errorMessage, {
           position: "bottom-right",
           autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 5000,
@@ -158,56 +159,51 @@ const Cart = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Carrinho de Compras</h1>
-        <p className="text-gray-600">Revise seus itens antes de finalizar a compra</p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Carrinho de Compras</h1>
+        <p className="text-sm sm:text-base text-gray-600">Revise seus itens antes de finalizar a compra</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Cart Items */}
-        <div className="lg:col-span-2">
-          <CartProducts 
-            items={cartItems} 
-            onTotalChange={handleTotalChange} 
-            onCartItemsChange={handleCartItemsChange} 
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="lg:col-span-2 order-2 lg:order-1">
+          <CartProducts
+            items={cartItems}
+            onTotalChange={handleTotalChange}
+            onCartItemsChange={handleCartItemsChange}
           />
         </div>
 
-        {/* Order Summary */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Resumo do Pedido</h2>
-            
-            {/* Total */}
+        <div className="lg:col-span-1 order-1 lg:order-2">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 lg:sticky lg:top-8">
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">Resumo do Pedido</h2>
+
             <div className="space-y-3 mb-6">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span className="text-gray-600">Subtotal:</span>
                 <span className="text-gray-900">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span className="text-gray-600">Frete:</span>
                 <span className="text-green-600">Grátis</span>
               </div>
               <div className="border-t border-gray-200 pt-3">
                 <div className="flex justify-between">
-                  <span className="text-lg font-semibold text-gray-900">Total:</span>
-                  <span className="text-lg font-semibold text-gray-900">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+                  <span className="text-base sm:text-lg font-semibold text-gray-900">Total:</span>
+                  <span className="text-base sm:text-lg font-semibold text-gray-900">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
                 </div>
               </div>
             </div>
 
-            {/* Address Selection */}
             <div className="mb-6">
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-3">
+              <label className="flex items-center text-xs sm:text-sm font-medium text-gray-700 mb-3">
                 <FiMapPin className="mr-2" size={16} />
                 Endereço de Entrega
               </label>
-              <select 
-                value={selectedAddress} 
+              <select
+                value={selectedAddress}
                 onChange={handleAddressChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
+                className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-black transition-colors"
               >
                 <option value="">Selecione um endereço</option>
                 {addresses.map((address, index) => (
@@ -217,7 +213,7 @@ const Cart = () => {
                 ))}
               </select>
               {addresses.length === 0 && (
-                <p className="mt-2 text-sm text-gray-500">
+                <p className="mt-2 text-xs sm:text-sm text-gray-500">
                   <a href="/account" className="text-black hover:underline">
                     Adicione um endereço
                   </a> para continuar
@@ -225,17 +221,16 @@ const Cart = () => {
               )}
             </div>
 
-            {/* Checkout Button */}
             <button
+              type="button"
               onClick={handleOrderSubmit}
               disabled={!selectedAddress || cartItems.length === 0}
-              className="w-full bg-black text-white py-3 px-4 rounded-md hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+              className="relative z-10 w-full bg-black text-white py-3 px-4 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center text-sm sm:text-base font-medium"
             >
               <FiShoppingBag className="mr-2" size={18} />
               {cartItems.length === 0 ? 'Carrinho Vazio' : 'Finalizar Compra'}
             </button>
 
-            {/* Security Info */}
             <div className="mt-4 text-center">
               <p className="text-xs text-gray-500">
                 Compra 100% segura e protegida
