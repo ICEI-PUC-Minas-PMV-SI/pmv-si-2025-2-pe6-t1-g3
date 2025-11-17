@@ -32,10 +32,11 @@ export class ItemPedidoDto {
   @ApiProperty({
     description: 'Tamanho do produto',
     example: 'M',
+    required: false,
   })
   @IsString({ message: 'TAMANHO deve ser uma string' })
-  @IsNotEmpty({ message: 'TAMANHO é obrigatório' })
-  TAMANHO: string;
+  @IsOptional()
+  TAMANHO?: string;
 }
 
 export class CadastrarPedidoDto {

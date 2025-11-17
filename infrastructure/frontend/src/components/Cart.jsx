@@ -144,7 +144,21 @@ const Cart = () => {
       } catch (error) {
         console.error('Erro ao criar pedido:', error);
         console.error('Resposta completa do erro:', error.response?.data);
-        const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || "Erro ao enviar pedido. Tente mais tarde!";
+        console.error('Messages array:', error.response?.data?.message);
+
+        const errorData = error.response?.data;
+        let errorMessage = "Erro ao enviar pedido. Tente mais tarde!";
+
+        if (errorData?.message && Array.isArray(errorData.message)) {
+          errorMessage = errorData.message.join(', ');
+        } else if (errorData?.message) {
+          errorMessage = errorData.message;
+        } else if (errorData?.error) {
+          errorMessage = errorData.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+
         toast.error(errorMessage, {
           position: "bottom-right",
           autoClose: parseInt(import.meta.env.VITE_TOAST_AUTOCLOSE_DURATION) || 5000,
