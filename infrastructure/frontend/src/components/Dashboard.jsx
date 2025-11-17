@@ -10,6 +10,7 @@ const Dashboard = () => {
     {
       name: "Eletrônicos",
       slug: "eletronicos",
+      backendValue: "ELETRÔNICOS",
       description: "Tecnologia de ponta para seu dia a dia",
       icon: "🔌",
       items: "500+ produtos",
@@ -18,6 +19,7 @@ const Dashboard = () => {
     {
       name: "Fashion",
       slug: "fashion",
+      backendValue: "FASHION",
       description: "Roupas e acessórios para todos os estilos",
       icon: "👕",
       items: "300+ produtos",
@@ -26,6 +28,7 @@ const Dashboard = () => {
     {
       name: "Casa",
       slug: "casa",
+      backendValue: "CASA",
       description: "Tudo para deixar sua casa mais bonita",
       icon: "🏠",
       items: "200+ produtos",
@@ -34,6 +37,7 @@ const Dashboard = () => {
     {
       name: "Esportes",
       slug: "esportes",
+      backendValue: "ESPORTES",
       description: "Equipamentos para sua vida ativa",
       icon: "⚽",
       items: "150+ produtos",
@@ -98,7 +102,7 @@ const Dashboard = () => {
             {categories.map((category) => (
               <Link
                 key={category.name}
-                to={`/search?category=${category.name}`}
+                to={`/search?category=${category.backendValue}`}
                 className="group bg-white p-8 hover:bg-gray-50 transition-colors"
               >
                 <div className="space-y-4">

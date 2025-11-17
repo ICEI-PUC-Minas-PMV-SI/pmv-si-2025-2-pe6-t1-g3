@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +14,9 @@ import Toast from 'react-native-toast-message';
 import { productService } from '../../services/api';
 import * as SecureStore from 'expo-secure-store';
 import { storage } from '../../services/storage';
+
+const { width } = Dimensions.get('window');
+const isSmallScreen = width < 375;
 
 const CartScreen = () => {
   const { cartItems, setCartItems, removeFromCart, updateCartItem } = useCart();
@@ -258,11 +261,12 @@ const CartScreen = () => {
   }
 
   return (
-    <ScrollView 
-      style={styles.container} 
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingTop: insets.top }}
-    >
+    <View style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: insets.top, paddingBottom: spacing.xl }}
+      >
       <View style={styles.content}>
         {/* Cart Items */}
         <View style={styles.itemsContainer}>
@@ -375,7 +379,8 @@ const CartScreen = () => {
           </Button>
         </View>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -383,6 +388,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  scrollView: {
+    flex: 1,
   },
   centerContainer: {
     flex: 1,
@@ -406,7 +414,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   content: {
-    padding: spacing.lg,
+    padding: isSmallScreen ? spacing.md : spacing.lg,
   },
   itemsContainer: {
     marginBottom: spacing.lg,
@@ -415,7 +423,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: colors.white,
     borderRadius: 8,
-    padding: spacing.md,
+    padding: isSmallScreen ? spacing.sm : spacing.md,
     marginBottom: spacing.md,
     borderWidth: 1,
     borderColor: colors.gray200,
@@ -426,28 +434,28 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   itemImage: {
-    width: 80,
-    height: 80,
+    width: isSmallScreen ? 60 : 80,
+    height: isSmallScreen ? 60 : 80,
     borderRadius: 8,
     backgroundColor: colors.gray100,
   },
   itemInfo: {
     flex: 1,
-    marginLeft: spacing.md,
+    marginLeft: isSmallScreen ? spacing.sm : spacing.md,
   },
   itemName: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 13 : 14,
     fontWeight: '500',
     color: colors.gray900,
     marginBottom: spacing.xs,
   },
   itemSize: {
-    fontSize: 12,
+    fontSize: isSmallScreen ? 11 : 12,
     color: colors.gray500,
     marginBottom: spacing.xs,
   },
   itemPrice: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 13 : 14,
     fontWeight: '600',
     color: colors.gray900,
     marginBottom: spacing.sm,
@@ -461,24 +469,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.gray300,
     borderRadius: 4,
-    padding: spacing.xs,
-    minWidth: 32,
+    padding: isSmallScreen ? 4 : spacing.xs,
+    minWidth: isSmallScreen ? 28 : 32,
     alignItems: 'center',
     justifyContent: 'center',
   },
   quantityText: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 13 : 14,
     fontWeight: '600',
     color: colors.gray900,
-    minWidth: 30,
+    minWidth: isSmallScreen ? 24 : 30,
     textAlign: 'center',
   },
   itemActions: {
     alignItems: 'flex-end',
     justifyContent: 'space-between',
+    marginLeft: spacing.xs,
   },
   itemTotal: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: '600',
     color: colors.gray900,
     marginBottom: spacing.sm,
@@ -490,7 +499,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 15 : 16,
     fontWeight: '600',
     color: colors.gray900,
     marginBottom: spacing.md,
@@ -498,12 +507,12 @@ const styles = StyleSheet.create({
   addressCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: spacing.md,
+    padding: isSmallScreen ? spacing.sm : spacing.md,
     borderWidth: 1,
     borderColor: colors.gray300,
     borderRadius: 8,
     marginBottom: spacing.sm,
-    gap: spacing.md,
+    gap: isSmallScreen ? spacing.sm : spacing.md,
   },
   addressCardSelected: {
     borderColor: colors.black,
@@ -513,16 +522,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addressText: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 12 : 14,
     color: colors.gray700,
     marginBottom: spacing.xs,
+    lineHeight: isSmallScreen ? 16 : 20,
   },
   addAddressButton: {
     marginTop: spacing.sm,
   },
   totalContainer: {
     backgroundColor: colors.gray50,
-    padding: spacing.lg,
+    padding: isSmallScreen ? spacing.md : spacing.lg,
     borderRadius: 8,
     marginTop: spacing.md,
   },
@@ -533,12 +543,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   totalLabel: {
-    fontSize: 18,
+    fontSize: isSmallScreen ? 16 : 18,
     fontWeight: '600',
     color: colors.gray900,
   },
   totalValue: {
-    fontSize: 24,
+    fontSize: isSmallScreen ? 20 : 24,
     fontWeight: '700',
     color: colors.gray900,
   },
