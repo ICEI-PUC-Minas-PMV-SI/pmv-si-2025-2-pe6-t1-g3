@@ -6,42 +6,38 @@ O **Zabbix Store** tem como objetivo oferecer uma **plataforma de e-commerce mob
 - **Fornecer segurança** em todo o fluxo de navegação e compra mobile.  
 - **Disponibilizar análise de vendas para fornecedores**, auxiliando no acompanhamento de desempenho e estratégias comerciais através do app mobile.
 
-## Projeto da Interface
+## Projeto da Interface Mobile
 
-O projeto da interface móvel do Zabixx foi desenvolvido com foco na simplicidade, rapidez e experiência fluida do usuário, garantindo que todo o processo, desde a navegação inicial até a finalização de compras, seja intuitivo e visualmente agradável. A identidade visual combina modernidade e clareza, reforçando a confiança do usuário e destacando os produtos do e-commerce.
+A interface mobile da Zabbix Store será desenvolvida com foco em usabilidade, consistência visual e experiência de compra fluida, garantindo que clientes e fornecedores realizem suas tarefas de forma intuitiva e segura em dispositivos móveis.
 
-🎨 Design Visual
-	•	Paleta de cores alinhada com a identidade do Zabixx, combinando tons neutros e detalhes de cor para destacar elementos importantes (botões, preços, promoções).
-	•	Tipografia limpa e legível, garantindo boa leitura em telas pequenas.
-	•	Componentes reutilizáveis como cards de produto, botões, formulários e banners, mantendo consistência visual em toda a aplicação.
-	•	Ícones minimalistas para facilitar o entendimento rápido das ações disponíveis.
+### Design Visual
+- Layout moderno e clean, priorizando **clareza e hierarquia visual** adaptada para telas menores.  
+- Paleta de cores neutras com acentos para **destaques, estados e categorias**, transmitindo profissionalismo e confiança.  
+- Tipografia moderna: **Poppins** para títulos e elementos de destaque, **Montserrat** e **Inter** para textos complementares e descrições.  
+- Ícones padronizados (React Native Vector Icons / Feather Icons) e componentes consistentes para facilitar a navegação touch.  
+- Sombras suaves, bordas arredondadas e transições de toque para melhorar percepção de interatividade.
 
-📄 Layout das Páginas
+### Layout das Telas
+- **Tela Inicial (Home):** banners promocionais, produtos em destaque, categorias e atalhos para seções principais com navegação por gestos.  
+- **Tela de Categoria / Catálogo:** listagem de produtos com filtros por preço, avaliação, categorias e ordenação dinâmica, com scroll infinito.  
+- **Tela de Produto:** informações detalhadas, imagens em carrossel com zoom, preço, avaliações, descrições e botão de ação "Adicionar ao Carrinho".  
+- **Carrinho e Checkout:** exibição organizada dos produtos selecionados, possibilidade de alterar quantidades ou remover itens, e finalização da compra de forma simples e intuitiva.  
+- **Painel do Usuário (Cliente):** histórico de pedidos, favoritos e configurações de perfil acessíveis via navegação por abas.  
+- **Painel do Fornecedor:** cadastro e gerenciamento de produtos, controle de estoque e relatórios de vendas adaptados para mobile.
 
-A interface segue uma estrutura modular, com telas projetadas para fácil navegação:
-	•	Tela inicial (Home):
-Exibe destaques, categorias principais, promoções e produtos recomendados.
-	•	Catálogo de produtos:
-Lista de produtos com filtros intuitivos (categoria, preço, avaliação).
-	•	Detalhes do produto:
-Imagens ampliáveis, descrição completa, avaliações, botão de compra e sugestões relacionadas.
-	•	Carrinho:
-Visualização clara dos itens adicionados, opções de quantidade e cálculo automático de valores.
-	•	Checkout:
-Processo dividido em etapas simples: endereço, pagamento e confirmação.
-	•	Perfil / Conta:
-Acesso a pedidos, informações pessoais, endereços e suporte.
+### Interações do Usuário
+- Navegação por gestos: swipe para navegar entre telas, pull-to-refresh para atualizar listas.  
+- Pesquisa dinâmica com **autocompletar** otimizado para teclado mobile.  
+- Filtros e ordenações **dinâmicos**, atualizando produtos sem recarregar a tela.  
+- Feedbacks visuais: notificações push, loaders, mensagens de sucesso e alerta.  
+- Carrinho persistente, mantendo produtos adicionados mesmo após fechar o app.  
+- Navegação por abas (Tab Navigator) para acesso rápido às principais funcionalidades.
 
-🤳 Interações do Usuário
-	•	Transições suaves entre telas utilizando animações leves para melhorar a sensação de fluidez.
-	•	Feedback visual imediato ao interagir com botões, listas e formulários.
-	•	Gestos comuns de navegação, como scroll infinito no catálogo e swipe em listas quando apropriado.
-	•	Notificações internas para informar status de pedidos, promoções ou ações importantes.
-
-🧩 Outros Aspectos Relevantes
-	•	Design responsivo, adaptando-se a diferentes tamanhos e resoluções de tela.
-	•	Acessibilidade, com contraste adequado, toques grandes o suficiente e navegação facilitada.
-	•	Organização por componentes, permitindo evolução futura da interface sem perder consistência.
+### Outros Aspectos Relevantes
+- **Design responsivo**, compatível com diferentes tamanhos de tela mobile (smartphones e tablets).  
+- Integração com APIs do backend para exibição de dados e atualização de estoque em tempo real.  
+- **Segurança** no tratamento de informações do usuário e autenticação via tokens JWT.  
+- Elementos de UI/UX que promovem **fluidez na jornada de compra**, desde a busca até o checkout, otimizados para interação touch.
 
 ### Wireframes
 
