@@ -123,10 +123,10 @@ O fluxo de dados da ZabbixStore mobile é baseado em uma arquitetura cliente-ser
 ```
 Frontend Mobile (React Native/Expo) ↔ Backend (NestJS) ↔ Banco de Dados (PostgreSQL)
      ↓                                    ↓                    ↓
-- React Navigation    - Controllers         - Prisma ORM
-- Context API          - Services           - Schema definido
-- Componentes          - DTOs/Validação     - Migrations
-- AsyncStorage         - JWT Auth           - Relacionamentos
+- React Navigation                  - Controllers         - Prisma ORM
+- Context API                       - Services           - Schema definido
+- Componentes                       - DTOs/Validação     - Migrations
+- AsyncStorage                      - JWT Auth           - Relacionamentos
 - Hooks customizados
 ```
 
@@ -1232,20 +1232,18 @@ npm run test:android
 
 ### Etapa 4
 
-Atualizado em: 21/04/2024
-
-| Responsável               | Tarefa/Requisito            | Iniciado em       | Prazo      | Status | Terminado em    |
-| :----                     |    :----                    |      :----:       |   :----:   | :----: | :----:          |
-| Todos                     | Correção da Etapa           |    01/02/2024     | 07/02/2024 | ✔️     | 05/11/2025      |
-| Todos                     | Front-end Móvel             |    03/02/2024     | 10/02/2024 | ✔️     | 05/11/2025      |
-| Jully/Vinicius/Italo      | Projeto da Interface        |    01/01/2024     | 07/01/2005 | ⌛     |                 |
-| Jully/Vinicius/Italo      | Wireframes                  |    01/01/2024     | 12/02/2005 | ❌     |       |
-| Pedro/Victor/Lucas        | Design Visual               |    01/01/2024     | 12/02/2005 | ❌     |       |
-| Vinicius                  | Fluxo de Dados              |    01/01/2024     | 12/02/2005 | ❌     |       |
-| Lucas                     | Tecnologias Utilizadas      |    01/01/2024     | 12/02/2005 | ❌     |       |
-| Pedro                     | Considerações de Segurança  |    01/01/2024     | 12/02/2005 | ❌     |       |
-| Italo                     | Testes                      |    01/01/2024     | 12/02/2005 | ❌     |       |
-| Jully                     |Montar apresentação etapa 4  |    01/01/2024     | 12/02/2005 | ❌     |       |
+| Responsável               | Tarefa/Requisito            | Iniciado em       | Prazo      | Status | Terminado em |
+| :----                     |    :----                    |      :----:       |   :----:   | :----: | :----:       |
+| Todos                     | Correção da Etapa           |    10/11/2025     | 17/11/2025 | ✔️     | 05/11/2025   |
+| Todos                     | Front-end Móvel             |    17/11/2025     | 28/11/2025 | ⌛     |             |
+| Jully/Vinicius/Italo      | Projeto da Interface        |    01/11/2025     | 24/11/2025 | ✔️     | 20/11/2025  |
+| Jully/Vinicius/Italo      | Wireframes                  |    01/11/2025     | 24/11/2025 | ⌛     |             |
+| Pedro/Victor/Lucas        | Design Visual               |    01/11/2025     | 24/11/2025 | ⌛     |             |
+| Vinicius                  | Fluxo de Dados              |    01/11/2025     | 24/11/2025 | ⌛     |             |
+| Lucas                     | Tecnologias Utilizadas      |    01/11/2025     | 20/11/2025 | ✔️     | 20/11/2025  |
+| Pedro                     | Considerações de Segurança  |    01/11/2025     | 20/11/2025 | ✔️     | 20/11/2025  |
+| Italo                     | Testes                      |    24/11/2025     | 28/11/2025 | ⌛     |             |
+| Jully                     | Montar apresentação etapa 4 |    01/11/2025     | 28/11/2025 | ✔️     | 20/11/2025  |
 
 
 Legenda:
