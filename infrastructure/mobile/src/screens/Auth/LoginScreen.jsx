@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../contexts/AuthContext';
 import { authService } from '../../services/api';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import { colors, spacing } from '../../theme';
 import Toast from 'react-native-toast-message';
+import zabbixLogo from '../../assets/zabbixLogo.png';
 
 const LoginScreen = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +21,7 @@ const LoginScreen = () => {
 
   const { login } = useAuth();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({
@@ -88,6 +91,13 @@ const LoginScreen = () => {
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
+        <View style={[styles.logoContainer, { paddingTop: insets.top + spacing.md }]}>
+            <Image
+              source={zabbixLogo}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+        </View>
         <View style={styles.content}>
           <View style={styles.header}>
             <Text style={styles.title}>Entrar</Text>
@@ -120,18 +130,18 @@ const LoginScreen = () => {
               error={fieldErrors.SENHA}
               required
             />
-
-            <Button
-              variant="primary"
-              size="large"
-              onPress={handleSubmit}
-              loading={isLoading}
-              disabled={isLoading}
-              style={styles.submitButton}
-            >
-              {isLoading ? 'Entrando...' : 'Entrar'}
-            </Button>
           </View>
+
+          <Button
+            variant="primary"
+            size="large"
+            onPress={handleSubmit}
+            loading={isLoading}
+            disabled={isLoading}
+            style={styles.submitButton}
+          >
+            {isLoading ? 'Entrando...' : 'Entrar'}
+          </Button>
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>
@@ -157,8 +167,8 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: 'center',
     padding: spacing.lg,
+    paddingTop: 0,
   },
   content: {
     width: '100%',
@@ -195,8 +205,19 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: spacing.lg,
   },
+  logoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing.xs,
+    marginBottom: spacing.xl,
+    width: '100%',
+  },
+  logo: {
+    height: 60,
+    width: 150,
+  },
   submitButton: {
-    marginTop: spacing.md,
+    marginTop: 0,
   },
   footer: {
     marginTop: spacing.lg,

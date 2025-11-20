@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { useProducts } from '../../hooks/useProducts';
 import ProductGrid from '../../components/product/ProductGrid';
 import { colors, spacing } from '../../theme';
 import Button from '../../components/common/Button';
+import zabbixLogo from '../../assets/zabbixLogo.png';
 
 const DashboardScreen = () => {
   const { products, loading, error, refetch } = useProducts();
@@ -90,14 +91,23 @@ const DashboardScreen = () => {
           <Text style={styles.heroSubtitle}>
             Uma seleção cuidadosa de produtos para todas as suas necessidades
           </Text>
-          <Button
-            variant="primary"
-            size="medium"
-            onPress={handleViewProducts}
-            style={styles.heroButton}
-          >
-            Ver produtos
-          </Button>
+          <View style={styles.heroButtonContainer}>
+            <View style={styles.heroButtonWrapper}>
+              <Button
+                variant="primary"
+                size="medium"
+                onPress={handleViewProducts}
+                style={styles.heroButton}
+              >
+                Ver produtos
+              </Button>
+            </View>
+            <Image
+              source={zabbixLogo}
+              style={styles.heroLogo}
+              resizeMode="contain"
+            />
+          </View>
         </View>
       </View>
 
@@ -200,8 +210,22 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     lineHeight: 24,
   },
+  heroButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  heroButtonWrapper: {
+    // Estilo do wrapper do botão
+  },
   heroButton: {
-    alignSelf: 'flex-start',
+    // Estilo do botão
+  },
+  heroLogo: {
+    height: 64,
+    width: 160,
+    alignSelf: 'center',
   },
   section: {
     padding: spacing.lg,
