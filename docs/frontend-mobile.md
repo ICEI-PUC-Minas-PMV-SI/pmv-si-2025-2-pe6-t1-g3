@@ -6,164 +6,46 @@ O **Zabbix Store** tem como objetivo oferecer uma **plataforma de e-commerce mob
 - **Fornecer segurança** em todo o fluxo de navegação e compra mobile.  
 - **Disponibilizar análise de vendas para fornecedores**, auxiliando no acompanhamento de desempenho e estratégias comerciais através do app mobile.
 
-## Projeto da Interface Mobile
+## Projeto da Interface
 
-A interface mobile da Zabbix Store será desenvolvida com foco em usabilidade, consistência visual e experiência de compra fluida, garantindo que clientes e fornecedores realizem suas tarefas de forma intuitiva e segura em dispositivos móveis.
+O projeto da interface móvel do Zabixx foi desenvolvido com foco na simplicidade, rapidez e experiência fluida do usuário, garantindo que todo o processo, desde a navegação inicial até a finalização de compras, seja intuitivo e visualmente agradável. A identidade visual combina modernidade e clareza, reforçando a confiança do usuário e destacando os produtos do e-commerce.
 
-### Design Visual
-- Layout moderno e clean, priorizando **clareza e hierarquia visual** adaptada para telas menores.  
-- Paleta de cores neutras com acentos para **destaques, estados e categorias**, transmitindo profissionalismo e confiança.  
-- Tipografia moderna: **Poppins** para títulos e elementos de destaque, **Montserrat** e **Inter** para textos complementares e descrições.  
-- Ícones padronizados (React Native Vector Icons / Feather Icons) e componentes consistentes para facilitar a navegação touch.  
-- Sombras suaves, bordas arredondadas e transições de toque para melhorar percepção de interatividade.
+🎨 Design Visual
+	•	Paleta de cores alinhada com a identidade do Zabixx, combinando tons neutros e detalhes de cor para destacar elementos importantes (botões, preços, promoções).
+	•	Tipografia limpa e legível, garantindo boa leitura em telas pequenas.
+	•	Componentes reutilizáveis como cards de produto, botões, formulários e banners, mantendo consistência visual em toda a aplicação.
+	•	Ícones minimalistas para facilitar o entendimento rápido das ações disponíveis.
 
-### Layout das Telas
-- **Tela Inicial (Home):** banners promocionais, produtos em destaque, categorias e atalhos para seções principais com navegação por gestos.  
-- **Tela de Categoria / Catálogo:** listagem de produtos com filtros por preço, avaliação, categorias e ordenação dinâmica, com scroll infinito.  
-- **Tela de Produto:** informações detalhadas, imagens em carrossel com zoom, preço, avaliações, descrições e botão de ação "Adicionar ao Carrinho".  
-- **Carrinho e Checkout:** exibição organizada dos produtos selecionados, possibilidade de alterar quantidades ou remover itens, e finalização da compra de forma simples e intuitiva.  
-- **Painel do Usuário (Cliente):** histórico de pedidos, favoritos e configurações de perfil acessíveis via navegação por abas.  
-- **Painel do Fornecedor:** cadastro e gerenciamento de produtos, controle de estoque e relatórios de vendas adaptados para mobile.
+📄 Layout das Páginas
 
-### Interações do Usuário
-- Navegação por gestos: swipe para navegar entre telas, pull-to-refresh para atualizar listas.  
-- Pesquisa dinâmica com **autocompletar** otimizado para teclado mobile.  
-- Filtros e ordenações **dinâmicos**, atualizando produtos sem recarregar a tela.  
-- Feedbacks visuais: notificações push, loaders, mensagens de sucesso e alerta.  
-- Carrinho persistente, mantendo produtos adicionados mesmo após fechar o app.  
-- Navegação por abas (Tab Navigator) para acesso rápido às principais funcionalidades.
+A interface segue uma estrutura modular, com telas projetadas para fácil navegação:
+	•	Tela inicial (Home):
+Exibe destaques, categorias principais, promoções e produtos recomendados.
+	•	Catálogo de produtos:
+Lista de produtos com filtros intuitivos (categoria, preço, avaliação).
+	•	Detalhes do produto:
+Imagens ampliáveis, descrição completa, avaliações, botão de compra e sugestões relacionadas.
+	•	Carrinho:
+Visualização clara dos itens adicionados, opções de quantidade e cálculo automático de valores.
+	•	Checkout:
+Processo dividido em etapas simples: endereço, pagamento e confirmação.
+	•	Perfil / Conta:
+Acesso a pedidos, informações pessoais, endereços e suporte.
 
-### Outros Aspectos Relevantes
-- **Design responsivo**, compatível com diferentes tamanhos de tela mobile (smartphones e tablets).  
-- Integração com APIs do backend para exibição de dados e atualização de estoque em tempo real.  
-- **Segurança** no tratamento de informações do usuário e autenticação via tokens JWT.  
-- Elementos de UI/UX que promovem **fluidez na jornada de compra**, desde a busca até o checkout, otimizados para interação touch.
+🤳 Interações do Usuário
+	•	Transições suaves entre telas utilizando animações leves para melhorar a sensação de fluidez.
+	•	Feedback visual imediato ao interagir com botões, listas e formulários.
+	•	Gestos comuns de navegação, como scroll infinito no catálogo e swipe em listas quando apropriado.
+	•	Notificações internas para informar status de pedidos, promoções ou ações importantes.
+
+🧩 Outros Aspectos Relevantes
+	•	Design responsivo, adaptando-se a diferentes tamanhos e resoluções de tela.
+	•	Acessibilidade, com contraste adequado, toques grandes o suficiente e navegação facilitada.
+	•	Organização por componentes, permitindo evolução futura da interface sem perder consistência.
 
 ### Wireframes
 
-<details>
-  <summary><strong>🏠 Home</strong></summary>
 
-  <p><code>Versão Mobile</code></p>
-
-  
-
-A tela inicial mobile foi desenvolvida como o ponto de entrada principal da plataforma, oferecendo uma navegação moderna, intuitiva e organizada otimizada para dispositivos móveis. Seu objetivo é destacar os principais produtos e categorias, facilitando o acesso rápido às áreas de interesse do usuário através de gestos touch.
-
-O layout é responsivo e funcional, adaptando-se perfeitamente a diferentes tamanhos de tela mobile. O menu superior reúne as opções Início, Categorias, Cadastro, Carrinho e Perfil, garantindo fácil navegação com ícones grandes e áreas de toque adequadas.
-
-Logo abaixo, um banner principal destaca produtos em evidência, seguido por seções organizadas por categoria, como Eletrônicos, Fashion e Esporte, apresentadas em cards visuais com imagem, nome, preço e botão de compra otimizado para toque.
-
-A página conta ainda com uma barra de busca centralizada, que agiliza a localização de produtos com autocompletar adaptado para teclado mobile. O design adota cores sóbrias combinadas a tons de destaque para realçar elementos interativos, transmitindo profissionalismo e confiança.
-
-Por fim, o rodapé reúne links institucionais, contatos e políticas da loja, reforçando a credibilidade e completando uma estrutura pensada para usabilidade e conversão em dispositivos móveis.
-
-</details>
-
-<details>
-  <summary><strong>👤 Acesso do Usuário</strong></summary>
-
-As telas protegidas da Zabbix Store mobile foram desenvolvidas para garantir a segurança e privacidade dos usuários, permitindo o acesso apenas mediante autenticação. Essas páginas fazem parte do fluxo de controle de acesso da plataforma, assegurando que cada usuário possa gerenciar suas informações e atividades de forma segura e personalizada em dispositivos móveis.
-
-  <details>
-    <summary><strong>📝 Cadastro</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-Na tela de cadastro mobile, o usuário pode criar uma nova conta informando dados básicos, como nome, e-mail e senha. O processo é direto e validado em tempo real, garantindo a integridade das informações inseridas. Os campos são otimizados para teclado mobile e incluem validação visual imediata.
-
-  </details>
-
-  <details>
-    <summary><strong>🔑 Login</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-A tela de login mobile oferece uma interface simples e intuitiva, com campos para e-mail e senha otimizados para teclado mobile. O design segue o padrão visual da plataforma, mantendo a coerência com o restante do app. Inclui opção de "Lembrar-me" e recuperação de senha.
-    
-  </details>
-
-  <details>
-    <summary><strong>⚙️ Gerenciamento de conta</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-    O gerenciamento de conta mobile permite que o usuário visualize e edite seus dados pessoais e gerencie endereços através de uma interface adaptada para telas menores. Essa área é acessível apenas após o login, garantindo a proteção dos dados armazenados. A navegação é feita através de abas ou menu lateral.
-
-  </details>
-
-</details>
-
-<details>
-  <summary><strong>🛍️ Compras</strong></summary>
-
-  <details>
-    <summary><strong>📦 Produtos</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-Os produtos são apresentados em uma listagem otimizada para mobile, organizada por categorias e filtros de busca. Cada produto é exibido em um card visual adaptado para toque, contendo imagem, nome, preço e botão de compra com área de toque adequada.
-O usuário pode visualizar detalhes completos do item ao tocar no card, incluindo descrição, avaliações, estoque e informações técnicas. A navegação entre imagens é feita por swipe.
-
-  </details>
-
-  <details>
-    <summary><strong>❤️ Favoritos</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-A tela de favoritos mobile permite que o usuário salve produtos de interesse para consultar ou comprar mais tarde.
-Os itens marcados como favoritos aparecem organizados em uma lista visual semelhante à da tela de produtos, exibindo imagem, nome, preço e atalhos para "Ver Detalhes" ou "Adicionar ao Carrinho" com gestos de swipe para ações rápidas.
-
-  </details>
-
-  <details>
-    <summary><strong>🛒 Carrinho</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-A tela de carrinho mobile reúne todos os produtos selecionados para compra. Cada item é apresentado com imagem, nome, preço unitário, quantidade e valor total, otimizado para visualização em telas menores.
-O usuário pode alterar quantidades, remover itens ou seguir para o checkout, visualizando em tempo real o subtotal da compra. Os botões são grandes o suficiente para facilitar a interação touch.
-
-  </details>
-
-</details>
-
-<details>
-  <summary><strong>📊 Dashboard Fornecedor</strong></summary>
-
-O Dashboard mobile contém áreas restritas aos usuários fornecedores, permitindo o acompanhamento e controle das atividades comerciais dentro da plataforma através de uma interface adaptada para dispositivos móveis.
-
-  <details>
-    <summary><strong>📈 Análise de Vendas</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-Na seção de Análise de Vendas mobile, o fornecedor tem acesso a relatórios detalhados sobre pedidos, lucros, produtos mais vendidos e períodos de maior movimentação. As informações podem ser filtradas por data e categoria, auxiliando na tomada de decisões estratégicas. Os gráficos são adaptados para visualização em telas menores.
-
-  </details>
-
-  <details>
-    <summary><strong>📦 Gerenciamento e cadastro de produtos</strong></summary>
-    <p><code>Versão Mobile</code></p>
-    
-
-O Gerenciamento e cadastro de Produtos mobile permite ao fornecedor inserir, editar ou remover itens da loja. É possível definir nome, descrição, categoria, preço, imagens e quantidade em estoque através de formulários otimizados para mobile. Essa funcionalidade oferece controle total sobre o catálogo de produtos, garantindo que as informações exibidas aos clientes estejam sempre atualizadas.
-
-  </details>
-
-</details>
-
-<details>
-  <summary><strong>ℹ️ Sobre</strong></summary>
-
-  <p><code>Versão Mobile</code></p>
-
-  
-
-A tela Sobre mobile tem como objetivo apresentar a Zabbix Store, destacando sua proposta, valores e funcionalidades principais através de um layout adaptado para dispositivos móveis com scroll vertical.
-  
-</details>
 
 ### Design Visual
 
@@ -1358,8 +1240,8 @@ Atualizado em: 21/04/2024
 
 | Responsável               | Tarefa/Requisito            | Iniciado em       | Prazo      | Status | Terminado em    |
 | :----                     |    :----                    |      :----:       |   :----:   | :----: | :----:          |
-| Todos                     | Correção da Etapa           |    01/02/2024     | 07/02/2024 | ✔️     | 05/02/2024      |
-| Todos                     | Front-end Móvel             |    03/02/2024     | 10/02/2024 | 📝     |                 |
+| Todos                     | Correção da Etapa           |    01/02/2024     | 07/02/2024 | ✔️     | 05/11/2025      |
+| Todos                     | Front-end Móvel             |    03/02/2024     | 10/02/2024 | ✔️     | 05/11/2025      |
 | Jully/Vinicius/Italo      | Projeto da Interface        |    01/01/2024     | 07/01/2005 | ⌛     |                 |
 | Jully/Vinicius/Italo      | Wireframes                  |    01/01/2024     | 12/02/2005 | ❌     |       |
 | Pedro/Victor/Lucas        | Design Visual               |    01/01/2024     | 12/02/2005 | ❌     |       |
