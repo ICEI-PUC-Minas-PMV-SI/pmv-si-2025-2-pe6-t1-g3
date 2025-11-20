@@ -8,37 +8,54 @@ A aplicação é projetada com foco em desempenho, escalabilidade e usabilidade,
 O projeto da interface móvel do Zabixx foi desenvolvido com foco na simplicidade, rapidez e experiência fluida do usuário, garantindo que todo o processo, desde a navegação inicial até a finalização de compras, seja intuitivo e visualmente agradável. A identidade visual combina modernidade e clareza, reforçando a confiança do usuário e destacando os produtos do e-commerce.
 
 🎨 Design Visual
-	•	Paleta de cores alinhada com a identidade do Zabixx, combinando tons neutros e detalhes de cor para destacar elementos importantes (botões, preços, promoções).
-	•	Tipografia limpa e legível, garantindo boa leitura em telas pequenas.
-	•	Componentes reutilizáveis como cards de produto, botões, formulários e banners, mantendo consistência visual em toda a aplicação.
-	•	Ícones minimalistas para facilitar o entendimento rápido das ações disponíveis.
+
+•	Paleta de cores alinhada com a identidade do Zabixx, combinando tons neutros e detalhes de cor para destacar elementos importantes (botões, preços, promoções).
+
+•	Tipografia limpa e legível, garantindo boa leitura em telas pequenas.
+
+•	Componentes reutilizáveis como cards de produto, botões, formulários e banners, mantendo consistência visual em toda a aplicação.
+
+•	Ícones minimalistas para facilitar o entendimento rápido das ações disponíveis.
 
 📄 Layout das Páginas
 
 A interface segue uma estrutura modular, com telas projetadas para fácil navegação:
-	•	Tela inicial (Home):
+
+•	Tela inicial (Home):
 Exibe destaques, categorias principais, promoções e produtos recomendados.
-	•	Catálogo de produtos:
+
+•	Catálogo de produtos:
 Lista de produtos com filtros intuitivos (categoria, preço, avaliação).
-	•	Detalhes do produto:
+
+•	Detalhes do produto:
 Imagens ampliáveis, descrição completa, avaliações, botão de compra e sugestões relacionadas.
-	•	Carrinho:
+
+•	Carrinho:
 Visualização clara dos itens adicionados, opções de quantidade e cálculo automático de valores.
-	•	Checkout:
+
+•	Checkout:
 Processo dividido em etapas simples: endereço, pagamento e confirmação.
-	•	Perfil / Conta:
+
+•	Perfil / Conta:
 Acesso a pedidos, informações pessoais, endereços e suporte.
 
 🤳 Interações do Usuário
-	•	Transições suaves entre telas utilizando animações leves para melhorar a sensação de fluidez.
-	•	Feedback visual imediato ao interagir com botões, listas e formulários.
-	•	Gestos comuns de navegação, como scroll infinito no catálogo e swipe em listas quando apropriado.
-	•	Notificações internas para informar status de pedidos, promoções ou ações importantes.
+
+•	Transições suaves entre telas utilizando animações leves para melhorar a sensação de fluidez.
+
+•	Feedback visual imediato ao interagir com botões, listas e formulários.
+
+•	Gestos comuns de navegação, como scroll infinito no catálogo e swipe em listas quando apropriado.
+
+•	Notificações internas para informar status de pedidos, promoções ou ações importantes.
 
 🧩 Outros Aspectos Relevantes
-	•	Design responsivo, adaptando-se a diferentes tamanhos e resoluções de tela.
-	•	Acessibilidade, com contraste adequado, toques grandes o suficiente e navegação facilitada.
-	•	Organização por componentes, permitindo evolução futura da interface sem perder consistência.
+
+•	Design responsivo, adaptando-se a diferentes tamanhos e resoluções de tela.
+
+•	Acessibilidade, com contraste adequado, toques grandes o suficiente e navegação facilitada.
+
+•	Organização por componentes, permitindo evolução futura da interface sem perder consistência.
 
 ### Wireframes
 
@@ -96,8 +113,8 @@ Atualizado em: 21/04/2024
 
 | Responsável               | Tarefa/Requisito            | Iniciado em       | Prazo      | Status | Terminado em    |
 | :----                     |    :----                    |      :----:       |   :----:   | :----: | :----:          |
-| Todos                     | Correção da Etapa           |    01/02/2024     | 07/02/2024 | ✔️     | 05/02/2024      |
-| Todos                     | Front-end Móvel             |    03/02/2024     | 10/02/2024 | 📝     |                 |
+| Todos                     | Correção da Etapa           |    01/02/2024     | 07/02/2024 | ✔️     | 05/11/2025      |
+| Todos                     | Front-end Móvel             |    03/02/2024     | 10/02/2024 | ✔️     | 05/11/2025      |
 | Jully/Vinicius/Italo      | Projeto da Interface        |    01/01/2024     | 07/01/2005 | ⌛     |                 |
 | Jully/Vinicius/Italo      | Wireframes                  |    01/01/2024     | 12/02/2005 | ❌     |       |
 | Pedro/Victor/Lucas        | Design Visual               |    01/01/2024     | 12/02/2005 | ❌     |       |
