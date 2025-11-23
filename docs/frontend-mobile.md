@@ -48,61 +48,49 @@ A interface mobile da Zabbix Store será desenvolvida com foco em usabilidade, c
 
 <details>
   <summary><strong>🏠 Home</strong></summary>
-
   <p><code>Versão Web_Desktop e Web_Mobile</code></p>
-
   <img src="../docs/img/wireframes/Mobile_Native_Home_1.jpg" width="200" alt="Versão Mobile Nativa">
   <img src="../docs/img/wireframes/Mobile_Native_Home_2.jpg" width="200" alt="Versão Mobile Nativa">
 </details>
-
 <details>
     <summary><strong>👤 Acesso do Usuário</strong></summary>
     <details>
         <summary><strong>📝 Cadastro</strong></summary>
         <p><code>Versão Web_Desktop e Web_Mobile</code></p>
         <img src="../docs/img/wireframes/Mobile_Native_Registry.jpg" width="200" alt="Versão Mobile Nativa">
-  </details>
-
-    <details>
-      <summary><strong>🔑 Login</strong></summary>
-      <p><code>Versão Web_Desktop e Web_Mobile</code></p>
-      <img src="../docs/img/wireframes/Mobile_Native_Login.jpg" width="200" alt="Versão Mobile Nativa">
     </details>
-      
+    <details>
+    <summary><strong>🔑 Login</strong></summary>
+    <p><code>Versão Web_Desktop e Web_Mobile</code></p>
+    <img src="../docs/img/wireframes/Mobile_Native_Login.jpg" width="200" alt="Versão Mobile Nativa">
+    </details>
     <details>
       <summary><strong>⚙️ Gerenciamento de conta</strong></summary>
       <p><code>Versão Web_Desktop e Web_Mobile</code></p>
       <img src="../docs/img/wireframes/Mobile_Native_Account.jpg" width="200" alt="Versão Mobile Nativa">
     </details>
-        
 </details>
-        
 <details>
   <summary><strong>🛍️ Compras</strong></summary>
-        
     <details>
       <summary><strong>📦 Produtos</strong></summary>
       <p><code>Versão Web_Desktop e Web_Mobile</code></p>
 //      <img src="../docs/img/wireframes/Desktop_product.png" width="600" alt="Versão Desktop">
 //      <img src="../docs/img/wireframes/Mobile_product.png" width="200" alt="Versão Mobile">
-    </details>
-            
+    </details> 
     <details>
       <summary><strong>❤️ Favoritos</strong></summary>
       <p><code>Versão Web_Desktop e Web_Mobile</code></p>
 //      <img src="../docs/img/wireframes/Desktop_favorites.svg" width="600" alt="Versão Desktop">
 //      <img src="../docs/img/wireframes/Mobile_favorites.svg" width="200" alt="Versão Mobile">
-    </details>
-                
+    </details>      
     <details>
       <summary><strong>🛒 Carrinho</strong></summary>
       <p><code>Versão Web_Desktop e Web_Mobile</code></p>
 //      <img src="../docs/img/wireframes/Desktop_cart.png" width="700" alt="Versão Desktop">
 //      <img src="../docs/img/wireframes/Mobile_cart.png" width="200" alt="Versão Mobile">
     </details>
-
 </details>
-
 <details>
   <summary><strong>📊 Dashbord fornecedor</strong></summary>
    <details>
@@ -110,13 +98,11 @@ A interface mobile da Zabbix Store será desenvolvida com foco em usabilidade, c
       <p><code>Versão Web_Desktop e Web_Mobile</code></p>
 //      <img src="../docs/img/wireframes/Mobile_admin.png" width="200" alt="Versão Mobile">
   </details>
-      
   <details>
     <summary><strong>📦 Gerenciamento e cadastro de produtos </strong></summary>
     <p><code>Versão Web_Desktop e Web_Mobile</code></p>
 //    <img src="../docs/img/wireframes/Mobile_admi2.png" width="200" alt="Versão Mobile">
-    </details>
-          
+    </details> 
 </details>
 ### Design Visual
 
@@ -1403,16 +1389,16 @@ npm run test:android
 
 | Responsável          | Tarefa/Requisito            | Iniciado em |   Prazo    | Status | Terminado em |
 | :------------------- | :-------------------------- | :---------: | :--------: | :----: | :----------: |
-| Todos                | Correção da Etapa           | 10/11/2025  | 17/11/2025 |   ✔️   |  05/11/2025  |
-| Todos                | Front-end Móvel             | 17/11/2025  | 28/11/2025 |   ⌛   |              |
-| Jully/Vinicius/Italo | Projeto da Interface        | 01/11/2025  | 24/11/2025 |   ✔️   |  20/11/2025  |
-| Jully/Vinicius/Italo | Wireframes                  | 01/11/2025  | 24/11/2025 |   ⌛   |              |
-| Pedro/Victor/Lucas   | Design Visual               | 01/11/2025  | 24/11/2025 |   ⌛   |              |
-| Vinicius             | Fluxo de Dados              | 01/11/2025  | 24/11/2025 |   ⌛   |              |
-| Lucas                | Tecnologias Utilizadas      | 01/11/2025  | 20/11/2025 |   ✔️   |  20/11/2025  |
-| Pedro                | Considerações de Segurança  | 01/11/2025  | 20/11/2025 |   ✔️   |  20/11/2025  |
-| Italo                | Testes                      | 24/11/2025  | 28/11/2025 |   ⌛   |              |
-| Jully                | Montar apresentação etapa 4 | 01/11/2025  | 28/11/2025 |   ✔️   |  20/11/2025  |
+| Todos                | Correção da Etapa           | 10/11/2025  | 17/11/2025 |   ✔️    |  05/11/2025  |
+| Todos                | Front-end Móvel             | 17/11/2025  | 28/11/2025 |   ⌛    |              |
+| Jully/Vinicius/Italo | Projeto da Interface        | 01/11/2025  | 24/11/2025 |   ✔️    |  20/11/2025  |
+| Jully/Vinicius/Italo | Wireframes                  | 01/11/2025  | 24/11/2025 |   ⌛    |              |
+| Pedro/Victor/Lucas   | Design Visual               | 01/11/2025  | 24/11/2025 |   ⌛    |              |
+| Vinicius             | Fluxo de Dados              | 01/11/2025  | 24/11/2025 |   ⌛    |              |
+| Lucas                | Tecnologias Utilizadas      | 01/11/2025  | 20/11/2025 |   ✔️    |  20/11/2025  |
+| Pedro                | Considerações de Segurança  | 01/11/2025  | 20/11/2025 |   ✔️    |  20/11/2025  |
+| Italo                | Testes                      | 24/11/2025  | 28/11/2025 |   ⌛    |              |
+| Jully                | Montar apresentação etapa 4 | 01/11/2025  | 28/11/2025 |   ✔️    |  20/11/2025  |
 
 Legenda:
 
