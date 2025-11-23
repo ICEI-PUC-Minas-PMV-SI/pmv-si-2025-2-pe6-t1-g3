@@ -21,9 +21,17 @@ async function bootstrap() {
     }),
   );
 
-  // CORS configuration
+  const frontendUrls = process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(',').map(url => url.trim())
+    : ['http://localhost:5173'];
+
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: [
+      ...frontendUrls,
+      'http://localhost:8081', // Expo Metro Bundler
+      /^http:\/\/.*\.exp\.direct.*$/, // Expo LAN/Tunnel URLs
+      /^exp:\/\/.*$/, // Expo app URLs
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
