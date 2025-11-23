@@ -48,7 +48,7 @@ A interface mobile da Zabbix Store será desenvolvida com foco em usabilidade, c
 
 <details>
   <summary><strong>🏠 Home</strong></summary>
-  <p><code>Versão Web_Desktop e Web_Mobile</code></p>
+  <p><code>Versão Mobile Nativa</code></p>
   <img src="../docs/img/wireframes/Mobile_Native_Home_1.jpg" width="200" alt="Versão Mobile Nativa">
   <img src="../docs/img/wireframes/Mobile_Native_Home_2.jpg" width="200" alt="Versão Mobile Nativa">
 </details>
@@ -56,17 +56,17 @@ A interface mobile da Zabbix Store será desenvolvida com foco em usabilidade, c
     <summary><strong>👤 Acesso do Usuário</strong></summary>
     <details>
         <summary><strong>📝 Cadastro</strong></summary>
-        <p><code>Versão Web_Desktop e Web_Mobile</code></p>
+        <p><code>Versão Mobile Nativa</code></p>
         <img src="../docs/img/wireframes/Mobile_Native_Registry.jpg" width="200" alt="Versão Mobile Nativa">
     </details>
     <details>
     <summary><strong>🔑 Login</strong></summary>
-    <p><code>Versão Web_Desktop e Web_Mobile</code></p>
+    <p><code>Versão Mobile Nativa</code></p>
     <img src="../docs/img/wireframes/Mobile_Native_Login.jpg" width="200" alt="Versão Mobile Nativa">
     </details>
     <details>
       <summary><strong>⚙️ Gerenciamento de conta</strong></summary>
-      <p><code>Versão Web_Desktop e Web_Mobile</code></p>
+      <p><code>Versão Mobile Nativa</code></p>
       <img src="../docs/img/wireframes/Mobile_Native_Account.jpg" width="200" alt="Versão Mobile Nativa">
     </details>
 </details>
@@ -74,35 +74,27 @@ A interface mobile da Zabbix Store será desenvolvida com foco em usabilidade, c
   <summary><strong>🛍️ Compras</strong></summary>
     <details>
       <summary><strong>📦 Produtos</strong></summary>
-      <p><code>Versão Web_Desktop e Web_Mobile</code></p>
-//      <img src="../docs/img/wireframes/Desktop_product.png" width="600" alt="Versão Desktop">
-//      <img src="../docs/img/wireframes/Mobile_product.png" width="200" alt="Versão Mobile">
+      <p><code>Versão Mobile Nativa</code></p>
+      <img src="../docs/img/wireframes/Mobile_product_Native.png" width="200" alt="Versão Mobile Nativa">
     </details> 
     <details>
       <summary><strong>❤️ Favoritos</strong></summary>
-      <p><code>Versão Web_Desktop e Web_Mobile</code></p>
-//      <img src="../docs/img/wireframes/Desktop_favorites.svg" width="600" alt="Versão Desktop">
-//      <img src="../docs/img/wireframes/Mobile_favorites.svg" width="200" alt="Versão Mobile">
+      <p><code>Versão Mobile Nativa</code></p>
+      <img src="../docs/img/wireframes/Mobile_Native_favorites.png" width="200" alt="Versão Mobile Nativa">
     </details>      
     <details>
       <summary><strong>🛒 Carrinho</strong></summary>
-      <p><code>Versão Web_Desktop e Web_Mobile</code></p>
-//      <img src="../docs/img/wireframes/Desktop_cart.png" width="700" alt="Versão Desktop">
-//      <img src="../docs/img/wireframes/Mobile_cart.png" width="200" alt="Versão Mobile">
+      <p><code>Versão Mobile Nativa</code></p>
+      <img src="../docs/img/wireframes/Mobile_Native_cart.png" width="200" alt="Versão Mobile Nativa">
     </details>
 </details>
 <details>
   <summary><strong>📊 Dashbord fornecedor</strong></summary>
    <details>
       <summary><strong>📈 Análise de Vendas</strong></summary>
-      <p><code>Versão Web_Desktop e Web_Mobile</code></p>
-//      <img src="../docs/img/wireframes/Mobile_admin.png" width="200" alt="Versão Mobile">
+      <p><code>Versão Mobile Nativa</code></p>
+      <img src="../docs/img/wireframes/Mobile_Native_admin.png" width="200" alt="Versão Mobile Nativa">
   </details>
-  <details>
-    <summary><strong>📦 Gerenciamento e cadastro de produtos </strong></summary>
-    <p><code>Versão Web_Desktop e Web_Mobile</code></p>
-//    <img src="../docs/img/wireframes/Mobile_admi2.png" width="200" alt="Versão Mobile">
-    </details> 
 </details>
 ### Design Visual
 
