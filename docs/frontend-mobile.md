@@ -1384,7 +1384,7 @@ npm run test:android
 | Todos                | Correção da Etapa           | 10/11/2025  | 17/11/2025 |   ✔️    |  05/11/2025  |
 | Todos                | Front-end Móvel             | 17/11/2025  | 28/11/2025 |   ⌛    |              |
 | Jully/Vinicius/Italo | Projeto da Interface        | 01/11/2025  | 24/11/2025 |   ✔️    |  20/11/2025  |
-| Jully/Vinicius/Italo | Wireframes                  | 01/11/2025  | 24/11/2025 |   ⌛    |              |
+| Victor               | Wireframes                  | 01/11/2025  | 24/11/2025 |   ✔️    |  23/11/2025  |
 | Pedro/Victor/Lucas   | Design Visual               | 01/11/2025  | 24/11/2025 |   ⌛    |              |
 | Vinicius             | Fluxo de Dados              | 01/11/2025  | 24/11/2025 |   ⌛    |              |
 | Lucas                | Tecnologias Utilizadas      | 01/11/2025  | 20/11/2025 |   ✔️    |  20/11/2025  |
