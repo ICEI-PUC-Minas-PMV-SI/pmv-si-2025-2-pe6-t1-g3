@@ -68,7 +68,7 @@ export const userService = {
 };
 
 export const addressService = {
-  updateAddress: (data) => api.put('/endereco/atualizar/', data),
+  updateAddress: (data) => api.patch('/endereco/atualizar', data),
   createAddress: (data) => api.post('/endereco/cadastrar', data),
   deleteAddress: (codend) => api.delete('/endereco/deletar', { params: { CODEND: codend } }),
 };

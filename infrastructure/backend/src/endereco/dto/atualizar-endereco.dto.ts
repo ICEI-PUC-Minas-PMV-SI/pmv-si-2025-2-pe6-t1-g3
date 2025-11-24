@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class AtualizarEnderecoDto {
   @ApiProperty({
@@ -8,7 +8,7 @@ export class AtualizarEnderecoDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  CODEND: string;
+  CODEND: number;
 
   @ApiProperty({
     required: true,
@@ -38,9 +38,9 @@ export class AtualizarEnderecoDto {
     required: true,
     description: 'Complemento',
   })
-  @IsNotEmpty()
   @IsString()
-  COMPLEMENTO: string;
+  @IsOptional()
+  COMPLEMENTO?: string;
 
   @ApiProperty({
     required: true,
@@ -65,4 +65,12 @@ export class AtualizarEnderecoDto {
   @IsNotEmpty()
   @IsString()
   RUA: string;
+
+  @ApiProperty({
+    required: false,
+    description: 'Código do usuário dono do endereço',
+  })
+  @IsOptional()
+  @IsNumber()
+  CODPES?: number;
 }
