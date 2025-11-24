@@ -13,7 +13,8 @@ model Login {
   SENHA     String
   PERMISSAO String? @default("CLIENTE")
 
-  PESSOA Pessoa?
+  PESSOA   Pessoa?
+  Produtos Produtos[]
 
   @@map("LOGIN")
 }
@@ -64,16 +65,20 @@ model Categorias {
 model Produtos {
   CODPROD Int @id @default(autoincrement())
 
-  PRODUTO   String @unique
+  PRODUTO   String  @unique
   DESCRICAO String
   IMAGEM    String
-  ESTOQUE   Float  @default(0)
+  ESTOQUE   Float   @default(0)
   TAMANHOS  String?
 
   VALOR      Float       @default(0)
   DESCONTO   Float?      @default(0)
   CATEGORIAS Categorias? @relation(fields: [CODCAT], references: [CODCAT])
   CODCAT     Int?
+
+  // Optional relation to a supplier (Login)
+  FORNECEDOR Login? @relation(fields: [CODUSU], references: [CODUSU])
+  CODUSU     Int?
 
   ITENSPEDIDO ItensPedido[]
   AVALIACOES  Avaliacao[]
@@ -101,10 +106,10 @@ model Avaliacao {
 model Pedido {
   CODPED Int @id @default(autoincrement())
 
-  SUBTOTAL   Float? @default(0)
-  VALORTOTAL Float? @default(0)
-  DESCONTO   Float? @default(0)
-  FRETE      Float? @default(0)
+  SUBTOTAL   Float?  @default(0)
+  VALORTOTAL Float?  @default(0)
+  DESCONTO   Float?  @default(0)
+  FRETE      Float?  @default(0)
   STATUS     String? @default("Pendente")
 
   ITENSPEDIDO ItensPedido[]

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
+import SecureStore from './secureStore';
 import { ENV } from '../utils/env';
 
 const API_BASE_URL = ENV.API_URL();

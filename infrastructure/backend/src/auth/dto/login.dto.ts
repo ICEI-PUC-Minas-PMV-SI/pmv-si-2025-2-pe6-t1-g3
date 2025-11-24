@@ -116,6 +116,15 @@ export class RegistroDto {
   @IsOptional({ message: 'Endereco nao e obrigatorio' })
   @IsObject()
   ENDERECO: CadastrarEnderecoDto;
+
+  @ApiProperty({
+    description: 'Permissao/Tipo do usuario (opcional). Ex: CLIENTE, FORNECEDOR',
+    example: 'CLIENTE',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  PERMISSAO?: string;
 }
 
 export class ChangePasswordDto {

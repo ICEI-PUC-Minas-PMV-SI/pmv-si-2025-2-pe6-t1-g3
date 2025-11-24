@@ -9,7 +9,7 @@ export class ProdutoService {
     try {
       const buscaProduto = await this.prisma.produtos.findFirst({
         where: { CODPROD: +body.CODPROD },
-        include: { CATEGORIAS: true },
+        include: { CATEGORIAS: true, FORNECEDOR: { include: { PESSOA: true } } },
       });
 
       if (!buscaProduto) {
@@ -43,6 +43,7 @@ export class ProdutoService {
           include: {
             CATEGORIAS: true,
             AVALIACOES: true,
+            FORNECEDOR: { include: { PESSOA: true } },
           },
         });
       } else {
@@ -51,6 +52,7 @@ export class ProdutoService {
           include: {
             CATEGORIAS: true,
             AVALIACOES: true,
+            FORNECEDOR: { include: { PESSOA: true } },
           },
         });
       }

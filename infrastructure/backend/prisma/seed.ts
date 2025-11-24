@@ -95,6 +95,32 @@ async function main() {
 
   console.log('Usuário cliente criado:', clientUser.EMAIL);
 
+  console.log('Criando usuário fornecedor...');
+  const fornecedorPassword = await bcrypt.hash('Fornecedor123', 12);
+  const fornecedorUser = await prisma.login.upsert({
+    where: { EMAIL: 'fornecedor@teste.com' },
+    update: {},
+    create: {
+      EMAIL: 'fornecedor@teste.com',
+      SENHA: fornecedorPassword,
+      PERMISSAO: 'FORNECEDOR'
+    }
+  });
+
+  const fornecedorProfile = await prisma.pessoa.upsert({
+    where: { CODUSU: fornecedorUser.CODUSU },
+    update: {},
+    create: {
+      NOME: 'Fornecedor',
+      SOBRENOME: 'Exemplo',
+      CPF: '22233344455',
+      TELEFONE: '11988887777',
+      CODUSU: fornecedorUser.CODUSU
+    }
+  });
+
+  console.log('Usuário fornecedor criado:', fornecedorUser.EMAIL);
+
   console.log('Criando produtos...');
   
   const produtos = [
@@ -105,7 +131,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 1299.99,
       ESTOQUE: 25,
-      CODCAT: categoriaEletronicos.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT,
+      CODUSU: fornecedorUser.CODUSU
     },
     {
       PRODUTO: 'Notebook Lenovo IdeaPad 3',
@@ -113,7 +140,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 2499.99,
       ESTOQUE: 15,
-      CODCAT: categoriaEletronicos.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT,
+      CODUSU: fornecedorUser.CODUSU
     },
     {
       PRODUTO: 'Fone de Ouvido JBL Tune 510BT',
@@ -121,7 +149,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 199.99,
       ESTOQUE: 30,
-      CODCAT: categoriaEletronicos.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT,
+      CODUSU: fornecedorUser.CODUSU
     },
     {
       PRODUTO: 'Smart TV LG 43" 4K UHD',
@@ -129,7 +158,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1552975084-6e027ba2d5ce?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 1899.99,
       ESTOQUE: 12,
-      CODCAT: categoriaEletronicos.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT,
+      CODUSU: fornecedorUser.CODUSU
     },
     {
       PRODUTO: 'Tablet Apple iPad 10.9"',
@@ -137,7 +167,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 2199.99,
       ESTOQUE: 18,
-      CODCAT: categoriaEletronicos.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT,
+      CODUSU: fornecedorUser.CODUSU
     },
     {
       PRODUTO: 'Smartwatch Apple Watch SE',
@@ -145,7 +176,8 @@ async function main() {
       IMAGEM: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&w=400&h=400&fit=crop',
       VALOR: 1799.99,
       ESTOQUE: 20,
-      CODCAT: categoriaEletronicos.CODCAT
+      CODCAT: categoriaEletronicos.CODCAT,
+      CODUSU: fornecedorUser.CODUSU
     },
 
     // FASHION
@@ -388,6 +420,7 @@ async function main() {
   console.log('Dados criados:');
   console.log('Admin: admin@store.com / Admin123');
   console.log('Cliente: cliente@teste.com / Cliente123');
+  console.log('Fornecedor: fornecedor@teste.com / Fornecedor123');
   console.log(`${produtos.length} produtos em 4 categorias`);
   console.log('2 pedidos de exemplo');
   console.log('Acesse: http://localhost:5173');

@@ -274,11 +274,20 @@ export class AuthService {
 
       const hashedPassword = await bcrypt.hash(body.SENHA, 12);
 
+      // Allow requesting a role during registration but restrict to safe roles
+      const requestedRole = (body as any).PERMISSAO
+        ? String((body as any).PERMISSAO).toUpperCase()
+        : 'CLIENTE';
+      const allowedRoles = ['CLIENTE', 'FORNECEDOR'];
+      const roleToAssign = allowedRoles.includes(requestedRole)
+        ? requestedRole
+        : 'CLIENTE';
+
       const newUser = await this.prisma.login.create({
         data: {
           EMAIL: email,
           SENHA: hashedPassword,
-          PERMISSAO: 'CLIENTE',
+          PERMISSAO: roleToAssign,
         },
       });
 

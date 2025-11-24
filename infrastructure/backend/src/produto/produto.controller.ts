@@ -145,6 +145,21 @@ export class ProdutoController {
         CODCAT: { type: 'number', example: 1 },
         IMAGEM: { type: 'string', example: 'https://exemplo.com/imagem.jpg' },
         DESCONTO: { type: 'number', example: 0 },
+            FORNECEDOR: {
+              type: 'object',
+              properties: {
+                CODUSU: { type: 'number', example: 2 },
+                EMAIL: { type: 'string', example: 'fornecedor@exemplo.com' },
+                PESSOA: {
+                  type: 'object',
+                  properties: {
+                    NOME: { type: 'string', example: 'Fornecedor' },
+                    SOBRENOME: { type: 'string', example: 'Exemplo' },
+                    TELEFONE: { type: 'string', example: '11988887777' },
+                  },
+                },
+              },
+            },
         CATEGORIAS: {
           type: 'object',
           properties: {
@@ -404,6 +419,21 @@ export class ProdutoController {
           CODCAT: { type: 'number', example: 1 },
           IMAGEM: { type: 'string', example: 'https://exemplo.com/imagem.jpg' },
           DESCONTO: { type: 'number', example: 0 },
+              FORNECEDOR: {
+                type: 'object',
+                properties: {
+                  CODUSU: { type: 'number', example: 2 },
+                  EMAIL: { type: 'string', example: 'fornecedor@exemplo.com' },
+                  PESSOA: {
+                    type: 'object',
+                    properties: {
+                      NOME: { type: 'string', example: 'Fornecedor' },
+                      SOBRENOME: { type: 'string', example: 'Exemplo' },
+                      TELEFONE: { type: 'string', example: '11988887777' },
+                    },
+                  },
+                },
+              },
           CATEGORIAS: {
             type: 'object',
             properties: {
