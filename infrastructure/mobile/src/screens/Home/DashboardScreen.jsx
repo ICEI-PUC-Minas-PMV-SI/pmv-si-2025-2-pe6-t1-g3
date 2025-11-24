@@ -85,7 +85,7 @@ const DashboardScreen = () => {
         <View style={styles.heroSection}>
         <View style={styles.heroContent}>
           <Text style={styles.heroTitle}>
-            Descubra produtos{'\n'}
+            {'Descubra produtos '}
             <Text style={styles.heroTitleLine2}>que combinam com você</Text>
           </Text>
           <Text style={styles.heroSubtitle}>
@@ -202,7 +202,10 @@ const styles = StyleSheet.create({
     lineHeight: 42,
   },
   heroTitleLine2: {
-    display: 'block',
+    fontSize: 36,
+    fontWeight: '300',
+    color: colors.gray900,
+    marginTop: 0,
   },
   heroSubtitle: {
     fontSize: 16,

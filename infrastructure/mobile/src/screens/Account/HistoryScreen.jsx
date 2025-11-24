@@ -7,7 +7,7 @@ import { orderService2 } from '../../services/api';
 import { formatPrice } from '../../utils/formatPrice';
 import { colors, spacing } from '../../theme';
 import Toast from 'react-native-toast-message';
-import * as SecureStore from 'expo-secure-store';
+import SecureStore from '../../services/secureStore';
 import { Ionicons } from '@expo/vector-icons';
 
 const HistoryScreen = () => {

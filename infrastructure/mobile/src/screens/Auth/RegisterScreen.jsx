@@ -7,6 +7,7 @@ import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import { colors, spacing } from '../../theme';
 import Toast from 'react-native-toast-message';
+import { TouchableOpacity } from 'react-native';
 
 const RegisterScreen = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ const RegisterScreen = () => {
     SENHA: '',
     confSenha: '',
   });
+  const [isFornecedor, setIsFornecedor] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -92,6 +94,9 @@ const RegisterScreen = () => {
     setIsLoading(true);
     try {
       const { confSenha, ...registerData } = formData;
+      if (isFornecedor) {
+        registerData.PERMISSAO = 'FORNECEDOR';
+      }
       await authService.register(registerData);
 
       Toast.show({
@@ -253,6 +258,18 @@ const RegisterScreen = () => {
                   />
                 </View>
               </View>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Tipo de Conta</Text>
+                <TouchableOpacity
+                  style={styles.fornecedorRow}
+                  onPress={() => setIsFornecedor((v) => !v)}
+                  activeOpacity={0.7}
+                >
+                  <View style={[styles.checkbox, isFornecedor && styles.checkboxChecked]} />
+                  <Text style={styles.fornecedorText}>Registrar como fornecedor</Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <Button
@@ -354,6 +371,28 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.sm,
     borderBottomWidth: 1,
     borderBottomColor: colors.gray200,
+  },
+  fornecedorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+  },
+  checkbox: {
+    width: 18,
+    height: 18,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.gray300,
+    marginRight: spacing.md,
+    backgroundColor: 'transparent',
+  },
+  checkboxChecked: {
+    backgroundColor: colors.black,
+    borderColor: colors.black,
+  },
+  fornecedorText: {
+    fontSize: 14,
+    color: colors.gray900,
   },
   row: {
     flexDirection: 'row',

@@ -12,7 +12,7 @@ import { colors, spacing } from '../../theme';
 import Button from '../../components/common/Button';
 import Toast from 'react-native-toast-message';
 import { productService } from '../../services/api';
-import * as SecureStore from 'expo-secure-store';
+import SecureStore from '../../services/secureStore';
 import { storage } from '../../services/storage';
 
 const { width } = Dimensions.get('window');

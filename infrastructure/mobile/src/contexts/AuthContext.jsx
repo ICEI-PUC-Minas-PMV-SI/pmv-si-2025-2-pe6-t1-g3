@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { jwtDecode } from 'jwt-decode';
-import * as SecureStore from 'expo-secure-store';
+import SecureStore from '../services/secureStore';
 
 const AuthContext = createContext();
 

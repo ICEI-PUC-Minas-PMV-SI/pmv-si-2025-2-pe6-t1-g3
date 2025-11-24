@@ -7,7 +7,7 @@ import { colors, spacing } from '../../theme';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import Toast from 'react-native-toast-message';
-import * as SecureStore from 'expo-secure-store';
+import SecureStore from '../../services/secureStore';
 import { Ionicons } from '@expo/vector-icons';
 import { ENV } from '../../utils/env';
 
