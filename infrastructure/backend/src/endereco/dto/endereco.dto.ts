@@ -21,8 +21,8 @@ export class CadastrarEnderecoDto {
     example: 'Casa',
   })
   @IsString({ message: 'Descrição deve ser uma string' })
-  @IsNotEmpty({ message: 'Descrição é obrigatória' })
-  DESCRICAO: string;
+  @IsOptional()
+  DESCRICAO?: string;
 
   @ApiProperty({
     description: 'CEP (apenas números)',

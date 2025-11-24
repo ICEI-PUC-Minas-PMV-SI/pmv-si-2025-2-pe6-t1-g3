@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CadatrarEnderecoDto {
   @ApiProperty({
@@ -8,7 +8,7 @@ export class CadatrarEnderecoDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  CODPES: string;
+  CODPES: number;
 
   @ApiProperty({
     required: true,
@@ -38,17 +38,17 @@ export class CadatrarEnderecoDto {
     required: true,
     description: 'Complemento',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  COMPLEMENTO: string;
+  COMPLEMENTO?: string;
 
   @ApiProperty({
-    required: true,
+    required: false,
     description: 'Descrição',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  DESCRICAO: string;
+  DESCRICAO?: string;
 
   @ApiProperty({
     required: true,

@@ -46,7 +46,6 @@ export class EnderecoController {
         'NUMERO',
         'BAIRRO',
         'CIDADE',
-        'DESCRICAO',
       ],
       properties: {
         CODPES: { type: 'number', example: 1 },

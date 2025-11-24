@@ -43,12 +43,12 @@ export class AtualizarEnderecoDto {
   COMPLEMENTO?: string;
 
   @ApiProperty({
-    required: true,
+    required: false,
     description: 'Descrição',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  DESCRICAO: string;
+  DESCRICAO?: string;
 
   @ApiProperty({
     required: true,

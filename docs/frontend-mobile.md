@@ -356,7 +356,50 @@ Frontend Mobile (React Native/Expo) ↔ Backend (NestJS) ↔ Banco de Dados (Pos
 
 ## Diagramas Visuais do Fluxo de Dados
 
-[Dados devem ser preenchidos]
+Para melhor compreensão dos fluxos de dados da aplicação, segue os diagramas visuais:
+
+<details>
+<summary><strong>🏠 Home</strong></summary>
+
+![Home](../docs/img/fluxo_dados/Mobile_Native_Home_2_annotated.jpg)
+![Home](../docs/img/fluxo_dados/Mobile_Native_Home_1_annotated.jpg)
+</details>
+<details>
+<summary><strong>🔐 Área de Login</strong></summary>
+
+![Área de Login](../docs/img/fluxo_dados/Mobile_Native_Login_annotated.jpg)
+</details>
+<details>
+<summary><strong>🔐 Área de Cadastro</strong></summary>
+
+![Área de Cadastro](../docs/img/fluxo_dados/Mobile_Native_Registry_annotated.jpg)
+</details>
+<details>
+<summary><strong>👤 Área Logada</strong></summary>
+
+![Área Logada](../docs/img/fluxo_dados/Mobile_Native_Account_annotated.jpg)
+</details>
+<details>
+<summary><strong>🛒 Carrinho de Compras</strong></summary>
+
+![Carrinho de Compras](../docs/img/fluxo_dados/Mobile_Native_cart_annotated_v2.png)
+</details>
+<details>
+<summary><strong>📦 Produto Selecionado</strong></summary>
+
+![Produto Selecionado](../docs/img/fluxo_dados/Mobile_product_Native_annotated_v2.png)
+</details>
+<details>
+<summary><strong>❤️ Lista de Favoritos</strong></summary>
+
+![Lista de Favoritos](../docs/img/fluxo_dados/Mobile_Native_favorites_annotated_v2.png)
+</details>
+<details>
+<summary><strong>📊 Painel Administrativo - Visão Geral</strong></summary>
+
+![Painel Administrativo - Visão Geral](../docs/img/fluxo_dados/Mobile_Native_admin_annotated_v2.png)
+</details>
+
 
 ## Tecnologias Utilizadas
 
