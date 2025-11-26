@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { jwtDecode } from 'jwt-decode';
 import SecureStore from '../services/secureStore';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);

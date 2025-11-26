@@ -7,7 +7,20 @@ module.exports = {
     'src/**/*.{js,jsx}',
     '!src/**/*.d.ts',
     '!src/**/__tests__/**',
-    '!src/**/__mocks__/**'
+    '!src/**/__mocks__/**',
+    '!src/**/*.test.{js,jsx}',
+    '!src/**/*.spec.{js,jsx}'
+  ],
+  testMatch: [
+    '**/__tests__/**/*.test.{js,jsx}',
+    '**/*.test.{js,jsx}',
+    '**/*.spec.{js,jsx}'
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/__tests__/factories/',
+    '/__tests__/helpers/',
+    '/__tests__/mocks/'
   ],
   coverageThreshold: {
     global: {
