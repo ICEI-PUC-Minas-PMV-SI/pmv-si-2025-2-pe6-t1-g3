@@ -118,11 +118,11 @@ export default function TabNavigator() {
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Products') {
+          } else if (route.name === 'Produtos') {
             iconName = focused ? 'grid' : 'grid-outline';
-          } else if (route.name === 'Cart') {
+          } else if (route.name === 'Carrinho') {
             iconName = focused ? 'cart' : 'cart-outline';
-          } else if (route.name === 'Account') {
+          } else if (route.name === 'Conta') {
             iconName = focused ? 'person' : 'person-outline';
           }
 
@@ -134,9 +134,9 @@ export default function TabNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Products" component={ProductsStack} />
-      <Tab.Screen name="Cart" component={CartScreen} />
-      <Tab.Screen name="Account" component={AccountStack} />
+      <Tab.Screen name="Produtos" component={ProductsStack} options={{ title: 'Produtos' }} />
+      <Tab.Screen name="Carrinho" component={CartScreen} options={{ title: 'Carrinho' }} />
+      <Tab.Screen name="Conta" component={AccountStack} options={{ title: 'Conta' }} />
     </Tab.Navigator>
   );
 }
