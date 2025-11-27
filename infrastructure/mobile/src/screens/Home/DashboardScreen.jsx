@@ -68,7 +68,7 @@ const DashboardScreen = () => {
   };
 
   const handleViewProducts = () => {
-    navigation.navigate('Products', { screen: 'ProductsList' });
+    navigation.navigate('Produtos', { screen: 'ProductsList' });
   };
 
   return (

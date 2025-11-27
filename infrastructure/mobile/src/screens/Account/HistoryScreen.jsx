@@ -91,7 +91,7 @@ const HistoryScreen = () => {
             <Text style={styles.emptySubtext}>Você ainda não fez nenhum pedido.</Text>
             <TouchableOpacity
               style={styles.shopButton}
-              onPress={() => navigation.navigate('Products', { screen: 'ProductsList' })}
+              onPress={() => navigation.navigate('Produtos', { screen: 'ProductsList' })}
               activeOpacity={0.7}
             >
               <Text style={styles.shopButtonText}>Começar a Comprar</Text>

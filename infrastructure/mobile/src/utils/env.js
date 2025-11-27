@@ -11,7 +11,7 @@ export const getEnvVar = (key, fallback = undefined) => {
 
 // Export commonly used environment variables with proper fallbacks
 export const ENV = {
-  API_URL: () => getEnvVar('apiUrl', 'http://localhost:3000'),
+  API_URL: () => getEnvVar('apiUrl', 'https://zabbix.pnunes-develop.work/api'),
   VIACEP_API_URL: () => getEnvVar('viacepApiUrl', 'https://viacep.com.br/ws'),
   CONTACT_EMAIL: () => getEnvVar('contactEmail', 'contato@exemplo.com.br'),
   TOAST_AUTOCLOSE_DURATION: () => parseInt(getEnvVar('toastAutocloseDuration', '3000'), 10),

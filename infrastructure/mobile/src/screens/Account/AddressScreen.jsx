@@ -108,7 +108,7 @@ const AddressScreen = () => {
   };
 
   const handleSubmit = async () => {
-    if (!addressInfo.LOGRADOURO || !addressInfo.NUMERO || !addressInfo.BAIRRO || !addressInfo.CIDADE || !addressInfo.UF) {
+    if (!addressInfo.LOGRADOURO || !addressInfo.NUMERO || !addressInfo.BAIRRO || !addressInfo.CIDADE) {
       Toast.show({
         type: 'error',
         text1: 'Campos obrigatórios',
@@ -125,6 +125,14 @@ const AddressScreen = () => {
       };
       delete addressData.LOGRADOURO;
 
+      // Remove CODEND se estiver vazio (novo endereço)
+      if (!addressData.CODEND || addressData.CODEND === '') {
+        delete addressData.CODEND;
+      }
+
+      // Remove UF completamente (não é enviado ao backend)
+      delete addressData.UF;
+
       if (editedAddress) {
         await addressService.updateAddress(addressData);
         Toast.show({
@@ -132,6 +140,7 @@ const AddressScreen = () => {
           text1: 'Endereço atualizado com sucesso!',
         });
       } else {
+        console.debug('addressData', addressData);
         await addressService.createAddress(addressData);
         Toast.show({
           type: 'success',
@@ -249,7 +258,7 @@ const AddressScreen = () => {
                 }}
                 style={styles.addButton}
               >
-                Adicionar Endereço
+                <Ionicons name="add-outline" size={24} color={colors.white} />
               </Button>
             </View>
 

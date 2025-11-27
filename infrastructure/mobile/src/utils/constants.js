@@ -50,7 +50,7 @@ export const SCREEN_NAMES = {
   CATEGORY: 'Category',
   SEARCH_RESULTS: 'SearchResults',
   // Cart
-  CART: 'Cart',
+  CART: 'Carrinho',
   // Account
   ACCOUNT: 'AccountMain',
   PROFILE: 'Profile',

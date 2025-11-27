@@ -212,7 +212,7 @@ const CartScreen = () => {
       });
 
       setTimeout(() => {
-        navigation.navigate('Account', { screen: 'History' });
+        navigation.navigate('Conta', { screen: 'History' });
       }, 2000);
     } catch (error) {
       console.error('Error creating order:', error);
@@ -251,7 +251,7 @@ const CartScreen = () => {
         <Text style={styles.emptyText}>Seu carrinho está vazio</Text>
         <Button
           variant="primary"
-          onPress={() => navigation.navigate('Products', { screen: 'ProductsList' })}
+          onPress={() => navigation.navigate('Produtos', { screen: 'ProductsList' })}
           style={styles.shopButton}
         >
           Continuar Comprando
@@ -353,7 +353,7 @@ const CartScreen = () => {
             ))}
             <Button
               variant="outline"
-              onPress={() => navigation.navigate('Account', { screen: 'Address' })}
+              onPress={() => navigation.navigate('Conta', { screen: 'Address' })}
               style={styles.addAddressButton}
             >
               Adicionar Novo Endereço
