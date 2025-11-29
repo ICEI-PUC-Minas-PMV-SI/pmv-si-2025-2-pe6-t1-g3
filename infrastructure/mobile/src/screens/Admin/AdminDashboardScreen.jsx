@@ -1,11 +1,72 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
+import { productService, orderService } from '../../services/api';
 import { colors, spacing } from '../../theme';
 import { Ionicons } from '@expo/vector-icons';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import MetricsOverviewScreen from './MetricsOverviewScreen';
+import ProductManagementScreen from './ProductManagementScreen';
+import OrderManagementScreen from './OrderManagementScreen';
 
 const AdminDashboardScreen = () => {
   const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('overview');
+  const [metrics, setMetrics] = useState({
+    totalProducts: 0,
+    totalOrders: 0,
+    totalRevenue: 0,
+    recentOrders: [],
+  });
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    if (!user?.isAdmin) {
+      return;
+    }
+    loadData();
+  }, [user]);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [productsResponse, ordersResponse] = await Promise.all([
+        productService.getProducts(),
+        orderService.getOrders(),
+      ]);
+
+      const productsData = productsResponse.data;
+      const ordersData = ordersResponse.data;
+
+      setProducts(productsData);
+      setOrders(ordersData);
+
+      const totalRevenue = ordersData.reduce((sum, order) => {
+        const orderTotal = Number(order.VALORTOTAL ?? order.SUBTOTAL ?? 0);
+        return sum + (Number.isNaN(orderTotal) ? 0 : orderTotal);
+      }, 0);
+
+      setMetrics({
+        totalProducts: productsData.length,
+        totalOrders: ordersData.length,
+        totalRevenue,
+        recentOrders: ordersData.slice(0, 10),
+      });
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
+      Alert.alert('Erro', 'Erro ao carregar dados do painel administrativo');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!user?.isAdmin) {
     return (
@@ -19,51 +80,70 @@ const AdminDashboardScreen = () => {
     );
   }
 
+  const tabs = [
+    { id: 'overview', label: 'Dashboard', icon: 'stats-chart-outline' },
+    { id: 'products', label: 'Produtos', icon: 'cube-outline' },
+    { id: 'orders', label: 'Pedidos', icon: 'cart-outline' },
+  ];
+
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Painel Administrativo</Text>
-          <Text style={styles.subtitle}>
-            Gerencie produtos, pedidos e usuários
-          </Text>
-        </View>
-
-        <View style={styles.infoCard}>
-          <Ionicons name="information-circle-outline" size={24} color={colors.info} />
-          <Text style={styles.infoText}>
-            O painel administrativo completo está disponível na versão web.
-            Esta versão mobile está em desenvolvimento.
-          </Text>
-        </View>
-
-        <View style={styles.featuresContainer}>
-          <View style={styles.featureCard}>
-            <Ionicons name="cube-outline" size={32} color={colors.black} />
-            <Text style={styles.featureTitle}>Gerenciar Produtos</Text>
-            <Text style={styles.featureDescription}>
-              Adicione, edite e remova produtos do catálogo
-            </Text>
-          </View>
-
-          <View style={styles.featureCard}>
-            <Ionicons name="receipt-outline" size={32} color={colors.black} />
-            <Text style={styles.featureTitle}>Gerenciar Pedidos</Text>
-            <Text style={styles.featureDescription}>
-              Acompanhe e atualize o status dos pedidos
-            </Text>
-          </View>
-
-          <View style={styles.featureCard}>
-            <Ionicons name="people-outline" size={32} color={colors.black} />
-            <Text style={styles.featureTitle}>Gerenciar Usuários</Text>
-            <Text style={styles.featureDescription}>
-              Visualize e gerencie contas de usuários
-            </Text>
-          </View>
-        </View>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Painel Administrativo</Text>
+        <Text style={styles.subtitle}>Gerencie sua loja de forma eficiente</Text>
       </View>
-    </ScrollView>
+
+      <View style={styles.tabsContainer}>
+        {tabs.map((tab) => (
+          <TouchableOpacity
+            key={tab.id}
+            style={[styles.tab, activeTab === tab.id && styles.tabActive]}
+            onPress={() => setActiveTab(tab.id)}
+          >
+            <Ionicons
+              name={tab.icon}
+              size={20}
+              color={activeTab === tab.id ? colors.black : colors.gray500}
+            />
+            <Text
+              style={[
+                styles.tabLabel,
+                activeTab === tab.id && styles.tabLabelActive,
+              ]}
+            >
+              {tab.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <LoadingSpinner size="large" />
+        </View>
+      ) : (
+        <>
+          {activeTab === 'overview' && (
+            <MetricsOverviewScreen
+              metrics={metrics}
+              products={products}
+              onRefresh={loadData}
+            />
+          )}
+
+          {activeTab === 'products' && (
+            <ProductManagementScreen onProductChange={loadData} />
+          )}
+
+          {activeTab === 'orders' && (
+            <OrderManagementScreen
+              orders={orders}
+              onOrdersChange={loadData}
+            />
+          )}
+        </>
+      )}
+    </View>
   );
 };
 
@@ -77,6 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.lg,
+    backgroundColor: colors.gray50,
   },
   errorText: {
     fontSize: 20,
@@ -90,11 +171,11 @@ const styles = StyleSheet.create({
     color: colors.gray600,
     textAlign: 'center',
   },
-  content: {
-    padding: spacing.lg,
-  },
   header: {
-    marginBottom: spacing.lg,
+    padding: spacing.md,
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray200,
   },
   title: {
     fontSize: 24,
@@ -106,47 +187,40 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.gray600,
   },
-  infoCard: {
+  tabsContainer: {
     flexDirection: 'row',
-    backgroundColor: colors.info + '20',
-    borderRadius: 8,
-    padding: spacing.md,
-    marginBottom: spacing.lg,
-    gap: spacing.md,
-  },
-  infoText: {
-    flex: 1,
-    fontSize: 14,
-    color: colors.gray700,
-    lineHeight: 20,
-  },
-  featuresContainer: {
-    gap: spacing.md,
-  },
-  featureCard: {
     backgroundColor: colors.white,
-    borderRadius: 8,
-    padding: spacing.lg,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray200,
+    paddingHorizontal: spacing.md,
+  },
+  tab: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    justifyContent: 'center',
+    paddingVertical: spacing.md,
+    gap: spacing.xs,
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
   },
-  featureTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.gray900,
-    marginTop: spacing.md,
-    marginBottom: spacing.xs,
+  tabActive: {
+    borderBottomColor: colors.black,
   },
-  featureDescription: {
+  tabLabel: {
     fontSize: 14,
-    color: colors.gray600,
-    textAlign: 'center',
+    fontWeight: '500',
+    color: colors.gray500,
+  },
+  tabLabelActive: {
+    color: colors.black,
+    fontWeight: '600',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
 export default AdminDashboardScreen;
-

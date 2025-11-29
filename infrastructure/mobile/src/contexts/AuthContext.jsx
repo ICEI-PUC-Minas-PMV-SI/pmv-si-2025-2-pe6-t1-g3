@@ -69,6 +69,7 @@ export const AuthProvider = ({ children }) => {
       });
     } catch (error) {
       console.error('Error saving token:', error);
+      throw error; // Re-throw error so LoginScreen can handle it
     }
   };
 

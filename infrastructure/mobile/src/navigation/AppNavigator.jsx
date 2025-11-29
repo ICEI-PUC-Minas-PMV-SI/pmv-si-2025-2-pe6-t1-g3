@@ -9,7 +9,7 @@ import LoadingScreen from '../screens/common/LoadingScreen';
 const RootStack = createNativeStackNavigator();
 
 export default function AppNavigator() {
-  const { isLoading } = useAuth();
+  const { isLoading, isAuthenticated } = useAuth();
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -20,17 +20,13 @@ export default function AppNavigator() {
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,
-          presentation: 'modal',
         }}
       >
-        <RootStack.Screen name="Main" component={TabNavigator} />
-        <RootStack.Screen
-          name="Auth"
-          component={AuthNavigator}
-          options={{
-            presentation: 'modal',
-          }}
-        />
+        {isAuthenticated ? (
+          <RootStack.Screen name="Main" component={TabNavigator} />
+        ) : (
+          <RootStack.Screen name="Auth" component={AuthNavigator} />
+        )}
       </RootStack.Navigator>
     </NavigationContainer>
   );

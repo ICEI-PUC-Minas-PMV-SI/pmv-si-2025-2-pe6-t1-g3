@@ -1,4 +1,5 @@
 import * as ExpoSecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NativeSecureStore = ExpoSecureStore && ExpoSecureStore.default ? ExpoSecureStore.default : ExpoSecureStore;
 
@@ -48,7 +49,13 @@ const getItemAsync = async (key) => {
 
   if (isWeb) return Promise.resolve(window.localStorage.getItem(key));
 
-  throw new Error('SecureStore API is not available in this environment');
+  // Fallback to AsyncStorage for mobile environments where SecureStore isn't available
+  try {
+    return await AsyncStorage.getItem(key);
+  } catch (error) {
+    console.warn('AsyncStorage fallback failed:', error);
+    throw new Error('SecureStore API is not available in this environment');
+  }
 };
 
 const setItemAsync = async (key, value) => {
@@ -61,14 +68,26 @@ const setItemAsync = async (key, value) => {
   ];
 
   const result = await tryCandidates(candidates, [key, value]);
-  if (typeof result !== 'undefined') return result;
+  if (typeof result !== 'undefined') {
+    console.log('[SecureStore] Usando SecureStore nativo para salvar:', key);
+    return result;
+  }
 
   if (isWeb) {
+    console.log('[SecureStore] Usando localStorage para salvar:', key);
     window.localStorage.setItem(key, value);
     return Promise.resolve();
   }
 
-  throw new Error('SecureStore API is not available in this environment');
+  // Fallback to AsyncStorage for mobile environments where SecureStore isn't available
+  try {
+    console.log('[SecureStore] Usando AsyncStorage como fallback para salvar:', key);
+    await AsyncStorage.setItem(key, value);
+    return Promise.resolve();
+  } catch (error) {
+    console.error('[SecureStore] AsyncStorage fallback falhou:', error);
+    throw new Error('SecureStore API is not available in this environment');
+  }
 };
 
 const deleteItemAsync = async (key) => {
@@ -88,7 +107,14 @@ const deleteItemAsync = async (key) => {
     return Promise.resolve();
   }
 
-  throw new Error('SecureStore API is not available in this environment');
+  // Fallback to AsyncStorage for mobile environments where SecureStore isn't available
+  try {
+    await AsyncStorage.removeItem(key);
+    return Promise.resolve();
+  } catch (error) {
+    console.warn('AsyncStorage fallback failed:', error);
+    throw new Error('SecureStore API is not available in this environment');
+  }
 };
 
 export default {

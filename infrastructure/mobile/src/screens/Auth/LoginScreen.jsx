@@ -58,19 +58,33 @@ const LoginScreen = () => {
 
   const handleSubmit = async () => {
     if (!validateForm()) {
+      console.log('Validação do formulário falhou');
       return;
     }
 
+    console.log('Iniciando login...', { email: formData.EMAIL });
     setIsLoading(true);
     setGeneralError('');
 
     try {
+      console.log('Chamando authService.login...');
       const response = await authService.login(formData);
+      console.log('Resposta da API recebida:', { hasToken: !!response.data.token });
+
+      console.log('Salvando token no SecureStore...');
       await login(response.data.token);
+      console.log('Login bem-sucedido! Token salvo.');
+
+      Toast.show({
+        type: 'success',
+        text1: 'Login realizado com sucesso!',
+        text2: 'Redirecionando...',
+      });
       // Navigation will be handled automatically by AppNavigator based on auth state
     } catch (error) {
+      console.error('Erro no processo de login:', error);
       const message =
-        error.response?.data?.message || 'Não foi possível fazer login.';
+        error.response?.data?.message || error.message || 'Não foi possível fazer login.';
       setGeneralError(message);
       Toast.show({
         type: 'error',
