@@ -6,5 +6,6 @@ Após a implementação, o projeto passou por etapas de testes, validação e aj
 
 Para demonstrar o funcionamento completo da plataforma, foi preparado um pequeno vídeo apresentando a solução desenvolvida no link abaixo. 
 
+[ZAbbix_apresetation.pdf](https://github.com/user-attachments/files/23843423/ZAbbix_compressed.pdf)
 
 [![Assista ao vídeo](https://img.shields.io/badge/YOUTUBE-Assista%20ao%20vídeo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=N57xA25DnGs)
